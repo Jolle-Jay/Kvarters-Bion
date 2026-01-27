@@ -1,0 +1,105 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+ 
+html {
+    height: 100%;
+}
+ 
+body {
+    background-color: #012401;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+ 
+/* Navbar */
+.navbar {
+    background: #003300;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border: 2px solid #B8860B;
+    border-radius: 10px;
+}
+ 
+.navbar a {
+    color: #f3f5f3;
+    margin-left: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+ 
+.logo {
+    color: #ffffff;
+}
+ 
+/* Hero */
+.hero {
+    background: linear-gradient(rgba(0, 51, 0, 0.7), rgba(4, 15, 4, 0.9)),
+        url("https://via.placeholder.com/1200x400") center/cover;
+    text-align: center;
+    padding: 4rem 2rem;
+    
+}
+ 
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+ 
+.hero button {
+    margin-top: 1.5rem;
+    padding: 0.75rem 2rem;
+    background: #004d00;
+    border: 2px solid #B8860B;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+ 
+/* Movies */
+.movies {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 3rem;
+}
+ 
+.movie-card {
+    background: #011601;
+    padding: 1rem;
+    border-radius: 20px;
+    text-align: left;
+    border: 2px solid #B8860B;
+}
+ 
+.poster {
+    background: #000000;
+    height: 280px;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    border: 2px solid #B8860B;
+}
+ 
+.movie-card span {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #c3cac3;
+    font-weight: bold;
+}
+ 
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: #000a00;
+    margin-top: auto;
+    
+}
