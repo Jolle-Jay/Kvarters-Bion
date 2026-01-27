@@ -19,12 +19,12 @@ body {
  
 /* Navbar */
 .navbar {
-    background: #003300;
+    background: #1a531a;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    border: 2px solid #B8860B;
+    border: 1px solid #B8860B;
     border-radius: 10px;
 }
  
@@ -47,6 +47,52 @@ body {
     padding: 4rem 2rem;
     
 }
+
+.film-hero {
+    background: linear-gradient(rgba(0, 51, 0, 0.7), rgba(4, 15, 4, 0.9)),
+        url("https://via.placeholder.com/1200x400") center/cover;
+    padding: 4rem 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.poster-container {
+    flex: 1;
+    text-align: center;
+}
+
+.poster-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.poster-container button {
+    margin: 0.5rem;
+}
+
+.info {
+    flex: 2;
+    text-align: left;
+}
+
+.info h2 {
+    margin-bottom: 1rem;
+}
+
+.info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info li {
+    margin-bottom: 0.5rem;
+}
+
+.description {
+    margin-top: 1rem;
+    line-height: 1.6;
+}
  
 .hero h2 {
     font-size: 3rem;
@@ -67,18 +113,25 @@ body {
 /* Movies */
 .movies {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     gap: 2rem;
     padding: 3rem;
-}
- 
+} 
+/* Mobile responsiveness */
+@media (max-width: 800px) {
+    .movies {
+        grid-template-columns: 1fr;
+    }
+} 
 .movie-card {
     background: #011601;
     padding: 1rem;
     border-radius: 20px;
     text-align: left;
     border: 2px solid #B8860B;
-}
+    min-width: 500px;    text-decoration: none;
+    color: inherit;
+    display: block;}
  
 .poster {
     background: #000000;
@@ -95,11 +148,34 @@ body {
     font-weight: bold;
 }
  
-/* Footer */
 footer {
     text-align: center;
     padding: 1.5rem;
     background: #000a00;
     margin-top: auto;
-    
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+footer div {
+    margin: 1rem;
+}
+
+footer a {
+    color: #90ee90;
+    text-decoration: none;
+}
+
+.showtimes, .food {
+    padding: 2rem;
+    margin: 1rem 0;
+    background: #003300;
+    border: 2px solid #B8860B;
+    border-radius: 10px;
+    color: #90ee90;
+}
+
+.showtimes h3, .food h3 {
+    color: #f4efef;
 }
