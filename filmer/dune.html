@@ -5,6 +5,55 @@
   <meta charset="UTF-8" />
   <title>Dune: Part Two - Kvarter Bion</title>
   <link rel="stylesheet" href="../style.css" />
+  <script>
+    let selectedSeats = [];
+
+    function showBooking() {
+      document.getElementById('booking').style.display = 'block';
+      generateSeats();
+    }
+
+    function hideBooking() {
+      document.getElementById('booking').style.display = 'none';
+      selectedSeats = [];
+    }
+
+    function generateSeats() {
+      const seatsDiv = document.getElementById('seats');
+      seatsDiv.innerHTML = '';
+      for (let row = 1; row <= 5; row++) {
+        for (let col = 1; col <= 10; col++) {
+          const seat = document.createElement('button');
+          seat.textContent = `${row}-${col}`;
+          seat.className = 'seat';
+          seat.onclick = () => selectSeat(seat, `${row}-${col}`);
+          seatsDiv.appendChild(seat);
+        }
+      }
+    }
+
+    function selectSeat(button, seatId) {
+      const numPeople = parseInt(document.getElementById('numPeople').value);
+      if (selectedSeats.includes(seatId)) {
+        selectedSeats = selectedSeats.filter(s => s !== seatId);
+        button.style.background = '#004d00';
+      } else if (selectedSeats.length < numPeople) {
+        selectedSeats.push(seatId);
+        button.style.background = '#B8860B';
+      } else {
+        alert('Du har redan valt max antal platser.');
+      }
+    }
+
+    function confirmBooking() {
+      if (selectedSeats.length === 0) {
+        alert('Välj minst en plats.');
+        return;
+      }
+      alert(`Bokning bekräftad för ${selectedSeats.length} personer på platser: ${selectedSeats.join(', ')}`);
+      hideBooking();
+    }
+  </script>
 </head>
  
 <body>
@@ -24,7 +73,22 @@
       <div id="trailer" style="margin-top: 1rem;">
         <iframe width="800" height="400" src="https://www.youtube.com/embed/Way9Dexny3w" frameborder="0" allowfullscreen></iframe>
       </div>
-      <button>Boka biljetter</button>
+      <a href="../booking.html?film=Dune: Part Two" class="book-link">Boka biljetter</a>
+      <div id="booking" style="display: none; margin-top: 1rem; padding: 1rem; background: #003300; border: 2px solid #B8860B; border-radius: 10px;">
+        <h4>Välj antal personer</h4>
+        <select id="numPeople">
+          <option value="1">1 person</option>
+          <option value="2">2 personer</option>
+          <option value="3">3 personer</option>
+          <option value="4">4 personer</option>
+        </select>
+        <h4>Välj platser (Salong 1)</h4>
+        <div id="seats" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin: 1rem 0;">
+          <!-- Generera platser -->
+        </div>
+        <button onclick="confirmBooking()">Bekräfta bokning</button>
+        <button onclick="hideBooking()">Avbryt</button>
+      </div>
     </div>
     <div class="info">
       <h2>Dune: Part Two</h2>
