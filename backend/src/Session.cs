@@ -30,7 +30,7 @@ public static partial class Session
                 "INSERT INTO sessions(id, data) VALUES(@id, @data)",
                 new { id = cookieValue, data = "{}" }
             );
-            session = Obj(new { id = cookieValue, data = "{}" });
+            session = Obj(new { id = cookieValue, data = Obj() });
         }
 
         // Cache the session in context.Items
@@ -47,21 +47,20 @@ public static partial class Session
     public static dynamic Get(HttpContext context, string key)
     {
         var session = GetRawSession(context);
-        // Convert the data from JSON
-        var data = JSON.Parse(session.data);
-        // Return the requested data key/property
-        return data[key];
+        // data is already parsed as JSON by ObjFromReader
+        return session.data[key];
     }
 
     public static void Set(HttpContext context, string key, object value)
     {
         var session = GetRawSession(context);
-        var data = JSON.Parse(session.data);
+        // data is already parsed as JSON by ObjFromReader
+        var data = session.data ?? Obj();
         // Set the property in data
         data[key] = value;
         // Save to DB, with the data converted to JSON
         SQLQuery(
-            @"UPDATE sessions 
+            @"UPDATE sessions
               SET modified = NOW(), data = @data
               WHERE id = @id",
             new

@@ -15,6 +15,9 @@ public static class Acl
 
     public static void UnpackRules(Arr allRules)
     {
+        // Skip if query returned an error
+        if (allRules.Length == 0 || allRules[0].error != null) { return; }
+
         // Unpack db response -> routes to regexps and userRoles to arrays
         rules = allRules.Map(x => new
         {

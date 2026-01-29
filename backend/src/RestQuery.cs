@@ -18,8 +18,8 @@ public static class RestQuery
             // ["firstName","=","Maria","AND","lastName","!=","Smith"]
             // ops1 = operators ok to write in query, thus you can write _AND_ if yo want to for clearity
             // ops2 = the operators we actually translate to...
-            var ops1 = Arr("!=", ">=", "<=", "=", ">", "<", "_LIKE_", "_AND_", "_OR_", "LIKE", "AND", "OR");
-            var ops2 = Arr("!=", ">=", "<=", "=", ">", "<", "LIKE", "AND", "OR", "LIKE", "AND", "OR");
+            var ops1 = Arr("!=", ">=", "<=", "=", ">", "<", "_LIKE_", "_CONTAINS_", "_AND_", "_OR_", "LIKE", "CONTAINS", "AND", "OR");
+            var ops2 = Arr("!=", ">=", "<=", "=", ">", "<", "LIKE", "CONTAINS", "AND", "OR", "LIKE", "CONTAINS", "AND", "OR");
             foreach (var op in ops1)
             {
                 where = Arr(where.Split(op)).Join($"_-_{ops1.IndexOf(op)}_-_");
@@ -34,23 +34,47 @@ public static class RestQuery
             if (!faulty)
             {
                 // We have keys on every n%4 = 0 place, collect those
-                // and clean them so they only have safe characters
+                // and clean them so they only have safe characters (including $ for MySQL)
                 var keys = parts
                     .Filter((x, i) => i % 4 == 0)
-                    .Map(x => ((string)x).Regplace(@"[^A-Za-z0-9_\-,]", ""));
+                    .Map(x => ((string)x).Regplace(@"[^A-Za-z0-9_\-,$]", ""));
                 // We have values on every n%4 = 2 place, collect those
                 var values = parts.Filter((x, i) => i % 4 == 2);
                 // And operators on every n%2 = 1 place, collect those
                 var operators = parts.Filter((x, i) => i % 2 == 1);
                 // Now build the sql for where and the parameter array
                 var sqlWhere = "";
+                var error = "";
                 while (values.Length > 0)
                 {
                     var key = (string)keys.Shift();
                     var value = values.Shift().TryToNumber();
-                    sqlWhere += $"{key} {operators.Shift()} ${key}";
+                    var op = (string)operators.Shift();
+
+                    // Handle CONTAINS for JSON columns
+                    if (op == "CONTAINS")
+                    {
+                        if (!DbQuery.IsJsonColumn(key))
+                        {
+                            error = $"_CONTAINS_ can only be used on JSON fields ({DbQuery.JsonColumns.Join(", ")})";
+                            break;
+                        }
+                        // JSON_CONTAINS needs the value as a JSON string
+                        sqlWhere += $"JSON_CONTAINS(`{key}`, @{key})";
+                        parameters[key] = $"\"{value}\"";
+                    }
+                    else
+                    {
+                        // Use backticks for MySQL column names (handles special chars like $)
+                        sqlWhere += $"`{key}` {op} @{key}";
+                        parameters[key] = value;
+                    }
                     sqlWhere += operators.Length == 0 ? "" : $" {operators.Shift()} ";
-                    parameters[key] = value;
+                }
+
+                if (error != "")
+                {
+                    return Obj(new { sql = "", parameters = Obj(), error });
                 }
 
                 sql += " WHERE " + sqlWhere;
@@ -60,10 +84,10 @@ public static class RestQuery
         // Sanitize orderby and change -field to field DESC
         if (orderby != null)
         {
-            orderby = Arr(orderby.Regplace(@"[^A-Za-z0-9_\-,]", "").Split(","))
+            orderby = Arr(orderby.Regplace(@"[^A-Za-z0-9_\-,$]", "").Split(","))
                 .Map(x => ((string)x)
-                    .Regplace(@"\+", "").Regplace(@"^\-(.*)", "$1 DESC")
-                    .Regplace(@"\-", "")).Join(",");
+                    .Regplace(@"\+", "").Regplace(@"^\-(.*)", "`$1` DESC")
+                    .Regplace(@"^([^`].*[^`]?)$", "`$1`")).Join(",");
             sql += " ORDER BY " + orderby;
         }
 

@@ -29,9 +29,12 @@ public static class RestApi
             HttpContext context, string table
         ) =>
         {
-            var sql = $"SELECT * FROM {table}";
             var query = RestQuery.Parse(context.Request.Query);
-            sql += query.sql;
+            if (query.error != null)
+            {
+                return RestResult.Parse(context, Arr(Obj(new { error = query.error })));
+            }
+            var sql = $"SELECT * FROM {table}" + query.sql;
             return RestResult.Parse(context, SQLQuery(sql, query.parameters, context));
         });
 

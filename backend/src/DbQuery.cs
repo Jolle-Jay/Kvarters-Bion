@@ -3,7 +3,12 @@ namespace WebApp;
 public static class DbQuery
 {
     // Setup the database connection from config
-    private static MySqlConnection db;
+    private static string connectionString;
+
+    // JSON columns for _CONTAINS_ validation
+    public static Arr JsonColumns = Arr(new[] { "categories" });
+
+    public static bool IsJsonColumn(string column) => JsonColumns.Includes(column);
 
     static DbQuery()
     {
@@ -13,34 +18,36 @@ public static class DbQuery
         var configJson = File.ReadAllText(configPath);
         var config = JSON.Parse(configJson);
 
-        var connectionString =
+        connectionString =
             $"Server={config.host};Port={config.port};Database={config.database};" +
             $"User={config.username};Password={config.password};";
 
-        db = new MySqlConnection(connectionString);
+        var db = new MySqlConnection(connectionString);
         db.Open();
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
         {
-            CreateTablesIfNotExist();
+            CreateTablesIfNotExist(db);
         }
 
         // Seed data if tables are empty
         if (config.seedDataIfEmpty == true)
         {
-            SeedDataIfEmpty();
+            SeedDataIfEmpty(db);
         }
+
+        db.Close();
     }
 
-    private static void CreateTablesIfNotExist()
+    private static void CreateTablesIfNotExist(MySqlConnection db)
     {
         var createTablesSql = @"
             CREATE TABLE IF NOT EXISTS sessions (
                 id VARCHAR(255) PRIMARY KEY NOT NULL,
                 created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
                 modified DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                data TEXT
+                data JSON
             );
 
             CREATE TABLE IF NOT EXISTS acl (
@@ -71,7 +78,7 @@ public static class DbQuery
                 quantity VARCHAR(50) NOT NULL,
                 `price$` DECIMAL(10,2) NOT NULL,
                 slug VARCHAR(255) NOT NULL,
-                categories TEXT NOT NULL
+                categories JSON NOT NULL
             );
         ";
 
@@ -88,7 +95,7 @@ public static class DbQuery
         }
     }
 
-    private static void SeedDataIfEmpty()
+    private static void SeedDataIfEmpty(MySqlConnection db)
     {
         // Check if tables are empty and seed if needed
         var command = db.CreateCommand();
@@ -103,6 +110,7 @@ public static class DbQuery
                 ('visitor,user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
                 ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
                 ('visitor, user,admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
+                ('visitor,user,admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
                 ('admin', '*', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
                 ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
                 ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
@@ -133,25 +141,25 @@ public static class DbQuery
             var productsData = new List<string>
             {
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Croissant', 'Buttery, flaky French-style croissant baked fresh daily with premium European butter. Perfect for breakfast with jam, afternoon coffee, or as the base for elegant sandwiches.\nGolden layers that melt in your mouth with authentic French pastry techniques.', '1 large', 0.99, 'croissant', 'JSON:[""Bread & rice""]')",
+                ('Croissant', 'Buttery, flaky French-style croissant baked fresh daily with premium European butter. Perfect for breakfast with jam, afternoon coffee, or as the base for elegant sandwiches.\nGolden layers that melt in your mouth with authentic French pastry techniques.', '1 large', 0.99, 'croissant', '[""Bread & rice""]')",
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Gherkins', 'Crisp, tangy gherkin pickles packed in traditional brine with dill and spices. These small pickles add perfect acidity to sandwiches, charcuterie boards, and salads.\nA classic European-style pickle with authentic flavor that brightens any meal.', 'A can of 10', 4.5, 'gherkins', 'JSON:[""Vegetables"",""Canned food""]')",
+                ('Gherkins', 'Crisp, tangy gherkin pickles packed in traditional brine with dill and spices. These small pickles add perfect acidity to sandwiches, charcuterie boards, and salads.\nA classic European-style pickle with authentic flavor that brightens any meal.', 'A can of 10', 4.5, 'gherkins', '[""Vegetables"",""Canned food""]')",
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Bay Leaves', 'Aromatic dried bay leaves from the Mediterranean, essential for soups, stews, and braised dishes. These whole leaves release their subtle, woodsy flavor slowly during cooking.\nRemove before serving for the perfect herbal note in your favorite recipes.', '1 bundle', 3.45, 'bay-leaves', 'JSON:[""Vegetables"",""Spices""]')",
+                ('Bay Leaves', 'Aromatic dried bay leaves from the Mediterranean, essential for soups, stews, and braised dishes. These whole leaves release their subtle, woodsy flavor slowly during cooking.\nRemove before serving for the perfect herbal note in your favorite recipes.', '1 bundle', 3.45, 'bay-leaves', '[""Vegetables"",""Spices""]')",
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Tomatoes', 'Fresh, vine-ripened tomatoes bursting with sweet, balanced flavor. Perfect for salads, sandwiches, or cooking.\nThese tomatoes have been allowed to ripen naturally on the vine for maximum taste and vibrant red color.', '1 lb', 2.5, 'tomatoes-on-the-vine', 'JSON:[""Vegetables""]')",
+                ('Tomatoes', 'Fresh, vine-ripened tomatoes bursting with sweet, balanced flavor. Perfect for salads, sandwiches, or cooking.\nThese tomatoes have been allowed to ripen naturally on the vine for maximum taste and vibrant red color.', '1 lb', 2.5, 'tomatoes-on-the-vine', '[""Vegetables""]')",
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Basmati Rice', 'Premium long-grain basmati rice with a distinctive nutty aroma and fluffy texture. Aged for optimal flavor, this rice cooks to perfection with separate, non-sticky grains.\nIdeal for Indian dishes, pilafs, and everyday meals where quality matters.', '4 lb', 6.99, 'basmati-rice', 'JSON:[""Bread & rice""]')",
+                ('Basmati Rice', 'Premium long-grain basmati rice with a distinctive nutty aroma and fluffy texture. Aged for optimal flavor, this rice cooks to perfection with separate, non-sticky grains.\nIdeal for Indian dishes, pilafs, and everyday meals where quality matters.', '4 lb', 6.99, 'basmati-rice', '[""Bread & rice""]')",
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Green Olives', 'Plump, buttery green olives cured in traditional Mediterranean style. These olives have a mild, fruity flavor with a satisfying firm texture.\nPerfect for antipasto platters, salads, or enjoying straight from the can.', '1 lb, canned', 9.75, 'green-olives', 'JSON:[""Canned food""]')",
+                ('Green Olives', 'Plump, buttery green olives cured in traditional Mediterranean style. These olives have a mild, fruity flavor with a satisfying firm texture.\nPerfect for antipasto platters, salads, or enjoying straight from the can.', '1 lb, canned', 9.75, 'green-olives', '[""Canned food""]')",
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Parsley', 'Fresh, vibrant flat-leaf parsley with bright, clean flavor. Essential for Mediterranean cooking, garnishing, and adding fresh herb notes to any dish.\nThis aromatic herb brightens sauces, soups, and grain dishes beautifully.', '1 bundle', 2.75, 'parsley', 'JSON:[""Vegetables"",""Spices""]')",
+                ('Parsley', 'Fresh, vibrant flat-leaf parsley with bright, clean flavor. Essential for Mediterranean cooking, garnishing, and adding fresh herb notes to any dish.\nThis aromatic herb brightens sauces, soups, and grain dishes beautifully.', '1 bundle', 2.75, 'parsley', '[""Vegetables"",""Spices""]')",
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Artichoke', 'Fresh, globe artichoke with tender heart and meaty leaves. Steam, grill, or stuff for an elegant side dish.\nThis versatile vegetable offers a subtle, nutty flavor and satisfying texture when properly prepared.', '1', 1.75, 'artichoke', 'JSON:[""Vegetables""]')",
+                ('Artichoke', 'Fresh, globe artichoke with tender heart and meaty leaves. Steam, grill, or stuff for an elegant side dish.\nThis versatile vegetable offers a subtle, nutty flavor and satisfying texture when properly prepared.', '1', 1.75, 'artichoke', '[""Vegetables""]')",
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Focaccia', 'Rustic Italian focaccia bread with herbs and olive oil, baked to golden perfection. Soft, airy interior with a slightly crispy crust.\nPerfect for sandwiches, dipping in olive oil, or serving alongside Mediterranean meals.', '1 large', 4.3, 'focaccia', 'JSON:[""Bread & rice""]')",
+                ('Focaccia', 'Rustic Italian focaccia bread with herbs and olive oil, baked to golden perfection. Soft, airy interior with a slightly crispy crust.\nPerfect for sandwiches, dipping in olive oil, or serving alongside Mediterranean meals.', '1 large', 4.3, 'focaccia', '[""Bread & rice""]')",
                 @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
-                ('Rosemary', 'Fresh rosemary plant in a convenient pot for your kitchen windowsill. This aromatic herb adds pine-like fragrance to roasted meats, potatoes, and bread.\nSnip fresh sprigs as needed for cooking or cocktail garnishes.', '1 pot', 3.6, 'rosemary', 'JSON:[""Vegetables"",""Spices""]')"
+                ('Rosemary', 'Fresh rosemary plant in a convenient pot for your kitchen windowsill. This aromatic herb adds pine-like fragrance to roasted meats, potatoes, and bread.\nSnip fresh sprigs as needed for cooking or cocktail garnishes.', '1 pot', 3.6, 'rosemary', '[""Vegetables"",""Spices""]')"
             };
             foreach (var sql in productsData)
             {
@@ -189,14 +197,12 @@ public static class DbQuery
             {
                 obj[key] = b;
             }
-            // Handle JSON-prefixed strings
-            else if (value is string strValue && strValue.StartsWith("JSON:"))
+            // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
+            else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
             {
                 try
                 {
-                    // Remove "JSON:" prefix and parse the JSON
-                    var jsonString = strValue.Substring(5);
-                    obj[key] = JSON.Parse(jsonString);
+                    obj[key] = JSON.Parse(strValue);
                 }
                 catch
                 {
@@ -219,6 +225,8 @@ public static class DbQuery
     )
     {
         var paras = parameters == null ? Obj() : Obj(parameters);
+        using var db = new MySqlConnection(connectionString);
+        db.Open();
         var command = db.CreateCommand();
         command.CommandText = @sql;
         var entries = (Arr)paras.GetEntries();
