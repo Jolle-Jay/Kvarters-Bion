@@ -19,7 +19,7 @@ body {
  
 /* Navbar */
 .navbar {
-    background: #1a531a;
+    background: #0a1c0a;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,16 +27,44 @@ body {
     border: 1px solid #B8860B;
     border-radius: 10px;
 }
+
+.navbar nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
  
 .navbar a {
     color: #f3f5f3;
-    margin-left: 1.5rem;
     text-decoration: none;
     font-weight: bold;
+    padding: 0.5rem 1.2rem;
+    background: #092909;
+    border: 2px solid #B8860B;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.navbar a:hover {
+    background: #004400;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.navbar nav a:last-child {
+    color: #f3f5f3;
+    font-size: 1.5rem;
+    padding: 0.3rem 0.8rem;
 }
  
 .logo {
-    color: #ffffff;
+    color: #716738;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+                 0 0 15px rgba(184, 134, 11, 0.4);
 }
  
 /* Hero */
@@ -210,6 +238,12 @@ body {
 .hero h2 {
     font-size: 3rem;
     margin-bottom: 1rem;
+    color: #867e55;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+                 0 0 15px rgba(184, 134, 11, 0.4);
 }
  
 .hero button {
@@ -355,7 +389,7 @@ footer a {
 }
 
 .carousel img {
-    height: 300px;
+    height: 380px;
     width: auto;
     border-radius: 4px;
     display: block;
@@ -375,4 +409,90 @@ footer a {
  @keyframes scroll {
     from {transform: translateX(0);}
     to {transform: translateX(-50%);}
+}
+
+/* Responsiv design för mobil och desktop */
+@media (max-width: 768px) {
+    /* Navbar */
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .navbar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .navbar a {
+        margin-left: 0;
+    }
+
+    /* Hero */
+    .hero {
+        padding: 2rem 1rem;
+    }
+
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+
+    /* Carousel */
+    .carousel img {
+        height: 120px;
+    }
+
+    .carousel::before,
+    .carousel::after {
+        width: 40px;
+    }
+
+    /* Movie cards */
+    .movies {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .movie-card {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .poster {
+        height: 220px;
+    }
+
+    /* Film hero */
+    .film-hero {
+        flex-direction: column;
+        padding: 2rem 1rem;
+    }
+
+    /* Filter buttons */
+    .filter button {
+        margin: 0.25rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Tablet view */
+    .movies {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .carousel img {
+        height: 140px;
+    }
 }

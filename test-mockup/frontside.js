@@ -9,6 +9,13 @@ carouselImages.forEach(img => {
         
         // Zoom in (scale up)
         img.style.transform = 'scale(1.15)';
+        
+        // Darken other images
+        carouselImages.forEach(otherImg => {
+            if (otherImg !== img) {
+                otherImg.style.filter = 'brightness(0.3)';
+            }
+        });
     });
 
     img.addEventListener('mouseleave', () => {
@@ -18,6 +25,11 @@ carouselImages.forEach(img => {
         
         // Reset zoom
         img.style.transform = 'scale(1)';
+        
+        // Reset brightness on all images
+        carouselImages.forEach(otherImg => {
+            otherImg.style.filter = 'brightness(1)';
+        });
     });
 });
 
@@ -25,7 +37,8 @@ carouselImages.forEach(img => {
 const style = document.createElement('style');
 style.textContent = `
     .carousel img {
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, filter 0.3s ease;
     }
 `;
 document.head.appendChild(style);
+
