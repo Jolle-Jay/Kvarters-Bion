@@ -328,3 +328,20 @@ footer a {
     pointer-events: none;
     z-index: 2;
 }
+
+.carousel::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(1, 36, 1, 1), rgba(1, 36, 1, 0));
+}
+
+.carousel::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(1, 36, 1, 1), rgba(1, 36, 1, 0));
+}
+
+.carousel-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 30s linear infinite;
+}
+
