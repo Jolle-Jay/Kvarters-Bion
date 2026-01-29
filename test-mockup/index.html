@@ -72,15 +72,17 @@
   </section>
 
   <section class="filter">
-    <h3>Filtrera filmer</h3>
-    <button onclick="filterMovies('alla')">Alla</button>
-    <button onclick="filterMovies('Science Fiction')">Sci-Fi</button>
-    <button onclick="filterMovies('Drama')">Drama</button>
-    <button onclick="filterMovies('Animerat')">Animerat</button>
-    <button onclick="filterMovies('Thriller')">Thriller</button>
-    <button onclick="filterMovies('Action')">Action</button>
-    <button onclick="filterMovies('Romance')">Romance</button>
-    <button onclick="filterMovies('Adventure')">Adventure</button>
+    <h3>Filtrera film</h3>
+    <select onchange="filterMovies(this.value)" class="filter-dropdown">
+      <option value="alla">Alla</option>
+      <option value="Science Fiction">Sci-Fi</option>
+      <option value="Drama">Drama</option>
+      <option value="Animerat">Animerat</option>
+      <option value="Thriller">Thriller</option>
+      <option value="Action">Action</option>
+      <option value="Romance">Romance</option>
+      <option value="Adventure">Adventure</option>
+    </select>
   </section>
 
   <main class="movies">
