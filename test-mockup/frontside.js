@@ -33,6 +33,42 @@ carouselImages.forEach(img => {
     });
 });
 
+// Custom date picker for 2025 only
+document.addEventListener('DOMContentLoaded', function() {
+    const dateInput = document.querySelector('.filter-date');
+    
+    if (dateInput) {
+        dateInput.addEventListener('focus', function() {
+            this.style.color = 'transparent';
+        });
+        
+        dateInput.addEventListener('input', function() {
+            // Show the selected date immediately
+            if (this.value) {
+                this.style.color = '#FFD700';
+            }
+        });
+        
+        dateInput.addEventListener('blur', function() {
+            if (this.value) {
+                this.style.color = '#FFD700';
+            }
+        });
+        
+        // Validate input to only allow 2025
+        dateInput.addEventListener('change', function() {
+            const date = new Date(this.value);
+            if (date.getFullYear() !== 2025) {
+                this.value = '';
+                this.style.color = 'transparent';
+                alert('Endast datum från 2025 är tillåtna');
+            } else {
+                this.style.color = '#FFD700';
+            }
+        });
+    }
+});
+
 // Add smooth transition
 const style = document.createElement('style');
 style.textContent = `

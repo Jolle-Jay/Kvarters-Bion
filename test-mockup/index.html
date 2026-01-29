@@ -73,7 +73,7 @@
 
   <section class="filter">
     <h3>Filtrera film</h3>
-    <select onchange="filterMovies(this.value)" class="filter-dropdown">
+    <select onchange="filterMovies(this.value)" class="filter-dropdown" title="Filtrera efter filmgenre">
       <option value="alla">Alla</option>
       <option value="Science Fiction">Sci-Fi</option>
       <option value="Drama">Drama</option>
@@ -84,7 +84,7 @@
       <option value="Adventure">Adventure</option>
     </select>
     <h3>Välj datum</h3>
-    <input type="date" class="filter-date" />
+    <input type="date" class="filter-date" min="2025-01-01" max="2025-12-31" title="Välj datum" placeholder="MM-DD" />
   </section>
 
   <main class="movies">
