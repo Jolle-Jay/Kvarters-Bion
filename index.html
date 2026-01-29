@@ -1,140 +1,238 @@
 <!DOCTYPE html>
 <html lang="sv">
- 
+
 <head>
   <meta charset="UTF-8" />
-  <title>BioNova</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kvarter Bion - Upplev film på riktigt</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <h1 class="logo">Kvarter Bion</h1>
+
+    <div class="date-selector-nav">
+      <label for="dateSelect">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        Datum:
+      </label>
+      <select id="dateSelect" onchange="filterByDate(this.value)">
+        <option value="alla">Alla dagar</option>
+        <option value="2026-01-29">Idag - Ons 29 Jan</option>
+        <option value="2026-01-30">Imorgon - Tor 30 Jan</option>
+        <option value="2026-01-31">Fre 31 Jan</option>
+        <option value="2026-02-01">Lör 1 Feb</option>
+        <option value="2026-02-02">Sön 2 Feb</option>
+        <option value="2026-02-03">Mån 3 Feb</option>
+        <option value="2026-02-04">Tis 4 Feb</option>
+      </select>
+    </div>
+
+    <nav>
+      <a href="#" class="active">Filmer</a>
+      <a href="#">Profil</a>
+      <a href="boka.html" class="btn-nav-book">Boka biljetter</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Upplev film på riktigt</h2>
+    <p>Premiärer • Klassiker • IMAX-känsla</p>
+
+    <div class="trailer-section">
+      <div class="trailer-container">
+        <iframe
+          src="https://www.youtube.com/embed/d9MyW72ELq0?autoplay=1&mute=1&loop=1&playlist=d9MyW72ELq0&controls=1&modestbranding=1"
+          title="Blockbuster Trailer" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <button onclick="document.querySelector('.movies').scrollIntoView({behavior: 'smooth'})">Utforska filmer</button>
+  </section>
+
+  <section class="filter">
+    <div class="date-selector">
+      <label for="dateSelect">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        Datum:
+      </label>
+      <select id="dateSelect" onchange="filterByDate(this.value)">
+        <option value="alla">Alla dagar</option>
+        <option value="2026-01-29">Idag - Ons 29 Jan</option>
+        <option value="2026-01-30">Imorgon - Tor 30 Jan</option>
+        <option value="2026-01-31">Fre 31 Jan</option>
+        <option value="2026-02-01">Lör 1 Feb</option>
+        <option value="2026-02-02">Sön 2 Feb</option>
+        <option value="2026-02-03">Mån 3 Feb</option>
+        <option value="2026-02-04">Tis 4 Feb</option>
+      </select>
+    </div>
+  </section>
+
   <script>
-    function filterMovies(genre) {
+    function filterByDate(date) {
       const cards = document.querySelectorAll('.movie-card');
+
       cards.forEach(card => {
-        const cardGenre = card.querySelector('p').textContent;
-        if (genre === 'alla' || cardGenre === genre) {
+        if (date === 'alla') {
           card.style.display = 'block';
+          card.style.animation = 'fadeIn 0.5s ease';
         } else {
-          card.style.display = 'none';
+          // For demo purposes, show all movies for any selected date
+          // In a real app, you'd filter based on actual showtimes
+          card.style.display = 'block';
+          card.style.animation = 'fadeIn 0.5s ease';
         }
       });
     }
   </script>
-</head>
- 
-<body>
- 
-  <header class="navbar">
-    <h1 class="logo">Kvarter Bion</h1>
-    <nav>
-      <a href="#">Filmer</a>
-      <a href="#">Biljetter</a>
-      <a href="#">Profil</a>
-    </nav>
-  </header>
- 
-  <section class="hero">
-    <h2>Upplev film på riktigt</h2>
-    <p>Premiärer • Klassiker • IMAX-känsla</p>
-    <button>Boka biljetter</button>
-  </section>
-
-  <section class="filter">
-    <h3>Filtrera filmer</h3>
-    <button onclick="filterMovies('alla')">Alla</button>
-    <button onclick="filterMovies('Science Fiction')">Sci-Fi</button>
-    <button onclick="filterMovies('Drama')">Drama</button>
-    <button onclick="filterMovies('Animerat')">Animerat</button>
-    <button onclick="filterMovies('Thriller')">Thriller</button>
-    <button onclick="filterMovies('Action')">Action</button>
-    <button onclick="filterMovies('Romance')">Romance</button>
-    <button onclick="filterMovies('Adventure')">Adventure</button>
-  </section>
 
   <main class="movies">
-    <a href="filmer/dune.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune: Part Two Poster"></div>
+    <a href="boka.html?film=Dune: Part Two" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune: Part Two Poster">
+      </div>
       <h3>Dune: Part Two</h3>
-      <p>Science Fiction</p>
+      <p class="genre-tag">Science Fiction</p>
       <span>19:30</span>
     </a>
- 
-    <a href="filmer/oppenheimer.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer Poster"></div>
+
+    <a href="boka.html?film=Oppenheimer" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer Poster">
+      </div>
       <h3>Oppenheimer</h3>
-      <p>Drama</p>
+      <p class="genre-tag">Drama</p>
       <span>20:00</span>
     </a>
- 
-    <a href="filmer/insideout2.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2 Poster"></div>
+
+    <a href="boka.html?film=Inside Out 2" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2 Poster">
+      </div>
       <h3>Inside Out 2</h3>
-      <p>Animerat</p>
+      <p class="genre-tag">Animerat</p>
       <span>18:00</span>
     </a>
- 
-    <a href="filmer/thematrix.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/p96dm7sCMn4VYAStA6siNz30G1r.jpg" alt="The Matrix Poster"></div>
+
+    <a href="boka.html?film=The Matrix" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/p96dm7sCMn4VYAStA6siNz30G1r.jpg" alt="The Matrix Poster">
+      </div>
       <h3>The Matrix</h3>
-      <p>Science Fiction</p>
+      <p class="genre-tag">Science Fiction</p>
       <span>21:00</span>
     </a>
- 
-    <a href="filmer/inception.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg" alt="Inception Poster"></div>
+
+    <a href="boka.html?film=Inception" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg" alt="Inception Poster">
+      </div>
       <h3>Inception</h3>
-      <p>Thriller</p>
+      <p class="genre-tag">Thriller</p>
       <span>19:45</span>
     </a>
- 
-    <a href="filmer/avatar.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg" alt="Avatar Poster"></div>
+
+    <a href="boka.html?film=Avatar" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg" alt="Avatar Poster">
+      </div>
       <h3>Avatar</h3>
-      <p>Science Fiction</p>
+      <p class="genre-tag">Science Fiction</p>
       <span>20:30</span>
     </a>
- 
-    <a href="filmer/titanic.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg" alt="Titanic Poster"></div>
+
+    <a href="boka.html?film=Titanic" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg" alt="Titanic Poster">
+      </div>
       <h3>Titanic</h3>
-      <p>Romance</p>
+      <p class="genre-tag">Romance</p>
       <span>18:30</span>
     </a>
- 
-    <a href="filmer/starwars.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" alt="Star Wars: A New Hope Poster"></div>
+
+    <a href="boka.html?film=Star Wars: A New Hope" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" alt="Star Wars: A New Hope Poster">
+      </div>
       <h3>Star Wars: A New Hope</h3>
-      <p>Science Fiction</p>
+      <p class="genre-tag">Science Fiction</p>
       <span>17:00</span>
     </a>
- 
-    <a href="filmer/avengers.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg" alt="Avengers: Endgame Poster"></div>
+
+    <a href="boka.html?film=Avengers: Endgame" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg" alt="Avengers: Endgame Poster">
+      </div>
       <h3>Avengers: Endgame</h3>
-      <p>Action</p>
+      <p class="genre-tag">Action</p>
       <span>22:00</span>
     </a>
- 
-    <a href="filmer/shawshank.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg" alt="The Shawshank Redemption Poster"></div>
+
+    <a href="boka.html?film=The Shawshank Redemption" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg"
+          alt="The Shawshank Redemption Poster">
+      </div>
       <h3>The Shawshank Redemption</h3>
-      <p>Drama</p>
+      <p class="genre-tag">Drama</p>
       <span>19:15</span>
     </a>
- 
-    <a href="filmer/jurassic.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/maFjKnJ62hDQ9E66dKqDZgbUy0H.jpg" alt="Jurassic Park Poster"></div>
+
+    <a href="boka.html?film=Jurassic Park" class="movie-card">
+      <div class="poster">
+        <img src="https://image.tmdb.org/t/p/w300/maFjKnJ62hDQ9E66dKqDZgbUy0H.jpg" alt="Jurassic Park Poster">
+      </div>
       <h3>Jurassic Park</h3>
-      <p>Adventure</p>
+      <p class="genre-tag">Adventure</p>
       <span>20:45</span>
     </a>
   </main>
- 
+
   <footer>
-    <p>© 2026 Kvarter Bion</p>
-    <p>About us</p>
-    <p>Contatct</p>
-    <p></p>
+    <div>
+      <p>© 2026 Kvarter Bion</p>
+    </div>
+    <div>
+      <p>About us</p>
+    </div>
+    <div>
+      <p>Contact</p>
+    </div>
   </footer>
- 
+
 </body>
- 
+
 </html>
