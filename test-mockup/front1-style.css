@@ -353,3 +353,21 @@ footer a {
     padding-right: 0.5em;
     flex-shrink: 0;
 }
+
+.carousel img {
+    height: 300px;
+    width: auto;
+    border-radius: 4px;
+    display: block;
+}
+
+.card {
+    flex: 0 0 4em;
+    height: 4em;
+    padding: 0.5em;
+    background: rgb(90, 90, 131);
+    font-size: 2rem;
+    border-radius: .2em;
+    text-align: center;
+    align-content: center;
+}
