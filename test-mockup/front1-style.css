@@ -345,3 +345,11 @@ footer a {
     animation: scroll 30s linear infinite;
 }
 
+.group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5em;
+    padding-right: 0.5em;
+    flex-shrink: 0;
+}
