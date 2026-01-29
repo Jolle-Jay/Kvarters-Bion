@@ -74,7 +74,7 @@
   <section class="filter">
     <div class="filter-item">
       <h3>Filtrera film</h3>
-      <select onchange="filterMovies(this.value)" class="filter-dropdown" title="Filtrera efter filmgenre">
+      <select name="genre" onchange="filterMovies(this.value)" class="filter-dropdown" title="Filtrera efter filmgenre">
         <option value="alla">Alla</option>
         <option value="Science Fiction">Sci-Fi</option>
         <option value="Drama">Drama</option>
@@ -87,11 +87,11 @@
     </div>
     <div class="filter-item">
       <h3>Välj datum</h3>
-      <input type="date" class="filter-date" min="2025-01-01" max="2025-12-31" title="Välj datum" placeholder="MM-DD" />
+      <input type="date" name="date" class="filter-date" min="2025-01-01" max="2025-12-31" title="Välj datum" placeholder="MM-DD" />
     </div>
     <div class="filter-item">
       <h3>Salong</h3>
-      <select class="filter-dropdown" title="Välj salong">
+      <select name="salong" class="filter-dropdown" title="Välj salong">
         <option value="alla">Alla</option>
         <option value="lilla">Lilla salong</option>
         <option value="stora">Stora salong</option>
@@ -101,7 +101,7 @@
 
   <main class="movies">
     <a href="filmer/dune.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" alt="Dune: Part Two Poster"></div>
+      <div class="poster"><img src="images/dune.jpg" alt="Dune: Part Two Poster"></div>
       <h3>Dune: Part Two</h3>
       <p>Science Fiction</p>
       <span>19:30</span>
@@ -115,14 +115,14 @@
     </a>
  
     <a href="filmer/insideout2.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2 Poster"></div>
+      <div class="poster"><img class="poster-contain" src="https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2 Poster"></div>
       <h3>Inside Out 2</h3>
       <p>Animerat</p>
       <span>18:00</span>
     </a>
  
     <a href="filmer/thematrix.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/p96dm7sCMn4VYAStA6siNz30G1r.jpg" alt="The Matrix Poster"></div>
+      <div class="poster"><img class="poster-offset-down" src="https://image.tmdb.org/t/p/w300/p96dm7sCMn4VYAStA6siNz30G1r.jpg" alt="The Matrix Poster"></div>
       <h3>The Matrix</h3>
       <p>Science Fiction</p>
       <span>21:00</span>
@@ -157,14 +157,14 @@
     </a>
  
     <a href="filmer/avengers.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg" alt="Avengers: Endgame Poster"></div>
+      <div class="poster"><img class="poster-offset-down" src="https://image.tmdb.org/t/p/w300/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg" alt="Avengers: Endgame Poster"></div>
       <h3>Avengers: Endgame</h3>
       <p>Action</p>
       <span>22:00</span>
     </a>
  
     <a href="filmer/shawshank.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg" alt="The Shawshank Redemption Poster"></div>
+      <div class="poster"><img class="poster-offset-down" src="https://image.tmdb.org/t/p/w300/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg" alt="The Shawshank Redemption Poster"></div>
       <h3>The Shawshank Redemption</h3>
       <p>Drama</p>
       <span>19:15</span>
