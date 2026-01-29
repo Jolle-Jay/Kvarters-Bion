@@ -38,6 +38,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const dateInput = document.querySelector('.filter-date');
     
     if (dateInput) {
+        // Set default value to current month and date in 2025
+        const today = new Date();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        dateInput.value = `2025-${month}-${day}`;
+        
         dateInput.addEventListener('focus', function() {
             this.style.color = 'transparent';
         });

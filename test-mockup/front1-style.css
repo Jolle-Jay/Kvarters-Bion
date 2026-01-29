@@ -155,6 +155,17 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
+/* Style the calendar picker if possible */
+.filter-date::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.2);
+    cursor: pointer;
+}
+
+/* Style selected date */
+.filter-date::-webkit-datetime-edit-fields-wrapper {
+    color: #FFD700;
+}
+
 .filter-date:hover {
     background-color: #045604;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
@@ -163,6 +174,7 @@ body {
 .filter-date:focus {
     outline: none;
     border-color: #FFD700;
+    box-shadow: 0 0 10px rgba(184, 134, 11, 0.4);
 }
 
 .filter button {
