@@ -301,3 +301,15 @@ footer a {
 .showtimes h3, .food h3 {
     color: #f4efef;
 }
+
+/* Carousel */
+.carousel {
+    margin: 1rem auto 2rem;
+    width: 100%;
+    max-width: none;
+    border: none;
+    display: flex;
+    overflow: hidden;
+    padding: 0.75rem 0;
+    position: relative;
+}
