@@ -85,7 +85,12 @@ body {
 
 .hero p {
     font-size: 1rem;
-    color: #c3cac3;
+    color: #B8860B;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6),
+                 0 4px 8px rgba(0, 0, 0, 0.5);
     margin-bottom: 1.5rem;
 }
 
@@ -162,7 +167,7 @@ body {
 }
 
 .legend-color.available {
-    background: #d9d9d9;
+    background: #256e40;
 }
 
 .legend-color.elder {
@@ -171,6 +176,10 @@ body {
 
 .legend-color.vip {
     background: #b49e1f;
+}
+
+.legend-color.unavailable {
+    background: #b11f1f;
 }
 
 .legend-text {
@@ -258,6 +267,12 @@ body {
 .seat.selected {
     background: #4a9fd8;
     color: #fff;
+}
+
+.seat.booked {
+    background: #ac2a2a;
+    color: #fff;
+    cursor: not-allowed;
 }
 
 .seat.occupied {

@@ -68,7 +68,14 @@
         alert('Välj minst en plats.');
         return;
       }
+      // Mark selected seats as booked
+      const seatButtons = document.querySelectorAll('.seat.selected');
+      seatButtons.forEach(seat => {
+        seat.classList.remove('selected');
+        seat.classList.add('booked');
+      });
       alert(`Bokning bekräftad för ${film}: ${selectedSeats.join(', ')}`);
+      selectedSeats = [];
     }
 
     window.onload = generateSeats;
@@ -114,6 +121,10 @@
         <div class="legend-item">
           <span class="legend-color vip"></span>
           <span class="legend-text">VIP platser</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color unavailable"></span>
+          <span class="legend-text">Ej tillgängliga</span>
         </div>
       </div>
     </div>
