@@ -136,32 +136,55 @@ body {
 .seats-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: 0.5rem;
+    gap: 0.6rem;
     margin-bottom: 2rem;
     justify-items: center;
 }
 
 .seat {
-    width: 50px;
-    height: 50px;
-    border: 2px solid #B8860B;
-    border-radius: 8px;
-    background: #0a3d0a;
-    color: #90ee90;
+    width: 46px;
+    height: 46px;
+    border: none;
+    background: #d9d9d9;
+    color: #333;
     font-weight: bold;
+    font-size: 0.65rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 3px 6px rgba(0, 0, 0, 0.3);
+    clip-path: polygon(
+        12% 0%, 88% 0%,
+        95% 5%, 95% 45%,
+        100% 50%, 100% 90%,
+        95% 100%, 5% 100%,
+        0% 90%, 0% 50%,
+        5% 45%, 5% 5%
+    );
 }
 
 .seat:hover {
-    background: #086808;
-    transform: scale(1.1);
+    transform: translateY(-2px);
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 5px 10px rgba(0, 0, 0, 0.4);
 }
 
 .seat.selected {
-    background: #FFD700;
-    color: #012401;
-    border-color: #FFD700;
+    background: #4a9fd8;
+    color: #fff;
+}
+
+.seat.occupied {
+    background: #d4af37;
+    color: #333;
+    cursor: not-allowed;
 }
 
 .cinema button {

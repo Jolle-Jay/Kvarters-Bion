@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Boka biljetter - Kvarter Bion</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="booking-style.css" />
   <script>
     let selectedSeats = [];
     const urlParams = new URLSearchParams(window.location.search);
@@ -17,7 +17,7 @@
       for (let row = 1; row <= 8; row++) {
         for (let col = 1; col <= 12; col++) {
           const seat = document.createElement('button');
-          seat.textContent = `${row}-${col}`;
+          seat.innerHTML = `<span>${row}-${col}</span>`;
           seat.className = 'seat available';
           seat.onclick = () => selectSeat(seat, `${row}-${col}`);
           seatsDiv.appendChild(seat);
