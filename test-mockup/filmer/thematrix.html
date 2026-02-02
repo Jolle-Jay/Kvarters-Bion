@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Matrix - Kvarter Bion</title>
+  <link rel="stylesheet" href="film-page.css" />
+  <script>
+    function toggleDropdown(headerElement) {
+      const content = headerElement.nextElementSibling;
+      const menu = headerElement.querySelector('.dropdown-menu');
+      
+      content.classList.toggle('show');
+      menu.classList.toggle('open');
+    }
+  </script>
+</head>
+<body>
+
+  <header class="navbar">
+    <h1 class="logo">Kvarter Bion</h1>
+    <nav>
+      <a href="../index.html">Tillbaka till hem</a>
+      <a href="#">Kiosk</a>
+      <a href="#">Lilla Salong</a>
+      <a href="#">Stora Salong</a>
+      <a href="#">👤</a>
+    </nav>
+  </header>
+
+  <section class="movie-detail">
+    <div class="movie-trailer">
+      <h3>Trailer</h3>
+      <iframe 
+        width="100%" 
+        height="450" 
+        src="https://www.youtube.com/embed/vKQi3bBA1y8?modestbranding=1&rel=0&showinfo=0" 
+        title="The Matrix Trailer" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="movie-poster-column">
+      <img src="../images/thematrix.jpg" alt="The Matrix Poster">
+
+      <div class="movie-times">
+        <h3>Visningartider</h3>
+        
+        <div class="showtime-date">
+          <h4>Tor 06 Februari</h4>
+          <div class="showtime-card">
+            <div class="showtime-poster">
+              <img src="../images/thematrix.jpg" alt="The Matrix">
+            </div>
+            <div class="showtime-info">
+              <div class="showtime-time">19:00</div>
+              <div class="showtime-location">Stora Salong</div>
+              <div class="showtime-meta">
+                <span class="meta-tag">Sci-Fi</span>
+                <span class="meta-tag">136 min</span>
+                <span class="meta-tag">EN TAL | SV TEXT</span>
+              </div>
+            </div>
+            <a href="../booking.html?film=TheMatrix" class="book-btn">Boka biljett</a>
+          </div>
+          <div class="showtime-card">
+            <div class="showtime-poster">
+              <img src="../images/thematrix.jpg" alt="The Matrix">
+            </div>
+            <div class="showtime-info">
+              <div class="showtime-time">21:30</div>
+              <div class="showtime-location">Lilla Salong</div>
+              <div class="showtime-meta">
+                <span class="meta-tag">Sci-Fi</span>
+                <span class="meta-tag">136 min</span>
+                <span class="meta-tag">EN TAL | SV TEXT</span>
+              </div>
+            </div>
+            <a href="../booking.html?film=TheMatrix" class="book-btn">Boka biljett</a>
+          </div>
+        </div>
+
+        <div class="showtime-date">
+          <h4>Lör 08 Februari</h4>
+          <div class="showtime-card">
+            <div class="showtime-poster">
+              <img src="../images/thematrix.jpg" alt="The Matrix">
+            </div>
+            <div class="showtime-info">
+              <div class="showtime-time">20:00</div>
+              <div class="showtime-location">Stora Salong</div>
+              <div class="showtime-meta">
+                <span class="meta-tag">Sci-Fi</span>
+                <span class="meta-tag">136 min</span>
+                <span class="meta-tag">EN TAL | SV TEXT</span>
+              </div>
+            </div>
+            <a href="../booking.html?film=TheMatrix" class="book-btn">Boka biljett</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="movie-info">
+      <h1>The Matrix</h1>
+      
+      <div class="movie-meta">
+        <p><strong>Genre:</strong> Science Fiction, Action</p>
+        <p><strong>Längd:</strong> 136 minuter</p>
+        <p><strong>Årtal:</strong> 1999</p>
+        <p><strong>Betyg:</strong> ⭐⭐⭐⭐⭐</p>
+      </div>
+
+      <div class="movie-description">
+        <div class="dropdown-section">
+          <div class="dropdown-header" onclick="toggleDropdown(this)">
+            <div class="description-text">
+              <h3>Om filmen</h3>
+              <p>Neo är en hackare som lever ett dubbelliv. När mystiska rebeller kontaktar honom upptäcker han att verkligheten han lever i bara är en simulation skapad av maskiner.</p>
+            </div>
+            <span class="dropdown-menu">⋯</span>
+          </div>
+          <div class="dropdown-content">
+            <div class="info-row">
+              <span class="info-label">Regissör:</span>
+              <span class="info-value">Lana Wachowski, Lilly Wachowski</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Skådespelere:</span>
+              <span class="info-value">Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss, Hugo Weaving</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Språk:</span>
+              <span class="info-value">Engelska</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Originaltitel:</span>
+              <span class="info-value">The Matrix</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Åldersgräns:</span>
+              <span class="info-value">15 år</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Kvarter Bion</p>
+  </footer>
+
+</body>
+</html>

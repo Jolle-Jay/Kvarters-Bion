@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avengers: Endgame - Kvarter Bion</title>
+  <link rel="stylesheet" href="film-page.css" />
+  <script>
+    function toggleDropdown(headerElement) {
+      const content = headerElement.nextElementSibling;
+      const menu = headerElement.querySelector('.dropdown-menu');
+      
+      content.classList.toggle('show');
+      menu.classList.toggle('open');
+    }
+  </script>
+</head>
+<body>
+
+  <header class="navbar">
+    <h1 class="logo">Kvarter Bion</h1>
+    <nav>
+      <a href="../index.html">Tillbaka till hem</a>
+      <a href="#">Kiosk</a>
+      <a href="#">Lilla Salong</a>
+      <a href="#">Stora Salong</a>
+      <a href="#">👤</a>
+    </nav>
+  </header>
+
+  <section class="movie-detail">
+    <div class="movie-trailer">
+      <h3>Trailer</h3>
+      <iframe 
+        width="100%" 
+        height="450" 
+        src="https://www.youtube.com/embed/TcMBFSGVi1c?modestbranding=1&rel=0&showinfo=0" 
+        title="Avengers: Endgame Trailer" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="movie-poster-column">
+      <img src="../images/avengers.jpg" alt="Avengers: Endgame Poster">
+
+      <div class="movie-times">
+        <h3>Visningartider</h3>
+        
+        <div class="showtime-date">
+          <h4>Tor 06 Februari</h4>
+          <div class="showtime-card">
+            <div class="showtime-poster">
+              <img src="../images/avengers.jpg" alt="Avengers: Endgame">
+            </div>
+            <div class="showtime-info">
+              <div class="showtime-time">18:00</div>
+              <div class="showtime-location">Stora Salong</div>
+              <div class="showtime-meta">
+                <span class="meta-tag">Action</span>
+                <span class="meta-tag">181 min</span>
+                <span class="meta-tag">EN TAL | SV TEXT</span>
+              </div>
+            </div>
+            <a href="../booking.html?film=Avengers" class="book-btn">Boka biljett</a>
+          </div>
+        </div>
+
+        <div class="showtime-date">
+          <h4>Lör 08 Februari</h4>
+          <div class="showtime-card">
+            <div class="showtime-poster">
+              <img src="../images/avengers.jpg" alt="Avengers: Endgame">
+            </div>
+            <div class="showtime-info">
+              <div class="showtime-time">17:00</div>
+              <div class="showtime-location">Stora Salong</div>
+              <div class="showtime-meta">
+                <span class="meta-tag">Action</span>
+                <span class="meta-tag">181 min</span>
+                <span class="meta-tag">EN TAL | SV TEXT</span>
+              </div>
+            </div>
+            <a href="../booking.html?film=Avengers" class="book-btn">Boka biljett</a>
+          </div>
+          <div class="showtime-card">
+            <div class="showtime-poster">
+              <img src="../images/avengers.jpg" alt="Avengers: Endgame">
+            </div>
+            <div class="showtime-info">
+              <div class="showtime-time">20:30</div>
+              <div class="showtime-location">Stora Salong</div>
+              <div class="showtime-meta">
+                <span class="meta-tag">Action</span>
+                <span class="meta-tag">181 min</span>
+                <span class="meta-tag">EN TAL | SV TEXT</span>
+              </div>
+            </div>
+            <a href="../booking.html?film=Avengers" class="book-btn">Boka biljett</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="movie-info">
+      <h1>Avengers: Endgame</h1>
+      
+      <div class="movie-meta">
+        <p><strong>Genre:</strong> Action, Äventyr, Sci-Fi</p>
+        <p><strong>Längd:</strong> 181 minuter</p>
+        <p><strong>Årtal:</strong> 2019</p>
+        <p><strong>Betyg:</strong> ⭐⭐⭐⭐⭐</p>
+      </div>
+
+      <div class="movie-description">
+        <div class="dropdown-section">
+          <div class="dropdown-header" onclick="toggleDropdown(this)">
+            <div class="description-text">
+              <h3>Om filmen</h3>
+              <p>Efter Thanos förödande handling samlas de återstående Avengers för en sista strid. Det episka avslutningen på Marvel Cinematic Universe fas tre.</p>
+            </div>
+            <span class="dropdown-menu">⋯</span>
+          </div>
+          <div class="dropdown-content">
+            <div class="info-row">
+              <span class="info-label">Regissör:</span>
+              <span class="info-value">Anthony Russo, Joe Russo</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Skådespelere:</span>
+              <span class="info-value">Robert Downey Jr., Chris Evans, Mark Ruffalo, Chris Hemsworth, Scarlett Johansson</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Språk:</span>
+              <span class="info-value">Engelska</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Originaltitel:</span>
+              <span class="info-value">Avengers: Endgame</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Åldersgräns:</span>
+              <span class="info-value">11 år</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Kvarter Bion</p>
+  </footer>
+
+</body>
+</html>

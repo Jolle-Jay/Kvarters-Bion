@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avatar - Kvarter Bion</title>
+  <link rel="stylesheet" href="film-page.css" />
+  <script>
+    function toggleDropdown(headerElement) {
+      const content = headerElement.nextElementSibling;
+      const menu = headerElement.querySelector('.dropdown-menu');
+      
+      content.classList.toggle('show');
+      menu.classList.toggle('open');
+    }
+  </script>
+</head>
+<body>
+
+  <header class="navbar">
+    <h1 class="logo">Kvarter Bion</h1>
+    <nav>
+      <a href="../index.html">Tillbaka till hem</a>
+      <a href="#">Kiosk</a>
+      <a href="#">Lilla Salong</a>
+      <a href="#">Stora Salong</a>
+      <a href="#">👤</a>
+    </nav>
+  </header>
+
+  <section class="movie-detail">
+    <div class="movie-trailer">
+      <h3>Trailer</h3>
+      <iframe 
+        width="100%" 
+        height="450" 
+        src="https://www.youtube.com/embed/5PSNL1qE6VY?modestbranding=1&rel=0&showinfo=0" 
+        title="Avatar Trailer" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="movie-poster-column">
+      <img src="../images/avatar.jpg" alt="Avatar Poster">
+
+      <div class="movie-times">
+        <h3>Visningartider</h3>
+        
+        <div class="showtime-date">
+          <h4>Tis 04 Februari</h4>
+          <div class="showtime-card">
+            <div class="showtime-poster">
+              <img src="../images/avatar.jpg" alt="Avatar">
+            </div>
+            <div class="showtime-info">
+              <div class="showtime-time">19:00</div>
+              <div class="showtime-location">Stora Salong</div>
+              <div class="showtime-meta">
+                <span class="meta-tag">Sci-Fi</span>
+                <span class="meta-tag">162 min</span>
+                <span class="meta-tag">EN TAL | SV TEXT</span>
+              </div>
+            </div>
+            <a href="../booking.html?film=Avatar" class="book-btn">Boka biljett</a>
+          </div>
+        </div>
+
+        <div class="showtime-date">
+          <h4>Tor 06 Februari</h4>
+          <div class="showtime-card">
+            <div class="showtime-poster">
+              <img src="../images/avatar.jpg" alt="Avatar">
+            </div>
+            <div class="showtime-info">
+              <div class="showtime-time">18:30</div>
+              <div class="showtime-location">Stora Salong</div>
+              <div class="showtime-meta">
+                <span class="meta-tag">Sci-Fi</span>
+                <span class="meta-tag">162 min</span>
+                <span class="meta-tag">EN TAL | SV TEXT</span>
+              </div>
+            </div>
+            <a href="../booking.html?film=Avatar" class="book-btn">Boka biljett</a>
+          </div>
+        </div>
+
+        <div class="showtime-date">
+          <h4>Sön 09 Februari</h4>
+          <div class="showtime-card">
+            <div class="showtime-poster">
+              <img src="../images/avatar.jpg" alt="Avatar">
+            </div>
+            <div class="showtime-info">
+              <div class="showtime-time">17:30</div>
+              <div class="showtime-location">Stora Salong</div>
+              <div class="showtime-meta">
+                <span class="meta-tag">Sci-Fi</span>
+                <span class="meta-tag">162 min</span>
+                <span class="meta-tag">EN TAL | SV TEXT</span>
+              </div>
+            </div>
+            <a href="../booking.html?film=Avatar" class="book-btn">Boka biljett</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="movie-info">
+      <h1>Avatar</h1>
+      
+      <div class="movie-meta">
+        <p><strong>Genre:</strong> Science Fiction, Action</p>
+        <p><strong>Längd:</strong> 162 minuter</p>
+        <p><strong>Årtal:</strong> 2009</p>
+        <p><strong>Betyg:</strong> ⭐⭐⭐⭐⭐</p>
+      </div>
+
+      <div class="movie-description">
+        <div class="dropdown-section">
+          <div class="dropdown-header" onclick="toggleDropdown(this)">
+            <div class="description-text">
+              <h3>Om filmen</h3>
+              <p>Jake Sully, en förlamad marin, skickas till månen Pandora där han kopplas till en Na'vi-kropp. Där fastnar han mellan militärens uppdrag och urbefolkningen Na'vis värld.</p>
+            </div>
+            <span class="dropdown-menu">⋯</span>
+          </div>
+          <div class="dropdown-content">
+            <div class="info-row">
+              <span class="info-label">Regissör:</span>
+              <span class="info-value">James Cameron</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Skådespelere:</span>
+              <span class="info-value">Sam Worthington, Zoe Saldana, Sigourney Weaver, Stephen Lang, Michelle Rodriguez</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Språk:</span>
+              <span class="info-value">Engelska</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Originaltitel:</span>
+              <span class="info-value">Avatar</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Åldersgräns:</span>
+              <span class="info-value">11 år</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Kvarter Bion</p>
+  </footer>
+
+</body>
+</html>
