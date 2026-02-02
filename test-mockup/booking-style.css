@@ -121,6 +121,64 @@ body {
     margin-bottom: 1rem;
 }
 
+.cinema-header {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.cinema-header h3 {
+    margin: 0;
+    text-align: center;
+}
+
+.seat-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.5rem;
+    background: rgba(10, 25, 10, 0.5);
+    border: 2px solid #B8860B;
+    border-radius: 8px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.legend-color {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.legend-color.available {
+    background: #d9d9d9;
+}
+
+.legend-color.elder {
+    background: #85546c;
+}
+
+.legend-color.vip {
+    background: #b49e1f;
+}
+
+.legend-text {
+    color: #FFD700;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
 .screen {
     background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
     color: #FFD700;
@@ -228,7 +286,26 @@ body {
     background: #B8860B;
     color: #fff;
 }
+.seat.elder {
+    background: #85546c;
+    color: #FFD700;
+    font-weight: bold;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 3px 6px rgba(255, 105, 180, 0.5);
+}
 
+.seat.elder:hover {
+    background: #ff99cc;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 5px 10px rgba(255, 105, 180, 0.7);
+}
+
+.seat.elder.selected {
+    background: #ff69b4;
+    color: #fff;
+}
 .cinema button {
     display: block;
     margin: 2rem auto 0;

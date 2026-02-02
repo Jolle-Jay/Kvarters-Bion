@@ -29,6 +29,9 @@
           // Mark row 4, seats 5-8 as VIP
           if (row === 4 && col >= 5 && col <= 8) {
             seat.className = 'seat vip';
+          // Mark row 3, seats 3-5 as elder seats
+          } else if (row === 3 && col >= 3 && col <= 5) {
+            seat.className = 'seat elder';
           } else {
             seat.className = 'seat available';
           }
@@ -97,7 +100,23 @@
   </section>
  
   <section class="cinema">
-    <h3>Salong - Skärm</h3>
+    <div class="cinema-header">
+      <h3>Salong - Skärm</h3>
+      <div class="seat-legend">
+        <div class="legend-item">
+          <span class="legend-color available"></span>
+          <span class="legend-text">Lediga platser</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color elder"></span>
+          <span class="legend-text">Äldre platser</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-color vip"></span>
+          <span class="legend-text">VIP platser</span>
+        </div>
+      </div>
+    </div>
     <div class="screen">Bio Skärm</div>
     <div id="seats" class="seats-grid"></div>
     <button onclick="confirmBooking()">Bekräfta bokning</button>
