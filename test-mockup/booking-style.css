@@ -32,11 +32,13 @@ body {
 }
 
 .logo {
+    color: #716738;
     font-size: 2rem;
-    color: #FFD700;
-    text-transform: uppercase;
+    font-weight: 900;
     letter-spacing: 2px;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    text-transform: uppercase;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+                 0 0 15px rgba(184, 134, 11, 0.4);
 }
 
 .navbar nav {
@@ -135,10 +137,29 @@ body {
 
 .seats-grid {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 0.6rem;
+    grid-template-columns: 35px repeat(12, 1fr) 35px;
+    gap: 0.5rem;
     margin-bottom: 2rem;
+    align-items: center;
     justify-items: center;
+}
+
+.row-label {
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.col-label {
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.corner-label {
+    /* Empty corner cells */
 }
 
 .seat {
@@ -148,7 +169,7 @@ body {
     background: #d9d9d9;
     color: #333;
     font-weight: bold;
-    font-size: 0.65rem;
+    font-size: 0.55rem;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
@@ -185,6 +206,27 @@ body {
     background: #d4af37;
     color: #333;
     cursor: not-allowed;
+}
+
+.seat.vip {
+    background: #b49e1f;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 3px 6px rgba(218, 165, 32, 0.6);
+}
+
+.seat.vip:hover {
+    background: #FFC700;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 5px 10px rgba(218, 165, 32, 0.8);
+}
+
+.seat.vip.selected {
+    background: #B8860B;
+    color: #fff;
 }
 
 .cinema button {

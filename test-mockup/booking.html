@@ -14,14 +14,36 @@
     function generateSeats() {
       const seatsDiv = document.getElementById('seats');
       seatsDiv.innerHTML = '';
+      
+      // Generate rows
       for (let row = 1; row <= 8; row++) {
+        // Left row number
+        const leftLabel = document.createElement('div');
+        leftLabel.className = 'row-label';
+        leftLabel.textContent = row;
+        seatsDiv.appendChild(leftLabel);
+        
+        // Seats in the row
         for (let col = 1; col <= 12; col++) {
           const seat = document.createElement('button');
-          seat.innerHTML = `<span>${row}-${col}</span>`;
-          seat.className = 'seat available';
+          // Mark row 4, seats 5-8 as VIP
+          if (row === 4 && col >= 5 && col <= 8) {
+            seat.className = 'seat vip';
+          } else {
+            seat.className = 'seat available';
+          }
+          seat.textContent = col;
+          seat.setAttribute('data-row', row);
+          seat.setAttribute('data-col', col);
           seat.onclick = () => selectSeat(seat, `${row}-${col}`);
           seatsDiv.appendChild(seat);
         }
+        
+        // Right row number
+        const rightLabel = document.createElement('div');
+        rightLabel.className = 'row-label';
+        rightLabel.textContent = row;
+        seatsDiv.appendChild(rightLabel);
       }
     }
 
