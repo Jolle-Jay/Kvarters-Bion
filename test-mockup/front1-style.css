@@ -29,29 +29,61 @@ body {
     padding: 1rem 2rem;
     border: 1px solid #B8860B;
     border-radius: 10px;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Hide the checkbox (always) */
+#menu-toggle {
+    display: none;
+}
+
+/* Show nav when checkbox is checked (sibling selector) */
+#menu-toggle:checked ~ nav {
+    display: flex;
+}
+
+/* The hamburger icon - hidden by default (large screens) */
+label[for="menu-toggle"] {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    color: #76681a;
+    font-size: 30px;
+    cursor: pointer;
+    border: 3px solid #76681a;
+    border-radius: 7px;
+    padding: 3px 7px 7px;
 }
 
 .navbar nav {
-    display: flex;
+    display: none;
     gap: 1rem;
     align-items: center;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #0a1c0a;
+    flex-direction: column;
+    padding: 20px;
+    border: 3px solid #FFD700;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
 }
- 
-.navbar a {
+
+/* Navbar links styling */
+.navbar nav a {
     color: #f3f5f3;
     text-decoration: none;
     font-weight: bold;
-    padding: 0.5rem 1.2rem;
-    background: #092909;
-    border: 2px solid #7e5f0f;
-    border-radius: 8px;
-    transition: background 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    padding: 10px 0;
+    transition: color 0.3s ease;
 }
 
-.navbar a:hover {
-    background: #004400;
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+.navbar nav a:hover {
+    color: #FFD700;
 }
 
 .navbar nav a:last-child {
