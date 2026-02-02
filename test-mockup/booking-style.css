@@ -227,6 +227,7 @@ body {
 
 .corner-label {
     /* Empty corner cells */
+    visibility: hidden;
 }
 
 .seat {
