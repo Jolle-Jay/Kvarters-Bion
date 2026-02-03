@@ -20,7 +20,7 @@ body {
     min-height: 100vh;
 }
  
-/* --- NAVBAR BAS (Desktop) --- */
+/* Navbar */
 .navbar {
     background: #0a1c0a;
     display: flex;
@@ -29,131 +29,10 @@ body {
     padding: 1rem 2rem;
     border: 1px solid #B8860B;
     border-radius: 10px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    margin: 1rem;
+    position: relative;
 }
 
-#menu-toggle {
-    display: none;
-}
-
-/* Göm hamburgaren på desktop */
-label[for="menu-toggle"] {
-    display: none; 
-    cursor: pointer;
-    color: #FFD700;
-    font-size: 30px;
-    border: 2px solid #B8860B;
-    border-radius: 7px;
-    padding: 0px 8px;
-    line-height: 1.2;
-}
-
-/* Desktop-meny */
-.navbar nav {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-}
-
-.navbar nav a {
-    color: #f3f5f3;
-    text-decoration: none;
-    font-weight: 700;
-    background: linear-gradient(180deg, #114511 0%, #0b2e0b 100%);
-    border: 2px solid #B8860B;
-    border-radius: 10px;
-    padding: 0.55rem 1.1rem;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 130px;
-    text-align: center;
-}
-
-.navbar nav a:hover {
-    background: #086808;
-    color: #FFD700;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-}
-
-.navbar nav a:active {
-    transform: translateY(0);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.navbar nav a:focus-visible {
-    outline: 2px solid #FFD700;
-    outline-offset: 2px;
-}
-
-.navbar nav a.nav-profile {
-    background: transparent;
-    border: 2px solid #B8860B;
-    box-shadow: none;
-    padding: 0;
-    min-width: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    transform: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
-}
-
-.navbar nav a.nav-profile:hover {
-    background: #086808;
-    color: #FFD700;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-}
-
-@media (max-width: 768px) {
-    /* Visa hamburgaren */
-    label[for="menu-toggle"] {
-        display: block;
-    }
-
-    /* Dölj menyn och tvinga den att ligga under navbaren när den fälls ut */
-    .navbar nav {
-        display: none; 
-        flex-direction: column;
-        position: absolute;
-        top: 100%; /* Hamnar precis under kanten på .navbar */
-        left: 0;
-        right: 0;
-        background-color: #0a1c0a;
-        padding: 20px;
-        border: 2px solid #B8860B;
-        border-top: none;
-        border-radius: 0 0 10px 10px;
-        gap: 1rem;
-        z-index: 999;
-    }
-
-    /* VISA menyn när man trycker (checkbox är ikryssad) */
-    #menu-toggle:checked ~ nav {
-        display: flex;
-    }
-
-    /* Gör länkarna tydliga i mobilmenyn */
-    .navbar nav a {
-        padding: 10px;
-        width: 100%;
-        text-align: center;
-        border-bottom: 1px solid rgba(184, 134, 11, 0.2);
-    }
-
-    .navbar nav a.nav-profile {
-        width: auto;
-        border-bottom: none;
-        padding: 6px 0;
-    }
-}
- 
 .logo {
     color: #716738;
     font-size: 2rem;
@@ -161,7 +40,110 @@ label[for="menu-toggle"] {
     letter-spacing: 2px;
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
+        0 0 15px rgba(184, 134, 11, 0.4);
+    margin-left: 48px;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navbar a {
+    color: #90ee90;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.6rem 1.2rem;
+    background: #0a3d0a;
+    border: 2px solid #B8860B;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.navbar a:hover {
+    background: #086808;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.navbar a.back-link {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* Standard desktop */
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+/* Hamburger gömd på desktop */
+.hamburger {
+    display: none;
+    background: #0a3d0a;
+    color: #90ee90;
+    border: 2px solid #B8860B;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.hamburger:hover {
+    background: #086808;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Mobil <1030px ===== */
+@media (max-width: 1021px) {
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -250px;
+        /* gömd utanför skärmen */
+        height: 100%;
+        width: 250px;
+        flex-direction: column;
+        gap: 2rem;
+        background: #0a1c0a;
+        padding: 4rem 1.5rem;
+        border-left: 2px solid #B8860B;
+        transition: right 0.3s ease;
+        z-index: 1000;
+    }
+
+    .nav-links.active {
+        right: 0;
+        /* visar menyn */
+    }
+
+    .hamburger {
+        display: block;
+        /* visas på mobil */
+    }
+
+    .navbar {
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+    }
+
+    .nav-links a {
+        font-size: 1.2rem;
+    }
 }
  
 /* Hero */
