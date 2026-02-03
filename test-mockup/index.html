@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="sv">
- 
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BioNova</title>
   <link rel="stylesheet" href="front1-style.css" />
 </head>
- 
+
 <body>
   <header class="navbar">
     <h1 class="logo">Kvarter Bion</h1>
@@ -17,10 +17,10 @@
       <a href="kiosk.html">Kiosken</a>
       <a href="#">Lilla Salongen</a>
       <a href="#">Stora Salongen</a>
-      <a href="#">👤</a>
+      <a href="profile.html" class="nav-profile">👤</a>
     </nav>
   </header>
- 
+
   <section class="hero">
     <!-- Carousel images-->
     <div class="carousel">
@@ -76,7 +76,8 @@
     </div>
     <div class="filter-item">
       <h3>Välj datum</h3>
-      <input type="date" name="date" class="filter-date" min="2025-01-01" max="2025-12-31" title="Välj datum" placeholder="MM-DD" />
+      <input type="date" name="date" class="filter-date" min="2025-01-01" max="2025-12-31" title="Välj datum"
+        placeholder="MM-DD" />
     </div>
     <div class="filter-item">
       <h3>Salong</h3>
@@ -96,76 +97,87 @@
       <span>19:30</span>
     </a>
     <a href="filmer/oppenheimer.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg"
+          alt="Oppenheimer Poster"></div>
       <h3>Oppenheimer</h3>
       <p>Drama</p>
       <span>20:00</span>
     </a>
- 
+
     <a href="filmer/insideout2.html" class="movie-card">
-      <div class="poster"><img class="poster-contain" src="https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2 Poster"></div>
+      <div class="poster"><img class="poster-contain"
+          src="https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2 Poster"></div>
       <h3>Inside Out 2</h3>
       <p>Animerat</p>
       <span>18:00</span>
     </a>
- 
+
     <a href="filmer/thematrix.html" class="movie-card">
-      <div class="poster"><img class="poster-offset-down" src="https://image.tmdb.org/t/p/w300/p96dm7sCMn4VYAStA6siNz30G1r.jpg" alt="The Matrix Poster"></div>
+      <div class="poster"><img class="poster-offset-down"
+          src="https://image.tmdb.org/t/p/w300/p96dm7sCMn4VYAStA6siNz30G1r.jpg" alt="The Matrix Poster"></div>
       <h3>The Matrix</h3>
       <p>Science Fiction</p>
       <span>21:00</span>
     </a>
- 
+
     <a href="filmer/inception.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg" alt="Inception Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg"
+          alt="Inception Poster"></div>
       <h3>Inception</h3>
       <p>Thriller</p>
       <span>19:45</span>
     </a>
- 
+
     <a href="filmer/avatar.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg" alt="Avatar Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg"
+          alt="Avatar Poster"></div>
       <h3>Avatar</h3>
       <p>Science Fiction</p>
       <span>20:30</span>
     </a>
- 
+
     <a href="filmer/titanic.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg" alt="Titanic Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg"
+          alt="Titanic Poster"></div>
       <h3>Titanic</h3>
       <p>Romance</p>
       <span>18:30</span>
     </a>
- 
+
     <a href="filmer/starwars.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" alt="Star Wars: A New Hope Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg"
+          alt="Star Wars: A New Hope Poster"></div>
       <h3>Star Wars: A New Hope</h3>
       <p>Science Fiction</p>
       <span>17:00</span>
     </a>
- 
+
     <a href="filmer/avengers.html" class="movie-card">
-      <div class="poster"><img class="poster-offset-down" src="https://image.tmdb.org/t/p/w300/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg" alt="Avengers: Endgame Poster"></div>
+      <div class="poster"><img class="poster-offset-down"
+          src="https://image.tmdb.org/t/p/w300/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg" alt="Avengers: Endgame Poster"></div>
       <h3>Avengers: Endgame</h3>
       <p>Action</p>
       <span>22:00</span>
     </a>
- 
+
     <a href="filmer/shawshank.html" class="movie-card">
-      <div class="poster"><img class="poster-offset-down" src="https://image.tmdb.org/t/p/w300/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg" alt="The Shawshank Redemption Poster"></div>
+      <div class="poster"><img class="poster-offset-down"
+          src="https://image.tmdb.org/t/p/w300/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg" alt="The Shawshank Redemption Poster">
+      </div>
       <h3>The Shawshank Redemption</h3>
       <p>Drama</p>
       <span>19:15</span>
     </a>
- 
+
     <a href="filmer/jurassic.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/maFjKnJ62hDQ9E66dKqDZgbUy0H.jpg" alt="Jurassic Park Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/maFjKnJ62hDQ9E66dKqDZgbUy0H.jpg"
+          alt="Jurassic Park Poster"></div>
       <h3>Jurassic Park</h3>
       <p>Adventure</p>
       <span>20:45</span>
     </a>
   </main>
- 
+
   <footer>
     <p>© 2026 Kvarter Bion</p>
     <p>About us</p>
@@ -175,5 +187,5 @@
 
   <script src="frontside.js"></script>
 </body>
- 
+
 </html>
