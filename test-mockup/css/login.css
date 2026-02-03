@@ -36,6 +36,22 @@
   box-sizing: border-box;
 }
 
+.navbar a.back-link {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  line-height: 1;
+  z-index: 1001;
+}
+
 .form-group input:focus {
   outline: none;
   border-color: #FFD700;
@@ -132,6 +148,10 @@ label[for="menu-toggle"] {
   /* Visa hamburgaren */
   label[for="menu-toggle"] {
     display: block;
+  }
+
+  .back-link {
+    margin-top: 1px;
   }
 
   /* Dölj menyn och tvinga den att ligga under navbaren när den fälls ut */
