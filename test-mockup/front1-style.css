@@ -4,11 +4,11 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
- 
+
 html {
     height: 100%;
 }
- 
+
 body {
     background-color: #012401;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg opacity='0.18' stroke='%23B8860B' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 70c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 110c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 150c40-30 100-30 140 0s100 30 140 0'/%3E%3Crect x='28' y='80' width='26' height='16'/%3E%3Crect x='28' y='122' width='26' height='16'/%3E%3Crect x='28' y='164' width='26' height='16'/%3E%3Crect x='266' y='80' width='26' height='16'/%3E%3Crect x='266' y='122' width='26' height='16'/%3E%3Crect x='266' y='164' width='26' height='16'/%3E%3Cpath d='M40 220c30-24 80-24 110 0s80 24 110 0'/%3E%3Cpath d='M40 260c30-24 80-24 110 0s80 24 110 0'/%3E%3Crect x='50' y='228' width='22' height='14'/%3E%3Crect x='50' y='266' width='22' height='14'/%3E%3Crect x='248' y='228' width='22' height='14'/%3E%3Crect x='248' y='266' width='22' height='14'/%3E%3Crect x='130' y='190' width='60' height='36' rx='6'/%3E%3Ccircle cx='148' cy='182' r='7'/%3E%3Ccircle cx='172' cy='182' r='7'/%3E%3Ccircle cx='160' cy='208' r='10'/%3E%3Crect x='192' y='198' width='12' height='16' rx='2'/%3E%3C/g%3E%3C/svg%3E");
@@ -19,7 +19,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
- 
+
 /* --- NAVBAR BAS (Desktop) --- */
 .navbar {
     background: #0a1c0a;
@@ -40,7 +40,7 @@ body {
 
 /* Göm hamburgaren på desktop */
 label[for="menu-toggle"] {
-    display: none; 
+    display: none;
     cursor: pointer;
     color: #FFD700;
     font-size: 30px;
@@ -112,6 +112,19 @@ label[for="menu-toggle"] {
 }
 
 @media (max-width: 768px) {
+
+    /* Navbar mobile improvements */
+    .navbar {
+        padding: 0.75rem 1rem;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .logo {
+        font-size: 1.3rem;
+        letter-spacing: 1px;
+    }
+
     /* Visa hamburgaren */
     label[for="menu-toggle"] {
         display: block;
@@ -119,41 +132,71 @@ label[for="menu-toggle"] {
 
     /* Dölj menyn och tvinga den att ligga under navbaren när den fälls ut */
     .navbar nav {
-        display: none; 
+        display: none;
         flex-direction: column;
         position: absolute;
-        top: 100%; /* Hamnar precis under kanten på .navbar */
+        top: 100%;
+        /* Hamnar precis under kanten på .navbar */
         left: 0;
         right: 0;
         background-color: #0a1c0a;
-        padding: 20px;
+        padding: 1rem;
         border: 2px solid #B8860B;
         border-top: none;
         border-radius: 0 0 10px 10px;
-        gap: 1rem;
+        gap: 0.75rem;
         z-index: 999;
     }
 
     /* VISA menyn när man trycker (checkbox är ikryssad) */
-    #menu-toggle:checked ~ nav {
+    #menu-toggle:checked~nav {
         display: flex;
     }
 
     /* Gör länkarna tydliga i mobilmenyn */
     .navbar nav a {
-        padding: 10px;
+        padding: 0.75rem 0.5rem;
         width: 100%;
         text-align: center;
         border-bottom: 1px solid rgba(184, 134, 11, 0.2);
+        min-width: auto;
+        font-size: 0.9rem;
     }
 
     .navbar nav a.nav-profile {
         width: auto;
         border-bottom: none;
         padding: 6px 0;
+        min-width: 0;
     }
 }
- 
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .logo {
+        font-size: 1rem;
+        letter-spacing: 0;
+    }
+
+    label[for="menu-toggle"] {
+        font-size: 24px;
+        padding: 0 4px;
+    }
+
+    .navbar nav {
+        padding: 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .navbar nav a {
+        padding: 0.65rem 0.4rem;
+        font-size: 0.85rem;
+    }
+}
+
 .logo {
     color: #716738;
     font-size: 2rem;
@@ -161,16 +204,16 @@ label[for="menu-toggle"] {
     letter-spacing: 2px;
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
+        0 0 15px rgba(184, 134, 11, 0.4);
 }
- 
+
 /* Hero */
 .hero {
     background: linear-gradient(rgba(0, 51, 0, 0.7), rgba(4, 15, 4, 0.9)),
         url("https://via.placeholder.com/1200x400") center/cover;
     text-align: center;
     padding: 4rem 2rem;
-    
+
 }
 
 .filter {
@@ -224,24 +267,24 @@ label[for="menu-toggle"] {
         gap: 1.5rem;
         padding: 1rem 1.5rem;
     }
-    
+
     .filter h3 {
         margin: 0;
         margin-right: 0.8rem;
         font-size: 0.85rem;
     }
-    
+
     .filter-item {
         flex: none;
         display: flex;
         align-items: center;
         gap: 1rem;
     }
-    
+
     .filter-item:nth-child(2) {
         justify-content: flex-start;
     }
-    
+
     .filter-dropdown,
     .filter-date {
         width: auto;
@@ -250,7 +293,7 @@ label[for="menu-toggle"] {
         padding: 0.5rem 2rem 0.5rem 0.8rem;
         font-size: 0.9rem;
     }
-    
+
     .navbar button {
         padding: 0.5rem 1rem;
         font-size: 0.85rem;
@@ -435,7 +478,7 @@ label[for="menu-toggle"] {
     border-radius: 10px 10px 50px 50px;
     font-weight: bold;
     font-size: 1.2rem;
-    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
 }
 
 .seats-grid {
@@ -486,7 +529,7 @@ label[for="menu-toggle"] {
     margin-top: 1rem;
     line-height: 1.6;
 }
- 
+
 .hero h2 {
     font-size: 3rem;
     margin-bottom: 1rem;
@@ -495,7 +538,7 @@ label[for="menu-toggle"] {
     letter-spacing: 2px;
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
+        0 0 15px rgba(184, 134, 11, 0.4);
 }
 
 .hero p {
@@ -505,10 +548,10 @@ label[for="menu-toggle"] {
     letter-spacing: 3px;
     text-transform: uppercase;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6),
-                 0 4px 8px rgba(0, 0, 0, 0.5);
+        0 4px 8px rgba(0, 0, 0, 0.5);
     margin-bottom: 0.5rem;
 }
- 
+
 .hero button {
     margin-top: 1.5rem;
     padding: 0.75rem 2rem;
@@ -528,20 +571,22 @@ label[for="menu-toggle"] {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
- 
+
 /* Movies */
 .movies {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
     padding: 3rem;
-} 
+}
+
 /* Mobile responsiveness */
 @media (max-width: 800px) {
     .movies {
         grid-template-columns: repeat(2, 1fr);
     }
-} 
+}
+
 .movie-card {
     background: #011601;
     padding: 1rem;
@@ -559,7 +604,7 @@ label[for="menu-toggle"] {
     transform: translateY(-6px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 }
- 
+
 .poster {
     background: #000000;
     height: 280px;
@@ -586,7 +631,7 @@ label[for="menu-toggle"] {
     object-fit: cover;
     object-position: center 10%;
 }
- 
+
 .movie-card span {
     display: inline-block;
     margin-top: 0.5rem;
@@ -594,7 +639,8 @@ label[for="menu-toggle"] {
     font-weight: bold;
 }
 
-.showtimes, .food {
+.showtimes,
+.food {
     padding: 2rem;
     margin: 1rem 0;
     background: #003300;
@@ -603,7 +649,8 @@ label[for="menu-toggle"] {
     color: #90ee90;
 }
 
-.showtimes h3, .food h3 {
+.showtimes h3,
+.food h3 {
     color: #f4efef;
 }
 
@@ -677,13 +724,19 @@ label[for="menu-toggle"] {
     align-content: center;
 }
 
- @keyframes scroll {
-    from {transform: translateX(0);}
-    to {transform: translateX(-50%);}
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
 }
 
 /* Responsiv design för mobil och desktop */
 @media (max-width: 768px) {
+
     /* Navbar */
     .navbar {
         flex-direction: column;
@@ -770,6 +823,7 @@ label[for="menu-toggle"] {
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
+
     /* Tablet view */
     .movies {
         grid-template-columns: repeat(2, 1fr);
@@ -779,4 +833,3 @@ label[for="menu-toggle"] {
         height: 140px;
     }
 }
-
