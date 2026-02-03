@@ -6,19 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BioNova</title>
   <link rel="stylesheet" href="front1-style.css" />
-  <script>
-    function filterMovies(genre) {
-      const cards = document.querySelectorAll('.movie-card');
-      cards.forEach(card => {
-        const cardGenre = card.querySelector('p').textContent;
-        if (genre === 'alla' || cardGenre === genre) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-  </script>
 </head>
  
 <body>
@@ -108,7 +95,7 @@
       <p>Science Fiction</p>
       <span>19:30</span>
     </a>
- 
+      <a href="kiosk.html">Kiosken</a>
     <a href="filmer/oppenheimer.html" class="movie-card">
       <div class="poster"><img src="https://image.tmdb.org/t/p/w300/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer Poster"></div>
       <h3>Oppenheimer</h3>

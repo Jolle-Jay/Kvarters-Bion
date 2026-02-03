@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.value) {
                 this.style.color = '#FFD700';
             }
+            selectedDate = this.value || '';
+            dateFilterActive = Boolean(this.value);
+            applyFilters();
         });
         
         dateInput.addEventListener('blur', function() {
@@ -68,11 +71,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.value = '';
                 this.style.color = 'transparent';
                 alert('Endast datum från 2025 är tillåtna');
+                selectedDate = '';
+                dateFilterActive = false;
             } else {
                 this.style.color = '#FFD700';
             }
+            selectedDate = this.value || '';
+            dateFilterActive = Boolean(this.value);
+            applyFilters();
         });
     }
+    applyFilters();
 });
 
 // Add smooth transition
@@ -83,4 +92,39 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Movie filters (genre + date)
+let selectedGenre = 'alla';
+let selectedDate = '';
+let dateFilterActive = false;
+
+const movieSchedule = {
+    'Dune: Part Two': ['2025-02-03', '2025-02-04', '2025-02-08'],
+    'Oppenheimer': ['2025-02-03', '2025-02-05', '2025-02-07'],
+    'Inside Out 2': ['2025-02-08', '2025-02-09'],
+    'The Matrix': ['2025-02-06', '2025-02-08'],
+    'Inception': ['2025-02-05', '2025-02-07'],
+    'Avatar': ['2025-02-04', '2025-02-06', '2025-02-09'],
+    'Titanic': ['2025-02-03', '2025-02-05', '2025-02-09'],
+    'Star Wars: A New Hope': ['2025-02-07', '2025-02-08'],
+    'Avengers: Endgame': ['2025-02-06', '2025-02-08'],
+    'The Shawshank Redemption': ['2025-02-03', '2025-02-05', '2025-02-09'],
+    'Jurassic Park': ['2025-02-04', '2025-02-08']
+};
+
+function applyFilters() {
+    const cards = document.querySelectorAll('.movie-card');
+    cards.forEach(card => {
+        const cardGenre = card.querySelector('p')?.textContent?.trim() || '';
+        const title = card.querySelector('h3')?.textContent?.trim() || '';
+        const dateMatches = !dateFilterActive || (movieSchedule[title] || []).includes(selectedDate);
+        const genreMatches = selectedGenre === 'alla' || cardGenre === selectedGenre;
+        card.style.display = dateMatches && genreMatches ? 'block' : 'none';
+    });
+}
+
+window.filterMovies = function(genre) {
+    selectedGenre = genre;
+    applyFilters();
+};
 

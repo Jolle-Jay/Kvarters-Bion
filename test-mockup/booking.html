@@ -115,8 +115,9 @@ function generateSeats() {
   <header class="navbar">
     <h1 class="logo">Kvarter Bion</h1>
     <nav>
-      <a href="index.html">Filmer</a>
-      <a href="#">Biljetter</a>
+      <a href="kiosk.html">Kiosken</a>
+      <a href="#">Lilla Salongen</a>
+      <a href="#">Stora Salongen</a>
       <a href="#">Profil</a>
     </nav>
   </header>
@@ -165,6 +166,15 @@ function generateSeats() {
     <p>© 2026 Kvarter Bion</p>
   </footer>
 <script src="frontside.js"></script>
+<script>
+  const navbarLinks = document.querySelectorAll('.navbar nav a');
+  navbarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      navbarLinks.forEach(item => item.classList.remove('is-active'));
+      link.classList.add('is-active');
+    });
+  });
+</script>
 </body>
  
 </html>

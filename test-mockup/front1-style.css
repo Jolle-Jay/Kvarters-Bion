@@ -62,7 +62,7 @@ label[for="menu-toggle"] {
     text-decoration: none;
     font-weight: 700;
     background: linear-gradient(180deg, #114511 0%, #0b2e0b 100%);
-    border: 1px solid #B8860B;
+    border: 2px solid #B8860B;
     border-radius: 10px;
     padding: 0.55rem 1.1rem;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -72,6 +72,13 @@ label[for="menu-toggle"] {
     justify-content: center;
     min-width: 130px;
     text-align: center;
+}
+
+.navbar nav a:hover {
+    background: #086808;
+    color: #FFD700;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 .navbar nav a:active {
@@ -86,13 +93,22 @@ label[for="menu-toggle"] {
 
 .navbar nav a.nav-profile {
     background: transparent;
-    border: none;
+    border: 2px solid #B8860B;
     box-shadow: none;
     padding: 0;
     min-width: 0;
-    border-radius: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     transform: none;
-    transition: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.navbar nav a.nav-profile:hover {
+    background: #086808;
+    color: #FFD700;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 @media (max-width: 768px) {

@@ -30,6 +30,7 @@ body {
     border: 1px solid #B8860B;
     border-radius: 10px;
     margin: 1rem;
+    position: relative;
 }
 
 .logo {
@@ -40,6 +41,7 @@ body {
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
                  0 0 15px rgba(184, 134, 11, 0.4);
+    margin-left: 48px;
 }
 
 .navbar nav {
@@ -63,6 +65,24 @@ body {
     background: #086808;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.navbar a.back-link {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #76ab79;
+    background: #0f2f0f;
+    line-height: 1;
 }
 
 /* Movie Detail Section */
@@ -440,9 +460,9 @@ body {
 .showtime-card .book-btn {
     flex: 0 0 auto;
     padding: 0.8rem 1.8rem;
-    background: #70d4a8;
-    border-color: #70d4a8;
-    color: #fff;
+    background: #1b7552;
+    border-color: #092b1e;
+    color: #cda31b;
     font-weight: bold;
     position: relative;
     z-index: 1;
@@ -455,9 +475,9 @@ body {
 }
 
 .showtime-card .book-btn:hover {
-    background: #5ac897;
-    border-color: #5ac897;
-    color: #fff;
+    background: #0c4a32;
+    border-color: #0c4a32;
+    color: #faf8f8;
 }
 
 /* Footer */
