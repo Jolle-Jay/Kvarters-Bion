@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="sv">
+
+
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Min Profil - Kvarter Bion</title>
+
+  <link rel="stylesheet" href="front1-style.css" />
+
+  <style>
+    .profile-container {
+
+      max-width: 600px;
+
+      margin: 120px auto 40px;
+
+      padding: 2rem;
+
+      background: #0a1c0a;
+
+      border: 2px solid #B8860B;
+
+      border-radius: 10px;
+
+      color: #ffffff;
+
+    }
+
+
+
+    .profile-container h2 {
+
+      color: #FFD700;
+
+      margin-bottom: 1.5rem;
+
+      text-align: center;
+
+    }
+
+
+
+    .profile-info {
+
+      margin: 1.5rem 0;
+
+      padding: 1rem;
+
+      background: #012401;
+
+      border-left: 4px solid #B8860B;
+
+      border-radius: 5px;
+
+    }
+
+
+
+    .profile-info strong {
+
+      color: #FFD700;
+
+      display: block;
+
+      margin-bottom: 0.5rem;
+
+    }
+
+
+
+    .profile-info p {
+
+      margin: 0;
+
+      color: #ffffff;
+
+    }
+
+
+
+    .profile-actions {
+
+      display: flex;
+
+      gap: 1rem;
+
+      margin-top: 2rem;
+
+      justify-content: center;
+
+    }
+
+
+
+    .btn {
+
+      padding: 0.75rem 1.5rem;
+
+      border: 2px solid #B8860B;
+
+      border-radius: 5px;
+
+      cursor: pointer;
+
+      font-size: 1rem;
+
+      transition: all 0.3s ease;
+
+      text-decoration: none;
+
+      display: inline-block;
+
+    }
+
+
+
+    .btn-primary {
+
+      background: #B8860B;
+
+      color: #012401;
+
+    }
+
+
+
+    .btn-primary:hover {
+
+      background: #FFD700;
+
+    }
+
+
+
+    .btn-secondary {
+
+      background: transparent;
+
+      color: #FFD700;
+
+    }
+
+
+
+    .btn-secondary:hover {
+
+      background: #B8860B;
+
+      color: #012401;
+
+    }
+
+
+
+    .btn-logout {
+
+      background: #8B0000;
+
+      color: #ffffff;
+
+      border-color: #8B0000;
+
+    }
+
+
+
+    .btn-logout:hover {
+
+      background: #CC0000;
+
+      border-color: #CC0000;
+
+    }
+
+
+
+    .not-logged-in {
+
+      text-align: center;
+
+      padding: 2rem;
+
+    }
+
+
+
+    .not-logged-in p {
+
+      margin-bottom: 1.5rem;
+
+      color: #FFD700;
+
+    }
+  </style>
+
+</head>
+
+
+
+<body>
+
+  <header class="navbar">
+
+    <h1 class="logo">Kvarter Bion</h1>
+
+    <input type="checkbox" id="menu-toggle">
+
+    <label for="menu-toggle">☰</label>
+
+    <nav>
+
+      <a href="index.html">Hem</a>
+
+      <a href="kiosk.html">Kiosken</a>
+
+      <a href="#">Lilla Salongen</a>
+
+      <a href="#">Stora Salongen</a>
+
+      <a href="profile.html" class="nav-profile">👤</a>
+
+    </nav>
+
+  </header>
+
+
+
+  <main class="profile-container" id="profile-content">
+
+    <h2>Min Profil</h2>
+
+    <div id="profile-loading">Laddar profil...</div>
+
+  </main>
+
+
+
+  <footer>
+
+    <p>© 2026 Kvarter Bion</p>
+
+    <p>Om oss</p>
+
+    <p>Kontakt</p>
+
+    <p></p>
+
+  </footer>
+
+
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      const profileContent = document.getElementById('profile-content');
+
+
+
+      // Check if user is logged in (simulated - you can replace with actual API call)
+
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+      const userName = localStorage.getItem('userName') || 'Användare';
+
+      const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+
+
+
+      const profileLoading = document.getElementById('profile-loading');
+
+      profileLoading.remove();
+
+
+
+      if (isLoggedIn) {
+
+        profileContent.innerHTML = `
+
+<h2>Min Profil</h2>
+
+<div class="profile-info">
+
+<strong>Namn:</strong>
+
+<p>${userName}</p>
+
+</div>
+
+<div class="profile-info">
+
+<strong>E-post:</strong>
+
+<p>${userEmail}</p>
+
+</div>
+
+<div class="profile-info">
+
+<strong>Status:</strong>
+
+<p>Inloggad</p>
+
+</div>
+
+<div class="profile-actions">
+
+<a href="index.html" class="btn btn-secondary">Tillbaka till hem</a>
+
+<button onclick="logout()" class="btn btn-logout">Logga ut</button>
+
+</div>
+
+`;
+
+      } else {
+
+        profileContent.innerHTML = `
+
+<div class="not-logged-in">
+
+<h2>Du är inte inloggad</h2>
+
+<p>Vänligen logga in för att se din profil</p>
+
+<div class="profile-actions">
+
+<a href="login.html" class="btn btn-primary">Logga in</a>
+
+<a href="index.html" class="btn btn-secondary">Gå till hem</a>
+
+</div>
+
+</div>
+
+`;
+
+      }
+
+    });
+
+
+
+    function logout() {
+
+      localStorage.removeItem('isLoggedIn');
+
+      localStorage.removeItem('userName');
+
+      localStorage.removeItem('userEmail');
+
+      window.location.href = 'index.html';
+
+    }
+
+  </script>
+
+</body>
+
+</html>
