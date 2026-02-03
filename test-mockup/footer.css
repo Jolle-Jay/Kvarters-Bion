@@ -1,0 +1,130 @@
+/* Footer */
+footer:not(.site-footer) {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+
+footer:not(.site-footer) div {
+    margin: 1rem;
+}
+
+footer a {
+    color: #90ee90;
+    text-decoration: none;
+}
+
+.site-footer {
+    background: #000a00;
+    border-top: 2px solid #B8860B;
+    padding: 3rem 2rem 1.5rem;
+    color: #e6e6e6;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-top: auto;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section h4 {
+    color: #B8860B;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-section p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #cfd6cf;
+}
+
+.footer-section a {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #90ee90;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: #FFD700;
+}
+
+.footer-bottom {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(184, 134, 11, 0.4);
+    text-align: center;
+    font-size: 0.85rem;
+    color: #9aa39a;
+}
+
+/* Footer – Mobile */
+@media (max-width: 1000px) {
+
+    .site-footer {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .footer-section h4 {
+        font-size: 1.15rem;
+        margin-bottom: 0.8rem;
+        letter-spacing: 1.5px;
+    }
+
+    .footer-section p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    .footer-section a {
+        font-size: 1rem;
+        padding: 0.4rem 0;
+    }
+
+    /* Gör varje sektion lite tydligare */
+    .footer-section {
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(184, 134, 11, 0.25);
+    }
+
+    .footer-section:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .footer-bottom {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        font-size: 0.8rem;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin: 0;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(184, 134, 11, 0.25);
+    }
+
+    .footer-section:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+}

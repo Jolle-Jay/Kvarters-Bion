@@ -1,14 +1,28 @@
 <!DOCTYPE html>
 <html lang="sv">
- 
+
 <head>
   <!-- Fil: Startsida för Kvarter Bion. -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BioNova</title>
-  <link rel="stylesheet" href="front1-import.css" />
+  <link rel="stylesheet" href="front1-style.css" />
+  <link rel="stylesheet" href="footer.css">
+  <script>
+    function filterMovies(genre) {
+      const cards = document.querySelectorAll('.movie-card');
+      cards.forEach(card => {
+        const cardGenre = card.querySelector('p').textContent;
+        if (genre === 'alla' || cardGenre === genre) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </head>
- 
+
 <body>
   <header class="navbar">
     <a class="logo" href="index.html">Kvarter Bion</a>
@@ -18,10 +32,10 @@
       <a href="kiosk.html">Kiosken</a>
       <a href="#">Lilla Salongen</a>
       <a href="#">Stora Salongen</a>
-      <a href="#" class="nav-profile">👤</a>
+      <a href="profile.html" class="nav-profile">👤</a>
     </nav>
   </header>
- 
+
   <section class="hero">
     <!-- Carousel images-->
     <div class="carousel">
@@ -77,7 +91,8 @@
     </div>
     <div class="filter-item">
       <h3>Välj datum</h3>
-      <input type="date" name="date" class="filter-date" min="2025-01-01" max="2025-12-31" title="Välj datum" placeholder="MM-DD" />
+      <input type="date" name="date" class="filter-date" min="2025-01-01" max="2025-12-31" title="Välj datum"
+        placeholder="MM-DD" />
     </div>
     <div class="filter-item">
       <h3>Salong</h3>
@@ -97,69 +112,79 @@
       <span>19:30</span>
     </a>
     <a href="filmer/oppenheimer.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg" alt="Oppenheimer Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg"
+          alt="Oppenheimer Poster"></div>
       <h3>Oppenheimer</h3>
       <p>Drama</p>
       <span>20:00</span>
     </a>
- 
+
     <a href="filmer/insideout2.html" class="movie-card">
-      <div class="poster"><img class="poster-contain" src="https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2 Poster"></div>
+      <div class="poster"><img class="poster-contain"
+          src="https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2 Poster"></div>
       <h3>Inside Out 2</h3>
       <p>Animerat</p>
       <span>18:00</span>
     </a>
- 
+
     <a href="filmer/thematrix.html" class="movie-card">
-      <div class="poster"><img class="poster-offset-down" src="https://image.tmdb.org/t/p/w300/p96dm7sCMn4VYAStA6siNz30G1r.jpg" alt="The Matrix Poster"></div>
+      <div class="poster"><img class="poster-offset-down"
+          src="https://image.tmdb.org/t/p/w300/p96dm7sCMn4VYAStA6siNz30G1r.jpg" alt="The Matrix Poster"></div>
       <h3>The Matrix</h3>
       <p>Science Fiction</p>
       <span>21:00</span>
     </a>
- 
+
     <a href="filmer/inception.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg" alt="Inception Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg"
+          alt="Inception Poster"></div>
       <h3>Inception</h3>
       <p>Thriller</p>
       <span>19:45</span>
     </a>
- 
+
     <a href="filmer/avatar.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg" alt="Avatar Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/gKY6q7SjCkAU6FqvqWybDYgUKIF.jpg"
+          alt="Avatar Poster"></div>
       <h3>Avatar</h3>
       <p>Science Fiction</p>
       <span>20:30</span>
     </a>
- 
+
     <a href="filmer/titanic.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg" alt="Titanic Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg"
+          alt="Titanic Poster"></div>
       <h3>Titanic</h3>
       <p>Romance</p>
       <span>18:30</span>
     </a>
- 
+
     <a href="filmer/starwars.html" class="movie-card">
-      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" alt="Star Wars: A New Hope Poster"></div>
+      <div class="poster"><img src="https://image.tmdb.org/t/p/w300/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg"
+          alt="Star Wars: A New Hope Poster"></div>
       <h3>Star Wars: A New Hope</h3>
       <p>Science Fiction</p>
       <span>17:00</span>
     </a>
- 
+
     <a href="filmer/avengers.html" class="movie-card">
-      <div class="poster"><img class="poster-offset-down" src="https://image.tmdb.org/t/p/w300/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg" alt="Avengers: Endgame Poster"></div>
+      <div class="poster"><img class="poster-offset-down"
+          src="https://image.tmdb.org/t/p/w300/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg" alt="Avengers: Endgame Poster"></div>
       <h3>Avengers: Endgame</h3>
       <p>Action</p>
       <span>22:00</span>
     </a>
- 
+
     <a href="filmer/shawshank.html" class="movie-card">
-      <div class="poster"><img class="poster-offset-down" src="https://image.tmdb.org/t/p/w300/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg" alt="The Shawshank Redemption Poster"></div>
+      <div class="poster"><img class="poster-offset-down"
+          src="https://image.tmdb.org/t/p/w300/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg" alt="The Shawshank Redemption Poster">
+      </div>
       <h3>The Shawshank Redemption</h3>
       <p>Drama</p>
       <span>19:15</span>
     </a>
  
-    <a href="filmer/jurassic.html" class="movie-card">
+    <a href="filmer/jurassicpark.html" class="movie-card">
       <div class="poster"><img src="https://image.tmdb.org/t/p/w300/maFjKnJ62hDQ9E66dKqDZgbUy0H.jpg" alt="Jurassic Park Poster"></div>
       <h3>Jurassic Park</h3>
       <p>Adventure</p>
@@ -167,14 +192,48 @@
     </a>
   </main>
  
-  <footer>
-    <p>© 2026 Kvarter Bion</p>
-    <p>About us</p>
-    <p>Contatct</p>
-    <p></p>
-  </footer>
+<footer class="site-footer">
+  <div class="footer-grid">
+
+    <div class="footer-section">
+      <h4>Kvarter Bion</h4>
+      <p>
+        Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
+        Filmupplevelser – precis som de ska vara.
+      </p>
+    </div>
+
+    <div class="footer-section">
+      <h4>Kontakt</h4>
+      <p>📍 Storgatan 12, 123 45 kvarterbion</p>
+      <p>📞 +467-0123456</p>
+      <p>✉️ info@kvarterbion.se</p>
+    </div>
+
+    <div class="footer-section">
+      <h4>Öppettider</h4>
+      <p>Mån–Fre: 16:00 – 23:00</p>
+      <p>Lör–Sön: 13:00 – 00:00</p>
+    </div>
+
+    <div class="footer-section">
+      <h4>Snabblänkar</h4>
+      <a href="index.html">Start</a>
+      <a href="#">Kiosken</a>
+      <a href="#">Salonger</a>
+      <a href="#">Biljetter</a>
+      <a href="#">Om oss</a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
+  </div>
+</footer>
+
 
   <script src="frontside.js"></script>
 </body>
- 
+
 </html>

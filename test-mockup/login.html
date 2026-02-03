@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html lang="sv">
+
+
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logga in - Kvarter Bion</title>
+  <link rel="stylesheet" href="filmer/film-page.css" />
+  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" href="css/login.css" />
+
+</head>
+
+
+
+<body>
+
+  <header class="navbar">
+    <h1 class="logo">Kvarter Bion</h1>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle">☰</label>
+    <nav>
+      <a href="index.html" class="back-link" aria-label="Tillbaka till hem">←</a>
+      <a href="kiosk.html">Kiosken</a>
+      <a href="#">Lilla Salongen</a>
+      <a href="#">Stora Salongen</a>
+      <a href="profile.html" class="nav-profile">👤</a>
+    </nav>
+  </header>
+
+
+
+  <main class="login-container">
+    <h2>Logga in</h2>
+    <div id="error-message" class="error-message"></div>
+    <div id="success-message" class="success-message"></div>
+
+
+
+    <form id="login-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="email">E-post:</label>
+        <input type="email" id="email" name="email" placeholder="din@epost.com" required />
+      </div>
+
+
+
+      <div class="form-group">
+        <label for="password">Lösenord:</label>
+        <input type="password" id="password" name="password" placeholder="Ange ditt lösenord" required />
+      </div>
+
+
+
+      <div class="form-group">
+        <label for="name">Namn (valfritt):</label>
+        <input type="text" id="name" name="name" placeholder="Ditt namn" />
+      </div>
+
+      <div class="login-actions">
+        <button type="submit" class="btn btn-primary">Logga in</button>
+        <a href="profile.html" class="btn btn-secondary">Avbryt</a>
+      </div>
+    </form>
+  </main>
+
+
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+
+      <div class="footer-section">
+        <h4>Kvarter Bion</h4>
+        <p>
+          Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
+          Filmupplevelser – precis som de ska vara.
+        </p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Kontakt</h4>
+        <p>📍 Storgatan 12, 123 45 kvarterbion</p>
+        <p>📞 +467-0123456</p>
+        <p>✉️ info@kvarterbion.se</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Öppettider</h4>
+        <p>Mån–Fre: 16:00 – 23:00</p>
+        <p>Lör–Sön: 13:00 – 00:00</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Snabblänkar</h4>
+        <a href="index.html">Start</a>
+        <a href="#">Kiosken</a>
+        <a href="#">Salonger</a>
+        <a href="#">Biljetter</a>
+        <a href="#">Om oss</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
+    </div>
+  </footer>
+
+  <script src="js/login.js"></script>
+
+</body>
+
+</html>

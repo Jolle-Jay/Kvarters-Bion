@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
   <!-- Fil: Filmsida för Inception. -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inception - Kvarter Bion</title>
   <link rel="stylesheet" href="film-page.css" />
+  <link rel="stylesheet" href="../footer.css" />
   <script>
     function toggleDropdown(headerElement) {
       const content = headerElement.nextElementSibling;
       const menu = headerElement.querySelector('.dropdown-menu');
-      
+
       content.classList.toggle('show');
       menu.classList.toggle('open');
     }
   </script>
 </head>
+
 <body>
 
   <header class="navbar">
@@ -24,20 +27,16 @@
       <a href="../kiosk.html">Kiosk</a>
       <a href="#">Lilla Salong</a>
       <a href="#">Stora Salong</a>
-      <a href="#" class="nav-profile">👤</a>
+      <a href="#">👤</a>
     </nav>
   </header>
 
   <section class="movie-detail">
     <div class="movie-trailer">
       <h3>Trailer</h3>
-      <iframe 
-        width="100%" 
-        height="450" 
-        src="https://www.youtube.com/embed/YoHD9XEInc0?modestbranding=1&rel=0&showinfo=0" 
-        title="Inception Trailer" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      <iframe width="100%" height="450"
+        src="https://www.youtube.com/embed/YoHD9XEInc0?modestbranding=1&rel=0&showinfo=0" title="Inception Trailer"
+        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
     </div>
@@ -47,7 +46,7 @@
 
       <div class="movie-times">
         <h3>Visningartider</h3>
-        
+
         <div class="showtime-date">
           <h4>Ons 05 Februari</h4>
           <div class="showtime-card">
@@ -105,7 +104,7 @@
 
     <div class="movie-info">
       <h1>Inception</h1>
-      
+
       <div class="movie-meta">
         <p><strong>Genre:</strong> Sci-Fi, Action, Thriller</p>
         <p><strong>Längd:</strong> 148 minuter</p>
@@ -118,7 +117,8 @@
           <div class="dropdown-header" onclick="toggleDropdown(this)">
             <div class="description-text">
               <h3>Om filmen</h3>
-              <p>Dom Cobb är en skicklig tjuv som stjäl företagshemligheter genom drömdelning. Han erbjuds en chans till frihet genom ett sista uppdrag: att plantera en idé i någons undermedvetna.</p>
+              <p>Dom Cobb är en skicklig tjuv som stjäl företagshemligheter genom drömdelning. Han erbjuds en chans till
+                frihet genom ett sista uppdrag: att plantera en idé i någons undermedvetna.</p>
             </div>
             <span class="dropdown-menu">⋯</span>
           </div>
@@ -129,7 +129,8 @@
             </div>
             <div class="info-row">
               <span class="info-label">Skådespelere:</span>
-              <span class="info-value">Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Tom Hardy, Marion Cotillard</span>
+              <span class="info-value">Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Tom Hardy, Marion
+                Cotillard</span>
             </div>
             <div class="info-row">
               <span class="info-label">Språk:</span>
@@ -149,9 +150,46 @@
     </div>
   </section>
 
-  <footer>
-    <p>© 2026 Kvarter Bion</p>
+  <footer class="site-footer">
+    <div class="footer-grid">
+
+      <div class="footer-section">
+        <h4>Kvarter Bion</h4>
+        <p>
+          Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
+          Filmupplevelser – precis som de ska vara.
+        </p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Kontakt</h4>
+        <p>📍 Storgatan 12, 123 45 kvarterbion</p>
+        <p>📞 +467-0123456</p>
+        <p>✉️ info@kvarterbion.se</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Öppettider</h4>
+        <p>Mån–Fre: 16:00 – 23:00</p>
+        <p>Lör–Sön: 13:00 – 00:00</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Snabblänkar</h4>
+        <a href="../index.html">Start</a>
+        <a href="#">Kiosken</a>
+        <a href="#">Salonger</a>
+        <a href="#">Biljetter</a>
+        <a href="#">Om oss</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
+    </div>
   </footer>
 
 </body>
+
 </html>
