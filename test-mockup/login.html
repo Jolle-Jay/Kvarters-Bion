@@ -9,227 +9,10 @@
   <meta charset="UTF-8" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Logga in - Kvarter Bion</title>
-
-  <link rel="stylesheet" href="front1-style.css" />
+  <link rel="stylesheet" href="filmer/film-page.css" />
   <link rel="stylesheet" href="footer.css" />
-
-  <style>
-    .login-container {
-
-      max-width: 500px;
-
-      margin: 120px auto 40px;
-
-      padding: 2rem;
-
-      background: #0a1c0a;
-
-      border: 2px solid #B8860B;
-
-      border-radius: 10px;
-
-      color: #ffffff;
-
-    }
-
-
-
-    .login-container h2 {
-
-      color: #FFD700;
-
-      margin-bottom: 1.5rem;
-
-      text-align: center;
-
-    }
-
-
-
-    .form-group {
-
-      margin-bottom: 1.5rem;
-
-    }
-
-
-
-    .form-group label {
-
-      display: block;
-
-      margin-bottom: 0.5rem;
-
-      color: #FFD700;
-
-      font-weight: bold;
-
-    }
-
-
-
-    .form-group input {
-
-      width: 100%;
-
-      padding: 0.75rem;
-
-      border: 2px solid #B8860B;
-
-      border-radius: 5px;
-
-      background: #012401;
-
-      color: #ffffff;
-
-      font-size: 1rem;
-
-      box-sizing: border-box;
-
-    }
-
-
-
-    .form-group input:focus {
-
-      outline: none;
-
-      border-color: #FFD700;
-
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-
-    }
-
-
-
-    .form-group input::placeholder {
-
-      color: #666;
-
-    }
-
-
-
-    .login-actions {
-
-      display: flex;
-
-      gap: 1rem;
-
-      margin-top: 2rem;
-
-      justify-content: center;
-
-    }
-
-
-
-    .btn {
-
-      padding: 0.75rem 1.5rem;
-
-      border: 2px solid #B8860B;
-
-      border-radius: 5px;
-
-      cursor: pointer;
-
-      font-size: 1rem;
-
-      transition: all 0.3s ease;
-
-      text-decoration: none;
-
-      display: inline-block;
-
-    }
-
-
-
-    .btn-primary {
-
-      background: #B8860B;
-
-      color: #012401;
-
-      font-weight: bold;
-
-    }
-
-
-
-    .btn-primary:hover {
-
-      background: #FFD700;
-
-    }
-
-
-
-    .btn-secondary {
-
-      background: transparent;
-
-      color: #FFD700;
-
-    }
-
-
-
-    .btn-secondary:hover {
-
-      background: #B8860B;
-
-      color: #012401;
-
-    }
-
-
-
-    .error-message {
-
-      color: #FF6B6B;
-
-      text-align: center;
-
-      margin-bottom: 1rem;
-
-      display: none;
-
-      padding: 0.75rem;
-
-      background: rgba(255, 107, 107, 0.1);
-
-      border: 1px solid #FF6B6B;
-
-      border-radius: 5px;
-
-    }
-
-
-
-    .success-message {
-
-      color: #51CF66;
-
-      text-align: center;
-
-      margin-bottom: 1rem;
-
-      display: none;
-
-      padding: 0.75rem;
-
-      background: rgba(81, 207, 102, 0.1);
-
-      border: 1px solid #51CF66;
-
-      border-radius: 5px;
-
-    }
-  </style>
+  <link rel="stylesheet" href="css/login.css" />
 
 </head>
 
@@ -238,216 +21,97 @@
 <body>
 
   <header class="navbar">
-
     <h1 class="logo">Kvarter Bion</h1>
-
     <input type="checkbox" id="menu-toggle">
-
     <label for="menu-toggle">☰</label>
-
     <nav>
-
-      <a href="index.html">Hem</a>
-
+      <a href="index.html" class="back-link" aria-label="Tillbaka till hem">←</a>
       <a href="kiosk.html">Kiosken</a>
-
       <a href="#">Lilla Salongen</a>
-
       <a href="#">Stora Salongen</a>
-
       <a href="profile.html" class="nav-profile">👤</a>
-
     </nav>
-
   </header>
 
 
 
   <main class="login-container">
-
     <h2>Logga in</h2>
-
     <div id="error-message" class="error-message"></div>
-
     <div id="success-message" class="success-message"></div>
 
 
 
     <form id="login-form" onsubmit="handleLogin(event)">
-
       <div class="form-group">
-
         <label for="email">E-post:</label>
-
         <input type="email" id="email" name="email" placeholder="din@epost.com" required />
-
       </div>
 
 
 
       <div class="form-group">
-
         <label for="password">Lösenord:</label>
-
         <input type="password" id="password" name="password" placeholder="Ange ditt lösenord" required />
-
       </div>
 
 
 
       <div class="form-group">
-
         <label for="name">Namn (valfritt):</label>
-
         <input type="text" id="name" name="name" placeholder="Ditt namn" />
-
       </div>
-
-
 
       <div class="login-actions">
-
         <button type="submit" class="btn btn-primary">Logga in</button>
-
         <a href="profile.html" class="btn btn-secondary">Avbryt</a>
-
       </div>
-
     </form>
-
   </main>
 
 
 
-<footer class="site-footer">
-  <div class="footer-grid">
+  <footer class="site-footer">
+    <div class="footer-grid">
 
-    <div class="footer-section">
-      <h4>Kvarter Bion</h4>
-      <p>
-        Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
-        Filmupplevelser – precis som de ska vara.
-      </p>
+      <div class="footer-section">
+        <h4>Kvarter Bion</h4>
+        <p>
+          Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
+          Filmupplevelser – precis som de ska vara.
+        </p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Kontakt</h4>
+        <p>📍 Storgatan 12, 123 45 kvarterbion</p>
+        <p>📞 +467-0123456</p>
+        <p>✉️ info@kvarterbion.se</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Öppettider</h4>
+        <p>Mån–Fre: 16:00 – 23:00</p>
+        <p>Lör–Sön: 13:00 – 00:00</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Snabblänkar</h4>
+        <a href="index.html">Start</a>
+        <a href="#">Kiosken</a>
+        <a href="#">Salonger</a>
+        <a href="#">Biljetter</a>
+        <a href="#">Om oss</a>
+      </div>
+
     </div>
 
-    <div class="footer-section">
-      <h4>Kontakt</h4>
-      <p>📍 Storgatan 12, 123 45 kvarterbion</p>
-      <p>📞 +467-0123456</p>
-      <p>✉️ info@kvarterbion.se</p>
+    <div class="footer-bottom">
+      <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
     </div>
+  </footer>
 
-    <div class="footer-section">
-      <h4>Öppettider</h4>
-      <p>Mån–Fre: 16:00 – 23:00</p>
-      <p>Lör–Sön: 13:00 – 00:00</p>
-    </div>
-
-    <div class="footer-section">
-      <h4>Snabblänkar</h4>
-      <a href="index.html">Start</a>
-      <a href="#">Kiosken</a>
-      <a href="#">Salonger</a>
-      <a href="#">Biljetter</a>
-      <a href="#">Om oss</a>
-    </div>
-
-  </div>
-
-  <div class="footer-bottom">
-    <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
-  </div>
-</footer>
-
-
-
-  <script>
-
-    function handleLogin(event) {
-
-      event.preventDefault();
-
-
-
-      const email = document.getElementById('email').value;
-
-      const password = document.getElementById('password').value;
-
-      const name = document.getElementById('name').value || email.split('@')[0];
-
-
-
-      const errorMsg = document.getElementById('error-message');
-
-      const successMsg = document.getElementById('success-message');
-
-
-
-      // Clear messages
-
-      errorMsg.style.display = 'none';
-
-      successMsg.style.display = 'none';
-
-
-
-      // Simple validation
-
-      if (!email || !password) {
-
-        errorMsg.textContent = 'Vänligen fyll i e-post och lösenord';
-
-        errorMsg.style.display = 'block';
-
-        return;
-
-      }
-
-
-
-      // Simulate login (in a real app, you'd send this to a backend)
-
-      if (password.length < 6) {
-
-        errorMsg.textContent = 'Lösenordet måste vara minst 6 tecken';
-
-        errorMsg.style.display = 'block';
-
-        return;
-
-      }
-
-
-
-      // Store login info in localStorage
-
-      localStorage.setItem('isLoggedIn', 'true');
-
-      localStorage.setItem('userEmail', email);
-
-      localStorage.setItem('userName', name);
-
-
-
-      // Show success message
-
-      successMsg.textContent = 'Inloggning lyckades! Omdirigerar...';
-
-      successMsg.style.display = 'block';
-
-
-
-      // Redirect to profile after 1.5 seconds
-
-      setTimeout(() => {
-
-        window.location.href = 'profile.html';
-
-      }, 1500);
-
-    }
-
-  </script>
+  <script src="js/login.js"></script>
 
 </body>
 

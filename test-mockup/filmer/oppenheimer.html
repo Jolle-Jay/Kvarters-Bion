@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,12 +11,13 @@
     function toggleDropdown(headerElement) {
       const content = headerElement.nextElementSibling;
       const menu = headerElement.querySelector('.dropdown-menu');
-      
+
       content.classList.toggle('show');
       menu.classList.toggle('open');
     }
   </script>
 </head>
+
 <body>
 
   <header class="navbar">
@@ -25,20 +27,16 @@
       <a href="../kiosk.html">Kiosk</a>
       <a href="#">Lilla Salong</a>
       <a href="#">Stora Salong</a>
-      <a href="#">👤</a>
+      <a href="../profile.html" class="nav-profile">👤</a>
     </nav>
   </header>
 
   <section class="movie-detail">
     <div class="movie-trailer">
       <h3>Trailer</h3>
-      <iframe 
-        width="100%" 
-        height="450" 
-        src="https://www.youtube.com/embed/bK6ldnjE3Y0?modestbranding=1&rel=0&showinfo=0" 
-        title="Oppenheimer Trailer" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      <iframe width="100%" height="450"
+        src="https://www.youtube.com/embed/bK6ldnjE3Y0?modestbranding=1&rel=0&showinfo=0" title="Oppenheimer Trailer"
+        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
     </div>
@@ -48,7 +46,7 @@
 
       <div class="movie-times">
         <h3>Visningartider</h3>
-        
+
         <div class="showtime-date">
           <h4>Mån 03 Februari</h4>
           <div class="showtime-card">
@@ -110,7 +108,7 @@
 
     <div class="movie-info">
       <h1>Oppenheimer</h1>
-      
+
       <div class="movie-meta">
         <p><strong>Genre:</strong> Drama, Biografi</p>
         <p><strong>Längd:</strong> 180 minuter</p>
@@ -123,7 +121,8 @@
           <div class="dropdown-header" onclick="toggleDropdown(this)">
             <div class="description-text">
               <h3>Om filmen</h3>
-              <p>Berättelsen om J. Robert Oppenheimer, den amerikanske fysikern som ledde utvecklingen av atombomben under andra världskriget och kämpade med de moraliska konsekvenserna av sin skapelse.</p>
+              <p>Berättelsen om J. Robert Oppenheimer, den amerikanske fysikern som ledde utvecklingen av atombomben
+                under andra världskriget och kämpade med de moraliska konsekvenserna av sin skapelse.</p>
             </div>
             <span class="dropdown-menu">⋯</span>
           </div>
@@ -155,44 +154,45 @@
   </section>
 
   <footer class="site-footer">
-  <div class="footer-grid">
+    <div class="footer-grid">
 
-    <div class="footer-section">
-      <h4>Kvarter Bion</h4>
-      <p>
-        Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
-        Filmupplevelser – precis som de ska vara.
-      </p>
+      <div class="footer-section">
+        <h4>Kvarter Bion</h4>
+        <p>
+          Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
+          Filmupplevelser – precis som de ska vara.
+        </p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Kontakt</h4>
+        <p>📍 Storgatan 12, 123 45 kvarterbion</p>
+        <p>📞 +467-0123456</p>
+        <p>✉️ info@kvarterbion.se</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Öppettider</h4>
+        <p>Mån–Fre: 16:00 – 23:00</p>
+        <p>Lör–Sön: 13:00 – 00:00</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Snabblänkar</h4>
+        <a href="../index.html">Start</a>
+        <a href="#">Kiosken</a>
+        <a href="#">Salonger</a>
+        <a href="#">Biljetter</a>
+        <a href="#">Om oss</a>
+      </div>
+
     </div>
 
-    <div class="footer-section">
-      <h4>Kontakt</h4>
-      <p>📍 Storgatan 12, 123 45 kvarterbion</p>
-      <p>📞 +467-0123456</p>
-      <p>✉️ info@kvarterbion.se</p>
+    <div class="footer-bottom">
+      <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
     </div>
-
-    <div class="footer-section">
-      <h4>Öppettider</h4>
-      <p>Mån–Fre: 16:00 – 23:00</p>
-      <p>Lör–Sön: 13:00 – 00:00</p>
-    </div>
-
-    <div class="footer-section">
-      <h4>Snabblänkar</h4>
-      <a href="../index.html">Start</a>
-      <a href="#">Kiosken</a>
-      <a href="#">Salonger</a>
-      <a href="#">Biljetter</a>
-      <a href="#">Om oss</a>
-    </div>
-
-  </div>
-
-  <div class="footer-bottom">
-    <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
-  </div>
-</footer>
+  </footer>
 
 </body>
+
 </html>
