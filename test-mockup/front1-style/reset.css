@@ -1,0 +1,19 @@
+/* Fil: Reset för startsidan. */
+/*
+    Reset:
+    - Tar bort standardmarginaler och standardutfyllnad som webbläsare lägger på element.
+    - Sätter box-sizing till border-box så att padding/border räknas in i elementets storlek.
+    - Sätter en gemensam basfont så att text ser likadan ut i alla webbläsare.
+    Resultat: layouten blir konsekvent och lättare att bygga vidare på.
+*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+ 
+/* Säkerställer att html sträcker sig hela höjden, behövs för 100vh-layouter. */
+html {
+    height: 100%;
+}

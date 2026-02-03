@@ -1,0 +1,139 @@
+/* Fil: Filmvy, poster och info för filmsidor. */
+.film-hero {
+    background: linear-gradient(rgba(0, 51, 0, 0.7), rgba(4, 15, 4, 0.9)),
+        url("https://via.placeholder.com/1200x400") center/cover;
+    padding: 4rem 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.poster-container {
+    flex: 1;
+    text-align: center;
+}
+
+.poster-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.poster-container button {
+    margin: 0.5rem;
+}
+
+.book-link {
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #004d00;
+    color: white;
+    text-decoration: none;
+    border: 1px solid #B8860B;
+    border-radius: 5px;
+}
+
+.book-link:hover {
+    background: #006400;
+}
+
+.seat {
+    padding: 5px;
+    background: #004d00;
+    color: white;
+    border: 1px solid #B8860B;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.seat:hover {
+    background: #006400;
+}
+
+/* Cinema */
+.cinema {
+    padding: 2rem;
+    text-align: center;
+    background: #003300;
+    border: 2px solid #B8860B;
+    border-radius: 10px;
+    margin: 1rem;
+}
+
+.cinema h3 {
+    color: #f4efef;
+    margin-bottom: 1rem;
+}
+
+.screen {
+    width: 40%;
+    height: 80px;
+    background: linear-gradient(to bottom, #000 0%, #333 50%, #000 100%);
+    color: white;
+    text-align: center;
+    line-height: 80px;
+    margin: 2rem auto;
+    border: 3px solid #B8860B;
+    border-radius: 10px 10px 50px 50px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+}
+
+.seats-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 5px;
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+.seat {
+    padding: 10px;
+    background: #004d00;
+    color: white;
+    border: 1px solid #B8860B;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.seat.selected {
+    background: #B8860B;
+}
+
+.seat.available:hover {
+    background: #006400;
+}
+
+.info {
+    flex: 2;
+    text-align: left;
+}
+
+.info h2 {
+    margin-bottom: 1rem;
+}
+
+.info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info li {
+    margin-bottom: 0.5rem;
+}
+
+.description {
+    margin-top: 1rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    /* Film hero */
+    .film-hero {
+        flex-direction: column;
+        padding: 2rem 1rem;
+    }
+}

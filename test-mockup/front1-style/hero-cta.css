@@ -1,0 +1,64 @@
+/* Fil: Hero-typografi och CTA-knapp. */
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #867e55;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+                 0 0 15px rgba(184, 134, 11, 0.4);
+}
+
+.hero p {
+    font-size: 1rem;
+    color: #B8860B;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6),
+                 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 0.5rem;
+}
+ 
+.hero button {
+    margin-top: 1.5rem;
+    padding: 0.75rem 2rem;
+    background: #083808;
+    border: 2px solid #B8860B;
+    border-radius: 25px;
+    color: #FFD700;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hero button:hover {
+    background: #086808;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+    /* Hero */
+    .hero {
+        padding: 2rem 1rem;
+    }
+
+    .hero h2 {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+    }
+
+    .hero p {
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+    }
+
+    .hero button {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}

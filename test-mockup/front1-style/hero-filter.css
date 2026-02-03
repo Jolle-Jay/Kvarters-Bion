@@ -1,0 +1,201 @@
+/* Fil: Hero och filtersektion för startsidan. */
+/* Hero */
+.hero {
+    background: linear-gradient(rgba(0, 51, 0, 0.7), rgba(4, 15, 4, 0.9)),
+        url("https://via.placeholder.com/1200x400") center/cover;
+    text-align: center;
+    padding: 4rem 2rem;
+    
+}
+
+.filter {
+    text-align: left;
+    padding: 1rem 2rem;
+    background: #061906;
+    border: 2px solid #5e460f;
+    border-radius: 10px;
+    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.filter h3 {
+    margin: 0;
+    color: #a98732;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-right: 0.8rem;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 220px;
+}
+
+.filter-item:nth-child(2) {
+    justify-content: center;
+    flex: 1.5;
+}
+
+.filter-item:last-child {
+    justify-content: flex-end;
+}
+
+.filter-dropdown,
+.filter-date {
+    min-width: 180px;
+    max-width: 220px;
+}
+
+@media (max-width: 550px) {
+    .filter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 1rem 1.5rem;
+    }
+    
+    .filter h3 {
+        margin: 0;
+        margin-right: 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .filter-item {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .filter-item:nth-child(2) {
+        justify-content: flex-start;
+    }
+    
+    .filter-dropdown,
+    .filter-date {
+        width: auto;
+        min-width: 120px;
+        max-width: 150px;
+        padding: 0.5rem 2rem 0.5rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .navbar button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+.filter-dropdown {
+    padding: 0.75rem 2.5rem 0.75rem 1.2rem;
+    background: #0a3d0a;
+    color: #b09708;
+    border: 2px solid #785b11;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23FFD700' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 0.8rem) center;
+    background-size: 12px 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    min-width: 150px;
+    max-width: 250px;
+    width: 100%;
+}
+
+.filter-dropdown:hover {
+    background-color: #045604;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23FFD700' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 0.8rem) center;
+    background-size: 12px 8px;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.filter-dropdown:focus {
+    outline: none;
+    border-color: #FFD700;
+}
+
+.filter-dropdown option {
+    background: #0d2c0d;
+    color: #FFD700;
+}
+
+.filter-dropdown option:hover {
+    background: #0b260b;
+    color: #FFD700;
+}
+
+.filter-dropdown option:checked {
+    background: #1a531a;
+    color: #FFD700;
+}
+
+.filter-date {
+    padding: 0.75rem 1.2rem;
+    background: #0a3d0a;
+    color: #b09708;
+    border: 2px solid #785b11;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Style the calendar picker if possible */
+.filter-date::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.2);
+    cursor: pointer;
+}
+
+/* Style selected date */
+.filter-date::-webkit-datetime-edit-fields-wrapper {
+    color: #b09708;
+}
+
+.filter-date:hover {
+    background-color: #045604;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.filter-date:focus {
+    outline: none;
+    border-color: #FFD700;
+}
+
+.filter button {
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #004d00;
+    color: rgb(10, 72, 19);
+    border: 1px solid #78590a;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.filter button:hover {
+    background: #006400;
+}
+
+@media (max-width: 768px) {
+    /* Filter buttons */
+    .filter button {
+        margin: 0.25rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}

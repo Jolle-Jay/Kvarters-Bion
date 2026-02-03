@@ -1,0 +1,34 @@
+/* Fil: Informationssektionen för kiosksidan. */
+/* Info: styling för informationssektionen på kiosksidan. */
+.info-section {
+    margin: 0 2rem 2rem;
+    padding: 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: #c3cac3;
+}
+
+/* Info-rubrik: stor rubrik med skugga. */
+.info-section h3 {
+    color: #a18f25;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 2.6rem;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.65);
+}
+
+/* Info-paragrafer: större läsbar text. */
+.info-section p {
+    margin-bottom: 0.8rem;
+    font-size: 1.5rem;
+    line-height: 1.6;
+}
+
+/* Mobil: minskar marginaler för info. */
+@media (max-width: 768px) {
+    .info-section {
+        margin: 1rem;
+    }
+}

@@ -1,3 +1,4 @@
+// Fil: Logik för startsidan (filter, karusell och UI-interaktioner).
 // Carousel hover effect
 const carouselImages = document.querySelectorAll('.carousel img');
 

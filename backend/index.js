@@ -1,3 +1,4 @@
+// Fil: Backend-serverlogik (API och serverstart).
 // A Node.js based start up for the C#-based backend
 // (integrates with React Rapide that starts the index.js file in backend)
 // Allows the backend to start running as we start the Vite dev server!

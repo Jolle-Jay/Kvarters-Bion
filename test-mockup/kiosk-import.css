@@ -1,0 +1,8 @@
+/* Fil: Samlar alla kiosk-stilar via @import. */
+@import url("kiosk-style/reset.css");
+@import url("kiosk-style/navbar.css");
+@import url("kiosk-style/kiosk-page.css");
+@import url("kiosk-style/info.css");
+@import url("kiosk-style/menu.css");
+
+

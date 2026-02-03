@@ -1,0 +1,40 @@
+/* Fil: Footer och informationsrutor på startsidan. */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: #000a00;
+    margin-top: auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+footer div {
+    margin: 1rem;
+}
+
+footer a {
+    color: #90ee90;
+    text-decoration: none;
+}
+
+.showtimes, .food {
+    padding: 2rem;
+    margin: 1rem 0;
+    background: #003300;
+    border: 2px solid #B8860B;
+    border-radius: 10px;
+    color: #90ee90;
+}
+
+.showtimes h3, .food h3 {
+    color: #f4efef;
+}
+
+@media (max-width: 768px) {
+    /* Footer */
+    footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

@@ -1,0 +1,130 @@
+/* Fil: Meny-stilar för kiosksidan. */
+/* Meny: layout och styling för kioskens menyer. */
+.menu {
+    margin: 0 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Övre meny: två rutor (barn/senior) sida vid sida. */
+.menu-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+/* Menytavla: grid för Dryck/Mat/Snacks. */
+.menu-board {
+    background: linear-gradient(135deg, rgba(0, 40, 0, 0.9), rgba(0, 20, 0, 0.95));
+    border: 2px solid #B8860B;
+    border-radius: 14px;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+
+/* Menygrupp-rubrik: sectionrubrik i menytavlan. */
+.menu-group h3 {
+    color: #FFD700;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}
+
+/* Menylista: staplad lista utan punkter. */
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+/* Menyitem: rad med produkt och pris. */
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px dashed rgba(184, 134, 11, 0.35);
+}
+
+/* Produktnamn i menyrad. */
+.menu-item strong {
+    color: #f1f1f1;
+    display: block;
+    font-size: 1rem;
+}
+
+/* Beskrivning i menyrad. */
+.menu-item span {
+    color: #c3cac3;
+    font-size: 0.85rem;
+}
+
+/* Pris i menyrad. */
+.menu-price {
+    color: #90ee90;
+    font-weight: bold;
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+/* Senior-meny: egen box med bakgrund och ram. */
+.menu-senior {
+    width: min(360px, 100%);
+    background: rgba(10, 25, 10, 0.7);
+    border: 2px solid #B8860B;
+    border-radius: 12px;
+    padding: 1.25rem;
+    order: 2;
+}
+
+/* Senior-rubrik. */
+.menu-senior h3 {
+    color: #FFD700;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}
+
+/* Barn-meny: egen box med bakgrund och ram. */
+.menu-child {
+    width: min(360px, 100%);
+    background: rgba(10, 25, 10, 0.7);
+    border: 2px solid #B8860B;
+    border-radius: 12px;
+    padding: 1.25rem;
+    order: 1;
+}
+
+/* Barn-rubrik. */
+.menu-child h3 {
+    color: #FFD700;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}
+
+/* Mobil: staplar menyer och minskar marginaler. */
+@media (max-width: 768px) {
+    .menu-senior {
+        width: 100%;
+    }
+
+    .menu-child {
+        width: 100%;
+    }
+
+    .menu {
+        margin: 1rem;
+    }
+}

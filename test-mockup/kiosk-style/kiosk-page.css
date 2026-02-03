@@ -1,0 +1,69 @@
+/* Fil: Sidlayout och hero för kiosksidan. */
+/* Kiosksida: bakgrund, färgtema och grundlayout. */
+body {
+    background-color: #584617;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg opacity='0.18' stroke='%23B8860B' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 70c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 110c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 150c40-30 100-30 140 0s100 30 140 0'/%3E%3Crect x='28' y='80' width='26' height='16'/%3E%3Crect x='28' y='122' width='26' height='16'/%3E%3Crect x='28' y='164' width='26' height='16'/%3E%3Crect x='266' y='80' width='26' height='16'/%3E%3Crect x='266' y='122' width='26' height='16'/%3E%3Crect x='266' y='164' width='26' height='16'/%3E%3Cpath d='M40 220c30-24 80-24 110 0s80 24 110 0'/%3E%3Cpath d='M40 260c30-24 80-24 110 0s80 24 110 0'/%3E%3Crect x='50' y='228' width='22' height='14'/%3E%3Crect x='50' y='266' width='22' height='14'/%3E%3Crect x='248' y='228' width='22' height='14'/%3E%3Crect x='248' y='266' width='22' height='14'/%3E%3Crect x='130' y='190' width='60' height='36' rx='6'/%3E%3Ccircle cx='148' cy='182' r='7'/%3E%3Ccircle cx='172' cy='182' r='7'/%3E%3Ccircle cx='160' cy='208' r='10'/%3E%3Crect x='192' y='198' width='12' height='16' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 320px 320px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Hero: stor bildyta med overlay och ram. */
+.hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+        url("../images/cookingImage.jpg") center/cover no-repeat;
+    border: 2px solid #B8860B;
+    border-radius: 10px;
+    margin: 1.5rem 2rem 2.5rem;
+}
+
+/* Varumärkesblock: titel och undertitel staplade. */
+.brand-block {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 1.2rem;
+}
+
+/* Varumärkestitel: stor, kraftig text med skugga. */
+.brand-title {
+    color: #98852c;
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+                 0 0 15px rgba(184, 134, 11, 0.4);
+}
+
+/* Undertitel: mindre, luftig text med versaler. */
+.brand-subtitle {
+    color: #B8860B;
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+}
+
+/* Sidfot: placering och färgtema. */
+footer {
+    margin-top: auto;
+    background: #0a1c0a;
+    text-align: center;
+    padding: 1rem;
+    border-top: 1px solid #B8860B;
+    color: #90ee90;
+}
+
+/* Mobil: minskar marginaler för hero. */
+@media (max-width: 768px) {
+    .hero {
+        margin: 1rem;
+    }
+}

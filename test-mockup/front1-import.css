@@ -1,0 +1,10 @@
+/* Fil: Samlar alla startsidans stilar via @import. */
+@import url("front1-style/reset.css");
+@import url("front1-style/base.css");
+@import url("front1-style/navbar.css");
+@import url("front1-style/hero-filter.css");
+@import url("front1-style/film.css");
+@import url("front1-style/hero-cta.css");
+@import url("front1-style/movies.css");
+@import url("front1-style/carousel.css");
+@import url("front1-style/footer.css");

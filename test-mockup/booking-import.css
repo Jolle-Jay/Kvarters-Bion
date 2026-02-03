@@ -1,0 +1,5 @@
+/* Fil: Samlar alla bokningssidans stilar via @import. */
+@import url("booking-style/reset.css");
+@import url("booking-style/navbar.css");
+@import url("booking-style/booking-page.css");
+@import url("booking-style/seats.css");
