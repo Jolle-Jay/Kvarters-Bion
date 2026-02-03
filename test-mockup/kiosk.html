@@ -8,77 +8,232 @@
 </head>
 <body>
   <header class="navbar">
-    <h1 class="logo">Kvarter Bion</h1>
+    <a class="logo" href="index.html">Kvarter Bion</a>
     <nav>
-      <a href="index.html" class="back-link" aria-label="Tillbaka till hem">←</a>
       <a href="kiosk.html">Kiosken</a>
       <a href="#">Lilla Salongen</a>
       <a href="#">Stora Salongen</a>
-      <a href="#">👤</a>
+      <a href="#" class="nav-profile">👤</a>
     </nav>
   </header>
 
   <section class="hero">
-    <h2>Kiosken</h2>
-    <p>Bar & snacks – se vad som erbjuds</p>
+    <div class="brand-block">
+      <h2 class="brand-title">Kvarter Bion</h2>
+      <p class="brand-subtitle">Mat ᆞSnacks ᆞ Dryck</p>
+    </div>
+  </section>
+
+  <section class="info-section">
+    <h3>Mat och dryck på biografen</h3>
+    <p>
+      Hos Kvarter Bion hittar du något för alla. Välj mellan snacks som popcorn, chips,
+      godis och choklad, eller mättande favoriter som nachos, pizza, hamburgare,
+      ostbricka och sandwich. För barn finns mindre menyval och för seniorer
+      lättare alternativ.
+      <br>
+      Till dryck erbjuder vi läsk, vatten, kolsyrat vatten, energidryck samt öl och vin.
+      Kombinera gärna med våra menyer för en smidig filmupplevelse.
+    </p>
   </section>
 
   <main class="menu">
-    <section class="menu-section">
-      <h3>Drycker</h3>
-      <div class="menu-grid">
-        <article class="menu-card">
-          <h4>Läsk</h4>
-          <p>Coca‑Cola, Fanta, Sprite</p>
-          <span class="price">35 kr</span>
-        </article>
-        <article class="menu-card">
-          <h4>Vatten</h4>
-          <p>Still eller kolsyrat</p>
-          <span class="price">25 kr</span>
-        </article>
-        <article class="menu-card">
-          <h4>Iskaffe</h4>
-          <p>Vanilj eller caramel</p>
-          <span class="price">45 kr</span>
-        </article>
+    <div class="menu-top">
+      <div class="menu-child">
+        <h3>MENY – Barn</h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <div>
+              <strong>Mini‑meny</strong>
+              <span>Popcorn + liten läsk</span>
+            </div>
+            <span class="menu-price">49 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Godispåse</strong>
+              <span>Plockgodis</span>
+            </div>
+            <span class="menu-price">39 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Frukt & vatten</strong>
+              <span>Äpple + vatten</span>
+            </div>
+            <span class="menu-price">35 kr</span>
+          </li>
+        </ul>
       </div>
-    </section>
 
-    <section class="menu-section">
-      <h3>Snacks</h3>
-      <div class="menu-grid">
-        <article class="menu-card">
-          <h4>Popcorn</h4>
-          <p>Små, mellan, stora</p>
-          <span class="price">35–65 kr</span>
-        </article>
-        <article class="menu-card">
-          <h4>Nachos</h4>
-          <p>Med salsa & ost</p>
-          <span class="price">59 kr</span>
-        </article>
-        <article class="menu-card">
-          <h4>Godis</h4>
-          <p>Plockgodis eller choklad</p>
-          <span class="price">29–49 kr</span>
-        </article>
+      <div class="menu-senior">
+        <h3>MENY – Senior</h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <div>
+              <strong>Kaffe & kaka</strong>
+              <span>Bryggkaffe + småkaka</span>
+            </div>
+            <span class="menu-price">45 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Lätt‑meny</strong>
+              <span>Liten popcorn + vatten</span>
+            </div>
+            <span class="menu-price">49 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Te‑paket</strong>
+              <span>Te + chokladbit</span>
+            </div>
+            <span class="menu-price">39 kr</span>
+          </li>
+        </ul>
       </div>
-    </section>
+    </div>
 
-    <section class="menu-section">
-      <h3>Meny‑tips</h3>
-      <div class="menu-grid">
-        <article class="menu-card highlight">
-          <h4>Filmkvälls‑paket</h4>
-          <p>Stor popcorn + läsk</p>
-          <span class="price">89 kr</span>
-        </article>
-        <article class="menu-card highlight">
-          <h4>Kombo deluxe</h4>
-          <p>Nachos + läsk</p>
-          <span class="price">95 kr</span>
-        </article>
+    <section class="menu-board">
+      <div class="menu-group">
+        <h3>MENY – Dryck</h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <div>
+              <strong>Läsk</strong>
+              <span>Olika smaker</span>
+            </div>
+            <span class="menu-price">29 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Vatten</strong>
+            </div>
+            <span class="menu-price">10 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Kolsyrat Vatten</strong>
+            </div>
+            <span class="menu-price">12 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Vin</strong>
+              <span>Rött eller vitt</span>
+            </div>
+            <span class="menu-price">59 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Öl</strong>
+            </div>
+            <span class="menu-price">59 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Energi dryck</strong>
+              <span>Olika smaker</span>
+            </div>
+            <span class="menu-price">29 kr</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="menu-group">
+        <h3>MENY – Mat</h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <div>
+              <strong>Nachos</strong>
+              <span>Med salsa & ost</span>
+            </div>
+            <span class="menu-price">79 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Pizza</strong>
+              <span>Slice av margherita</span>
+            </div>
+            <span class="menu-price">85 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Hamburgare</strong>
+              <span>Med ost & dressing</span>
+            </div>
+            <span class="menu-price">95 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Ostbricka</strong>
+              <span>Utvald ost & kex</span>
+            </div>
+            <span class="menu-price">89 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Sandwich</strong>
+              <span>Kyckling eller vego</span>
+            </div>
+            <span class="menu-price">75 kr</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="menu-group">
+        <h3>MENY – Snacks</h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <div>
+              <strong>Baconchips</strong>
+              <span>Krispiga baconchips</span>
+            </div>
+            <span class="menu-price">35 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Popcorn</strong>
+              <span>Saltade</span>
+            </div>
+            <span class="menu-price">35 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Smöriga popcorn</strong>
+              <span>Extra smör</span>
+            </div>
+            <span class="menu-price">45 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Godis</strong>
+              <span>Plockgodis</span>
+            </div>
+            <span class="menu-price">29 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Choklad</strong>
+              <span>Mjölk eller mörk</span>
+            </div>
+            <span class="menu-price">25 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Klubbor</strong>
+              <span>Fruktmix</span>
+            </div>
+            <span class="menu-price">15 kr</span>
+          </li>
+          <li class="menu-item">
+            <div>
+              <strong>Chips</strong>
+              <span>Olika smaker</span>
+            </div>
+            <span class="menu-price">30 kr</span>
+          </li>
+        </ul>
       </div>
     </section>
   </main>

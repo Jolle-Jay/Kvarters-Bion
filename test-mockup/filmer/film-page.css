@@ -41,48 +41,69 @@ body {
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
                  0 0 15px rgba(184, 134, 11, 0.4);
-    margin-left: 48px;
+    margin-left: 24px;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .navbar nav {
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
+    align-items: center;
 }
 
-.navbar a {
-    color: #90ee90;
+.navbar nav a {
+    color: #f9f9f6;
     text-decoration: none;
-    font-weight: bold;
-    padding: 0.6rem 1.2rem;
-    background: #0a3d0a;
+    font-weight: 700;
+    background: linear-gradient(180deg, #114511 0%, #0b2e0b 100%);
     border: 2px solid #B8860B;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 0.55rem 1.1rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 130px;
+    text-align: center;
 }
 
-.navbar a:hover {
+.navbar nav a:hover {
     background: #086808;
+    color: #FFD700;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-.navbar a.back-link {
-    position: absolute;
-    left: 12px;
-    top: 12px;
-    width: 36px;
-    height: 36px;
+.navbar nav a:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.navbar nav a:focus-visible {
+    outline: 2px solid #FFD700;
+    outline-offset: 2px;
+}
+
+.navbar nav a.nav-profile {
+    background: transparent;
+    border: 2px solid #B8860B;
+    box-shadow: none;
     padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    font-size: 1.3rem;
-    font-weight: 900;
-    color: #76ab79;
-    background: #0f2f0f;
-    line-height: 1;
+    min-width: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.navbar nav a.nav-profile:hover {
+    background: #086808;
+    color: #FFD700;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Movie Detail Section */
