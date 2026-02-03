@@ -531,25 +531,6 @@ label[for="menu-toggle"] {
     color: #c3cac3;
     font-weight: bold;
 }
- 
-footer {
-    text-align: center;
-    padding: 1.5rem;
-    background: #000a00;
-    margin-top: auto;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-footer div {
-    margin: 1rem;
-}
-
-footer a {
-    color: #90ee90;
-    text-decoration: none;
-}
 
 .showtimes, .food {
     padding: 2rem;
@@ -720,7 +701,7 @@ footer a {
     }
 
     /* Footer */
-    footer {
+    footer:not(.site-footer) {
         flex-direction: column;
         gap: 0.5rem;
     }
@@ -736,3 +717,4 @@ footer a {
         height: 140px;
     }
 }
+
