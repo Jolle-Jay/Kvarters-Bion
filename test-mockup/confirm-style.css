@@ -1,81 +1,144 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
- 
-html {
-    height: 100%;
-}
- 
-body {
-    background-color: #012401;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg opacity='0.18' stroke='%23B8860B' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 70c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 110c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 150c40-30 100-30 140 0s100 30 140 0'/%3E%3Crect x='28' y='80' width='26' height='16'/%3E%3Crect x='28' y='122' width='26' height='16'/%3E%3Crect x='28' y='164' width='26' height='16'/%3E%3Crect x='266' y='80' width='26' height='16'/%3E%3Crect x='266' y='122' width='26' height='16'/%3E%3Crect x='266' y='164' width='26' height='16'/%3E%3Cpath d='M40 220c30-24 80-24 110 0s80 24 110 0'/%3E%3Cpath d='M40 260c30-24 80-24 110 0s80 24 110 0'/%3E%3Crect x='50' y='228' width='22' height='14'/%3E%3Crect x='50' y='266' width='22' height='14'/%3E%3Crect x='248' y='228' width='22' height='14'/%3E%3Crect x='248' y='266' width='22' height='14'/%3E%3Crect x='130' y='190' width='60' height='36' rx='6'/%3E%3Ccircle cx='148' cy='182' r='7'/%3E%3Ccircle cx='172' cy='182' r='7'/%3E%3Ccircle cx='160' cy='208' r='10'/%3E%3Crect x='192' y='198' width='12' height='16' rx='2'/%3E%3C/g%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 320px 320px;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
- 
-/* --- NAVBAR BAS (Desktop) --- */
-.navbar {
+.bookingMsg {
+    /* Box settings containting the text "Bookning Klar" */
     background: #0a1c0a;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
     align-items: center;
+    align-self: center;
     padding: 1rem 2rem;
     border: 1px solid #B8860B;
     border-radius: 10px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.ticket {
-    background: #0a1c0a;
-    display: flex;
-    background-image: url("ticketstub.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    align-self: center;
-    height: 26rem;
-    width: 56rem;
-    margin: 3rem;
-    border: 1px solid #B8860B;
-    border-radius: 10px;
-    top: 1;
-    z-index: 1000;
-}
-
-.ticketText {
-    color:#000a00;
     position: relative;
-    left: 5rem;
-    padding: 2rem;
-    font-size: 2rem;
-    line-height: 10px;
-}
- 
-.logo {
+    margin-top: min(2vw, 20px);
+    text-align: center;
+    top: 0;
+    z-index: 500;
+    height: 20vw;
+    max-height: 145px;
+    width: 92vw;
+    max-width: 600px;
+    /* Color and font settings for the text "Bookning Klar" */
     color: #716738;
-    font-size: 2rem;
+    font-size: min(4vw, 25px);
     font-weight: 900;
     letter-spacing: 2px;
     text-transform: uppercase;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 15px rgba(184, 134, 11, 0.4);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.8);
 }
 
-footer {
-    text-align: center;
-    padding: 1.5rem;
-    background: #000a00;
-    margin-top: auto;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.ticket {
+    /* Container for ticket image and corresponding data: Title, Seat, Time */
+    display: grid;
+    background-image: url("ticketstubG.webp");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    align-self: center;
+    align-items:center;
+    height: 40vw;
+    max-height: 435px;
+    width: 92vw;
+    max-width: 1000px;
+    margin-bottom: min(1vw, 1px);
+    position: relative;
+    /* box-shadow: 12px 8px 10px #000a00; */
+    z-index: 500;
 }
 
+.ticketC {
+    /* Container for ticket image and corresponding data: Title, Seat, Time */
+    display: grid;
+    background-image: url("ticketstubGcut.webp");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    align-self: center;
+    align-items: center;
+    height: 40vw;
+    max-height: 435px;
+    width: 92vw;
+    max-width: 1000px;
+    margin-bottom: min(1vw, 1px);
+    position: relative;
+    /* box-shadow: 12px 8px 10px #000a00; */
+    z-index: 500;
+}
+
+.ticketTextTitle {
+    /* Title text for the ticket being rendered on webpage */
+    color: #000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    top: 30%;
+    font-size: min(7vw, 70px);
+    max-block-size: 1em;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.ticketTextSeat {
+    /* Seat info text for the ticket being rendered on webpage */
+    color:#000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    bottom: 15%;
+    font-size: min(4vw, 40px);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.ticketTextTime {
+    /* Date and time info text for the ticket being rendered on webpage */
+    color: #000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    top: 25;
+    font-size: min(3vw, 30px);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.ticketTextTitleC {
+    /* Title text for the ticket being rendered on webpage */
+    color: #000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    top: 30%;
+    font-size: min(7vw, 70px);
+    max-block-size: 1em;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    max-width: 380px;
+}
+
+.ticketTextSeatC {
+    /* Seat info text for the ticket being rendered on webpage */
+    color: #000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    bottom: 15%;
+    font-size: min(4vw, 40px);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    max-width: 365px;
+}
+
+.ticketTextTimeC {
+    /* Date and time info text for the ticket being rendered on webpage */
+    color: #000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    top: 25;
+    font-size: min(3vw, 30px);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    max-width: 355px;
+}
