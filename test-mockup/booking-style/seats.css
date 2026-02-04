@@ -137,7 +137,7 @@
 
 /* Säte: grundform och utseende. */
 .seat {
-    width: 46px;
+    width: 20px;
     height: 46px;
     border: none;
     background: #d9d9d9;
@@ -151,23 +151,21 @@
     align-items: center;
     justify-content: center;
     padding: 0;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 3px 6px rgba(0, 0, 0, 0.3);
-    clip-path: polygon(
-        12% 0%, 88% 0%,
-        95% 5%, 95% 45%,
-        100% 50%, 100% 90%,
-        95% 100%, 5% 100%,
-        0% 90%, 0% 50%,
-        5% 45%, 5% 5%
-    );
+    clip-path: polygon(12% 0%, 88% 0%,
+            95% 5%, 95% 45%,
+            100% 50%, 100% 90%,
+            95% 100%, 5% 100%,
+            0% 90%, 0% 50%,
+            5% 45%, 5% 5%);
 }
 
 /* Hover-effekt för säte. */
 .seat:hover {
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 5px 10px rgba(0, 0, 0, 0.4);
 }
@@ -197,7 +195,7 @@
     background: #b49e1f;
     color: #333;
     font-weight: bold;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 3px 6px rgba(218, 165, 32, 0.6);
 }
@@ -205,7 +203,7 @@
 /* Hover för VIP-säte. */
 .seat.vip:hover {
     background: #FFC700;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 5px 10px rgba(218, 165, 32, 0.8);
 }
@@ -221,7 +219,7 @@
     background: #85546c;
     color: #FFD700;
     font-weight: bold;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 3px 6px rgba(255, 105, 180, 0.5);
 }
@@ -229,7 +227,7 @@
 /* Hover för senior-säte. */
 .seat.elder:hover {
     background: #ff99cc;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 5px 10px rgba(255, 105, 180, 0.7);
 }
@@ -263,15 +261,22 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Mobil: mindre grid och säten. */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     .seats-grid {
-        grid-template-columns: repeat(6, 1fr);
+        gap: 3px !important;
+        padding: 5px !important;
+        grid-template-columns: 30px repeat(12, 1fr) 30px !important;
     }
 
     .seat {
-        width: 40px;
-        height: 40px;
-        font-size: 0.8rem;
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 0.5rem !important;
+        min-width: 22px !important;
+    }
+
+    .row-label {
+        font-size: 0.65rem !important;
+        width: 30px !important;
     }
 }

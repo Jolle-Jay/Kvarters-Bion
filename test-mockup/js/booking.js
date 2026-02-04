@@ -6,37 +6,39 @@ function generateSeats() {
   const seatsDiv = document.getElementById('seats');
   seatsDiv.innerHTML = '';
 
-  // 1. Här definierar vi vilken salong som ska ritas ut
   const currentSalong = {
     "name": "Stora Salongen",
     "seatsPerRow": [8, 9, 10, 10, 10, 10, 12, 12]
   };
 
-  // Hitta det största antalet säten för att veta hur bred gridden ska vara
   const maxSeats = Math.max(...currentSalong.seatsPerRow);
-  seatsDiv.style.setProperty('--max-cols', maxSeats + 2);
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-  // Dynamisk Grid: Max antal säten + 2 kolumner för radnummer på sidorna
   seatsDiv.style.display = 'grid';
+  // Don't set gridTemplateColumns - let CSS media queries handle it
 
-  // 2. Loopa igenom listan 'seatsPerRow'
+  if (isMobile) {
+    seatsDiv.style.setProperty('gap', '3px', 'important');
+    seatsDiv.style.setProperty('padding', '5px', 'important');
+  } else {
+    seatsDiv.style.gap = '0.5rem';
+    seatsDiv.style.padding = '0';
+  }
+
   currentSalong.seatsPerRow.forEach((numSeats, index) => {
     const row = index + 1;
 
-    // --- Vänster radnummer ---
     const leftLabel = document.createElement('div');
     leftLabel.className = 'row-label';
     leftLabel.textContent = row;
+
     seatsDiv.appendChild(leftLabel);
 
-    // Beräkna padding för att centrera rader som har färre säten än maxSeats
     const padding = (maxSeats - numSeats) / 2;
 
-    // --- Skapa säten för raden ---
     for (let col = 1; col <= numSeats; col++) {
       const seat = document.createElement('button');
 
-      // Din befintliga logik för VIP/Elder
       if (row === 5 && col >= 4 && col <= 7) {
         seat.className = 'seat vip';
       } else if (row === 3 && col >= 1 && col <= 3) {
@@ -45,8 +47,7 @@ function generateSeats() {
         seat.className = 'seat available';
       }
 
-      // CENTRERINGSLOGIK: 
-      // Om det är första sätet i raden, hoppa fram så många steg som 'padding' anger
+      // Let CSS media queries handle responsive sizing
       if (col === 1) {
         seat.style.gridColumnStart = Math.floor(padding) + 2;
       }
@@ -58,16 +59,17 @@ function generateSeats() {
       seatsDiv.appendChild(seat);
     }
 
-    // --- Höger radnummer ---
     const rightLabel = document.createElement('div');
     rightLabel.className = 'row-label';
     rightLabel.textContent = row;
 
-    // Tvinga alltid ut höger label till sista kolumnen i gridden
     rightLabel.style.gridColumnStart = maxSeats + 2;
     seatsDiv.appendChild(rightLabel);
   });
 }
+
+// Re-generate seats when window is resized
+window.addEventListener('resize', generateSeats);
 
 function selectSeat(button, seatId) {
   const numPeople = parseInt(document.getElementById('numPeople').value);
@@ -119,3 +121,6 @@ window.addEventListener('DOMContentLoaded', () => {
     filmTitle.textContent = film;
   }
 });
+
+// Re-generate seats when window is resized
+window.addEventListener('resize', generateSeats);

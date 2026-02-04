@@ -7,10 +7,10 @@ carouselImages.forEach(img => {
         // Pause animation
         const carouselTrack = img.closest('.carousel-track');
         carouselTrack.style.animationPlayState = 'paused';
-        
+
         // Zoom in (scale up)
         img.style.transform = 'scale(1.15)';
-        
+
         // Darken other images
         carouselImages.forEach(otherImg => {
             if (otherImg !== img) {
@@ -23,10 +23,10 @@ carouselImages.forEach(img => {
         // Resume animation
         const carouselTrack = img.closest('.carousel-track');
         carouselTrack.style.animationPlayState = 'running';
-        
+
         // Reset zoom
         img.style.transform = 'scale(1)';
-        
+
         // Reset brightness on all images
         carouselImages.forEach(otherImg => {
             otherImg.style.filter = 'brightness(1)';
@@ -35,21 +35,21 @@ carouselImages.forEach(img => {
 });
 
 // Custom date picker for 2025 only
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.querySelector('.filter-date');
-    
+
     if (dateInput) {
         // Set default value to current month and date in 2025
         const today = new Date();
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
         dateInput.value = `2025-${month}-${day}`;
-        
-        dateInput.addEventListener('focus', function() {
+
+        dateInput.addEventListener('focus', function () {
             this.style.color = 'transparent';
         });
-        
-        dateInput.addEventListener('input', function() {
+
+        dateInput.addEventListener('input', function () {
             // Show the selected date immediately
             if (this.value) {
                 this.style.color = '#FFD700';
@@ -58,15 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
             dateFilterActive = Boolean(this.value);
             applyFilters();
         });
-        
-        dateInput.addEventListener('blur', function() {
+
+        dateInput.addEventListener('blur', function () {
             if (this.value) {
                 this.style.color = '#FFD700';
             }
         });
-        
+
         // Validate input to only allow 2025
-        dateInput.addEventListener('change', function() {
+        dateInput.addEventListener('change', function () {
             const date = new Date(this.value);
             if (date.getFullYear() !== 2025) {
                 this.value = '';
@@ -124,17 +124,21 @@ function applyFilters() {
     });
 }
 
-window.filterMovies = function(genre) {
+window.filterMovies = function (genre) {
     selectedGenre = genre;
     applyFilters();
 };
 
 // Toggle hamburger menu
-const hamburger = document.querySelector(".hamburger");
-const navLinks = document.querySelector(".nav-links");
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
 
-hamburger.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
+    if (hamburger && navLinks) {
+        hamburger.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+        });
+    }
 });
 
 

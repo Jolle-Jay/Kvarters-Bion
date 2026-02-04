@@ -177,6 +177,19 @@ button.hamburger {
     display: block;
   }
 
+  .hamburger {
+    display: none;
+    background: #0a3d0a;
+    color: #90ee90;
+    border: 2px solid #B8860B;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+
   /* Dölj menyn och tvinga den att ligga under navbaren när den fälls ut */
   .navbar nav {
     display: none;

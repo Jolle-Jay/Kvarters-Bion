@@ -71,7 +71,7 @@ footer {
 }
 
 /* Mobil: minskar rubrikstorlek. */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     .seats-grid {
         gap: 3px;
         padding: 5px;

@@ -59,7 +59,18 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 `;
   }
+
+  // Hamburger menu toggle
+  const hamburger = document.querySelector('.hamburger');
+  const nav = document.querySelector('.navbar nav');
+
+  if (hamburger && nav) {
+    hamburger.addEventListener('click', () => {
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    });
+  }
 });
+
 
 function logout() {
   localStorage.removeItem('isLoggedIn');
