@@ -128,8 +128,33 @@ function applyFilters() {
         const salongMatches = selectedsalong === 'alla' || cardSalong === selectedsalong;
 
         card.style.display = dateMatches && genreMatches && salongMatches ? 'block' : 'none';
+    });
 
+    updateMovieLinks();
+}
 
+function updateMovieLinks() {
+    const cards = document.querySelectorAll('.movie-card');
+    cards.forEach(card => {
+        if (!card.dataset.baseHref) {
+            card.dataset.baseHref = card.getAttribute('href') || '';
+        }
+
+        const baseHref = card.dataset.baseHref;
+        const cardSalong = card.querySelector('.salong')?.textContent?.trim() || '';
+        const salongToUse = selectedsalong === 'alla' ? cardSalong : selectedsalong;
+
+        const [path, query = ''] = baseHref.split('?');
+        const params = new URLSearchParams(query);
+
+        if (salongToUse && salongToUse !== 'alla') {
+            params.set('salong', salongToUse);
+        } else {
+            params.delete('salong');
+        }
+
+        const queryString = params.toString();
+        card.setAttribute('href', queryString ? `${path}?${queryString}` : path);
     });
 }
 
