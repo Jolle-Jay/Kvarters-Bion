@@ -74,8 +74,10 @@
       </div>
     </div>
     <h2>Upplev film på riktigt</h2>
-    <p>Premiärer • Klassiker • IMAX-känsla</p>
-    <button>Boka biljetter</button>
+    <div class="hero-sub">
+      <p>Premiärer • Klassiker • IMAX-känsla</p>
+      <span class="stars">★ ★ ★ ★ ★</span>
+    </div>
   </section>
 
   <section class="filter">
@@ -99,10 +101,10 @@
     </div>
     <div class="filter-item">
       <h3>Salong</h3>
-      <select name="salong" class="filter-dropdown" title="Välj salong">
+      <select name="salong" class="filter-dropdown" title="Välj salong" onchange="filterSalong(this.value)">
         <option value="alla">Alla</option>
-        <option value="lilla">Lilla salong</option>
-        <option value="stora">Stora salong</option>
+        <option value="Lilla Salongen">Lilla Salongen</option>
+        <option value="Stora Salongen">Stora Salongen</option>
       </select>
     </div>
   </section>
@@ -112,6 +114,7 @@
       <div class="poster"><img src="images/dune.jpg" alt="Dune: Part Two Poster"></div>
       <h3>Dune: Part Two</h3>
       <p>Science Fiction</p>
+      <p class="salong">Stora Salongen</p>
       <span>19:30</span>
     </a>
     <a href="filmer/oppenheimer.html" class="movie-card">
@@ -119,6 +122,7 @@
           alt="Oppenheimer Poster"></div>
       <h3>Oppenheimer</h3>
       <p>Drama</p>
+      <p class="salong">Stora Salongen</p>
       <span>20:00</span>
     </a>
 
@@ -127,6 +131,7 @@
           src="https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" alt="Inside Out 2 Poster"></div>
       <h3>Inside Out 2</h3>
       <p>Animerat</p>
+      <p class="salong">Lilla Salongen</p>
       <span>18:00</span>
     </a>
 
@@ -135,6 +140,7 @@
           src="https://image.tmdb.org/t/p/w300/p96dm7sCMn4VYAStA6siNz30G1r.jpg" alt="The Matrix Poster"></div>
       <h3>The Matrix</h3>
       <p>Science Fiction</p>
+      <p class="salong">Lilla Salongen</p>
       <span>21:00</span>
     </a>
 
@@ -143,6 +149,7 @@
           alt="Inception Poster"></div>
       <h3>Inception</h3>
       <p>Thriller</p>
+      <p class="salong">Stora Salongen</p>
       <span>19:45</span>
     </a>
 
@@ -151,6 +158,7 @@
           alt="Avatar Poster"></div>
       <h3>Avatar</h3>
       <p>Science Fiction</p>
+      <p class="salong">Stora Salongen</p>
       <span>20:30</span>
     </a>
 
@@ -159,6 +167,7 @@
           alt="Titanic Poster"></div>
       <h3>Titanic</h3>
       <p>Romance</p>
+      <p class="salong">Lilla Salongen</p>
       <span>18:30</span>
     </a>
 
@@ -167,6 +176,7 @@
           alt="Star Wars: A New Hope Poster"></div>
       <h3>Star Wars: A New Hope</h3>
       <p>Science Fiction</p>
+      <p class="salong">Lilla Salongen</p>
       <span>17:00</span>
     </a>
 
@@ -175,6 +185,7 @@
           src="https://image.tmdb.org/t/p/w300/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg" alt="Avengers: Endgame Poster"></div>
       <h3>Avengers: Endgame</h3>
       <p>Action</p>
+      <p class="salong">Stora Salongen</p>
       <span>22:00</span>
     </a>
 
@@ -184,6 +195,7 @@
       </div>
       <h3>The Shawshank Redemption</h3>
       <p>Drama</p>
+      <p class="salong">Lilla Salongen</p>
       <span>19:15</span>
     </a>
 
@@ -192,6 +204,7 @@
           alt="Jurassic Park Poster"></div>
       <h3>Jurassic Park</h3>
       <p>Adventure</p>
+      <p class="salong">Lilla Salongen</p>
       <span>20:45</span>
     </a>
   </main>

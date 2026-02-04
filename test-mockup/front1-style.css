@@ -155,6 +155,22 @@ body {
 
 }
 
+.hero-sub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-sub p {
+    margin-bottom: 2px;
+}
+
+.stars {
+    color: #B8860B;
+    letter-spacing: 4px;
+    font-size: 1.1rem;
+}
+
 .filter {
     text-align: left;
     padding: 1rem 2rem;

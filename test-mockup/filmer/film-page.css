@@ -41,7 +41,7 @@ body {
     letter-spacing: 2px;
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
+        0 0 15px rgba(184, 134, 11, 0.4);
     margin-left: 24px;
     text-decoration: none;
     display: inline-block;
