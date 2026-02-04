@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const userName = localStorage.getItem('userName') || 'Användare';
   const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
 
+
+
   const profileLoading = document.getElementById('profile-loading');
   profileLoading.remove();
 
@@ -24,11 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
 <strong>Biljettyp</strong>
 <p>Vuxen</p>
 </div>
-<div class="profile-info">
+<div class="profile-info-drop">
 <strong>Historik</strong>
 <p>Din historik</p>
 </div>
-<div class="profile-info">
+<div class="profile-info-drop">
 <strong>Avbokningar</strong>
 <p>Dina avbokningar</p>
 </div>
@@ -37,6 +39,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <button onclick="logout()" class="btn btn-logout">Logga ut</button>
 </div>
 `;
+
+    const dropDowns = document.querySelectorAll('.profile-info-drop');
+
+    dropDowns.forEach(function (dropdown) {
+      dropdown.addEventListener('click', function () {
+        this.classList.toggle('active');
+      });
+    });
   } else {
     profileContent.innerHTML = `
 <div class="not-logged-in">

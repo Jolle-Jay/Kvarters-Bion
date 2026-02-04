@@ -22,7 +22,35 @@
   border-radius: 5px;
 }
 
+.profile-info-drop p {
+  display: none;
+}
+
+.profile-info-drop.active p {
+  display: block;
+}
+
+.profile-info-drop {
+  cursor: pointer;
+}
+
+
+
+.profile-info-drop {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #012401;
+  border-left: 4px solid #B8860B;
+  border-radius: 5px;
+}
+
 .profile-info strong {
+  color: #FFD700;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.profile-info-drop strong {
   color: #FFD700;
   display: block;
   margin-bottom: 0.5rem;
