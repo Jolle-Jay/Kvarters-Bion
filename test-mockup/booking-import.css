@@ -1,5 +1,11 @@
 /* Fil: Samlar alla bokningssidans stilar via @import. */
-@import url("booking-style/reset.css");
-@import url("booking-style/navbar.css");
-@import url("booking-style/booking-page.css");
-@import url("booking-style/seats.css");
+/* Reset (grundinställningar). */
+@import url("booking-Big-style/reset.css");
+/* Navbar (toppmeny). */
+@import url("booking-Big-style/navbar.css");
+/* Sidlayout (hero, grundlayout). */
+@import url("booking-Big-style/booking-page.css");
+/* Biljettpaneler + sammanfattning. */
+@import url("booking-Big-style/tickets.css");
+/* Säteskarta och biosalong. */
+@import url("booking-Big-style/seats.css");
