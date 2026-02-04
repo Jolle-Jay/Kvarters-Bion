@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="booking-import.css" />
   <link rel="stylesheet" href="footer.css" />
   <link rel="stylesheet" href="salong-style.css" />
+  <link rel="stylesheet" href="aibubble.css" />
   <script>
     let selectedSeats = [];
     const urlParams = new URLSearchParams(window.location.search);
@@ -115,7 +116,7 @@
 
 <body>
 
-<header class="navbar">
+  <header class="navbar">
     <a class="logo" href="index.html">Kvarter Bion</a>
     <button class="hamburger" aria-label="Meny">☰</button>
     <nav class="nav-links">
@@ -166,31 +167,31 @@
     <button onclick="confirmBooking()">Bekräfta bokning</button>
   </section>
 
-<footer class="site-footer">
-  <div class="footer-grid">
+  <footer class="site-footer">
+    <div class="footer-grid">
 
-    <div class="footer-section">
-      <h4>Kvarter Bion</h4>
-      <p>
-        Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
-        Filmupplevelser – precis som de ska vara.
-      </p>
-    </div>
+      <div class="footer-section">
+        <h4>Kvarter Bion</h4>
+        <p>
+          Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
+          Filmupplevelser – precis som de ska vara.
+        </p>
+      </div>
 
-    <div class="footer-section">
-      <h4>Kontakt</h4>
-      <p>📍 Storgatan 12, 123 45 kvarterbion</p>
-      <p>📞 +467-0123456</p>
-      <p>✉️ info@kvarterbion.se</p>
-    </div>
+      <div class="footer-section">
+        <h4>Kontakt</h4>
+        <p>📍 Storgatan 12, 123 45 kvarterbion</p>
+        <p>📞 +467-0123456</p>
+        <p>✉️ info@kvarterbion.se</p>
+      </div>
 
-    <div class="footer-section">
-      <h4>Öppettider</h4>
-      <p>Mån–Fre: 16:00 – 23:00</p>
-      <p>Lör–Sön: 13:00 – 00:00</p>
-    </div>
+      <div class="footer-section">
+        <h4>Öppettider</h4>
+        <p>Mån–Fre: 16:00 – 23:00</p>
+        <p>Lör–Sön: 13:00 – 00:00</p>
+      </div>
 
-    <div class="footer-section">
+      <div class="footer-section">
         <h4>Snabblänkar</h4>
         <a href="index.html">Start</a>
         <a href="kiosk.html">Kiosken</a>
@@ -199,12 +200,12 @@
         <a href="profile.html">Profil</a>
       </div>
 
-  </div>
+    </div>
 
-  <div class="footer-bottom">
-    <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
-  </div>
-</footer>
+    <div class="footer-bottom">
+      <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
+    </div>
+  </footer>
 
   <script src="frontside.js"></script>
   <script>
@@ -216,6 +217,11 @@
       });
     });
   </script>
+
+  <a href="ai.html" class="chat-bubble" aria-label="Öppna AI-chat">
+    💬
+  </a>
+
 </body>
 
 </html>
