@@ -97,3 +97,48 @@
     font-size: min(3vw, 30px);
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
 }
+.ticketTextTitleC {
+    /* Title text for the ticket being rendered on webpage */
+    color: #000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    top: 30%;
+    font-size: min(7vw, 70px);
+    max-block-size: 1em;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    max-width: 380px;
+}
+
+.ticketTextSeatC {
+    /* Seat info text for the ticket being rendered on webpage */
+    color: #000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    bottom: 15%;
+    font-size: min(4vw, 40px);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    max-width: 365px;
+}
+
+.ticketTextTimeC {
+    /* Date and time info text for the ticket being rendered on webpage */
+    color: #000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    top: 25;
+    font-size: min(3vw, 30px);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    max-width: 355px;
+}
