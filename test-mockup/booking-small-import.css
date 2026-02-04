@@ -1,0 +1,11 @@
+/* Fil: Samlar alla bokningsstilar för lilla salongen. */
+/* Reset (grundinställningar). */
+@import url("booking-Small-style/reset.css");
+/* Navbar (toppmeny). */
+@import url("booking-Small-style/navbar.css");
+/* Sidlayout (hero, grundlayout). */
+@import url("booking-Small-style/booking-page.css");
+/* Biljettpaneler + sammanfattning. */
+@import url("booking-Small-style/tickets.css");
+/* Säteskarta och biosalong. */
+@import url("booking-Small-style/seats.css");

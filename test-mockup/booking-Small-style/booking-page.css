@@ -1,0 +1,62 @@
+/* Fil: Sidlayout och hero för bokningssidan. */
+/* Bokningssida: bakgrund, färgtema och grundlayout. */
+body {
+    background-color: #012401;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg opacity='0.18' stroke='%23B8860B' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 70c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 110c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 150c40-30 100-30 140 0s100 30 140 0'/%3E%3Crect x='28' y='80' width='26' height='16'/%3E%3Crect x='28' y='122' width='26' height='16'/%3E%3Crect x='28' y='164' width='26' height='16'/%3E%3Crect x='266' y='80' width='26' height='16'/%3E%3Crect x='266' y='122' width='26' height='16'/%3E%3Crect x='266' y='164' width='26' height='16'/%3E%3Cpath d='M40 220c30-24 80-24 110 0s80 24 110 0'/%3E%3Cpath d='M40 260c30-24 80-24 110 0s80 24 110 0'/%3E%3Crect x='50' y='228' width='22' height='14'/%3E%3Crect x='50' y='266' width='22' height='14'/%3E%3Crect x='248' y='228' width='22' height='14'/%3E%3Crect x='248' y='266' width='22' height='14'/%3E%3Crect x='130' y='190' width='60' height='36' rx='6'/%3E%3Ccircle cx='148' cy='182' r='7'/%3E%3Ccircle cx='172' cy='182' r='7'/%3E%3Ccircle cx='160' cy='208' r='10'/%3E%3Crect x='192' y='198' width='12' height='16' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 320px 320px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Hero: introsektion med rubrik, text och filter. */
+.hero {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #004d00 0%, #001a00 100%);
+    border: 2px solid #B8860B;
+    border-radius: 10px;
+    margin: 2rem;
+}
+
+/* Hero-rubrik. */
+.hero h2 {
+    font-size: 2.5rem;
+    color: #FFD700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+    margin-bottom: 1rem;
+}
+
+/* Hero-underrubrik (instruktionen under rubriken). */
+.hero p {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Dropdown-grupper under rubriken (antal personer/barn/vuxna/pensionärer). */
+.people-select {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+}
+
+/* Sidfot: placering och färgtema. */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: #000a00;
+    margin-top: auto;
+    color: #90ee90;
+}
+
+/* Mobil: minskar rubrikstorlek. */
+@media (max-width: 768px) {
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+}

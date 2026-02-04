@@ -1,32 +1,22 @@
 <!DOCTYPE html>
-
-<html lang="sv">
-
-
+<html lang="en">
 
 <head>
-
-  <meta charset="UTF-8" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Min Profil - KvartersBion</title>
-
-  <link rel="stylesheet" href="filmer/film-page.css" />
-  <link rel="stylesheet" href="footer.css" />
-  <link rel="stylesheet" href="css/profile.css" />
-  <link rel="stylesheet" href="salong-style.css" />
-  <link rel="stylesheet" href="aibubble.css" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KvartersBion</title>
+  <link rel="stylesheet" href="salong-style.css">
+  <link rel="stylesheet" href="footer.css">
+  <link rel="stylesheet" href="ai.css">
 </head>
 
-
-
 <body>
-
   <header class="navbar">
     <a class="logo" href="index.html">KvartersBion</a>
+
+    <!-- Hamburger -->
     <button class="hamburger" aria-label="Meny">☰</button>
+
     <nav class="nav-links">
       <a href="kiosk.html">Kiosken</a>
       <a href="lillaSalongen.html">Lilla Salongen</a>
@@ -34,15 +24,35 @@
       <a href="profile.html">👤</a>
     </nav>
   </header>
-  <main class="profile-container" id="profile-content">
-    <h2>Min Profil</h2>
-    <div id="profile-loading">Laddar profil...</div>
-  </main>
+
+
+  <div class="chat-wrapper">
+    <div class="chat">
+      <div class="chat-header">Chat</div>
+
+      <div class="chat-messages">
+        <div class="message bot">Hejsan! Du kan ställa mig vilken fråga du vill om biografen eller filmer som vi har.
+        </div>
+        <div class="message user">Hej! Vilken Starwars film är den bästa?</div>
+        <div class="message bot">Hmm... Det finns mycket spekulation kring det och vad internätt säger som jag håller
+          med om är att
+          revange of the sith är den absolut bästa filmen av Starwars serien.
+        </div>
+      </div>
+
+      <div class="chat-input">
+        <input type="text" placeholder="Skriv ett meddelande..." />
+        <button>Skicka</button>
+      </div>
+    </div>
+  </div>
+
 
 
 
   <footer class="site-footer">
     <div class="footer-grid">
+
       <div class="footer-section">
         <h4>Kvarter Bion</h4>
         <p>
@@ -80,10 +90,6 @@
     </div>
   </footer>
 
-  <script src="js/profile.js"></script>
-  <a href="ai.html" class="chat-bubble" aria-label="Öppna AI-chat">
-    💬
-  </a>
 
 </body>
 

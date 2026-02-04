@@ -1,0 +1,144 @@
+/* Biljettväljare + sammanfattning (layoutcontainer). */
+.ticket-layout {
+    display: flex;
+    gap: 6rem;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 0.2rem;
+}
+
+/* Panel: Välj antal biljetter (vänster panel). */
+.ticket-panel {
+    flex: 1;
+    min-width: 280px;
+    max-width: 460px;
+    background: #0b2e0b;
+    color: #f6f6f6;
+    border-radius: 18px;
+    padding: 0.8rem;
+    border: 2px solid #B8860B;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    text-align: left;
+}
+
+/* Rubrik i biljettpanelen. */
+.ticket-panel h3 {
+    margin-bottom: 0.6rem;
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+/* En rad per biljettkategori. */
+.ticket-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.45rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Tar bort översta linjen på första raden. */
+.ticket-row:first-of-type {
+    border-top: none;
+}
+
+/* Kategorinamnet (t.ex. Ordinarie). */
+.ticket-label strong {
+    display: block;
+    font-size: 1rem;
+}
+
+/* Beskrivning under kategorinamnet (rabatt/standard). */
+.ticket-note {
+    display: block;
+    color: #c7c7c7;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+}
+
+/* Plus/minus och räknare per kategori. */
+.ticket-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* Plus/minus-knappar. */
+.ticket-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #B8860B;
+    background: #f0f0f0;
+    color: #222;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* Avstängd knapp (när count = 0). */
+.ticket-btn[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Antalet valda biljetter per kategori. */
+.ticket-count {
+    min-width: 24px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* Panel: Sammanfattning (höger panel). */
+.ticket-summary {
+    flex: 0 0 240px;
+    background: #114511;
+    color: #f6f6f6;
+    border-radius: 18px;
+    padding: 1.4rem;
+    border: 2px solid #B8860B;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    text-align: left;
+    margin-left: 0;
+}
+
+/* Rubrik i sammanfattningen. */
+.ticket-summary h4 {
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+}
+
+/* En rad i sammanfattningen. */
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+}
+
+/* Summarad längst ner. */
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.9rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(184, 134, 11, 0.6);
+    font-weight: 700;
+}
+
+/* Mobil: staplar panelerna ovanpå varandra. */
+@media (max-width: 768px) {
+    .ticket-layout {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ticket-summary,
+    .ticket-panel {
+        width: 100%;
+        max-width: none;
+    }
+}
