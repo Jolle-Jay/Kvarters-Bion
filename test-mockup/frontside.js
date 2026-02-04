@@ -98,6 +98,7 @@ document.head.appendChild(style);
 let selectedGenre = 'alla';
 let selectedDate = '';
 let dateFilterActive = false;
+let selectedsalong = 'alla';
 
 const movieSchedule = {
     'Dune: Part Two': ['2025-02-03', '2025-02-04', '2025-02-08'],
@@ -118,14 +119,27 @@ function applyFilters() {
     cards.forEach(card => {
         const cardGenre = card.querySelector('p')?.textContent?.trim() || '';
         const title = card.querySelector('h3')?.textContent?.trim() || '';
+        const cardSalong = card.querySelector('.salong')?.textContent?.trim() || '';
+
         const dateMatches = !dateFilterActive || (movieSchedule[title] || []).includes(selectedDate);
+
         const genreMatches = selectedGenre === 'alla' || cardGenre === selectedGenre;
-        card.style.display = dateMatches && genreMatches ? 'block' : 'none';
+
+        const salongMatches = selectedsalong === 'alla' || cardSalong === selectedsalong;
+
+        card.style.display = dateMatches && genreMatches && salongMatches ? 'block' : 'none';
+
+
     });
 }
 
 window.filterMovies = function(genre) {
     selectedGenre = genre;
+    applyFilters();
+};
+
+window.filterSalong = function (salong) {
+    selectedsalong = salong;
     applyFilters();
 };
 
