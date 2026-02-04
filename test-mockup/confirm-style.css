@@ -1,10 +1,11 @@
 .ticket {
     display: grid;
-    background-image: url("ticketstubG.png");
+    background-image: url("ticketstubG.webp");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
     align-self: center;
+    align-items:center;
     height: 40vw;
     max-height: 435px;
     width: 92vw;
