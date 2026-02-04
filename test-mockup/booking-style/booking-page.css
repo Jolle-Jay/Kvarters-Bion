@@ -39,7 +39,7 @@ body {
     letter-spacing: 3px;
     text-transform: uppercase;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6),
-                 0 4px 8px rgba(0, 0, 0, 0.5);
+        0 4px 8px rgba(0, 0, 0, 0.5);
     margin-bottom: 1.5rem;
 }
 
@@ -72,6 +72,29 @@ footer {
 
 /* Mobil: minskar rubrikstorlek. */
 @media (max-width: 768px) {
+    .seats-grid {
+        gap: 3px;
+        padding: 5px;
+        grid-template-columns: repeat(var(--max-cols, 14), 1fr);
+    }
+
+    .seat {
+        width: 25px;
+        height: 25px;
+        font-size: 0.6rem;
+        min-width: 25px;
+    }
+
+    .row-label {
+        font-size: 0.7rem;
+        width: 20px;
+    }
+
+    .screen {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+
     .hero h2 {
         font-size: 1.8rem;
     }

@@ -131,6 +131,10 @@ label[for="menu-toggle"] {
   display: none;
 }
 
+button.hamburger {
+  display: none;
+}
+
 @media (max-width: 768px) {
 
   /* Navbar mobile improvements */
@@ -147,6 +151,10 @@ label[for="menu-toggle"] {
 
   /* Visa hamburgaren */
   label[for="menu-toggle"] {
+    display: block;
+  }
+
+  button.hamburger {
     display: block;
   }
 

@@ -83,7 +83,7 @@
   position: fixed;
   left: 12px;
   top: 12px;
-  width: 36px;
+  width: 360px;
   height: 36px;
   padding: 0;
   display: inline-flex;
@@ -93,6 +93,7 @@
   font-size: 1.2rem;
   line-height: 1;
   z-index: 1001;
+  display: none;
 }
 
 
@@ -137,14 +138,16 @@
   color: #FFD700;
 }
 
-/* Hide hamburger menu and checkbox on profile page */
+/* Hamburger menu hidden by default on desktop */
 #menu-toggle {
   display: none;
 }
 
-label[for="menu-toggle"] {
+button.hamburger {
   display: none;
 }
+
+
 
 @media (max-width: 768px) {
 
@@ -167,6 +170,10 @@ label[for="menu-toggle"] {
 
   /* Visa hamburgaren */
   label[for="menu-toggle"] {
+    display: block;
+  }
+
+  button.hamburger {
     display: block;
   }
 

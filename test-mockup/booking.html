@@ -9,113 +9,11 @@
   <link rel="stylesheet" href="booking-import.css" />
   <link rel="stylesheet" href="footer.css" />
   <link rel="stylesheet" href="salong-style.css" />
-  <script>
-    let selectedSeats = [];
-    const urlParams = new URLSearchParams(window.location.search);
-    const film = urlParams.get('film') || 'Okänd film';
-
-    function generateSeats() {
-      const seatsDiv = document.getElementById('seats');
-      seatsDiv.innerHTML = '';
-
-      // 1. Här definierar vi vilken salong som ska ritas ut
-      const currentSalong = {
-        "name": "Stora Salongen",
-        "seatsPerRow": [8, 9, 10, 10, 10, 10, 12, 12]
-      };
-
-      // Hitta det största antalet säten för att veta hur bred gridden ska vara
-      const maxSeats = Math.max(...currentSalong.seatsPerRow);
-
-      // Dynamisk Grid: Max antal säten + 2 kolumner för radnummer på sidorna
-      seatsDiv.style.display = 'grid';
-      seatsDiv.style.gridTemplateColumns = `repeat(${maxSeats + 2}, 1fr)`;
-
-      // 2. Loopa igenom listan 'seatsPerRow'
-      currentSalong.seatsPerRow.forEach((numSeats, index) => {
-        const row = index + 1;
-
-        // --- Vänster radnummer ---
-        const leftLabel = document.createElement('div');
-        leftLabel.className = 'row-label';
-        leftLabel.textContent = row;
-        seatsDiv.appendChild(leftLabel);
-
-        // Beräkna padding för att centrera rader som har färre säten än maxSeats
-        const padding = (maxSeats - numSeats) / 2;
-
-        // --- Skapa säten för raden ---
-        for (let col = 1; col <= numSeats; col++) {
-          const seat = document.createElement('button');
-
-          // Din befintliga logik för VIP/Elder
-          if (row === 5 && col >= 4 && col <= 7) {
-            seat.className = 'seat vip';
-          } else if (row === 3 && col >= 1 && col <= 3) {
-            seat.className = 'seat elder';
-          } else {
-            seat.className = 'seat available';
-          }
-
-          // CENTRERINGSLOGIK: 
-          // Om det är första sätet i raden, hoppa fram så många steg som 'padding' anger
-          if (col === 1) {
-            seat.style.gridColumnStart = Math.floor(padding) + 2;
-          }
-
-          seat.textContent = col;
-          seat.setAttribute('data-row', row);
-          seat.setAttribute('data-col', col);
-          seat.onclick = () => selectSeat(seat, `${row}-${col}`);
-          seatsDiv.appendChild(seat);
-        }
-
-        // --- Höger radnummer ---
-        const rightLabel = document.createElement('div');
-        rightLabel.className = 'row-label';
-        rightLabel.textContent = row;
-
-        // Tvinga alltid ut höger label till sista kolumnen i gridden
-        rightLabel.style.gridColumnStart = maxSeats + 2;
-        seatsDiv.appendChild(rightLabel);
-      });
-    }
-
-    function selectSeat(button, seatId) {
-      const numPeople = parseInt(document.getElementById('numPeople').value);
-      if (button.classList.contains('selected')) {
-        button.classList.remove('selected');
-        selectedSeats = selectedSeats.filter(s => s !== seatId);
-      } else if (selectedSeats.length < numPeople) {
-        button.classList.add('selected');
-        selectedSeats.push(seatId);
-      } else {
-        alert('Du har redan valt max antal platser.');
-      }
-    }
-
-    function confirmBooking() {
-      if (selectedSeats.length === 0) {
-        alert('Välj minst en plats.');
-        return;
-      }
-      // Mark selected seats as booked
-      const seatButtons = document.querySelectorAll('.seat.selected');
-      seatButtons.forEach(seat => {
-        seat.classList.remove('selected');
-        seat.classList.add('booked');
-      });
-      alert(`Bokning bekräftad för ${film}: ${selectedSeats.join(', ')}`);
-      selectedSeats = [];
-    }
-
-    window.onload = generateSeats;
-  </script>
 </head>
 
 <body>
 
-<header class="navbar">
+  <header class="navbar">
     <a class="logo" href="index.html">Kvarter Bion</a>
     <button class="hamburger" aria-label="Meny">☰</button>
     <nav class="nav-links">
@@ -128,7 +26,6 @@
 
   <section class="hero">
     <h2>Boka biljetter för: <span id="filmTitle"></span></h2>
-    <script>document.getElementById('filmTitle').textContent = film;</script>
     <p>Välj antal personer och platser.</p>
     <label for="numPeople">Antal personer:</label>
     <select id="numPeople">
@@ -166,31 +63,31 @@
     <button onclick="confirmBooking()">Bekräfta bokning</button>
   </section>
 
-<footer class="site-footer">
-  <div class="footer-grid">
+  <footer class="site-footer">
+    <div class="footer-grid">
 
-    <div class="footer-section">
-      <h4>Kvarter Bion</h4>
-      <p>
-        Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
-        Filmupplevelser – precis som de ska vara.
-      </p>
-    </div>
+      <div class="footer-section">
+        <h4>Kvarter Bion</h4>
+        <p>
+          Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
+          Filmupplevelser – precis som de ska vara.
+        </p>
+      </div>
 
-    <div class="footer-section">
-      <h4>Kontakt</h4>
-      <p>📍 Storgatan 12, 123 45 kvarterbion</p>
-      <p>📞 +467-0123456</p>
-      <p>✉️ info@kvarterbion.se</p>
-    </div>
+      <div class="footer-section">
+        <h4>Kontakt</h4>
+        <p>📍 Storgatan 12, 123 45 kvarterbion</p>
+        <p>📞 +467-0123456</p>
+        <p>✉️ info@kvarterbion.se</p>
+      </div>
 
-    <div class="footer-section">
-      <h4>Öppettider</h4>
-      <p>Mån–Fre: 16:00 – 23:00</p>
-      <p>Lör–Sön: 13:00 – 00:00</p>
-    </div>
+      <div class="footer-section">
+        <h4>Öppettider</h4>
+        <p>Mån–Fre: 16:00 – 23:00</p>
+        <p>Lör–Sön: 13:00 – 00:00</p>
+      </div>
 
-    <div class="footer-section">
+      <div class="footer-section">
         <h4>Snabblänkar</h4>
         <a href="index.html">Start</a>
         <a href="kiosk.html">Kiosken</a>
@@ -199,23 +96,15 @@
         <a href="profile.html">Profil</a>
       </div>
 
-  </div>
+    </div>
 
-  <div class="footer-bottom">
-    <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
-  </div>
-</footer>
+    <div class="footer-bottom">
+      <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
+    </div>
+  </footer>
 
   <script src="frontside.js"></script>
-  <script>
-    const navbarLinks = document.querySelectorAll('.navbar nav a');
-    navbarLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        navbarLinks.forEach(item => item.classList.remove('is-active'));
-        link.classList.add('is-active');
-      });
-    });
-  </script>
+  <script src="js/booking.js"></script>
 </body>
 
 </html>
