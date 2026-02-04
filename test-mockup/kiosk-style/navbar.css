@@ -1,5 +1,4 @@
-/* Fil: Navbar-stilar för kiosksidan. */
-/* Navbar: layout, färger och knappar i navigationsfältet. */
+/* Navbar */
 .navbar {
     background: #0a1c0a;
     display: flex;
@@ -12,7 +11,6 @@
     position: relative;
 }
 
-/* Logo-länk: typografi och placering. */
 .logo {
     color: #716738;
     font-size: 2rem;
@@ -20,20 +18,18 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
+        0 0 15px rgba(184, 134, 11, 0.4);
     margin-left: 24px;
     text-decoration: none;
     display: inline-block;
 }
 
-/* Nav-container: horisontell rad med mellanrum. */
 .navbar nav {
     display: flex;
     gap: 2rem;
     align-items: center;
 }
 
-/* Nav-länkar: knapputseende och grundlayout. */
 .navbar nav a {
     color: #f9f9f6;
     text-decoration: none;
@@ -51,7 +47,6 @@
     text-align: center;
 }
 
-/* Hover-effekt för nav-länkar. */
 .navbar nav a:hover {
     background: #086808;
     color: #FFD700;
@@ -59,54 +54,66 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Active-känsla vid klick. */
-.navbar nav a:active {
-    transform: translateY(0);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+/* Standard desktop */
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
 }
 
-/* Tydligt fokusläge för tangentbordsnavigering. */
-.navbar nav a:focus-visible {
-    outline: 2px solid #FFD700;
-    outline-offset: 2px;
-}
-
-/* Profilknapp: rund ikon utan vanlig knappbakgrund. */
-.navbar nav a.nav-profile {
-    background: transparent;
+/* Hamburger gömd på desktop */
+.hamburger {
+    display: none;
+    background: #0a3d0a;
+    color: #90ee90;
     border: 2px solid #B8860B;
-    box-shadow: none;
-    padding: 0;
-    min-width: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    transform: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Hover för profilknappen. */
-.navbar nav a.nav-profile:hover {
+.hamburger:hover {
     background: #086808;
-    color: #FFD700;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Mobil: stapla nav och justera marginaler. */
-@media (max-width: 768px) {
+/* ===== Mobil <1030px ===== */
+@media (max-width: 1030px) {
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -250px;
+        /* gömd utanför skärmen */
+        height: 100%;
+        width: 250px;
+        flex-direction: column;
+        gap: 2rem;
+        background: #0a1c0a;
+        padding: 4rem 1.5rem;
+        border-left: 2px solid #B8860B;
+        transition: right 0.3s ease;
+        z-index: 1000;
+    }
+
+    .nav-links.active {
+        right: 0;
+        /* visar menyn */
+    }
+
+    .hamburger {
+        display: block;
+        /* visas på mobil */
+    }
+
     .navbar {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
     }
 
-    .navbar nav {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .logo {
-        margin-left: 0;
+    .nav-links a {
+        font-size: 1.2rem;
     }
 }
