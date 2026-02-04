@@ -23,6 +23,8 @@ footer a {
     flex-direction: column;
     text-align: left;
     margin-top: auto;
+    position: relative;
+    z-index: 1;
 }
 
 .footer-grid {
@@ -67,6 +69,10 @@ footer a {
     text-align: center;
     font-size: 0.85rem;
     color: #9aa39a;
+}
+
+main {
+    flex: 1;
 }
 
 /* Footer – Mobile */
