@@ -34,16 +34,16 @@ carouselImages.forEach(img => {
     });
 });
 
-// Custom date picker for 2025 only
+// Custom date picker for 2026 only
 document.addEventListener('DOMContentLoaded', function() {
     const dateInput = document.querySelector('.filter-date');
     
     if (dateInput) {
-        // Set default value to current month and date in 2025
+        // Set default value to current month and date in 2026
         const today = new Date();
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
-        dateInput.value = `2025-${month}-${day}`;
+        dateInput.value = `2026-${month}-${day}`;
         
         dateInput.addEventListener('focus', function() {
             this.style.color = 'transparent';
@@ -65,13 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Validate input to only allow 2025
+        // Validate input to only allow 2026
         dateInput.addEventListener('change', function() {
             const date = new Date(this.value);
-            if (date.getFullYear() !== 2025) {
+            if (date.getFullYear() !== 2026) {
                 this.value = '';
                 this.style.color = 'transparent';
-                alert('Endast datum från 2025 är tillåtna');
+                alert('Endast datum från 2026 är tillåtna');
                 selectedDate = '';
                 dateFilterActive = false;
             } else {
@@ -101,17 +101,29 @@ let dateFilterActive = false;
 let selectedsalong = 'alla';
 
 const movieSchedule = {
-    'Dune: Part Two': ['2025-02-03', '2025-02-04', '2025-02-08'],
-    'Oppenheimer': ['2025-02-03', '2025-02-05', '2025-02-07'],
-    'Inside Out 2': ['2025-02-08', '2025-02-09'],
-    'The Matrix': ['2025-02-06', '2025-02-08'],
-    'Inception': ['2025-02-05', '2025-02-07'],
-    'Avatar': ['2025-02-04', '2025-02-06', '2025-02-09'],
-    'Titanic': ['2025-02-03', '2025-02-05', '2025-02-09'],
-    'Star Wars: A New Hope': ['2025-02-07', '2025-02-08'],
-    'Avengers: Endgame': ['2025-02-06', '2025-02-08'],
-    'The Shawshank Redemption': ['2025-02-03', '2025-02-05', '2025-02-09'],
-    'Jurassic Park': ['2025-02-04', '2025-02-08']
+    'Dune: Part Two': ['2026-02-03', '2026-02-04', '2026-02-08'],
+    'Oppenheimer': ['2026-02-03', '2026-02-05', '2026-02-07'],
+    'Inside Out 2': ['2026-02-08', '2026-02-09'],
+    'The Matrix': ['2026-02-06', '2026-02-08'],
+    'Inception': ['2026-02-05', '2026-02-07'],
+    'Avatar': ['2026-02-04', '2026-02-06', '2026-02-09'],
+    'Titanic': ['2026-02-03', '2026-02-05', '2026-02-09'],
+    'Star Wars: A New Hope': ['2026-02-07', '2026-02-08'],
+    'Avengers: Endgame': ['2026-02-06', '2026-02-08'],
+    'The Shawshank Redemption': ['2026-02-03', '2026-02-05', '2026-02-09'],
+    'Jurassic Park': ['2026-02-04', '2026-02-08'],
+    'Dune: Part Two': ['2026-03-03', '2026-03-04', '2026-03-08'],
+    'Oppenheimer': ['2026-03-03', '2026-03-05', '2026-03-07'],
+    'Inside Out 2': ['2026-03-08', '2026-03-09'],
+    'The Matrix': ['2026-03-06', '2026-03-08'],
+    'Inception': ['2026-03-05', '2026-03-07'],
+    'Avatar': ['2026-03-04', '2026-03-06', '2026-03-09'],
+    'Titanic': ['2026-03-03', '2026-03-05', '2026-03-09'],
+    'Star Wars: A New Hope': ['2026-03-07', '2026-03-08'],
+    'Avengers: Endgame': ['2026-03-06', '2026-03-08'],
+    'The Shawshank Redemption': ['2026-03-03', '2026-03-05', '2026-03-09'],
+    'Jurassic Park': ['2026-03-04', '2026-03-08']
+
 };
 
 function applyFilters() {
