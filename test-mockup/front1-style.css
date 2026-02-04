@@ -50,7 +50,7 @@ body {
 }
 
 .navbar a {
-    color: #90ee90;
+    color: #a98732;
     text-decoration: none;
     font-weight: bold;
     padding: 0.6rem 1.2rem;
@@ -92,7 +92,7 @@ body {
 .hamburger {
     display: none;
     background: #0a3d0a;
-    color: #90ee90;
+    color: #a98732;
     border: 2px solid #B8860B;
     border-radius: 8px;
     padding: 0.6rem 1.2rem;
@@ -572,7 +572,7 @@ body {
 .poster img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 6px;
     display: block;
 }
