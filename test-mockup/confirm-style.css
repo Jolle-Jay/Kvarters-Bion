@@ -1,6 +1,6 @@
 .ticket {
     display: grid;
-    background-image: url("ticketstub.png");
+    background-image: url("ticketstubG.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -9,30 +9,39 @@
     max-height: 435px;
     width: 92vw;
     max-width: 1000px;
-    margin-top: 2vw;
-    margin-bottom: 2vw;
+    margin-bottom: min(1vw, 1px);
     position: relative;
-    box-shadow: 12px 8px 10px #000a00;
+    /* box-shadow: 12px 8px 10px #000a00; */
     z-index: 500;
-}
-
-.ticketText {
-    color:#000a00;
-    position: relative;
-    text-align: left;
-    left: 8%;
-    top: 15%;
-    font-size: min(4vw, 40px);
 }
 
 .ticketTextTitle {
     color: #000a00;
     position: relative;
     text-align: left;
-    left: 8%;
-    top: 15%;
+    left: 14%;
+    top: 30%;
     font-size: min(7vw, 70px);
     max-block-size: 1em;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
 }
 
+.ticketTextSeat {
+    color:#000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    bottom: 15%;
+    font-size: min(4vw, 40px);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
 
+.ticketTextTime {
+    color: #000a00;
+    position: relative;
+    text-align: left;
+    left: 14%;
+    top: 25;
+    font-size: min(3vw, 30px);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
