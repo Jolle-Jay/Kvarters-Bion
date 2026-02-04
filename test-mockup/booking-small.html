@@ -5,11 +5,10 @@
   <!-- Fil: Bokningssida med säteskarta. -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boka biljetter - KvartersBion</title>
-  <link rel="stylesheet" href="booking-import.css" />
+  <title>Boka biljetter - Lilla Salongen</title>
+  <link rel="stylesheet" href="booking-small-import.css" />
   <link rel="stylesheet" href="footer.css" />
   <link rel="stylesheet" href="salong-style.css" />
-  <link rel="stylesheet" href="aibubble.css" />
   <script>
     // Håller valda platser.
     let selectedSeats = [];
@@ -103,10 +102,10 @@
       seatsDiv.innerHTML = '';
 
       // 1. Här definierar vi vilken salong som ska ritas ut
-      // Definierar rader och antal säten i Stora Salongen.
+      // Definierar rader och antal säten i Lilla Salongen.
       const currentSalong = {
-        "name": "Stora Salongen",
-        "seatsPerRow": [8, 9, 10, 10, 10, 10, 12, 12]
+        "name": "Lilla Salongen",
+        "seatsPerRow": [6, 8, 9, 10, 10, 12]
       };
 
       // Hitta det största antalet säten för att veta hur bred gridden ska vara
@@ -219,6 +218,7 @@
 
 <body>
 
+  <!-- Navbar -->
   <header class="navbar">
     <a class="logo" href="index.html">Kvarter Bion</a>
     <button class="hamburger" aria-label="Meny">☰</button>
@@ -234,70 +234,70 @@
   <section class="hero">
     <h2>Boka biljetter för: <span id="filmTitle"></span></h2>
     <script>document.getElementById('filmTitle').textContent = film;</script>
-    <p>Välj antal biljetter och platser.</p>
-    <div class="ticket-layout">
-      <!-- Panel: Välj antal biljetter -->
-      <div class="ticket-panel">
-        <h3>Välj antal biljetter</h3>
+      <p>Välj antal biljetter och platser.</p>
+      <div class="ticket-layout">
+        <!-- Panel: Välj antal biljetter -->
+        <div class="ticket-panel">
+          <h3>Välj antal biljetter</h3>
 
-        <div class="ticket-row">
-          <div class="ticket-label">
-            <strong>Ordinarie</strong>
-            <span class="ticket-note">Standard</span>
+          <div class="ticket-row">
+            <div class="ticket-label">
+              <strong>Ordinarie</strong>
+              <span class="ticket-note">Standard</span>
+            </div>
+            <div class="ticket-controls">
+              <button class="ticket-btn" data-type="adult" data-delta="-1">−</button>
+              <span class="ticket-count" id="countAdult">0</span>
+              <button class="ticket-btn" data-type="adult" data-delta="1">+</button>
+            </div>
           </div>
-          <div class="ticket-controls">
-            <button class="ticket-btn" data-type="adult" data-delta="-1">−</button>
-            <span class="ticket-count" id="countAdult">0</span>
-            <button class="ticket-btn" data-type="adult" data-delta="1">+</button>
+
+          <div class="ticket-row">
+            <div class="ticket-label">
+              <strong>Pensionär</strong>
+              <span class="ticket-note">10% rabatt</span>
+            </div>
+            <div class="ticket-controls">
+              <button class="ticket-btn" data-type="senior" data-delta="-1">−</button>
+              <span class="ticket-count" id="countSenior">0</span>
+              <button class="ticket-btn" data-type="senior" data-delta="1">+</button>
+            </div>
+          </div>
+
+          <div class="ticket-row">
+            <div class="ticket-label">
+              <strong>Barn (t.o.m 11 år)</strong>
+              <span class="ticket-note">20% rabatt</span>
+            </div>
+            <div class="ticket-controls">
+              <button class="ticket-btn" data-type="child" data-delta="-1">−</button>
+              <span class="ticket-count" id="countChild">0</span>
+              <button class="ticket-btn" data-type="child" data-delta="1">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="ticket-row">
-          <div class="ticket-label">
-            <strong>Pensionär</strong>
-            <span class="ticket-note">10% rabatt</span>
+        <!-- Panel: Sammanfattning -->
+        <aside class="ticket-summary">
+          <h4>Sammanfattning</h4>
+          <div class="summary-row">
+            <span>Ordinarie</span>
+            <span id="summaryAdult">0 × 0,00 kr</span>
           </div>
-          <div class="ticket-controls">
-            <button class="ticket-btn" data-type="senior" data-delta="-1">−</button>
-            <span class="ticket-count" id="countSenior">0</span>
-            <button class="ticket-btn" data-type="senior" data-delta="1">+</button>
+          <div class="summary-row">
+            <span>Pensionär</span>
+            <span id="summarySenior">0 × 0,00 kr</span>
           </div>
-        </div>
-
-        <div class="ticket-row">
-          <div class="ticket-label">
-            <strong>Barn (t.o.m 11 år)</strong>
-            <span class="ticket-note">20% rabatt</span>
+          <div class="summary-row">
+            <span>Barn</span>
+            <span id="summaryChild">0 × 0,00 kr</span>
           </div>
-          <div class="ticket-controls">
-            <button class="ticket-btn" data-type="child" data-delta="-1">−</button>
-            <span class="ticket-count" id="countChild">0</span>
-            <button class="ticket-btn" data-type="child" data-delta="1">+</button>
+          <div class="summary-total">
+            <span>Summa</span>
+            <span id="summaryTotal">0,00 kr</span>
           </div>
-        </div>
+        </aside>
       </div>
-
-      <!-- Panel: Sammanfattning -->
-      <aside class="ticket-summary">
-        <h4>Sammanfattning</h4>
-        <div class="summary-row">
-          <span>Ordinarie</span>
-          <span id="summaryAdult">0 × 0,00 kr</span>
-        </div>
-        <div class="summary-row">
-          <span>Pensionär</span>
-          <span id="summarySenior">0 × 0,00 kr</span>
-        </div>
-        <div class="summary-row">
-          <span>Barn</span>
-          <span id="summaryChild">0 × 0,00 kr</span>
-        </div>
-        <div class="summary-total">
-          <span>Summa</span>
-          <span id="summaryTotal">0,00 kr</span>
-        </div>
-      </aside>
-    </div>
   </section>
 
   <!-- Säteskarta -->
@@ -328,31 +328,31 @@
     <button onclick="confirmBooking()">Bekräfta bokning</button>
   </section>
 
-  <footer class="site-footer">
-    <div class="footer-grid">
+<footer class="site-footer">
+  <div class="footer-grid">
 
-      <div class="footer-section">
-        <h4>Kvarter Bion</h4>
-        <p>
-          Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
-          Filmupplevelser – precis som de ska vara.
-        </p>
-      </div>
+    <div class="footer-section">
+      <h4>Kvarter Bion</h4>
+      <p>
+        Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
+        Filmupplevelser – precis som de ska vara.
+      </p>
+    </div>
 
-      <div class="footer-section">
-        <h4>Kontakt</h4>
-        <p>📍 Storgatan 12, 123 45 kvarterbion</p>
-        <p>📞 +467-0123456</p>
-        <p>✉️ info@kvarterbion.se</p>
-      </div>
+    <div class="footer-section">
+      <h4>Kontakt</h4>
+      <p>📍 Storgatan 12, 123 45 kvarterbion</p>
+      <p>📞 +467-0123456</p>
+      <p>✉️ info@kvarterbion.se</p>
+    </div>
 
-      <div class="footer-section">
-        <h4>Öppettider</h4>
-        <p>Mån–Fre: 16:00 – 23:00</p>
-        <p>Lör–Sön: 13:00 – 00:00</p>
-      </div>
+    <div class="footer-section">
+      <h4>Öppettider</h4>
+      <p>Mån–Fre: 16:00 – 23:00</p>
+      <p>Lör–Sön: 13:00 – 00:00</p>
+    </div>
 
-      <div class="footer-section">
+    <div class="footer-section">
         <h4>Snabblänkar</h4>
         <a href="index.html">Start</a>
         <a href="kiosk.html">Kiosken</a>
@@ -361,12 +361,12 @@
         <a href="profile.html">Profil</a>
       </div>
 
-    </div>
+  </div>
 
-    <div class="footer-bottom">
-      <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
-    </div>
-  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Kvarter Bion · Alla rättigheter förbehållna</p>
+  </div>
+</footer>
 
   <script src="frontside.js"></script>
   <script>
@@ -378,11 +378,6 @@
       });
     });
   </script>
-
-  <a href="ai.html" class="chat-bubble" aria-label="Öppna AI-chat">
-    💬
-  </a>
-
 </body>
 
 </html>

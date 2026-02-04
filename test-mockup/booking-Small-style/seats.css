@@ -1,0 +1,277 @@
+/* Fil: Säteskarta och biosalong för bokningssidan. */
+/* Biosalong: layout och behållare för säteskarta. */
+.cinema {
+    margin: 2rem;
+    padding: 2rem;
+    background: #061906;
+    border: 2px solid #5e460f;
+    border-radius: 10px;
+}
+
+/* Rubrik i biosalongen. */
+.cinema h3 {
+    text-align: center;
+    color: #FFD700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+/* Header för salongen (rubrik + legend). */
+.cinema-header {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+/* Rubrikjustering i header. */
+.cinema-header h3 {
+    margin: 0;
+    text-align: center;
+}
+
+/* Legend: förklarar sätestyper. */
+.seat-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.5rem;
+    background: rgba(10, 25, 10, 0.5);
+    border: 2px solid #B8860B;
+    border-radius: 8px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* En rad i legend. */
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* Färgplatta i legend. */
+.legend-color {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Tillgängligt säte. */
+.legend-color.available {
+    background: #256e40;
+}
+
+/* Senior-säte. */
+.legend-color.elder {
+    background: #85546c;
+}
+
+/* VIP-säte. */
+.legend-color.vip {
+    background: #b49e1f;
+}
+
+/* Upptaget/ej tillgängligt. */
+.legend-color.unavailable {
+    background: #b11f1f;
+}
+
+/* Text i legend. */
+.legend-text {
+    color: #FFD700;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+/* Skärm: visuell markör för scen/skärm. */
+.screen {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    color: #FFD700;
+    text-align: center;
+    padding: 1rem;
+    margin: 1rem auto 2rem;
+    border: 3px solid #B8860B;
+    border-radius: 10px;
+    max-width: 600px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* Rutnät för säten. */
+.seats-grid {
+    display: grid;
+    grid-template-columns: 35px repeat(12, 1fr) 35px;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    align-items: center;
+    justify-items: center;
+}
+
+/* Radetiketter. */
+.row-label {
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Kolumnetiketter. */
+.col-label {
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+/* Tomma hörn (döljs). */
+.corner-label {
+    /* Empty corner cells */
+    visibility: hidden;
+}
+
+/* Säte: grundform och utseende. */
+.seat {
+    width: 46px;
+    height: 46px;
+    border: none;
+    background: #d9d9d9;
+    color: #333;
+    font-weight: bold;
+    font-size: 0.55rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 3px 6px rgba(0, 0, 0, 0.3);
+    clip-path: polygon(
+        12% 0%, 88% 0%,
+        95% 5%, 95% 45%,
+        100% 50%, 100% 90%,
+        95% 100%, 5% 100%,
+        0% 90%, 0% 50%,
+        5% 45%, 5% 5%
+    );
+}
+
+/* Hover-effekt för säte. */
+.seat:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Markerat säte. */
+.seat.selected {
+    background: #4a9fd8;
+    color: #fff;
+}
+
+/* Bokad plats. */
+.seat.booked {
+    background: #ac2a2a;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+/* Upptagen plats. */
+.seat.occupied {
+    background: #d4af37;
+    color: #333;
+    cursor: not-allowed;
+}
+
+/* VIP-säte. */
+.seat.vip {
+    background: #b49e1f;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 3px 6px rgba(218, 165, 32, 0.6);
+}
+
+/* Hover för VIP-säte. */
+.seat.vip:hover {
+    background: #FFC700;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 5px 10px rgba(218, 165, 32, 0.8);
+}
+
+/* Markerat VIP-säte. */
+.seat.vip.selected {
+    background: #B8860B;
+    color: #fff;
+}
+
+/* Senior-säte. */
+.seat.elder {
+    background: #85546c;
+    color: #FFD700;
+    font-weight: bold;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 3px 6px rgba(255, 105, 180, 0.5);
+}
+
+/* Hover för senior-säte. */
+.seat.elder:hover {
+    background: #ff99cc;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 5px 10px rgba(255, 105, 180, 0.7);
+}
+
+/* Markerat senior-säte. */
+.seat.elder.selected {
+    background: #ff69b4;
+    color: #fff;
+}
+
+/* Bokningsknapp. */
+.cinema button {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 1rem 3rem;
+    background: #0a3d0a;
+    color: #FFD700;
+    border: 2px solid #B8860B;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover för bokningsknapp. */
+.cinema button:hover {
+    background: #086808;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Mobil: mindre grid och säten. */
+@media (max-width: 768px) {
+    .seats-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .seat {
+        width: 40px;
+        height: 40px;
+        font-size: 0.8rem;
+    }
+}

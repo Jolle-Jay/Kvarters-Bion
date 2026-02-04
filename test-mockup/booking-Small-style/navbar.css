@@ -1,0 +1,115 @@
+/* Fil: Navbar-stilar för bokningssidan. */
+/* Navbar: layout, färger och knappar i navigationsfältet. */
+.navbar {
+    background: #0a1c0a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border: 1px solid #B8860B;
+    border-radius: 10px;
+}
+
+/* Logo-länk: typografi och placering. */
+.logo {
+    color: #716738;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+                 0 0 15px rgba(184, 134, 11, 0.4);
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Låser logofärgen i alla tillstånd. */
+.logo:visited,
+.logo:hover,
+.logo:active {
+    color: #716738;
+}
+
+/* Nav-container: horisontell rad med mellanrum. */
+.navbar nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+/* Nav-länkar: knapputseende och grundlayout. */
+.navbar nav a {
+    color: #f9f9f6;
+    text-decoration: none;
+    font-weight: 700;
+    background: linear-gradient(180deg, #114511 0%, #0b2e0b 100%);
+    border: 2px solid #B8860B;
+    border-radius: 10px;
+    padding: 0.55rem 1.1rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 130px;
+    text-align: center;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Hover-effekt för nav-länkar. */
+.navbar nav a:hover {
+    background: #086808;
+    color: #FFD700;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Active-känsla och markerad länk. */
+.navbar nav a:active,
+.navbar nav a.is-active {
+    transform: translateY(0);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Tydligt fokusläge för tangentbordsnavigering. */
+.navbar nav a:focus-visible {
+    outline: 2px solid #FFD700;
+    outline-offset: 2px;
+}
+
+/* Profilknapp: rund ikon utan vanlig knappbakgrund. */
+.navbar nav a.nav-profile {
+    background: transparent;
+    border: 2px solid #B8860B;
+    box-shadow: none;
+    padding: 0;
+    min-width: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+/* Hover för profilknappen. */
+.navbar nav a.nav-profile:hover {
+    background: #086808;
+    color: #FFD700;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Mobil: staplar nav och minskar mellanrum. */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .navbar nav {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

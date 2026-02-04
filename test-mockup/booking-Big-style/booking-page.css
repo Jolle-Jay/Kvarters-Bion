@@ -31,34 +31,18 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Hero-underrubrik. */
+/* Hero-underrubrik (instruktionen under rubriken). */
 .hero p {
-    font-size: 1rem;
-    color: #B8860B;
+    font-size: 1.25rem;
     font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6),
-                 0 4px 8px rgba(0, 0, 0, 0.5);
-    margin-bottom: 1.5rem;
 }
 
-/* Label för dropdown. */
-.hero label {
-    color: #FFD700;
-    font-weight: bold;
-    margin-right: 0.5rem;
-}
-
-/* Dropdown-styling. */
-.hero select {
-    padding: 0.5rem 1rem;
-    background: #0a3d0a;
-    color: #FFD700;
-    border: 2px solid #B8860B;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
+/* Dropdown-grupper under rubriken (antal personer/barn/vuxna/pensionärer). */
+.people-select {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
 }
 
 /* Sidfot: placering och färgtema. */
