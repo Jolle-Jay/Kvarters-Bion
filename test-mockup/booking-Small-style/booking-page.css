@@ -45,13 +45,16 @@ body {
     margin-top: 0.6rem;
 }
 
-/* Sidfot: placering och färgtema. */
-footer {
+button a{
+    color: #f9f9f6;
+    text-decoration: none;
+    font-weight: 700;
+    padding: 0.55rem 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 130px;
     text-align: center;
-    padding: 1.5rem;
-    background: #000a00;
-    margin-top: auto;
-    color: #90ee90;
 }
 
 /* Mobil: minskar rubrikstorlek. */
