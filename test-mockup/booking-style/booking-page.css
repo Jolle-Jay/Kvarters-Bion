@@ -11,6 +11,19 @@ body {
     min-height: 100vh;
 }
 
+/* Header: spans full width */
+header.navbar {
+    width: 100%;
+}
+
+/* Main content wrapper: center the hero and cinema sections */
+section.hero,
+section.cinema {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Hero: introsektion med rubrik, text och filter. */
 .hero {
     text-align: center;
@@ -68,34 +81,7 @@ footer {
     background: #000a00;
     margin-top: auto;
     color: #90ee90;
+    width: 100%;
 }
 
 /* Mobil: minskar rubrikstorlek. */
-@media (max-width: 800px) {
-    .seats-grid {
-        gap: 3px;
-        padding: 5px;
-        grid-template-columns: repeat(var(--max-cols, 14), 1fr);
-    }
-
-    .seat {
-        width: 25px;
-        height: 25px;
-        font-size: 0.6rem;
-        min-width: 25px;
-    }
-
-    .row-label {
-        font-size: 0.7rem;
-        width: 20px;
-    }
-
-    .screen {
-        font-size: 0.8rem;
-        padding: 8px;
-    }
-
-    .hero h2 {
-        font-size: 1.8rem;
-    }
-}

@@ -12,17 +12,20 @@ function generateSeats() {
   };
 
   const maxSeats = Math.max(...currentSalong.seatsPerRow);
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  // CHANGE TO 800px to match your CSS!
+  const isMobile = window.matchMedia('(max-width: 800px)').matches;
 
   seatsDiv.style.display = 'grid';
-  // Don't set gridTemplateColumns - let CSS media queries handle it
 
   if (isMobile) {
-    seatsDiv.style.setProperty('gap', '3px', 'important');
-    seatsDiv.style.setProperty('padding', '5px', 'important');
+    seatsDiv.style.setProperty('grid-template-columns', 'auto repeat(12, auto) auto', 'important');
+    seatsDiv.style.setProperty('width', 'fit-content', 'important');  // ← ADD THIS!
+    seatsDiv.style.setProperty('margin', '0 auto', 'important');      // ← ADD THIS!
+    seatsDiv.style.setProperty('gap', '2px', 'important');
+    seatsDiv.style.setProperty('padding', '3px', 'important');
   } else {
-    seatsDiv.style.gap = '0.5rem';
-    seatsDiv.style.padding = '0';
+    seatsDiv.style.gridTemplateColumns = `repeat(${maxSeats + 2}, 1fr)`;
   }
 
   currentSalong.seatsPerRow.forEach((numSeats, index) => {
@@ -31,6 +34,12 @@ function generateSeats() {
     const leftLabel = document.createElement('div');
     leftLabel.className = 'row-label';
     leftLabel.textContent = row;
+
+    // ADD MOBILE STYLES TO LABELS
+    if (isMobile) {
+      leftLabel.style.setProperty('font-size', '0.65rem', 'important');
+      leftLabel.style.setProperty('width', '20px', 'important');
+    }
 
     seatsDiv.appendChild(leftLabel);
 
@@ -47,7 +56,14 @@ function generateSeats() {
         seat.className = 'seat available';
       }
 
-      // Let CSS media queries handle responsive sizing
+      // ADD MOBILE STYLES TO SEATS
+      if (isMobile) {
+        seat.style.setProperty('width', '18px', 'important');
+        seat.style.setProperty('height', '18px', 'important');
+        seat.style.setProperty('font-size', '0.45rem', 'important');
+        seat.style.setProperty('min-width', '18px', 'important');
+      }
+
       if (col === 1) {
         seat.style.gridColumnStart = Math.floor(padding) + 2;
       }
@@ -62,6 +78,12 @@ function generateSeats() {
     const rightLabel = document.createElement('div');
     rightLabel.className = 'row-label';
     rightLabel.textContent = row;
+
+    // ADD MOBILE STYLES TO RIGHT LABELS
+    if (isMobile) {
+      rightLabel.style.setProperty('font-size', '0.65rem', 'important');
+      rightLabel.style.setProperty('width', '20px', 'important');
+    }
 
     rightLabel.style.gridColumnStart = maxSeats + 2;
     seatsDiv.appendChild(rightLabel);

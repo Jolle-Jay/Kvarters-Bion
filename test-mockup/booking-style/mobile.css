@@ -1,0 +1,43 @@
+/* Mobile styles - loads last, overrides everything */
+@media (max-width: 800px) {
+  body {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .cinema,
+  .hero,
+  .navbar,
+  footer {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .seats-grid {
+    grid-template-columns: auto repeat(12, auto) auto !important;
+    /* ← ADD THIS LINE! */
+    gap: 2px;
+    padding: 3px;
+    justify-content: center !important;
+    /* ← AND THIS LINE! */
+  }
+
+  .seat {
+    width: 16px !important;
+    height: 16px !important;
+    font-size: 0.4rem !important;
+    min-width: 16px !important;
+    max-width: 16px !important;
+  }
+
+  .row-label {
+    font-size: 0.6rem !important;
+    width: 18px !important;
+  }
+
+  .screen {
+    font-size: 0.7rem !important;
+    padding: 6px !important;
+  }
+}

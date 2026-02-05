@@ -272,36 +272,3 @@ footer {
   border-top: 1px solid #B8860B;
   color: #90ee90;
 }
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 800px) {
-  .cinema {
-    margin: 0.5rem !important;
-    padding: 0.5rem !important;
-    overflow-x: auto !important;
-  }
-
-  .seats-grid {
-    gap: 3px !important;
-    padding: 5px !important;
-    width: 100% !important;
-    overflow-x: auto !important;
-  }
-
-  .seat {
-    width: 22px !important;
-    height: 22px !important;
-    font-size: 0.5rem !important;
-    min-width: 22px !important;
-  }
-
-  .row-label {
-    font-size: 0.65rem !important;
-    width: 18px !important;
-  }
-
-  .screen {
-    font-size: 0.8rem !important;
-    padding: 8px !important;
-  }
-}

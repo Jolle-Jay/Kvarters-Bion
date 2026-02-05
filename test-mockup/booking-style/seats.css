@@ -260,23 +260,3 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
-
-@media (max-width: 800px) {
-    .seats-grid {
-        gap: 3px !important;
-        padding: 5px !important;
-        grid-template-columns: 30px repeat(12, 1fr) 30px !important;
-    }
-
-    .seat {
-        width: 22px !important;
-        height: 22px !important;
-        font-size: 0.5rem !important;
-        min-width: 22px !important;
-    }
-
-    .row-label {
-        font-size: 0.65rem !important;
-        width: 30px !important;
-    }
-}
