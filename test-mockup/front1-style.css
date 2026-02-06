@@ -52,7 +52,7 @@ body {
 }
 
 .navbar a {
-    color: #a98732;
+    color: white;
     text-decoration: none;
     font-weight: bold;
     padding: 0.6rem 1.2rem;
@@ -69,20 +69,6 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-.navbar a.back-link {
-    position: absolute;
-    left: 12px;
-    top: 12px;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    line-height: 1;
-}
 
 /* Standard desktop */
 .nav-links {
@@ -260,7 +246,7 @@ body {
 .filter-dropdown {
     padding: 0.75rem 2.5rem 0.75rem 1.2rem;
     background: #0a3d0a;
-    color: #b09708;
+    color: white;
     border: 2px solid #785b11;
     border-radius: 8px;
     font-size: 1rem;
@@ -294,23 +280,23 @@ body {
 
 .filter-dropdown option {
     background: #0d2c0d;
-    color: #FFD700;
+    color: white;
 }
 
 .filter-dropdown option:hover {
     background: #0b260b;
-    color: #FFD700;
+    color: white;
 }
 
 .filter-dropdown option:checked {
     background: #1a531a;
-    color: #FFD700;
+    color: white;
 }
 
 .filter-date {
     padding: 0.75rem 1.2rem;
     background: #0a3d0a;
-    color: #b09708;
+    color: white;
     border: 2px solid #785b11;
     border-radius: 8px;
     font-size: 1rem;
@@ -329,7 +315,7 @@ body {
 
 /* Style selected date */
 .filter-date::-webkit-datetime-edit-fields-wrapper {
-    color: #b09708;
+    color: white;
 }
 
 .filter-date:hover {
