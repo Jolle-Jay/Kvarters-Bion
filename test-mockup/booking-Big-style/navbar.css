@@ -8,6 +8,7 @@
     padding: 1rem 2rem;
     border: 1px solid #B8860B;
     border-radius: 10px;
+    border: none;
 }
 
 /* Logo-länk: typografi och placering. */
@@ -18,7 +19,7 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
+        0 0 15px rgba(184, 134, 11, 0.4);
     text-decoration: none;
     display: inline-block;
 }
@@ -43,7 +44,6 @@
     text-decoration: none;
     font-weight: 700;
     background: linear-gradient(180deg, #114511 0%, #0b2e0b 100%);
-    border: 2px solid #B8860B;
     border-radius: 10px;
     padding: 0.55rem 1.1rem;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);

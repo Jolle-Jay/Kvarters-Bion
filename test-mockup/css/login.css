@@ -122,7 +122,30 @@
   border-radius: 5px;
 }
 
+.hamburger {
+  display: none;
+  background: #0a3d0a;
+  color: #a98732;
+  border: 2px solid #B8860B;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.hamburger:hover {
+  background: #086808;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
 /* Hide hamburger menu and checkbox on login page */
+#menu-toggle:checked~.nav-links {
+  display: flex;
+}
+
 #menu-toggle {
   display: none;
 }
@@ -178,85 +201,87 @@ label[for="menu-toggle"] {
   }
 
   /* Gör länkarna tydliga i mobilmenyn */
-  .navbar nav a {
-    padding: 0.75rem 0.5rem;
-    width: 100%;
-    text-align: center;
-    border-bottom: 1px solid rgba(184, 134, 11, 0.2);
-    min-width: auto;
-    font-size: 0.9rem;
+  .nav-links a {
+    font-size: 1.2rem;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(184, 134, 11, 0.3) !important;
+    box-shadow: none !important;
   }
 
-  .navbar nav a.nav-profile {
-    width: auto;
-    border-bottom: none;
-    padding: 6px 0;
-    min-width: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar {
-    padding: 0.5rem 0.75rem;
+  .nav-links a:last-child {
+    border-bottom: none !important;
   }
 
-  .logo {
-    font-size: 1rem;
-    letter-spacing: 0;
+  .nav-links a:hover {
+    background: rgba(184, 134, 11, 0.15) !important;
   }
 
-  label[for="menu-toggle"] {
-    font-size: 24px;
-    padding: 0 4px;
+
+
+  @media (max-width: 480px) {
+    .navbar {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .logo {
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+
+    label[for="menu-toggle"] {
+      font-size: 24px;
+      padding: 0 4px;
+    }
+
+    .navbar nav {
+      padding: 0.75rem;
+      gap: 0.5rem;
+    }
+
+    .navbar nav a {
+      padding: 0.65rem 0.4rem;
+      font-size: 0.85rem;
+    }
   }
 
-  .navbar nav {
-    padding: 0.75rem;
-    gap: 0.5rem;
-  }
+  /* Mobile responsive styles */
+  @media (max-width: 768px) {
+    .login-container {
+      max-width: 100%;
+      margin: 100px 1rem 2rem;
+      padding: 1.5rem;
+    }
 
-  .navbar nav a {
-    padding: 0.65rem 0.4rem;
-    font-size: 0.85rem;
-  }
-}
+    .login-container h2 {
+      font-size: 1.5rem;
+    }
 
-/* Mobile responsive styles */
-@media (max-width: 768px) {
-  .login-container {
-    max-width: 100%;
-    margin: 100px 1rem 2rem;
-    padding: 1.5rem;
-  }
+    .form-group label {
+      font-size: 0.95rem;
+    }
 
-  .login-container h2 {
-    font-size: 1.5rem;
-  }
+    .form-group input {
+      padding: 0.65rem;
+      font-size: 1rem;
+    }
 
-  .form-group label {
-    font-size: 0.95rem;
-  }
+    .login-actions {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
 
-  .form-group input {
-    padding: 0.65rem;
-    font-size: 1rem;
-  }
+    .btn {
+      width: 100%;
+      text-align: center;
+      padding: 0.65rem 1rem;
+      font-size: 0.95rem;
+    }
 
-  .login-actions {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .btn {
-    width: 100%;
-    text-align: center;
-    padding: 0.65rem 1rem;
-    font-size: 0.95rem;
-  }
-
-  .error-message,
-  .success-message {
-    font-size: 0.9rem;
-    padding: 0.65rem;
+    .error-message,
+    .success-message {
+      font-size: 0.9rem;
+      padding: 0.65rem;
+    }
   }
 }

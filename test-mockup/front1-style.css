@@ -19,7 +19,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
- 
+
 /* Navbar */
 .navbar {
     background: #0a1c0a;
@@ -118,43 +118,7 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* ===== Mobil <1030px ===== */
-@media (max-width: 1030px) {
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -250px;
-        /* gömd utanför skärmen */
-        height: 100%;
-        width: 250px;
-        flex-direction: column;
-        gap: 2rem;
-        background: #0a1c0a;
-        padding: 4rem 1.5rem;
-        border-left: 2px solid #B8860B;
-        transition: right 0.3s ease;
-        z-index: 1000;
-    }
 
-    .nav-links.active {
-        right: 0;
-        /* visar menyn */
-    }
-
-    .hamburger {
-        display: block;
-        /* visas på mobil */
-    }
-
-    .navbar {
-        justify-content: space-between;
-        padding: 1rem 1.5rem;
-    }
-
-    .nav-links a {
-        font-size: 1.2rem;
-    }
-}
 
 /* Hero */
 .hero {
@@ -225,45 +189,7 @@ body {
     max-width: 220px;
 }
 
-@media (max-width: 550px) {
-    .filter {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.5rem;
-        padding: 1rem 1.5rem;
-    }
 
-    .filter h3 {
-        margin: 0;
-        margin-right: 0.8rem;
-        font-size: 0.85rem;
-    }
-
-    .filter-item {
-        flex: none;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .filter-item:nth-child(2) {
-        justify-content: flex-start;
-    }
-
-    .filter-dropdown,
-    .filter-date {
-        width: auto;
-        min-width: 120px;
-        max-width: 150px;
-        padding: 0.5rem 2rem 0.5rem 0.8rem;
-        font-size: 0.9rem;
-    }
-
-    .navbar button {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-    }
-}
 
 .filter-dropdown {
     padding: 0.75rem 2.5rem 0.75rem 1.2rem;
@@ -545,12 +471,7 @@ body {
     padding: 3rem;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 800px) {
-    .movies {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
+
 
 .movie-card {
     background: #011601;
@@ -796,5 +717,107 @@ body {
 
     .carousel img {
         height: 140px;
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 800px) {
+    .movies {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ===== Mobil <1030px ===== */
+@media (max-width: 1030px) {
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -250px;
+        /* gömd utanför skärmen */
+        height: 100%;
+        width: 250px;
+        flex-direction: column;
+        gap: 2rem;
+        background: #0a1c0a;
+        padding: 4rem 1.5rem;
+        border-left: 2px solid #B8860B;
+        transition: right 0.3s ease;
+        z-index: 1000;
+    }
+
+    .nav-links.active {
+        right: 0;
+        /* visar menyn */
+    }
+
+    .hamburger {
+        display: block;
+        /* visas på mobil */
+    }
+
+    .navbar {
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+    }
+
+    .nav-links a {
+        font-size: 1.2rem;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(184, 134, 11, 0.3) !important;
+        box-shadow: none !important;
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none !important;
+    }
+
+    .nav-links a:hover {
+        background: rgba(184, 134, 11, 0.15) !important;
+    }
+
+    .nav-links a.nav-profile {
+        justify-content: center !important;
+        width: 100%;
+    }
+}
+
+@media (max-width: 550px) {
+    .filter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .filter h3 {
+        margin: 0;
+        margin-right: 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .filter-item {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .filter-item:nth-child(2) {
+        justify-content: flex-start;
+    }
+
+    .filter-dropdown,
+    .filter-date {
+        width: auto;
+        min-width: 120px;
+        max-width: 150px;
+        padding: 0.5rem 2rem 0.5rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .navbar button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
     }
 }
