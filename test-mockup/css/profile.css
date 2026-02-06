@@ -157,6 +157,22 @@
   color: #FFD700;
 }
 
+.nav-links a {
+  font-size: 1.2rem;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(184, 134, 11, 0.3) !important;
+  box-shadow: none !important;
+}
+
+.nav-links a:last-child {
+  border-bottom: none !important;
+}
+
+.nav-links a:hover {
+  background: rgba(184, 134, 11, 0.15) !important;
+}
+
 
 /* Mobile responsive styles */
 @media (max-width: 768px) {

@@ -18,7 +18,7 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
+        0 0 15px rgba(184, 134, 11, 0.4);
     text-decoration: none;
     display: inline-block;
 }
@@ -35,6 +35,22 @@
     display: flex;
     gap: 2rem;
     align-items: center;
+}
+
+.nav-links a {
+    font-size: 1.2rem;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(184, 134, 11, 0.3) !important;
+    box-shadow: none !important;
+}
+
+.nav-links a:last-child {
+    border-bottom: none !important;
+}
+
+.nav-links a:hover {
+    background: rgba(184, 134, 11, 0.15) !important;
 }
 
 /* Nav-länkar: knapputseende och grundlayout. */

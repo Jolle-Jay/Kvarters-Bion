@@ -84,7 +84,6 @@
 }
 
 /* Hamburger gömd på desktop */
-/* Hamburger gömd på desktop */
 .hamburger {
     display: none;
     background: #0a3d0a;
@@ -96,6 +95,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
 }
 
 .hamburger:hover {
@@ -139,5 +139,17 @@
 
     .nav-links a {
         font-size: 1.2rem;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(184, 134, 11, 0.3) !important;
+        box-shadow: none !important;
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none !important;
+    }
+
+    .nav-links a:hover {
+        background: rgba(184, 134, 11, 0.15) !important;
     }
 }
