@@ -63,6 +63,28 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
+.navbar a.nav-profile {
+    background: transparent;
+    border: 2px solid #B8860B;
+    box-shadow: none;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar a.nav-profile .profile-icon {
+    width: 28px;
+    height: 28px;
+    display: block;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+
 .navbar a:hover {
     background: #086808;
     transform: translateY(-2px);

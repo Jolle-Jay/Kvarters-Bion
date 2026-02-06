@@ -88,9 +88,21 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transform: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
+
+.navbar nav a.nav-profile .profile-icon {
+    width: 28px;
+    height: 28px;
+    display: block;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
 
 /* Hover för profilknappen. */
 .navbar nav a.nav-profile:hover {
