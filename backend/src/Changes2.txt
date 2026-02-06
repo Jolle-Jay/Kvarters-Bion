@@ -38,10 +38,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "New Kids Turbo",
                       "Year": "2010",
                       "Rated": "N/A",
@@ -51,7 +51,7 @@ INSERT INTO movies (movies_raw) VALUES
                       "Director": "Steffen Haars, Flip Van der Kuil",
                       "Writer": "Steffen Haars, Flip Van der Kuil",
                       "Actors": "Huub Smit, Tim Haars, Wesley van Gaalen",
-                      "Plot": "Five friends from "Maaskantje" are getting fired because of the economic crisis. They decide that they won"t pay for anything anymore.",
+                      "Plot": "Five friends from Maaskantje are getting fired because of the economic crisis. They decide that they won´t pay for anything anymore.",
                       "Language": "Dutch",
                       "Country": "Netherlands, United States",
                       "Awards": "6 wins total",
@@ -72,10 +72,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Kopps",
                       "Year": "2003",
                       "Rated": "N/A",
@@ -106,10 +106,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Ready Player One",
                       "Year": "2018",
                       "Rated": "PG-13",
@@ -148,10 +148,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "The Notebook",
                       "Year": "2004",
                       "Rated": "PG-13",
@@ -190,10 +190,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Hamilton",
                       "Year": "2020",
                       "Rated": "PG-13",
@@ -203,7 +203,7 @@ INSERT INTO movies (movies_raw) VALUES
                       "Director": "Thomas Kail",
                       "Writer": "Lin-Manuel Miranda, Ron Chernow",
                       "Actors": "Lin-Manuel Miranda, Phillipa Soo, Leslie Odom Jr.",
-                      "Plot": "The real life of one of America"s foremost founding fathers and first Secretary of the Treasury, Alexander Hamilton. Captured live on Broadway from the Richard Rodgers Theater with the original Broadway cast.",
+                      "Plot": "The real life of one of America´s foremost founding fathers and first Secretary of the Treasury, Alexander Hamilton. Captured live on Broadway from the Richard Rodgers Theater with the original Broadway cast.",
                       "Language": "English, French",
                       "Country": "United States",
                       "Awards": "Won 2 Primetime Emmys. 19 wins & 43 nominations total",
@@ -232,10 +232,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Wicked",
                       "Year": "2024",
                       "Rated": "PG",
@@ -274,10 +274,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Phantom of the Opera",
                       "Year": "1943",
                       "Rated": "Approved",
@@ -287,7 +287,7 @@ INSERT INTO movies (movies_raw) VALUES
                       "Director": "Arthur Lubin",
                       "Writer": "Eric Taylor, Samuel Hoffenstein, Hans Jacoby",
                       "Actors": "Nelson Eddy, Susanna Foster, Claude Rains",
-                      "Plot": "An acid-scarred composer rises from the Paris sewers to boost his favorite opera understudy"s career.",
+                      "Plot": "An acid-scarred composer rises from the Paris sewers to boost his favorite opera understudy´s career.",
                       "Language": "English",
                       "Country": "United States",
                       "Awards": "Won 2 Oscars. 3 wins & 5 nominations total",
@@ -316,10 +316,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Avatar: Fire and Ash",
                       "Year": "2025",
                       "Rated": "PG-13",
@@ -329,7 +329,7 @@ INSERT INTO movies (movies_raw) VALUES
                       "Director": "James Cameron",
                       "Writer": "James Cameron, Rick Jaffa, Amanda Silver",
                       "Actors": "Sam Worthington, Zoe Saldaña, Sigourney Weaver",
-                      "Plot": "Jake and Neytiri"s family grapples with grief, encountering a new, aggressive Na"vi tribe, the Ash People, who are led by the fiery Varang, as the conflict on Pandora escalates and a new moral focus emerges.",
+                      "Plot": "Jake and Neytiri´s family grapples with grief, encountering a new, aggressive Na´vi tribe, the Ash People, who are led by the fiery Varang, as the conflict on Pandora escalates and a new moral focus emerges.",
                       "Language": "English",
                       "Country": "United States, Canada",
                       "Awards": "Nominated for 2 Oscars. 17 wins & 57 nominations total",
@@ -358,10 +358,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                     INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Grown Ups",
                       "Year": "2010",
                       "Rated": "PG-13",
@@ -400,10 +400,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "The Exorcist",
                       "Year": "1973",
                       "Rated": "R",
@@ -442,10 +442,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Alien",
                       "Year": "1979",
                       "Rated": "R",
@@ -453,7 +453,7 @@ INSERT INTO movies (movies_raw) VALUES
                       "Runtime": "117 min",
                       "Genre": "Horror, Sci-Fi",
                       "Director": "Ridley Scott",
-                      "Writer": "Dan O"Bannon, Ronald Shusett",
+                      "Writer": "Dan O´Bannon, Ronald Shusett",
                       "Actors": "Sigourney Weaver, Tom Skerritt, John Hurt",
                       "Plot": "After investigating a mysterious transmission of unknown origin, the crew of a commercial spacecraft encounters a deadly lifeform.",
                       "Language": "English",
@@ -484,10 +484,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Star Trek",
                       "Year": "2009",
                       "Rated": "PG-13",
@@ -497,7 +497,7 @@ INSERT INTO movies (movies_raw) VALUES
                       "Director": "J.J. Abrams",
                       "Writer": "Roberto Orci, Alex Kurtzman, Gene Roddenberry",
                       "Actors": "Chris Pine, Zachary Quinto, Simon Pegg",
-                      "Plot": "The brash James T. Kirk tries to live up to his father"s legacy with Mr. Spock keeping him in check as a vengeful Romulan from the future creates black holes to destroy the Federation one planet at a time.",
+                      "Plot": "The brash James T. Kirk tries to live up to his father´s legacy with Mr. Spock keeping him in check as a vengeful Romulan from the future creates black holes to destroy the Federation one planet at a time.",
                       "Language": "English",
                       "Country": "Germany, United States",
                       "Awards": "Won 1 Oscar. 27 wins & 95 nominations total",
@@ -526,10 +526,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Shrek",
                       "Year": "2001",
                       "Rated": "PG",
@@ -568,10 +568,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Poor Things",
                       "Year": "2023",
                       "Rated": "R",
@@ -610,10 +610,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Batman",
                       "Year": "1989",
                       "Rated": "PG-13",
@@ -652,10 +652,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "SpongeBob SquarePants",
                       "Year": "1999–",
                       "Rated": "TV-Y7",
@@ -683,10 +683,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Type": "series",
                       "totalSeasons": "16",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "The Dark Crystal",
                       "Year": "1982",
                       "Rated": "PG",
@@ -725,10 +725,10 @@ INSERT INTO movies (movies_raw) VALUES
                       "Production": "N/A",
                       "Website": "N/A",
                       "Response": "True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                         "Title":"Avatar",
                         "Year":"2009",
                         "Rated":"PG-13",
@@ -758,10 +758,10 @@ INSERT INTO movies (movies_raw) VALUES
                         "Production":"N/A",
                         "Website":"N/A",
                         "Response":"True"
-                    }');,
+                    }');
 
                 INSERT INTO movies (movies_raw) VALUES
-                    ("{
+                    ('{
                       "Title": "Starship Troopers",
                       "Year": "1997",
                       "Rated": "R",
