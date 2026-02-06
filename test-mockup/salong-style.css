@@ -69,6 +69,29 @@ body {
   text-align: center;
 }
 
+.navbar nav a.nav-profile {
+  background: transparent;
+  border: 2px solid #B8860B;
+  box-shadow: none;
+  padding: 0;
+  min-width: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar nav a.nav-profile .profile-icon {
+  width: 28px;
+  height: 28px;
+  display: block;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+
 .navbar nav a:hover {
   background: #086808;
   color: #FFD700;
