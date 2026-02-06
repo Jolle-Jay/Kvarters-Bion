@@ -19,7 +19,7 @@
 
 /* Göm hamburgaren på desktop */
 label[for="menu-toggle"] {
-    display: none; 
+    display: none;
     cursor: pointer;
     color: #FFD700;
     font-size: 30px;
@@ -97,12 +97,13 @@ label[for="menu-toggle"] {
     letter-spacing: 2px;
     text-transform: uppercase;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
+        0 0 15px rgba(184, 134, 11, 0.4);
     text-decoration: none;
     display: inline-block;
 }
 
 @media (max-width: 768px) {
+
     /* Visa hamburgaren */
     label[for="menu-toggle"] {
         display: block;
@@ -110,10 +111,11 @@ label[for="menu-toggle"] {
 
     /* Dölj menyn och tvinga den att ligga under navbaren när den fälls ut */
     .navbar nav {
-        display: none; 
+        display: none;
         flex-direction: column;
         position: absolute;
-        top: 100%; /* Hamnar precis under kanten på .navbar */
+        top: 100%;
+        /* Hamnar precis under kanten på .navbar */
         left: 0;
         right: 0;
         background-color: #0a1c0a;
@@ -126,7 +128,7 @@ label[for="menu-toggle"] {
     }
 
     /* VISA menyn när man trycker (checkbox är ikryssad) */
-    #menu-toggle:checked ~ nav {
+    #menu-toggle:checked~nav {
         display: flex;
     }
 

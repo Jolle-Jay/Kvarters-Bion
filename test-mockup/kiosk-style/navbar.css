@@ -84,10 +84,11 @@
 }
 
 /* Hamburger gömd på desktop */
+/* Hamburger gömd på desktop */
 .hamburger {
     display: none;
     background: #0a3d0a;
-    color: #90ee90;
+    color: #a98732;
     border: 2px solid #B8860B;
     border-radius: 8px;
     padding: 0.6rem 1.2rem;

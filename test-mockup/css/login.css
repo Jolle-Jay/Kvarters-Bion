@@ -122,7 +122,30 @@
   border-radius: 5px;
 }
 
+.hamburger {
+  display: none;
+  background: #0a3d0a;
+  color: #a98732;
+  border: 2px solid #B8860B;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.hamburger:hover {
+  background: #086808;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
 /* Hide hamburger menu and checkbox on login page */
+#menu-toggle:checked~.nav-links {
+  display: flex;
+}
+
 #menu-toggle {
   display: none;
 }
