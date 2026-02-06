@@ -203,7 +203,7 @@ INSERT INTO movies (movies_raw) VALUES
                       "Director": "Thomas Kail",
                       "Writer": "Lin-Manuel Miranda, Ron Chernow",
                       "Actors": "Lin-Manuel Miranda, Phillipa Soo, Leslie Odom Jr.",
-                      "Plot": "The real life of one of America"s foremost founding fathers and first Secretary of the Treasury, Alexander Hamilton. Captured live on Broadway from the Richard Rodgers Theater with the original Broadway cast.",
+                      "Plot": "The real life of one of Americas foremost founding fathers and first Secretary of the Treasury, Alexander Hamilton. Captured live on Broadway from the Richard Rodgers Theater with the original Broadway cast.",
                       "Language": "English, French",
                       "Country": "United States",
                       "Awards": "Won 2 Primetime Emmys. 19 wins & 43 nominations total",
