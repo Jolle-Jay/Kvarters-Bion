@@ -91,6 +91,29 @@
   line-height: 1;
   z-index: 1001;
 } */
+.hamburger {
+  display: none;
+  background: #0a3d0a;
+  color: #a98732;
+  border: 2px solid #B8860B;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.hamburger:hover {
+  background: #086808;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Hide hamburger menu and checkbox on login page */
+#menu-toggle {
+  display: none;
+}
 
 
 
@@ -132,6 +155,22 @@
 .not-logged-in p {
   margin-bottom: 1.5rem;
   color: #B8860B;
+}
+
+.nav-links a {
+  font-size: 1.2rem;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(184, 134, 11, 0.3) !important;
+  box-shadow: none !important;
+}
+
+.nav-links a:last-child {
+  border-bottom: none !important;
+}
+
+.nav-links a:hover {
+  background: rgba(184, 134, 11, 0.15) !important;
 }
 
 

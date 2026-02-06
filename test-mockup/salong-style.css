@@ -69,6 +69,22 @@ body {
   text-align: center;
 }
 
+.nav-links a {
+  font-size: 1.2rem;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(184, 134, 11, 0.3) !important;
+  box-shadow: none !important;
+}
+
+.nav-links a:last-child {
+  border-bottom: none !important;
+}
+
+.nav-links a:hover {
+  background: rgba(184, 134, 11, 0.15) !important;
+}
+
 .navbar nav a.nav-profile {
   background: transparent;
   border: 2px solid #B8860B;
@@ -86,7 +102,8 @@ body {
 .navbar nav a.nav-profile .profile-icon {
   width: 28px;
   height: 28px;
-  display: block;
+  display: flex;
+  align-items: center;
   object-fit: contain;
   border-radius: 50%;
 }
@@ -106,10 +123,11 @@ body {
 }
 
 /* Hamburger gömd på desktop */
+
 .hamburger {
   display: none;
   background: #0a3d0a;
-  color: #90ee90;
+  color: #a98732;
   border: 2px solid #B8860B;
   border-radius: 8px;
   padding: 0.6rem 1.2rem;

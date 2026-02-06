@@ -39,13 +39,8 @@ function handleLogin(event) {
   setTimeout(() => {
     window.location.href = 'profile.html';
   }, 1500);
-
-  const hamburger = document.querySelector(".hamburger");
-const navLinks = document.querySelector(".nav-links");
-
-hamburger.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
-});
 }
+
+
 
 
