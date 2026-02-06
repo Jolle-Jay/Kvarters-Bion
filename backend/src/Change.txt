@@ -38,7 +38,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -72,7 +72,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -106,7 +106,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -148,7 +148,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -190,7 +190,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -232,7 +232,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -274,7 +274,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -316,7 +316,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -358,7 +358,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -400,7 +400,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -442,7 +442,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -484,7 +484,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -526,7 +526,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -568,7 +568,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -610,7 +610,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -652,7 +652,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -683,7 +683,7 @@
   'Type': 'series',
   'totalSeasons': '16',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -725,7 +725,7 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -758,7 +758,7 @@
     'Production':'N/A',
     'Website':'N/A',
     'Response':'True'
-}"),
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -800,4 +800,4 @@
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-}');
+}');";

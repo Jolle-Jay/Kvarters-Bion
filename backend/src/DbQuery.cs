@@ -234,7 +234,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -268,7 +268,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -302,7 +302,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -344,7 +344,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -386,7 +386,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -428,7 +428,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -470,7 +470,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -512,7 +512,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -554,7 +554,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -596,7 +596,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -638,7 +638,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -680,7 +680,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -722,7 +722,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -764,7 +764,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -806,7 +806,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -848,7 +848,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -879,7 +879,7 @@ public static class DbQuery
   'Type': 'series',
   'totalSeasons': '16',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -921,7 +921,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -954,7 +954,7 @@ public static class DbQuery
     'Production':'N/A',
     'Website':'N/A',
     'Response':'True'
-})",
+}');",
 
 @"INSERT INTO movies (movies_raw) VALUES
 ('{
@@ -996,7 +996,7 @@ public static class DbQuery
   'Production': 'N/A',
   'Website': 'N/A',
   'Response': 'True'
-})"
+}');"
 };
             foreach (var sql in moviesData)
             {
