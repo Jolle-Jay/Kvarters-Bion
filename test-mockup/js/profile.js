@@ -21,14 +21,18 @@ document.addEventListener('DOMContentLoaded', function () {
 <p>${userEmail}</p>
 </div>
 <div class="profile-info">
+<strong>Efternamn:</strong>
+<p>${userName}</p>
+</div>
+<div class="profile-info">
 <strong>Biljettyp</strong>
 <p>Vuxen</p>
 </div>
-<div class="profile-info">
+<div class="profile-info-drop">
 <strong>Historik</strong>
 <p>Din historik</p>
 </div>
-<div class="profile-info">
+<div class="profile-info-drop">
 <strong>Avbokningar</strong>
 <p>Dina avbokningar</p>
 </div>
@@ -37,6 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <button onclick="logout()" class="btn btn-logout">Logga ut</button>
 </div>
 `;
+
+    // Add dropdown functionality
+    const dropDowns = document.querySelectorAll('.profile-info-drop');
+    dropDowns.forEach(function (dropdown) {
+      dropdown.addEventListener('click', function () {
+        this.classList.toggle('active');
+      });
+    });
   } else {
     profileContent.innerHTML = `
 <div class="not-logged-in">
