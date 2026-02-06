@@ -28,6 +28,17 @@
   background: #012401;
   border-left: 4px solid #B8860B;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-info-drop p {
+  display: none;
+  margin: 0;
+  color: #ffffff;
+}
+
+.profile-info-drop.active p {
+  display: block;
 }
 
 .profile-info strong {

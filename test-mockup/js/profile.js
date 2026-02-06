@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add dropdown functionality
     const dropDowns = document.querySelectorAll('.profile-info-drop');
+
     dropDowns.forEach(function (dropdown) {
       dropdown.addEventListener('click', function () {
         this.classList.toggle('active');
@@ -62,6 +63,10 @@ document.addEventListener('DOMContentLoaded', function () {
 `;
   }
 });
+
+
+
+
 
 function logout() {
   localStorage.removeItem('isLoggedIn');
