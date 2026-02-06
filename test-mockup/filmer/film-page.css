@@ -138,7 +138,7 @@ body {
 }
 
 .movie-trailer h3 {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1.2rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
@@ -158,7 +158,7 @@ body {
 }
 
 .movie-times h3 {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1.2rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
@@ -188,7 +188,7 @@ body {
 
 .movie-info h1 {
     font-size: 3rem;
-    color: #FFD700;
+    color: #B8860B;
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
@@ -212,7 +212,7 @@ body {
 }
 
 .movie-meta strong {
-    color: #FFD700;
+    color: #B8860B;
 }
 
 .movie-description {
@@ -220,7 +220,7 @@ body {
 }
 
 .movie-description h3 {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
@@ -239,7 +239,7 @@ body {
 }
 
 .description-text h3 {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1rem;
     margin-bottom: 0.5rem;
     margin-top: 0;
@@ -285,7 +285,7 @@ body {
 
 .dropdown-menu {
     font-size: 1.5rem;
-    color: #FFD700;
+    color: #B8860B;
     min-width: 30px;
     text-align: center;
     flex-shrink: 0;
@@ -336,7 +336,7 @@ body {
 }
 
 .movie-times h3 {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1.5rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
@@ -403,7 +403,7 @@ body {
 }
 
 .showtime-date h4 {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
