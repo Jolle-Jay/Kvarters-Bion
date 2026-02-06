@@ -49,36 +49,66 @@ public static class DbQuery
                 modified DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
                 data JSON
             );
+            
+            CREATE TABLE IF NOT EXISTS viewings(
+                id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	            movie INTEGER NOT NULL,
+	            lounge INTEGER NOT NULL,
+	            start_time DATETIME NOT NULL,
+                );
 
-            CREATE TABLE IF NOT EXISTS acl (
-                id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                userRoles VARCHAR(255) NOT NULL,
-                method VARCHAR(50) NOT NULL DEFAULT 'GET',
-                allow ENUM('allow', 'disallow') NOT NULL DEFAULT 'allow',
-                route VARCHAR(255) NOT NULL,
-                `match` ENUM('true', 'false') NOT NULL DEFAULT 'true',
-                comment VARCHAR(500) NOT NULL DEFAULT '',
-                UNIQUE KEY unique_acl (userRoles, method, route)
-            );
+                -- alter so that the movie and lounge is foreign key to other tables
+                ALTER TABLE `viewings`
+                ADD FOREIGN KEY(`lounge`) REFERENCES `lounges`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION,
+                ADD FOREIGN KEY(`movie`) REFERENCES `movies`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+            CREATE TABLE IF NOT EXISTS `lounges` (
+	            `id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	            `name` VARCHAR(20) NOT NULL,
+                );
+
+            CREATE TABLE IF NOT EXISTS `seats` (
+	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	            lounge INTEGER NOT NULL,
+	            row CHAR(1) NOT NULL,
+	            number INTEGER NOT NULL,
+                );
+
+                -- alter seats for the foreign keys
+                ALTER TABLE `seats`
+                ADD FOREIGN KEY(`lounge`) REFERENCES `lounges`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+
+            CREATE TABLE IF NOT EXISTS `bookings` (
+	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	            BookingReference VARCHAR(255) NOT NULL UNIQUE,
+	            user INTEGER,
+	            email VARCHAR(255) NOT NULL,
+	            viewing INTEGER NOT NULL,
+	            status VARCHAR(255) NOT NULL,
+                );
+
+                -- alter bookings for the foreign keys
+                ALTER TABLE `bookings`
+                ADD FOREIGN KEY(`user`) REFERENCES `users`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION,
+                ADD FOREIGN KEY(`viewing`) REFERENCES `viewings`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION;
 
             CREATE TABLE IF NOT EXISTS users (
                 id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                created DATE DEFAULT (CURDATE()) NOT NULL,
                 email VARCHAR(255) NOT NULL UNIQUE,
                 firstName VARCHAR(255) NOT NULL,
-                lastName VARCHAR(255) NOT NULL,
-                role VARCHAR(50) NOT NULL DEFAULT 'user',
+                lastName VARCHAR(255),
                 password VARCHAR(255) NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS products (
+            CREATE TABLE IF NOT EXISTS movies (
                 id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                name VARCHAR(255) NOT NULL,
-                description TEXT NOT NULL,
-                quantity VARCHAR(50) NOT NULL,
-                `price$` DECIMAL(10,2) NOT NULL,
-                slug VARCHAR(255) NOT NULL,
-                categories JSON NOT NULL
+                movies_raw JSON NOT NULL
             );
         ";
 
@@ -105,7 +135,7 @@ public static class DbQuery
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var aclData = @"
-                INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
+                INSERT INTO acl (userRoles, method, allow, route, match, comment) VALUES
                 ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
                 ('visitor,user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
                 ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
@@ -140,25 +170,25 @@ public static class DbQuery
         {
             var productsData = new List<string>
             {
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Croissant', 'Buttery, flaky French-style croissant baked fresh daily with premium European butter. Perfect for breakfast with jam, afternoon coffee, or as the base for elegant sandwiches.\nGolden layers that melt in your mouth with authentic French pastry techniques.', '1 large', 0.99, 'croissant', '[""Bread & rice""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Gherkins', 'Crisp, tangy gherkin pickles packed in traditional brine with dill and spices. These small pickles add perfect acidity to sandwiches, charcuterie boards, and salads.\nA classic European-style pickle with authentic flavor that brightens any meal.', 'A can of 10', 4.5, 'gherkins', '[""Vegetables"",""Canned food""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Bay Leaves', 'Aromatic dried bay leaves from the Mediterranean, essential for soups, stews, and braised dishes. These whole leaves release their subtle, woodsy flavor slowly during cooking.\nRemove before serving for the perfect herbal note in your favorite recipes.', '1 bundle', 3.45, 'bay-leaves', '[""Vegetables"",""Spices""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Tomatoes', 'Fresh, vine-ripened tomatoes bursting with sweet, balanced flavor. Perfect for salads, sandwiches, or cooking.\nThese tomatoes have been allowed to ripen naturally on the vine for maximum taste and vibrant red color.', '1 lb', 2.5, 'tomatoes-on-the-vine', '[""Vegetables""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Basmati Rice', 'Premium long-grain basmati rice with a distinctive nutty aroma and fluffy texture. Aged for optimal flavor, this rice cooks to perfection with separate, non-sticky grains.\nIdeal for Indian dishes, pilafs, and everyday meals where quality matters.', '4 lb', 6.99, 'basmati-rice', '[""Bread & rice""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Green Olives', 'Plump, buttery green olives cured in traditional Mediterranean style. These olives have a mild, fruity flavor with a satisfying firm texture.\nPerfect for antipasto platters, salads, or enjoying straight from the can.', '1 lb, canned', 9.75, 'green-olives', '[""Canned food""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Parsley', 'Fresh, vibrant flat-leaf parsley with bright, clean flavor. Essential for Mediterranean cooking, garnishing, and adding fresh herb notes to any dish.\nThis aromatic herb brightens sauces, soups, and grain dishes beautifully.', '1 bundle', 2.75, 'parsley', '[""Vegetables"",""Spices""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Artichoke', 'Fresh, globe artichoke with tender heart and meaty leaves. Steam, grill, or stuff for an elegant side dish.\nThis versatile vegetable offers a subtle, nutty flavor and satisfying texture when properly prepared.', '1', 1.75, 'artichoke', '[""Vegetables""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Focaccia', 'Rustic Italian focaccia bread with herbs and olive oil, baked to golden perfection. Soft, airy interior with a slightly crispy crust.\nPerfect for sandwiches, dipping in olive oil, or serving alongside Mediterranean meals.', '1 large', 4.3, 'focaccia', '[""Bread & rice""]')",
-                @"INSERT INTO products (name, description, quantity, `price$`, slug, categories) VALUES
+                @"INSERT INTO products (name, description, quantity, price$, slug, categories) VALUES
                 ('Rosemary', 'Fresh rosemary plant in a convenient pot for your kitchen windowsill. This aromatic herb adds pine-like fragrance to roasted meats, potatoes, and bread.\nSnip fresh sprigs as needed for cooking or cocktail garnishes.', '1 pot', 3.6, 'rosemary', '[""Vegetables"",""Spices""]')"
             };
             foreach (var sql in productsData)
