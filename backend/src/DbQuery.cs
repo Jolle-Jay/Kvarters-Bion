@@ -50,12 +50,23 @@ public static class DbQuery
                 data JSON
             );
             
+            CREATE TABLE IF NOT EXISTS movies (
+                id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                movies_raw JSON NOT NULL
+            );
+            
+            CREATE TABLE IF NOT EXISTS `lounges` (
+	            `id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	            `name` VARCHAR(20) NOT NULL,
+            );
+            
+
             CREATE TABLE IF NOT EXISTS viewings(
                 id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	            movie INTEGER NOT NULL,
 	            lounge INTEGER NOT NULL,
 	            start_time DATETIME NOT NULL,
-                );
+            );
 
                 -- alter so that the movie and lounge is foreign key to other tables
                 ALTER TABLE `viewings`
@@ -64,39 +75,18 @@ public static class DbQuery
                 ADD FOREIGN KEY(`movie`) REFERENCES `movies`(`id`)
                 ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-            CREATE TABLE IF NOT EXISTS `lounges` (
-	            `id` INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	            `name` VARCHAR(20) NOT NULL,
-                );
-
             CREATE TABLE IF NOT EXISTS `seats` (
 	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	            lounge INTEGER NOT NULL,
 	            row CHAR(1) NOT NULL,
 	            number INTEGER NOT NULL,
-                );
+            );
 
                 -- alter seats for the foreign keys
                 ALTER TABLE `seats`
                 ADD FOREIGN KEY(`lounge`) REFERENCES `lounges`(`id`)
                 ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-
-            CREATE TABLE IF NOT EXISTS `bookings` (
-	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	            BookingReference VARCHAR(255) NOT NULL UNIQUE,
-	            user INTEGER,
-	            email VARCHAR(255) NOT NULL,
-	            viewing INTEGER NOT NULL,
-	            status VARCHAR(255) NOT NULL,
-                );
-
-                -- alter bookings for the foreign keys
-                ALTER TABLE `bookings`
-                ADD FOREIGN KEY(`user`) REFERENCES `users`(`id`)
-                ON UPDATE NO ACTION ON DELETE NO ACTION,
-                ADD FOREIGN KEY(`viewing`) REFERENCES `viewings`(`id`)
-                ON UPDATE NO ACTION ON DELETE NO ACTION;
 
             CREATE TABLE IF NOT EXISTS users (
                 id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -106,10 +96,44 @@ public static class DbQuery
                 password VARCHAR(255) NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS movies (
-                id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                movies_raw JSON NOT NULL
+            CREATE TABLE IF NOT EXISTS `bookings` (
+	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	            BookingReference VARCHAR(255) NOT NULL UNIQUE,
+	            user INTEGER,
+	            email VARCHAR(255) NOT NULL,
+	            viewing INTEGER NOT NULL,
+	            status VARCHAR(255) NOT NULL,
             );
+
+                -- alter bookings for the foreign keys
+                ALTER TABLE `bookings`
+                ADD FOREIGN KEY(`user`) REFERENCES `users`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION,
+                ADD FOREIGN KEY(`viewing`) REFERENCES `viewings`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION;
+            
+
+            CREATE TABLE IF NOT EXISTS `ticketTypes` (
+	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	            name VARCHAR(50) NOT NULL,
+	            price INTEGER NOT NULL,
+	            
+            );
+            
+
+            CREATE TABLE IF NOT EXISTS `bookingSeats` (
+	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	            booking INTEGER NOT NULL,
+	            seat INTEGER NOT NULL,
+	            ticketType INTEGER NOT NULL,
+            );
+                ALTER TABLE `bookingSeats`
+                ADD FOREIGN KEY(`booking`) REFERENCES `bookings`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION,
+                ADD FOREIGN KEY(`seat`) REFERENCES `seats`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION,
+                ADD FOREIGN KEY(`ticketType`) REFERENCES `ticketTypes`(`id`)
+                ON UPDATE NO ACTION ON DELETE NO ACTION;
         ";
 
         // Execute each statement separately
