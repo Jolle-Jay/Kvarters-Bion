@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chat</title>
+  <link rel="stylesheet" href="ai.css">
+  <!-- CSS flyttad till ai.css -->
+</head>
+<body>
+    <div class="chat-fullpage">
+    <div class="ai-headerbar">
+      <div class="chat-close" onclick="window.history.length > 1 ? window.history.back() : window.location.href='index.html'" title="Stäng AI-chatt">&#10005;</div>
+      <div class="chat-header">AI Chatt</div>
+    </div>
+    <div class="chat-body">
+      <div class="message bot">Hejsan! Du kan ställa mig vilken fråga du vill om biografen eller filmer som vi har.</div>
+      <div class="message user">Hej! Vilken Starwars film är den bästa?</div>
+      <div class="message bot">Hmm... Det finns mycket spekulation kring det och vad internätt säger som jag håller med om är att revange of the sith är den absolut bästa filmen av Starwars serien.</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="Skriv din fråga...">
+      <button>Skicka</button>
+    </div>
+  </div>
+</body>
+</html>
