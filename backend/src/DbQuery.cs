@@ -49,6 +49,17 @@ public static class DbQuery
                 modified DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
                 data JSON
             );
+
+            CREATE TABLE IF NOT EXISTS acl (
+                id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+                userRoles VARCHAR(255) NOT NULL,
+                method VARCHAR(50) NOT NULL DEFAULT 'GET',
+                allow ENUM('allow', 'disallow') NOT NULL DEFAULT 'allow',
+                route VARCHAR(255) NOT NULL,
+                `match` ENUM('true', 'false') NOT NULL DEFAULT 'true',
+                comment VARCHAR(500) NOT NULL DEFAULT '',
+                UNIQUE KEY unique_acl (userRoles, method, route)
+            );
             
             CREATE TABLE IF NOT EXISTS movies (
                 id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -93,6 +104,8 @@ public static class DbQuery
                 email VARCHAR(255) NOT NULL UNIQUE,
                 firstName VARCHAR(255) NOT NULL,
                 lastName VARCHAR(255),
+                created DATETIME DEFAULT (CURDATE()) NOT NULL,
+                role VARCHAR(50) NOT NULL DEFAULT 'user',
                 password VARCHAR(255) NOT NULL
             );
 
@@ -158,7 +171,7 @@ public static class DbQuery
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var aclData = @"
-                INSERT INTO acl (userRoles, method, allow, route, match, comment) VALUES
+                INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
                 ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
                 ('visitor,user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
                 ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
@@ -190,7 +203,7 @@ public static class DbQuery
         // Seed movies
         command.CommandText = "SELECT COUNT(*) FROM movies";
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
+        {/*
             var moviesData = new List<string>
             {
                 @"INSERT INTO movies (movies_raw) VALUES
@@ -1001,6 +1014,7 @@ public static class DbQuery
                 command.CommandText = sql;
                 command.ExecuteNonQuery();
             }
+        */
         }
     }
 
