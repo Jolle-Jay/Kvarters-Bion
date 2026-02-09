@@ -57,7 +57,7 @@ public static class DbQuery
             
             CREATE TABLE IF NOT EXISTS lounges (
 	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	            name VARCHAR(20) NOT NULL
+	            name VARCHAR(20) NOT NULL,
             );
             
 
@@ -65,7 +65,7 @@ public static class DbQuery
                 id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	            movie INTEGER NOT NULL,
 	            lounge INTEGER NOT NULL,
-	            start_time DATETIME NOT NULL
+	            start_time DATETIME NOT NULL,
             );
 
                 -- alter so that the movie and lounge is foreign key to other tables
@@ -79,7 +79,7 @@ public static class DbQuery
 	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	            lounge INTEGER NOT NULL,
 	            seatRow CHAR(1) NOT NULL,
-	            number INTEGER NOT NULL
+	            number INTEGER NOT NULL,
             );
 
                 -- alter seats for the foreign keys
@@ -102,7 +102,7 @@ public static class DbQuery
 	            user INTEGER,
 	            email VARCHAR(255) NOT NULL,
 	            viewing INTEGER NOT NULL,
-	            status VARCHAR(255) NOT NULL
+	            status VARCHAR(255) NOT NULL,
             );
 
                 -- alter bookings for the foreign keys
@@ -116,7 +116,8 @@ public static class DbQuery
             CREATE TABLE IF NOT EXISTS ticketTypes (
 	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	            name VARCHAR(50) NOT NULL,
-	            price INTEGER NOT NULL
+	            price INTEGER NOT NULL,
+	            
             );
             
 
@@ -124,7 +125,7 @@ public static class DbQuery
 	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	            booking INTEGER NOT NULL,
 	            seat INTEGER NOT NULL,
-	            ticketType INTEGER NOT NULL
+	            ticketType INTEGER NOT NULL,
             );
                 ALTER TABLE bookingSeats
                 ADD FOREIGN KEY(booking) REFERENCES bookings(id)
