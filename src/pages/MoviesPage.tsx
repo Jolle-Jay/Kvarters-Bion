@@ -34,7 +34,7 @@ export default function moviePage() {
   const category = categoryChoice.split(' (')[0];
   // get the key and order to from the chosen sort option
   const { key: sortKey, order: sortOrder } =
-    sortOptions.find(x => x.Genre === sortChoice) as SortOption;
+    sortOptions.find(x => x.Genre === sortChoice) ?? {key:'Title', order: 1};
 
   return <>
     <Row>

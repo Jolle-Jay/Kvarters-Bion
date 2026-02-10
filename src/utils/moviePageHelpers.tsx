@@ -8,7 +8,7 @@ export interface SortOption {
 
 export function getHelpers(moviesJson: any) {
 
-  const movies = moviesJson as movie[];
+  const movies = (moviesJson ?? []) as movie[];
 
   const Genre = [
     'All (' + movies.length + ')',
