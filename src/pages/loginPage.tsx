@@ -1,8 +1,10 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { LoginFormData } from '../types/auth.types';
+import type { LoginFormData } from '../types/auth.types';
 import productsLoader from '../utils/productsLoader';
 import '../CSS/Login.css';
+import type { JSX } from 'react';
+
 
 function LoginPage() {
   const navigate = useNavigate();

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../CSS/profile.css';
 import productsLoader from '../utils/productsLoader';
+import type { JSX } from 'react';
+
 
 function ProfilePage() {
   const navigate = useNavigate();
