@@ -1,37 +1,37 @@
-import type Product from '../interfaces/Product';
+import type Movie from '../interfaces/Movie';
 import { Row, Col } from 'react-bootstrap';
 import { Link, useLoaderData } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
 import Image from '../parts/Image';
-import productsLoader from '../utils/productsLoader';
+import MoviesLoader from '../utils/moviesLoader';
 
-ProductDetailsPage.route = {
-  path: '/products/:slug',
+MovieDetailsPage.route = {
+  path: '/Movies/:slug',
   parent: '/',
-  loader: productsLoader
+  loader: MoviesLoader
 };
 
-export default function ProductDetailsPage() {
+export default function MovieDetailsPage() {
 
-  const product =
-    useLoaderData().products[0] as Product;
+  const Movie =
+    useLoaderData().Movies[0] as Movie;
 
-  // if no product found, show 404
-  if (!product) {
+  // if no Movie found, show 404
+  if (!Movie) {
     return <NotFoundPage />;
   }
 
-  const { id, name, quantity, price$, description } = product;
+  const { id, Title, Runtime, Year, Plot } = Movie;
 
-  return <article className="product-details">
+  return <article className="Movie-details">
     <Row>
       <Col>
-        <h2 className="text-primary">{name}</h2>
+        <h2 className="text-primary">{Title}</h2>
         <Image
-          src={'/images/products/' + id + '.jpg'}
-          alt={'Product image of the product ' + name + '.'}
+          src={'/public/movies/' + id + '.jpg'} // kan vara fel
+          alt={'Movie image of the Movie ' + Title + '.'}
         />
-        {description.split('\n').map((x, i) => <p key={i}>{x}</p>)}
+        {Plot.split('\n').map((x, i) => <p key={i}>{x}</p>)}
       </Col>
     </Row>
     <Row>
@@ -42,7 +42,7 @@ export default function ProductDetailsPage() {
             <span
               className="d-block d-sm-inline float-sm-end"
             >
-              {quantity}
+              {Runtime}
             </span>
           </Col>
           <Col className="ps-4 ps-sm-5 text-end text-sm-start">
@@ -50,7 +50,7 @@ export default function ProductDetailsPage() {
             <span
               className="d-block d-sm-inline float-sm-end"
             >
-              ${price$.toFixed(2)}
+              ${Year.toFixed(2)}
             </span>
           </Col>
         </Row>
@@ -59,7 +59,7 @@ export default function ProductDetailsPage() {
     <Row>
       <Col>
         <Link to="/" className="btn btn-primary float-end">
-          Back to the product list
+          Back to the Movie list
         </Link>
       </Col>
     </Row>

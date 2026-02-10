@@ -6,7 +6,7 @@ public static class DbQuery
     private static string connectionString;
 
     // JSON columns for _CONTAINS_ validation
-    public static Arr JsonColumns = Arr(new[] { "categories" });
+    public static Arr JsonColumns = Arr(new[] { "Genre" });
 
     public static bool IsJsonColumn(string column) => JsonColumns.Includes(column);
 
@@ -105,7 +105,7 @@ public static class DbQuery
                 firstName VARCHAR(255) NOT NULL,
                 lastName VARCHAR(255),
                 created DATETIME DEFAULT (CURDATE()) NOT NULL,
-                role VARCHAR(50) NOT NULL DEFAULT 'user',
+                role VARCHAR(50) NOT NULL DEFAULT 'users',
                 password VARCHAR(255) NOT NULL
             );
 

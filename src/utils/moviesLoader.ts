@@ -1,8 +1,8 @@
-export default async function productsLoader({ params }: any) {
-  let url = '/api/products';
+export default async function moviesLoader({ params }: any) {
+  let url = '/api/movies';
   if (params.slug) { url += '?slug=' + params.slug; }
   return {
-    products:
+    movies:
       await (await fetch(url)).json()
   };
 };

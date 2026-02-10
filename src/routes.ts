@@ -5,8 +5,8 @@ import AboutPage from './pages/AboutPage.tsx';
 import AiChatPage from './pages/AiChatPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import OurVisionPage from './pages/OurVisionPage.tsx';
-import ProductDetailsPage from './pages/ProductDetailsPage.tsx';
-import ProductsPage from './pages/ProductsPage.tsx';
+import ProductDetailsPage from './pages/MovieDetailsPage.tsx';
+import ProductsPage from './pages/MoviesPage.tsx';
 
 interface Route {
   element: JSX.Element;
