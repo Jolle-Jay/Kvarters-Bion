@@ -2,6 +2,7 @@ import React, { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../CSS/Login.css';
 
+
 interface LoginFormData {
   email: string;
   password: string;
@@ -10,8 +11,11 @@ interface LoginFormData {
   role: string;
 }
 
+//create a componenet called Login
 const Login: React.FC = () => {
+  //make a hook so I can navigate
   const navigate = useNavigate();
+  //update what the user inputs
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
@@ -23,6 +27,7 @@ const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [succesMessage, setSuccessMessage] = useState<string>('');
 
+  // handle input changes every time user tpes in an input field
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -51,21 +56,25 @@ const Login: React.FC = () => {
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'applications/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
         }),
       });
-
-      const data = await Response.json();
-      if (!Response.ok) {
+      if (!response.ok) {
         throw new Error('Login failed!');
-
-      } else {
-        setSuccessMessage('Inloggningen lyckades!');
       }
+      const data = await response.json();
+
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userEmail', data.email || formData.email);
+      localStorage.setItem('userName', data.name || formData.name);
+
+      setSuccessMessage('Inloggningen lyckades! Omdirigerar...');
+
+
 
       setTimeout(() => {
         navigate('/profile');
