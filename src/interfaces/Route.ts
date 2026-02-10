@@ -7,4 +7,26 @@ export default interface Route {
   menuLabel?: string;
   index?: number;
   parent?: string;
+
+}
+
+<Route 
+  path="/profile";
+element = {
+    < ProtectedRoute >
+  <Profile />
+  </ProtectedRoute>
+  } 
+/>;
+
+function App() {
+  return (
+    <Router>
+    <Routes>
+    <Route path= "/login" element = {< Login />} />
+      < Route path = "/profile" element = {< Profile />} />;
+{/* Your other routes */ }
+</Routes>
+  </Router>
+  );
 }
