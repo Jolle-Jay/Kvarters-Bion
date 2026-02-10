@@ -1,7 +1,5 @@
 // src/pages/LillaSalongen.tsx
 import type { JSX } from 'react';
-import Header from '../partials/Header';
-import Footer from '../partials/Footer';
 import '../css/Salong.css';
 
 export default function LillaSalongen(): JSX.Element {
