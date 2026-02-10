@@ -6,9 +6,6 @@ import '../CSS/Login.css';
 interface LoginFormData {
   email: string;
   password: string;
-  name: string;
-  lastName: string;
-  role: string;
 }
 
 //create a componenet called Login
@@ -19,9 +16,7 @@ const Login: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
-    name: '',
-    lastName: '',
-    role: '',
+
   });
 
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -70,7 +65,6 @@ const Login: React.FC = () => {
 
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userEmail', data.email || formData.email);
-      localStorage.setItem('userName', data.name || formData.name);
 
       setSuccessMessage('Inloggningen lyckades! Omdirigerar...');
 
