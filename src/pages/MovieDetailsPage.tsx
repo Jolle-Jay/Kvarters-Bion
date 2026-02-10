@@ -1,4 +1,4 @@
-import type Movie from '../interfaces/Movie';
+import type Movie from '../interfaces/Movie.ts';
 import { Row, Col } from 'react-bootstrap';
 import { Link, useLoaderData } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
@@ -21,15 +21,15 @@ export default function MovieDetailsPage() {
     return <NotFoundPage />;
   }
 
-  const { id, Title, Runtime, Year, Plot } = Movie;
+  const { Poster, Title, Runtime, Year, Plot } = Movie;
 
   return <article className="Movie-details">
     <Row>
       <Col>
         <h2 className="text-primary">{Title}</h2>
         <Image
-          src={'/public/movies/' + id + '.jpg'} // kan vara fel
-          alt={'Movie image of the Movie ' + Title + '.'}
+          src={Poster} // kan vara fel
+          alt={'Movie image of the Movie ' + Poster + '.'}
         />
         {Plot.split('\n').map((x, i) => <p key={i}>{x}</p>)}
       </Col>
@@ -38,7 +38,7 @@ export default function MovieDetailsPage() {
       <Col className="px-4 pb-4">
         <Row className="p-3 bg-primary-subtle rounded">
           <Col className="pe-4 pe-sm-5 border-end border-primary">
-            <strong>Quantity</strong>:
+            <strong>Tid</strong>:
             <span
               className="d-block d-sm-inline float-sm-end"
             >
@@ -46,11 +46,11 @@ export default function MovieDetailsPage() {
             </span>
           </Col>
           <Col className="ps-4 ps-sm-5 text-end text-sm-start">
-            <strong>Price</strong>:
+            <strong>År</strong>:
             <span
               className="d-block d-sm-inline float-sm-end"
             >
-              ${Year.toFixed(2)}
+              {Year.toFixed(2)}
             </span>
           </Col>
         </Row>
@@ -59,7 +59,7 @@ export default function MovieDetailsPage() {
     <Row>
       <Col>
         <Link to="/" className="btn btn-primary float-end">
-          Back to the Movie list
+          Tillbaka till filmsidan
         </Link>
       </Col>
     </Row>

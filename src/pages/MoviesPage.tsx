@@ -3,9 +3,10 @@ import { useLoaderData } from 'react-router-dom';
 import { Row, Col, Form } from 'react-bootstrap';
 import { useStateContext } from '../utils/useStateObject';
 import Select from '../parts/Select';
-import ProductCard from '../parts/MovieCard';
+import MovieCard from '../parts/MovieCard';
 import movieLoader from '../utils/moviesLoader';
 import { getHelpers } from '../utils/moviePageHelpers';
+
 
 moviePage.route = {
   path: '/',
@@ -16,34 +17,33 @@ moviePage.route = {
 };
 
 export default function moviePage() {
-
+  
   let {
     movies,
     Genre,
     sortOptions,
     sortGenres
   } = getHelpers(useLoaderData().movie);
-
+  
   // get state object and setter from the outlet context
   const [
     { categoryChoice, sortChoice, bwImages },
     setState
   ] = useStateContext();
 
-  // get the chosen category without the product count part
+  // get the chosen category without the Movie count part
   const category = categoryChoice.split(' (')[0];
   // get the key and order to from the chosen sort option
   const { key: sortKey, order: sortOrder } =
-    sortOptions.find(x => x.Genre === sortChoice) ?? {key:'Title', order: 1};
+  sortOptions.find(x => x.Genre === sortChoice) ?? {key:'Title', order: 1};
+    
 
   return <>
     <Row>
       <Col>
-        <h2 className="text-primary">Our movie</h2>
+        <h2 className="text-primary">Filmer</h2>
         <p>
-          Our movie are fantastic, organic and fresh.
-          They are also very reasonably priced, considering
-          they are all harvested with the greatest care.
+          Alla våra filmer 
         </p>
       </Col>
     </Row>
@@ -71,7 +71,7 @@ export default function moviePage() {
           </Col>
           <Col md="4">
             <Select
-              label="Category"
+              label="Genger"
               value={categoryChoice}
               changeHandler={(x: string) => setState('categoryChoice', x)}
               options={Genre}
@@ -79,7 +79,7 @@ export default function moviePage() {
           </Col>
           <Col md="4">
             <Select
-              label="Sort by"
+              label="Sortera efter"
               value={sortChoice}
               changeHandler={(x: string) => setState('sortChoice', x)}
               options={sortGenres}
@@ -94,9 +94,9 @@ export default function moviePage() {
         .filter(x => category === 'All' || x.Genre.includes(category))
         // sort by the chosen choice for sorting
         .sort((a, b) => (a[sortKey] > b[sortKey] ? 1 : -1) * sortOrder)
-        // map to product cards
-        .map(product => <Col xs={12} lg={6} key={product.id}>
-          <ProductCard {...product} />
+        // map to Movie cards
+        .map(Movies => <Col xs={12} lg={6} key={Movies.id}>
+          <MovieCard {...Movies} />
         </Col>)
       }
     </Row>

@@ -5,8 +5,8 @@ import AboutPage from './pages/AboutPage.tsx';
 import AiChatPage from './pages/AiChatPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import OurVisionPage from './pages/OurVisionPage.tsx';
-import ProductDetailsPage from './pages/MovieDetailsPage.tsx';
-import ProductsPage from './pages/MoviesPage.tsx';
+import MovieDetailsPage from './pages/MovieDetailsPage.tsx';
+import MoviesPage from './pages/MoviesPage.tsx';
 
 interface Route {
   element: JSX.Element;
@@ -22,8 +22,8 @@ export default [
   AiChatPage,
   NotFoundPage,
   OurVisionPage,
-  ProductDetailsPage,
-  ProductsPage
+  MovieDetailsPage,
+  MoviesPage
 ]
   // map the route property of each page component to a Route
   .map(x => (({ element: createElement(x), ...x.route }) as Route))
