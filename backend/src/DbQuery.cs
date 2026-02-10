@@ -201,11 +201,35 @@ public static class DbQuery
         }
 
         // Seed movies
-        command.CommandText = "SELECT COUNT(*) FROM movies";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+
+        //shows path for the movies 
+        var movieDir = Path.Combine(AppContext.BaseDirectory, "..","public", "movies");
+        //read files
+        var files = Directory.GetFiles(movieDir, "*.json");
+
+        // open connection to database
+        using var db2 = new MySqlConnection(connectionString);
+        db.Open();
+
+        //foreach file in files do a insert 
+        foreach (var file in files)
         {
-          // seed it thrue json files reading instead. 
+            var json = File.ReadAllText(file);
+
+            // Validation JSON before insert
+            JSON.Parse(json); // scraps exception if JSON is wrong
+
+            var cmd = db2.CreateCommand();
+            cmd.CommandText = @"
+                INSERT INTO movies (movies_raw)
+                VALUES (@json)
+            ";
+
+            cmd.Parameters.AddWithValue("@json", json);
+            cmd.ExecuteNonQuery();
         }
+        //close connection
+        db2.Close();
     }
 
     // Helper to create an object from the DataReader
