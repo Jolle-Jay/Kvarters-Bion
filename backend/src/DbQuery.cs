@@ -201,35 +201,48 @@ public static class DbQuery
         }
 
         // Seed movies
-
-        //shows path for the movies 
-        var movieDir = Path.Combine(AppContext.BaseDirectory, "..","public", "movies");
-        //read files
-        var files = Directory.GetFiles(movieDir, "*.json");
-
-        // open connection to database
-        using var db2 = new MySqlConnection(connectionString);
-        db.Open();
-
-        //foreach file in files do a insert 
-        foreach (var file in files)
+        command.CommandText = "SELECT COUNT(*) FROM movies";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
-            var json = File.ReadAllText(file);
+            var movieDir = Path.Combine(
+                AppContext.BaseDirectory, "..", "..", "..", "public", "movies"
+            );
 
-            // Validation JSON before insert
-            JSON.Parse(json); // scraps exception if JSON is wrong
+            if (!Directory.Exists(movieDir))
+                throw new Exception("Movie directory not found: " + movieDir);
 
-            var cmd = db2.CreateCommand();
-            cmd.CommandText = @"
-                INSERT INTO movies (movies_raw)
-                VALUES (@json)
-            ";
+            var files = Directory.GetFiles(movieDir, "*.json");
+            if (files.Length == 0){
+            throw new Exception("No movie JSON files found in: " + movieDir);
+            }
 
-            cmd.Parameters.AddWithValue("@json", json);
-            cmd.ExecuteNonQuery();
+            using var db2 = new MySqlConnection(connectionString);
+            db2.Open();
+
+            foreach (var file in files)
+            {
+                var json = File.ReadAllText(file);
+
+                try
+                {
+                    // Validera JSON innan insert
+                    JSON.Parse(json);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"JSON validation failed for file {file}: {ex.Message}");
+                    continue; // hoppa över ogiltiga JSON-filer
+                }
+
+                using var cmd = db2.CreateCommand();
+                cmd.CommandText = "INSERT INTO movies (movies_raw) VALUES (@json)";
+                cmd.Parameters.AddWithValue("@json", json);
+                cmd.ExecuteNonQuery();
+
+                Console.WriteLine($"Inserted movie from file: {Path.GetFileName(file)}");
+            }
+            db2.Close();
         }
-        //close connection
-        db2.Close();
     }
 
     // Helper to create an object from the DataReader
