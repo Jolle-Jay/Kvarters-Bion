@@ -1,7 +1,7 @@
 import type {JSX} from 'react';
 import{createElement} from 'react';
 // page components
-import AboutPage from './pages/AboutPage.tsx';
+import StartPage from './pages/StartPage.tsx';
 import AiChatPage from './pages/AiChatPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import OurVisionPage from './pages/OurVisionPage.tsx';
@@ -18,7 +18,7 @@ interface Route {
 }
 
 export default [
-  AboutPage,
+  StartPage,
   AiChatPage,
   NotFoundPage,
   OurVisionPage,
