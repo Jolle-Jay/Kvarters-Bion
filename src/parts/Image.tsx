@@ -12,3 +12,6 @@ export default function Image(props: any) {
     + (bwImages ? ' bw' : '');
   return <img {...props} />;
 }
+
+
+// Images inside without bw

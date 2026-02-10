@@ -5,7 +5,7 @@ import StartPage from './pages/StartPage.tsx';
 import AiChatPage from './pages/AiChatPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import OurVisionPage from './pages/OurVisionPage.tsx';
-import ProductDetailsPage from './pages/ProductDetailsPage.tsx';
+import Bistro from './pages/Bistro.tsx';
 import ProductsPage from './pages/ProductsPage.tsx';
 import LillaSalongen from './pages/LillaSalongen.tsx';
 import StoraSalongen from './pages/StoraSalongen.tsx';
@@ -24,10 +24,11 @@ export default [
   AiChatPage,
   NotFoundPage,
   OurVisionPage,
-  ProductDetailsPage,
   ProductsPage,
   LillaSalongen,
-  StoraSalongen
+  StoraSalongen,
+  Bistro,
+  ProductsPage
 ]
   // map the route property of each page component to a Route
   .map(x => (({ element: createElement(x), ...x.route }) as Route))
