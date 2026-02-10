@@ -5,7 +5,7 @@ import StartPage from './pages/StartPage.tsx';
 import AiChatPage from './pages/AiChatPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import OurVisionPage from './pages/OurVisionPage.tsx';
-import ProductDetailsPage from './pages/ProductDetailsPage.tsx';
+import Bistro from './pages/Bistro.tsx';
 import ProductsPage from './pages/ProductsPage.tsx';
 
 interface Route {
@@ -22,7 +22,7 @@ export default [
   AiChatPage,
   NotFoundPage,
   OurVisionPage,
-  ProductDetailsPage,
+  Bistro,
   ProductsPage
 ]
   // map the route property of each page component to a Route
