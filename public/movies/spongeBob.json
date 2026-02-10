@@ -1,0 +1,29 @@
+{
+  "Title": "SpongeBob SquarePants",
+  "Year": "1999",
+  "Rated": "TV-Y7",
+  "Released": "01 May 1999",
+  "Runtime": "23 min",
+  "Genre": "Animation, Comedy, Family",
+  "Director": "N/A",
+  "Writer": "Stephen Hillenburg, Tim Hill, Nick Jennings",
+  "Actors": "Tom Kenny, Rodger Bumpass, Bill Fagerbakke",
+  "Plot": "The misadventures of a talking sea sponge who works at a fast food restaurant, attends a boating school, and lives in an underwater pineapple.",
+  "Language": "English, Irish Gaelic, Korean",
+  "Country": "United States",
+  "Awards": "Nominated for 10 Primetime Emmys. 63 wins & 70 nominations total",
+  "Poster": "https://m.media-amazon.com/images/M/MV5BYjJmMjBkZjMtZThiZS00Nzk3LWJlN2UtYmE5ZjkyNjJiZjgxXkEyXkFqcGc@._V1_SX300.jpg",
+  "Ratings": [
+    {
+      "Source": "Internet Movie Database",
+      "Value": "8.2/10"
+    }
+  ],
+  "Metascore": "N/A",
+  "imdbRating": "8.2",
+  "imdbVotes": "123,949",
+  "imdbID": "tt0206512",
+  "Type": "series",
+  "totalSeasons": "16",
+  "Response": "True"
+}
