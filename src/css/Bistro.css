@@ -32,7 +32,7 @@ body.bistro-theme {
 
 /* Varumärkestitel: stor, kraftig text med skugga. */
 .brand-title {
-    color: #98852c;
+    color: #B8860B;
     font-size: 2.2rem;
     font-weight: 900;
     letter-spacing: 3px;
@@ -54,10 +54,11 @@ body.bistro-theme {
 }
 
 .info-section {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto 2rem auto;
     padding: 1.5rem;
     background: transparent;
+    justify-items: center;
     border: none;
     border-radius: 12px;
     color: #c3cac3;
@@ -65,7 +66,7 @@ body.bistro-theme {
 
 /* Info-rubrik: stor rubrik med skugga. */
 .info-section h3 {
-    color: #a18f25;
+    color: #B8860B;
     margin-bottom: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -80,6 +81,7 @@ body.bistro-theme {
     font-size: clamp(1rem, 2.5vw, 1.5rem);
         /* fluid font-size */
     line-height: 1.6;
+    text-align: center;
 }
 
 /* Mobil: minskar marginaler för info. */

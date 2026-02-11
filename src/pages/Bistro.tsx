@@ -25,7 +25,7 @@ export default function Bistro() {
     <>
       <section className="bistro-hero">
         <div className="brand-block">
-          <h2 className="brand-title">KvartersBion</h2>
+          <h2 className="brand-title">KvartersBistron</h2>
           <p className="brand-subtitle">Mat ᆞSnacks ᆞ Dryck</p>
         </div>
       </section>
@@ -37,7 +37,6 @@ export default function Bistro() {
           godis och choklad, eller mättande favoriter som nachos, pizza, hamburgare,
           ostbricka och sandwich. För barn finns mindre menyval och för seniorer
           lättare alternativ.
-          <br />
           Till dryck erbjuder vi läsk, vatten, kolsyrat vatten, energidryck samt öl och vin.
           Kombinera gärna med våra menyer för en smidig filmupplevelse.
         </p>
