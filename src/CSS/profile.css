@@ -118,6 +118,7 @@
   color: #B8860B;
 }
 
+/* 
 .nav-links a {
   font-size: 1.2rem;
   background: transparent !important;
@@ -132,7 +133,7 @@
 
 .nav-links a:hover {
   background: rgba(184, 134, 11, 0.15) !important;
-}
+} */
 
 /* Mobile responsive styles */
 @media (max-width: 768px) {

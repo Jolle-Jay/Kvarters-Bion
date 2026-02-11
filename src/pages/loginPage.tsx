@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import type { LoginFormData } from '../types/auth.types';
 import productsLoader from '../utils/productsLoader';
 import '../CSS/Login.css';
-import type { JSX } from 'react';
 
 
 function LoginPage() {
@@ -68,10 +67,11 @@ function LoginPage() {
       <form onSubmit={handleLogin}>
         <input name="email" value={formData.email} onChange={handleInputChange} />
         <input name="password" type="password" value={formData.password} onChange={handleInputChange} />
-        <button type="submit">Logga in</button>
-        <Link to="/profile">Avbryt</Link>
+        <button type="submit" className="btn-primary">Logga in</button>
+        <Link to="/profile" className="btn-primary">Avbryt
+        </Link>
       </form>
-    </main>
+    </main >
   );
 }
 
