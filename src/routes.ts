@@ -7,8 +7,8 @@ import NotFoundPage from './pages/NotFoundPage.tsx';
 import OurVisionPage from './pages/OurVisionPage.tsx';
 import ProductDetailsPage from './pages/ProductDetailsPage.tsx';
 import ProductsPage from './pages/ProductsPage.tsx';
-import ProfilePage from './pages/profilePage.tsx';
-import LoginPage from './pages/loginPage.tsx';
+import ProfilePage from './pages/ProfilePage.tsx';
+import LoginPage from './pages/LoginPage.tsx';
 
 
 interface Route {
