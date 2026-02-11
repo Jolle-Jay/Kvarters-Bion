@@ -1,10 +1,10 @@
-import type Movies from '../interfaces/Movie';
+import type { MovieJson } from '../interfaces/Movie';
 import { useNavigate } from 'react-router-dom';
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import Movie from './Image';
 
 export default function MoviesCard(
-  { Poster, Title, Runtime, Year, Plot }: Movies
+  { Poster, Title, Runtime, Year, Plot }: MovieJson
 ) {
   const navigate = useNavigate();
   return <Card

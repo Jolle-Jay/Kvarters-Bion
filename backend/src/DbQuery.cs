@@ -212,8 +212,9 @@ public static class DbQuery
                 throw new Exception("Movie directory not found: " + movieDir);
 
             var files = Directory.GetFiles(movieDir, "*.json");
-            if (files.Length == 0){
-            throw new Exception("No movie JSON files found in: " + movieDir);
+            if (files.Length == 0)
+            {
+                throw new Exception("No movie JSON files found in: " + movieDir);
             }
 
             using var db2 = new MySqlConnection(connectionString);
