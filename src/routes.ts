@@ -5,11 +5,13 @@ import StartPage from './pages/StartPage.tsx';
 import AiChatPage from './pages/AiChatPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import OurVisionPage from './pages/OurVisionPage.tsx';
-import ProductDetailsPage from './pages/ProductDetailsPage.tsx';
+import Bistro from './pages/Bistro.tsx';
 import ProductsPage from './pages/ProductsPage.tsx';
 import ProfilePage from './pages/ProfilePage.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 
+import LillaSalongen from './pages/LillaSalongen.tsx';
+import StoraSalongen from './pages/StoraSalongen.tsx';
 
 interface Route {
   element: JSX.Element;
@@ -25,7 +27,10 @@ export default [
   AiChatPage,
   NotFoundPage,
   OurVisionPage,
-  ProductDetailsPage,
+  ProductsPage,
+  LillaSalongen,
+  StoraSalongen,
+  Bistro,
   ProductsPage,
   ProfilePage,
   LoginPage

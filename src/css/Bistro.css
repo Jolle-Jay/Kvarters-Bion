@@ -1,0 +1,247 @@
+body.bistro-theme {
+    background-color: #3d3d0e;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg opacity='0.18' stroke='%23B8860B' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 70c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 110c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 150c40-30 100-30 140 0s100 30 140 0'/%3E%3Crect x='28' y='80' width='26' height='16'/%3E%3Crect x='28' y='122' width='26' height='16'/%3E%3Crect x='28' y='164' width='26' height='16'/%3E%3Crect x='266' y='80' width='26' height='16'/%3E%3Crect x='266' y='122' width='26' height='16'/%3E%3Crect x='266' y='164' width='26' height='16'/%3E%3Cpath d='M40 220c30-24 80-24 110 0s80 24 110 0'/%3E%3Cpath d='M40 260c30-24 80-24 110 0s80 24 110 0'/%3E%3Crect x='50' y='228' width='22' height='14'/%3E%3Crect x='50' y='266' width='22' height='14'/%3E%3Crect x='248' y='228' width='22' height='14'/%3E%3Crect x='248' y='266' width='22' height='14'/%3E%3Crect x='130' y='190' width='60' height='36' rx='6'/%3E%3Ccircle cx='148' cy='182' r='7'/%3E%3Ccircle cx='172' cy='182' r='7'/%3E%3Ccircle cx='160' cy='208' r='10'/%3E%3Crect x='192' y='198' width='12' height='16' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 320px 320px;
+    color: #ffffff;
+  
+    
+}
+
+
+
+/* Hero: stor bildyta med overlay och ram. */
+.bistro-hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+        url("../images/cookingImage.jpg") center/cover no-repeat;
+    border: 2px solid #B8860B;
+    border-radius: 10px;
+    margin: 1.5rem 2rem 2.5rem;
+}
+
+/* Varumärkesblock: titel och undertitel staplade. */
+.brand-block {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 1.2rem;
+}
+
+/* Varumärkestitel: stor, kraftig text med skugga. */
+.brand-title {
+    color: #B8860B;
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
+                 0 0 15px rgba(184, 134, 11, 0.4);
+    /* Fluid font-size med clamp */
+    font-size: clamp(1.5rem, 5vw, 2.2rem); 
+}
+
+/* Undertitel: mindre, luftig text med versaler. */
+.brand-subtitle {
+    color: #B8860B;
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+}
+
+.info-section {
+    max-width: 1100px;
+    margin: 0 auto 2rem auto;
+    padding: 1.5rem;
+    background: transparent;
+    justify-items: center;
+    border: none;
+    border-radius: 12px;
+    color: #c3cac3;
+}
+
+/* Info-rubrik: stor rubrik med skugga. */
+.info-section h3 {
+    color: #B8860B;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+        /* fluid font-size */
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.65);
+}
+
+/* Info-paragrafer: större läsbar text. */
+.info-section p {
+    margin-bottom: 0.8rem;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+        /* fluid font-size */
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* Mobil: minskar marginaler för info. */
+@media (max-width: 768px) {
+    .info-section {
+        margin: 1rem;
+    }
+}
+
+.menu {
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+
+/* Övre meny: två rutor (barn/senior) sida vid sida. */
+.menu-top-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Nedre meny: tre kolumner (dryck/mat/snacks) sida vid sida. */
+.menu-bottom-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.menu-child, .menu-senior, .menu-group {
+    flex: 1 1 300px;
+    margin-bottom: 1rem;
+}
+
+
+/* Menytavla: grid för Dryck/Mat/Snacks. */
+.menu-board {
+  background: rgba(10, 25, 10, 0.7);
+  border: 2px solid #B8860B;
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.menu-group {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  flex: 1 1 250px;
+  margin-bottom: 1;
+}
+
+/* Menygrupp-rubrik: sectionrubrik i menytavlan. */
+.menu-group h3 {
+    color: #B8860B;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}
+
+/* Menylista: staplad lista utan punkter. */
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+/* Menyitem: rad med produkt och pris. */
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px dashed rgba(184, 134, 11, 0.35);
+}
+
+/* Produktnamn i menyrad. */
+.menu-item strong {
+    color: #f1f1f1;
+    display: block;
+    font-size: 1rem;
+}
+
+/* Beskrivning i menyrad. */
+.menu-item span {
+    color: #c3cac3;
+    font-size: 0.85rem;
+}
+
+/* Pris i menyrad. */
+.menu-price {
+    color: #90ee90;
+    font-weight: bold;
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+/* Senior-meny: egen box med bakgrund och ram. */
+.menu-senior {
+    width: min(360px, 100%);
+    background: rgba(10, 25, 10, 0.7);
+    border: 2px solid #B8860B;
+    border-radius: 12px;
+    padding: 1.25rem;
+    order: 2;
+}
+
+/* Senior-rubrik. */
+.menu-senior h3 {
+    color: #B8860B;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}
+
+/* Barn-meny: egen box med bakgrund och ram. */
+.menu-child {
+    width: min(360px, 100%);
+    background: rgba(10, 25, 10, 0.7);
+    border: 2px solid #B8860B;
+    border-radius: 12px;
+    padding: 1.25rem;
+    order: 1;
+}
+
+/* Barn-rubrik. */
+.menu-child h3 {
+    color: #B8860B;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}
+
+/* Mobil: staplar menyer och minskar marginaler. */
+@media (max-width: 768px) {
+    .menu-senior {
+        width: 100%;
+    }
+
+    .menu-child {
+        width: 100%;
+    }
+
+    .menu {
+        margin: 1rem;
+    }
+}

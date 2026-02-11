@@ -1,13 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import "./Header.css";
+import '../css/Header.css';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+
+    // Klick utanför menyn stänger den
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
 
   return (
     <header className="navbar">
-      <span className="logo">KvartersBion</span>
+      <Link className="logo" to="/">KvartersBion</Link>
+
 
       <button
         className="hamburger"
@@ -17,7 +36,7 @@ export default function Header() {
         ☰
       </button>
 
-      <nav className={`nav-links ${menuOpen ? "active" : ""}`}>
+      <nav ref={navRef} className={`nav-links ${menuOpen ? "active" : ""}`}>
         <Link className="nav-item" to="/bistro">Bistro</Link>
         <Link className="nav-item" to="/lilla-salongen">Lilla Salongen</Link>
         <Link className="nav-item" to="/stora-salongen">Stora Salongen</Link>
