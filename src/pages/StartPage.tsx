@@ -13,6 +13,8 @@ export default function StartPage() {
             setMovies(mapMovieArray(await (await fetch('/api/movies')).json()));
         })();
     }, []);
+
+    console.log(movies);
     // scroll to top when the route changes
     App();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -24,4 +26,9 @@ export default function StartPage() {
             <img src={Poster} alt="poster of" />
         </article>)}
     </>;
+};
+
+StartPage.route = {
+    path: "/startpage",
+    menuLabel: "Start sida"
 };
