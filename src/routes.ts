@@ -1,13 +1,15 @@
 import type { JSX } from 'react';
 import { createElement } from 'react';
 // page components
-import AboutPage from './pages/AboutPage.tsx';
+import StartPage from './pages/StartPage.tsx';
 import AiChatPage from './pages/AiChatPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import OurVisionPage from './pages/OurVisionPage.tsx';
 import MovieDetailsPage from './pages/MovieDetailsPage.tsx';
 import MoviesPage from './pages/MoviesPage.tsx';
-import StartPage from './pages/StartPage.tsx';
+import Bistro from './pages/Bistro.tsx';
+import LillaSalongen from './pages/LillaSalongen.tsx';
+import StoraSalongen from './pages/StoraSalongen.tsx';
 
 interface Route {
   element: JSX.Element;
@@ -19,13 +21,15 @@ interface Route {
 }
 
 export default [
-  AboutPage,
+  StartPage,
   AiChatPage,
   NotFoundPage,
   OurVisionPage,
   MovieDetailsPage,
   MoviesPage,
-  StartPage
+  LillaSalongen,
+  StoraSalongen,
+  Bistro
 ]
   // map the route property of each page component to a Route
   .map(x => (({ element: createElement(x), ...x.route }) as Route))

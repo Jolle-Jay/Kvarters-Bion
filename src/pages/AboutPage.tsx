@@ -31,3 +31,5 @@ export default function AboutPage() {
     </Row>
   </>;
 }
+
+//Skapar en om oss sida

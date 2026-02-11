@@ -29,6 +29,7 @@ export default function StartPage() {
 };
 
 StartPage.route = {
-    path: "/startpage",
-    menuLabel: "Start sida"
+    path: '/',
+    menuLabel: 'StartPage',
+    index: 1
 };

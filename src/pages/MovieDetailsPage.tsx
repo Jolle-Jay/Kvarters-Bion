@@ -1,4 +1,4 @@
-import type Movie from '../interfaces/Movie.ts';
+import type { MovieJson } from '../interfaces/Movie.ts';
 import { Row, Col } from 'react-bootstrap';
 import { Link, useLoaderData } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
@@ -14,7 +14,7 @@ MovieDetailsPage.route = {
 export default function MovieDetailsPage() {
 
   const Movie =
-    useLoaderData().Movies[0] as Movie;
+    useLoaderData().Movies[0] as MovieJson;
 
   // if no Movie found, show 404
   if (!Movie) {

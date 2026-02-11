@@ -39,3 +39,8 @@ export default function MoviesCard(
     </Card.Body>
   </Card >;
 }
+
+// filmsidans movie cards
+
+// Tar data från Product och skapar ett kort som användarna kan klicka
+// finns bootstrap styling koder med react men vi ska inte ha det

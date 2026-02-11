@@ -5,7 +5,7 @@ import Footer from './partials/Footer';
 
 
 // turn off when not needed for debugging
-const showBootstrapBreakpoints = true;
+
 
 export default function App() {
 
