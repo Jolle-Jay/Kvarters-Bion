@@ -1,33 +1,100 @@
 import App from '../App';
 import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import "../css/MovieCards.css";
 
 export default function StartPage() {
 
     const [movies, setMovies] = useState<Movie[] | null>(null);
+    const [selectedGenre, setSelectedGenre] = useState<string>('alla');
 
+    // Fetch movies
     useEffect(() => {
         (async () => {
             setMovies(mapMovieArray(await (await fetch('/api/movies')).json()));
         })();
     }, []);
 
-    console.log(movies);
-    // scroll to top when the route changes
+    // Scroll to top
     App();
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
-    //map movie and add al the values wished to execute
-    return <div className="movie-list">
-        {movies && movies.map(({ Title, id, Poster }) => <article key={id} className="movie-card">
-            <h3>{Title}</h3>
-            <img src={Poster} alt="poster of" />
-        </article>)}
-    </div>;
-};
+    // Genre filtering only
+//   const filteredMovies = movies.filter(movies =>
+//     selectedGenre === 'alla' || movie.Genre.includes(selectedGenre)
+// );
+
+    return (
+        <main>
+            {/* HERO + CAROUSEL */}
+            <section className="hero">
+
+                <div className="carousel">
+                    <div className="carousel-track">
+                        <div className="group">
+                           {movies && movies.map(({Poster }) => <img src={Poster} alt="poster of" />)}
+                        </div>
+
+                        {/* Duplicate group for infinite scroll animation */}
+                        <div className="group" aria-hidden>
+                           {movies && movies.map(({Poster }) => <img src={Poster} alt="poster of" />)}
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Upplev film på riktigt</h2>
+                <div className="hero-sub">
+                    <p>Premiärer • Klassiker • IMAX-känsla</p>
+                    <span className="stars">★ ★ ★ ★ ★</span>
+                </div>
+            </section>
+
+            {/* FILTER */}
+            <section className="filter">
+                <div className="filter-item">
+                    <h3>Filtrera film</h3>
+                    <select
+                        className="filter-dropdown"
+                        value={selectedGenre}
+                        onChange={(e) => setSelectedGenre(e.target.value)}
+                    >
+                        <option value="alla">Alla</option>
+                        <option value="Science Fiction">Sci-Fi</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Animerat">Animerat</option>
+                        <option value="Thriller">Thriller</option>
+                        <option value="Action">Action</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Adventure">Adventure</option>
+                    </select>
+                </div>
+            </section>
+
+            {/* MOVIES */}
+            <div className="movies">
+                {movies && movies.map(movie => (
+                    <Link
+                        key={movie.id}
+                        to={`/movie/${movie.id}`}
+                        className="movie-card"
+                    >
+                        <div className="poster">
+                            <img
+                                src={movie.Poster}
+                                alt={movie.Title}
+                            />
+                        </div>
+
+                        <h3>{movie.Title}</h3>
+                        <p>{movie.Genre}</p>
+                    </Link>
+                ))}
+            </div>
+        </main>
+    );
+}
 
 StartPage.route = {
     path: '/',
