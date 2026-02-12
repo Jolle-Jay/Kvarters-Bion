@@ -3,6 +3,7 @@ import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import "../css/MovieCards.css";
 
 export default function StartPage() {
 
@@ -20,12 +21,12 @@ export default function StartPage() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
     //map movie and add al the values wished to execute
-    return <>
-        {movies && movies.map(({ Title, Year, id, Poster }) => <article key={id}>
-            <h3>{Title} ({Year})</h3>
+    return <div className="movie-list">
+        {movies && movies.map(({ Title, id, Poster }) => <article key={id} className="movie-card">
+            <h3>{Title}</h3>
             <img src={Poster} alt="poster of" />
         </article>)}
-    </>;
+    </div>;
 };
 
 StartPage.route = {
