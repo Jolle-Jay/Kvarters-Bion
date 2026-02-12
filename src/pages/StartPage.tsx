@@ -1,10 +1,10 @@
 import App from '../App';
 import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import "../css/MovieCards.css";
 import "../css/Carousel.css";
+import "../css/Stars.css";
 
 export default function StartPage() {
 
@@ -23,18 +23,20 @@ export default function StartPage() {
 
     //map movie and add al the values wished to execute
     return <main>
-        <div className='carousel'>
-            <div className="carousel-track">
-                <div className="group"></div>
-                {movies && movies.map(({Poster }) => <img src={Poster} alt="poster of" />)}
+        <section className='hero'>
+            <div className='carousel'>
+                <div className="carousel-track">
+                    <div className="group">
+                        {movies && movies.map(({Poster }) => <img src={Poster} alt="poster of" />)}
+                    </div>
+                </div>
             </div>
-        </div>
-        <div className="hero-sub">
-            <p>Premiärer • Klassiker • IMAX-känsla</p>
-            <span>★ ★ ★ ★ ★</span>
-
-        </div>
-
+        
+            <div className="hero-sub">
+                <p>Premiärer • Klassiker • IMAX-känsla</p>
+                <span className='stars'>★ ★ ★ ★ ★</span>
+            </div>
+        </section>
         <div className='filter'>
 
         </div>
