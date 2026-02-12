@@ -9,6 +9,7 @@ import Bistro from './pages/Bistro.tsx';
 import ProductsPage from './pages/ProductsPage.tsx';
 import LillaSalongen from './pages/LillaSalongen.tsx';
 import StoraSalongen from './pages/StoraSalongen.tsx';
+import BookingPage from './pages/BookingPages.tsx';
 
 interface Route {
   element: JSX.Element;
@@ -28,7 +29,8 @@ export default [
   LillaSalongen,
   StoraSalongen,
   Bistro,
-  ProductsPage
+  ProductsPage,
+  BookingPage
 ]
   // map the route property of each page component to a Route
   .map(x => (({ element: createElement(x), ...x.route }) as Route))
