@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import '../css/booking-styles.css';
+import '../CSS/booking-styles.css';
 import productsLoader from '../utils/productsLoader';
-import type { JSX } from 'react';
 
 // Price per ticket category
 const PRICES = {
@@ -126,82 +125,16 @@ function BookingPage() {
     // Mark selected seats as booked
     setBookedSeats(prev => new Set([...prev, ...selectedSeats]));
     alert(`Bokning bekräftad för ${film}: ${selectedSeats.join(', ')}`);
-    
+
     // Reset
     setSelectedSeats([]);
     setCounts({ adult: 0, senior: 0, child: 0 });
   };
 
-  // Generate seats grid
-  const generateSeats = () => {
-    const maxSeats = Math.max(...SALONG_LAYOUT.seatsPerRow);
-    const seats: JSX.Element[] = [];
-
-    SALONG_LAYOUT.seatsPerRow.forEach((numSeats, index) => {
-      const row = index + 1;
-      const padding = Math.floor((maxSeats - numSeats) / 2);
-
-      // Left row label
-      seats.push(
-        <div key={`left-${row}`} className="row-label">
-          {row}
-        </div>
-      );
-
-      // Empty cells for padding
-      for (let i = 0; i < padding; i++) {
-        seats.push(<div key={`pad-left-${row}-${i}`} />);
-      }
-
-      // Seat buttons
-      for (let col = 1; col <= numSeats; col++) {
-        const seatId = `${row}-${col}`;
-        let seatType: 'available' | 'vip' | 'elder' = 'available';
-
-        // VIP seats (row 5, cols 4-7)
-        if (row === 5 && col >= 4 && col <= 7) {
-          seatType = 'vip';
-        }
-        // Elder seats (row 3, cols 1-3)
-        else if (row === 3 && col >= 1 && col <= 3) {
-          seatType = 'elder';
-        }
-
-        seats.push(
-          <Seat
-            key={seatId}
-            row={row}
-            col={col}
-            type={seatType}
-            isSelected={selectedSeats.includes(seatId)}
-            isBooked={bookedSeats.has(seatId)}
-            onClick={() => selectSeat(row, col)}
-          />
-        );
-      }
-
-      // Empty cells for right padding
-      for (let i = 0; i < padding; i++) {
-        seats.push(<div key={`pad-right-${row}-${i}`} />);
-      }
-
-      // Right row label
-      seats.push(
-        <div key={`right-${row}`} className="row-label">
-          {row}
-        </div>
-      );
-    });
-
-    return seats;
-  };
-
   // Calculate total price
-  const totalPrice = (counts.adult * PRICES.adult) + 
-                     (counts.senior * PRICES.senior) + 
-                     (counts.child * PRICES.child);
-
-  const maxSeats = Math.max(...SALONG_LAYOUT.seatsPerRow);
+  const totalPrice = (counts.adult * PRICES.adult) +
+    (counts.senior * PRICES.senior) +
+    (counts.child * PRICES.child);
 
   return (
     <>
@@ -220,16 +153,16 @@ function BookingPage() {
                 <span className="ticket-note">Standard</span>
               </div>
               <div className="ticket-controls">
-                <button 
-                  className="ticket-btn" 
+                <button
+                  className="ticket-btn"
                   onClick={() => updateCount('adult', -1)}
                   disabled={counts.adult === 0}
                 >
                   −
                 </button>
                 <span className="ticket-count">{counts.adult}</span>
-                <button 
-                  className="ticket-btn" 
+                <button
+                  className="ticket-btn"
                   onClick={() => updateCount('adult', 1)}
                 >
                   +
@@ -243,16 +176,16 @@ function BookingPage() {
                 <span className="ticket-note">10% rabatt</span>
               </div>
               <div className="ticket-controls">
-                <button 
-                  className="ticket-btn" 
+                <button
+                  className="ticket-btn"
                   onClick={() => updateCount('senior', -1)}
                   disabled={counts.senior === 0}
                 >
                   −
                 </button>
                 <span className="ticket-count">{counts.senior}</span>
-                <button 
-                  className="ticket-btn" 
+                <button
+                  className="ticket-btn"
                   onClick={() => updateCount('senior', 1)}
                 >
                   +
@@ -266,16 +199,16 @@ function BookingPage() {
                 <span className="ticket-note">20% rabatt</span>
               </div>
               <div className="ticket-controls">
-                <button 
-                  className="ticket-btn" 
+                <button
+                  className="ticket-btn"
                   onClick={() => updateCount('child', -1)}
                   disabled={counts.child === 0}
                 >
                   −
                 </button>
                 <span className="ticket-count">{counts.child}</span>
-                <button 
-                  className="ticket-btn" 
+                <button
+                  className="ticket-btn"
                   onClick={() => updateCount('child', 1)}
                 >
                   +
@@ -331,15 +264,44 @@ function BookingPage() {
           </div>
         </div>
         <div className="screen">Bio Skärm</div>
-        <div 
-          id="seats" 
+        <div
+          id="seats"
           className="seats-grid"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${maxSeats + 2}, 1fr)`
-          }}
         >
-          {generateSeats()}
+          {SALONG_LAYOUT.seatsPerRow.map((numSeats, index) => {
+            const row = index + 1;
+            return (
+              <div key={`row-${row}`} className="seat-row">
+                <div className="row-label">{row}</div>
+                <div className="seat-row-inner">
+                  {Array.from({ length: numSeats }, (_, i) => {
+                    const col = i + 1;
+                    const seatId = `${row}-${col}`;
+                    let seatType: 'available' | 'vip' | 'elder' = 'available';
+
+                    if (row === 5 && col >= 4 && col <= 7) {
+                      seatType = 'vip';
+                    } else if (row === 3 && col >= 1 && col <= 3) {
+                      seatType = 'elder';
+                    }
+
+                    return (
+                      <Seat
+                        key={seatId}
+                        row={row}
+                        col={col}
+                        type={seatType}
+                        isSelected={selectedSeats.includes(seatId)}
+                        isBooked={bookedSeats.has(seatId)}
+                        onClick={() => selectSeat(row, col)}
+                      />
+                    );
+                  })}
+                </div>
+                <div className="row-label">{row}</div>
+              </div>
+            );
+          })}
         </div>
         <button onClick={confirmBooking}>
           Bekräfta bokning
