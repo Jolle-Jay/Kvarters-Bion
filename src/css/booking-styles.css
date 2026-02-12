@@ -1,0 +1,577 @@
+/* Fil: Bokningssida - Biljettväljare och sammanfattning */
+
+/* Hero section: Innehåller biljettväljare och sammanfattning */
+.hero {
+    padding: 2rem;
+    background: #0a1a0a;
+    border-bottom: 2px solid #5e460f;
+}
+
+.hero h2 {
+    text-align: center;
+    color: #FFD700;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero p {
+    text-align: center;
+    color: #ccc;
+    margin-bottom: 2rem;
+}
+
+/* Layout för biljettväljare och sammanfattning */
+.ticket-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Panel för biljettval */
+.ticket-panel {
+    background: #061906;
+    padding: 2rem;
+    border: 2px solid #5e460f;
+    border-radius: 10px;
+}
+
+.ticket-panel h3 {
+    color: #FFD700;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* En rad med biljetttyp */
+.ticket-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: rgba(10, 25, 10, 0.5);
+    border: 1px solid #3a3a0a;
+    border-radius: 8px;
+}
+
+.ticket-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.ticket-label strong {
+    color: #FFD700;
+    font-size: 1.1rem;
+}
+
+.ticket-note {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+/* Kontroller för plus/minus */
+.ticket-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ticket-btn {
+    width: 40px;
+    height: 40px;
+    background: #0a3d0a;
+    color: #FFD700;
+    border: 2px solid #B8860B;
+    border-radius: 6px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ticket-btn:hover:not(:disabled) {
+    background: #086808;
+    transform: scale(1.05);
+}
+
+.ticket-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ticket-count {
+    color: #FFD700;
+    font-size: 1.3rem;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* Sammanfattningspanel */
+.ticket-summary {
+    background: #061906;
+    padding: 1.5rem;
+    border: 2px solid #5e460f;
+    border-radius: 10px;
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.ticket-summary h4 {
+    color: #FFD700;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #B8860B;
+    padding-bottom: 0.5rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    color: #ccc;
+    font-size: 1rem;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    margin-top: 1rem;
+    border-top: 2px solid #B8860B;
+    color: #FFD700;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Biosalong: layout och behållare för säteskarta. */
+.cinema {
+    margin: 2rem;
+    padding: 2rem;
+    background: #061906;
+    border: 2px solid #5e460f;
+    border-radius: 10px;
+}
+
+.cinema h3 {
+    text-align: center;
+    color: #FFD700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+/* Header för salongen (rubrik + legend). */
+.cinema-header {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.cinema-header h3 {
+    margin: 0;
+    text-align: center;
+}
+
+/* Legend: förklarar sätestyper. */
+.seat-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.5rem;
+    background: rgba(10, 25, 10, 0.5);
+    border: 2px solid #B8860B;
+    border-radius: 8px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.legend-color {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.legend-color.available {
+    background: #256e40;
+}
+
+.legend-color.elder {
+    background: #85546c;
+}
+
+.legend-color.vip {
+    background: #b49e1f;
+}
+
+.legend-color.unavailable {
+    background: #b11f1f;
+}
+
+.legend-text {
+    color: #FFD700;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+/* Skärm: visuell markör för scen/skärm. */
+.screen {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    color: #FFD700;
+    text-align: center;
+    padding: 1rem;
+    margin: 1rem auto 2rem;
+    border: 3px solid #B8860B;
+    border-radius: 10px;
+    max-width: 600px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* Rutnät för säten. */
+.seats-grid {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    align-items: center;
+    justify-items: center;
+}
+
+/* Radetiketter. */
+.row-label {
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Säte: grundform och utseende. */
+.seat {
+    width: 46px;
+    height: 46px;
+    border: none;
+    background: #256e40;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.55rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 3px 6px rgba(0, 0, 0, 0.3);
+    clip-path: polygon(
+        12% 0%, 88% 0%,
+        95% 5%, 95% 45%,
+        100% 50%, 100% 90%,
+        95% 100%, 5% 100%,
+        0% 90%, 0% 50%,
+        5% 45%, 5% 5%
+    );
+}
+
+.seat:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+.seat.selected {
+    background: #4a9fd8;
+    color: #fff;
+}
+
+.seat.booked {
+    background: #ac2a2a;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.seat.vip {
+    background: #b49e1f;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 3px 6px rgba(218, 165, 32, 0.6);
+}
+
+.seat.vip:hover:not(:disabled) {
+    background: #FFC700;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 5px 10px rgba(218, 165, 32, 0.8);
+}
+
+.seat.vip.selected {
+    background: #B8860B;
+    color: #fff;
+}
+
+.seat.elder {
+    background: #85546c;
+    color: #FFD700;
+    font-weight: bold;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 3px 6px rgba(255, 105, 180, 0.5);
+}
+
+.seat.elder:hover:not(:disabled) {
+    background: #ff99cc;
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 5px 10px rgba(255, 105, 180, 0.7);
+}
+
+.seat.elder.selected {
+    background: #ff69b4;
+    color: #fff;
+}
+
+/* Bokningsknapp. */
+.cinema button {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 1rem 3rem;
+    background: #0a3d0a;
+    color: #FFD700;
+    border: 2px solid #B8860B;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.cinema button:hover {
+    background: #086808;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Chat bubble (AI-chat länk) */
+.chat-bubble {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    background: #0a3d0a;
+    color: #FFD700;
+    border: 2px solid #B8860B;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.chat-bubble:hover {
+    background: #086808;
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* ========================================
+   RESPONSIV DESIGN - TABLETS
+   ======================================== */
+@media (max-width: 1024px) {
+    .ticket-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .ticket-summary {
+        position: static;
+    }
+
+    .cinema {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .seat-legend {
+        position: static;
+        margin: 1rem auto;
+    }
+
+    .cinema-header {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* ========================================
+   RESPONSIV DESIGN - MOBIL
+   ======================================== */
+@media (max-width: 768px) {
+    .hero {
+        padding: 1.5rem 1rem;
+    }
+
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+
+    .ticket-panel {
+        padding: 1.5rem 1rem;
+    }
+
+    .ticket-panel h3 {
+        font-size: 1.3rem;
+    }
+
+    .ticket-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem 0.5rem;
+    }
+
+    .ticket-controls {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .ticket-summary {
+        padding: 1rem;
+    }
+
+    .cinema {
+        margin: 1rem 0.5rem;
+        padding: 1rem;
+    }
+
+    .cinema h3 {
+        font-size: 1.4rem;
+    }
+
+    .screen {
+        font-size: 1rem;
+        padding: 0.75rem;
+    }
+
+    .seats-grid {
+        gap: 0.3rem;
+    }
+
+    .seat {
+        width: 35px;
+        height: 35px;
+        font-size: 0.5rem;
+    }
+
+    .row-label {
+        font-size: 0.85rem;
+    }
+
+    .cinema button {
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+    }
+
+    .chat-bubble {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    .seat-legend {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .legend-item {
+        font-size: 0.75rem;
+    }
+}
+
+/* ========================================
+   RESPONSIV DESIGN - EXTRA LITEN MOBIL
+   ======================================== */
+@media (max-width: 480px) {
+    .hero h2 {
+        font-size: 1.2rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    .ticket-label strong {
+        font-size: 1rem;
+    }
+
+    .ticket-note {
+        font-size: 0.75rem;
+    }
+
+    .ticket-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+
+    .ticket-count {
+        font-size: 1.1rem;
+    }
+
+    .summary-row {
+        font-size: 0.9rem;
+    }
+
+    .summary-total {
+        font-size: 1rem;
+    }
+
+    .seat {
+        width: 28px;
+        height: 28px;
+        font-size: 0.45rem;
+    }
+
+    .row-label {
+        font-size: 0.75rem;
+    }
+
+    .legend-color {
+        width: 14px;
+        height: 14px;
+    }
+
+    .legend-text {
+        font-size: 0.65rem;
+    }
+}

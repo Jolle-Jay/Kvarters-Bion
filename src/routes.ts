@@ -9,7 +9,7 @@ import Bistro from './pages/Bistro.tsx';
 import ProductsPage from './pages/ProductsPage.tsx';
 import LillaSalongen from './pages/LillaSalongen.tsx';
 import StoraSalongen from './pages/StoraSalongen.tsx';
-import BookingPage from './pages/BookingPages.tsx';
+import BookingPage from './pages/BookingPage.tsx';
 
 interface Route {
   element: JSX.Element;

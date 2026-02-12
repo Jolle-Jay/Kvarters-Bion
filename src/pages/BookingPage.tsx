@@ -1,11 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import './booking-import.css';
-import './salong-style.css';
+import '../css/booking-styles.css';
 import productsLoader from '../utils/productsLoader';
 import type { JSX } from 'react';
-
-
 
 // Price per ticket category
 const PRICES = {
