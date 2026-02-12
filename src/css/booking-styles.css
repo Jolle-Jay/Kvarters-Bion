@@ -247,11 +247,29 @@
 
 /* Rutnät för säten. */
 .seats-grid {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 2rem;
     align-items: center;
-    justify-items: center;
+    max-width: 100%;
+}
+
+/* Individual seat row */
+.seat-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+/* Inner container for seats (without row labels) */
+.seat-row-inner {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: nowrap;
 }
 
 /* Radetiketter. */
@@ -260,12 +278,16 @@
     font-weight: bold;
     font-size: 1rem;
     text-align: center;
+    min-width: 30px;
+    flex-shrink: 0;
 }
 
 /* Säte: grundform och utseende. */
 .seat {
-    width: 46px;
+    width: 100%;
+    max-width: 46px;
     height: 46px;
+    aspect-ratio: 1;
     border: none;
     background: #256e40;
     color: #fff;
@@ -278,22 +300,20 @@
     align-items: center;
     justify-content: center;
     padding: 0;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 3px 6px rgba(0, 0, 0, 0.3);
-    clip-path: polygon(
-        12% 0%, 88% 0%,
-        95% 5%, 95% 45%,
-        100% 50%, 100% 90%,
-        95% 100%, 5% 100%,
-        0% 90%, 0% 50%,
-        5% 45%, 5% 5%
-    );
+    clip-path: polygon(12% 0%, 88% 0%,
+            95% 5%, 95% 45%,
+            100% 50%, 100% 90%,
+            95% 100%, 5% 100%,
+            0% 90%, 0% 50%,
+            5% 45%, 5% 5%);
 }
 
 .seat:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 5px 10px rgba(0, 0, 0, 0.4);
 }
@@ -313,14 +333,14 @@
     background: #b49e1f;
     color: #333;
     font-weight: bold;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 3px 6px rgba(218, 165, 32, 0.6);
 }
 
 .seat.vip:hover:not(:disabled) {
     background: #FFC700;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 5px 10px rgba(218, 165, 32, 0.8);
 }
@@ -334,14 +354,14 @@
     background: #85546c;
     color: #FFD700;
     font-weight: bold;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 3px 6px rgba(255, 105, 180, 0.5);
 }
 
 .seat.elder:hover:not(:disabled) {
     background: #ff99cc;
-    box-shadow: 
+    box-shadow:
         inset -2px -2px 4px rgba(0, 0, 0, 0.2),
         2px 5px 10px rgba(255, 105, 180, 0.7);
 }
@@ -373,36 +393,9 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Chat bubble (AI-chat länk) */
-.chat-bubble {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 60px;
-    height: 60px;
-    background: #0a3d0a;
-    color: #FFD700;
-    border: 2px solid #B8860B;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    text-decoration: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
 
-.chat-bubble:hover {
-    background: #086808;
-    transform: scale(1.1);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-}
 
-/* ========================================
-   RESPONSIV DESIGN - TABLETS
-   ======================================== */
+
 @media (max-width: 1024px) {
     .ticket-layout {
         grid-template-columns: 1fr;
@@ -429,9 +422,7 @@
     }
 }
 
-/* ========================================
-   RESPONSIV DESIGN - MOBIL
-   ======================================== */
+
 @media (max-width: 768px) {
     .hero {
         padding: 1.5rem 1rem;
@@ -480,17 +471,26 @@
     }
 
     .seats-grid {
-        gap: 0.3rem;
+        gap: 0.25rem;
+    }
+
+    .seat-row {
+        gap: 0.25rem;
+    }
+
+    .seat-row-inner {
+        gap: 0.25rem;
     }
 
     .seat {
-        width: 35px;
+        max-width: 35px;
         height: 35px;
         font-size: 0.5rem;
     }
 
     .row-label {
         font-size: 0.85rem;
+        min-width: 25px;
     }
 
     .cinema button {
@@ -518,9 +518,7 @@
     }
 }
 
-/* ========================================
-   RESPONSIV DESIGN - EXTRA LITEN MOBIL
-   ======================================== */
+
 @media (max-width: 480px) {
     .hero h2 {
         font-size: 1.2rem;
@@ -556,14 +554,27 @@
         font-size: 1rem;
     }
 
+    .seats-grid {
+        gap: 0.2rem;
+    }
+
+    .seat-row {
+        gap: 0.2rem;
+    }
+
+    .seat-row-inner {
+        gap: 0.2rem;
+    }
+
     .seat {
-        width: 28px;
+        max-width: 28px;
         height: 28px;
         font-size: 0.45rem;
     }
 
     .row-label {
         font-size: 0.75rem;
+        min-width: 20px;
     }
 
     .legend-color {
