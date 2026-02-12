@@ -4,6 +4,7 @@ import { mapMovieArray } from '../interfaces/Movie';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import "../css/MovieCards.css";
+import "../css/Carousel.css";
 
 export default function StartPage() {
 
@@ -21,12 +22,29 @@ export default function StartPage() {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
     //map movie and add al the values wished to execute
-    return <div className="movie-list">
-        {movies && movies.map(({ Title, id, Poster }) => <article key={id} className="movie-card">
-            <h3>{Title}</h3>
-            <img src={Poster} alt="poster of" />
-        </article>)}
-    </div>;
+    return <main>
+        <div className='carousel'>
+            <div className="carousel-track">
+                <div className="group"></div>
+                {movies && movies.map(({Poster }) => <img src={Poster} alt="poster of" />)}
+            </div>
+        </div>
+        <div className="hero-sub">
+            <p>Premiärer • Klassiker • IMAX-känsla</p>
+            <span>★ ★ ★ ★ ★</span>
+
+        </div>
+
+        <div className='filter'>
+
+        </div>
+        <div className="movie-list">
+            {movies && movies.map(({ Title, id, Poster }) => <article key={id} className="movie-card">
+                <h3>{Title}</h3>
+                <img src={Poster} alt="poster of" />
+            </article>)}
+        </div>;
+    </main>
 };
 
 StartPage.route = {
