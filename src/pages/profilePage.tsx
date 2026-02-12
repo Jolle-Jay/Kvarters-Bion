@@ -8,13 +8,17 @@ import type { JSX } from 'react';
 function ProfilePage() {
   const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // är någon inloggad?
+  const [isLoading, setIsLoading] = useState(true); //laddare vi data?
   const [userData, setUserData] = useState({
+    // Startvärden = Standardvärden som visas innan vi laddat riktiga värden från localStorage
+
     name: 'Användare',
     email: 'user@example.com',
   });
 
+  // activeDropdowns = Håller koll på vilka dropdowns som är öppna/stängda
+  // setActiveDropdowns = Funktion för att öppna/stänga dropdowns
   const [activeDropdowns, setActiveDropdowns] = useState({
     history: false,
     cancellations: false,
@@ -24,18 +28,32 @@ function ProfilePage() {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const userName = localStorage.getItem('userName') || 'användare';
     const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+    // localStorage sparar ALLT som text
 
+
+    // Uppdatera state: Sätt inloggningsstatus till det vi hittade i localStorage
     setIsLoggedIn(loggedIn);
+    // Uppdatera state: Sätt användardata till det vi hittade i localStorage
+    // Skapar ett nytt objekt med name och email
     setUserData({ name: userName, email: userEmail });
+
+
+
     setIsLoading(false);
   }, []);
 
   const handleLogout = () => {
     localStorage.clear();
+    // Ta bort isLoggedIn, userName, userEmail, etc.
+
     navigate('/');
   };
 
+  // key = vilken dropdown som klickas på
   const toggleDropdown = (key: 'history' | 'cancellations') => {
+    //prev = cad actideDrop var INNAN KLICK
+    //...prev = kopiera ALLT från prev
+    // key  = computed property, använd värdet key som history tex.
     setActiveDropdowns(prev => ({ ...prev, [key]: !prev[key] }));
   };
 

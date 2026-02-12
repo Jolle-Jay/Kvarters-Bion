@@ -90,16 +90,25 @@
   transition: all 0.3s ease;
   text-decoration: none;
   display: inline-block;
+  align-self: center;
+  width: auto;
 }
 
 .btn-primary {
-  background: #B8860B;
-  color: #012401;
-  font-weight: bold;
+  display: inline-block;
+  padding: 8px 10px;
+  border: none;
+  background-color: #B8860B;
+  color: #0a1c0a;
+  text-decoration: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .btn-primary:hover {
   background: #FFD700;
+  filter: brightness(70%)
 }
 
 .btn-secondary {
