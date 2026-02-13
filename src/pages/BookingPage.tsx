@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import '../CSS/booking-styles.css';
 
 
@@ -54,7 +54,9 @@ const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
 
 function BookingPage() {
   const [searchParams] = useSearchParams();
-  const film = searchParams.get('film') || 'Okänd film';
+  const navigate = useNavigate();
+  const film = searchParams.get('movie') || 'Okänd film';
+  const showtime = searchParams.get('showtime');
 
   const [counts, setCounts] = useState<TicketCounts>({
     adult: 0,
@@ -122,16 +124,25 @@ function BookingPage() {
       return;
     }
 
-    // Mark selected seats as booked
-    setBookedSeats(prev => new Set([...prev, ...selectedSeats]));
-    alert(`Bokning bekräftad för ${film}: ${selectedSeats.join(', ')}`);
+    const totalPrice = (counts.adult * PRICES.adult) +
+      (counts.senior * PRICES.senior) +
+      (counts.child * PRICES.child);
 
-    // Reset
-    setSelectedSeats([]);
-    setCounts({ adult: 0, senior: 0, child: 0 });
+    const bookingData = {
+      film,
+      showtime,
+      seats: selectedSeats,
+      counts,
+      totalPrice,
+      salgon: SALONG_LAYOUT.name
+    };
+
+    sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
+
+    navigate('/confirm');
+
   };
 
-  // Calculate total price
   const totalPrice = (counts.adult * PRICES.adult) +
     (counts.senior * PRICES.senior) +
     (counts.child * PRICES.child);
@@ -307,13 +318,9 @@ function BookingPage() {
           Bekräfta bokning
         </button>
       </section>
-
-      <a href="ai-chat.html" className="chat-bubble" aria-label="Öppna AI-chat">
-        💬
-      </a>
     </>
   );
-}
+};
 
 BookingPage.route = {
   path: '/booking',
