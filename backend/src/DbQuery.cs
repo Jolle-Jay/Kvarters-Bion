@@ -201,6 +201,7 @@ public static class DbQuery
             command.ExecuteNonQuery();
         }
 
+
         // Seed movies
         command.CommandText = "SELECT COUNT(*) FROM movies";
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
@@ -246,54 +247,129 @@ public static class DbQuery
             db2.Close();
         }
 
+
         // seed Lounge
         command.CommandText = "SELECT COUNT(*) FROM lounges";
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
-            var aclData = @"
-                INSERT INTO lounges (id, name) VALUES
-                (1, 'Stora salongen'),
-                (2, 'Lilla slaongen');
+            var loungesData = @"
+                INSERT INTO lounges (name) VALUES
+                ('Stora salongen'),
+                ('Lilla slaongen');
             ";
-            command.CommandText = aclData;
+            command.CommandText = loungesData;
             command.ExecuteNonQuery();
         }
 
-        // seed 
+
+        // seed viewings
         command.CommandText = "SELECT COUNT(*) FROM viewings";
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
-            var aclData = @"
-                INSERT INTO viewings (id, movie, lounge, start_time) VALUES
-                (1, 1, 1, 2026-04-02 20:00:00),
-                (2, 2, 2, 2026-04-02 21:00:00),
-                (3, 3, 1, 2026-04-02 22:00:00),
-                (4, 4, 2, 2026-04-02 23:00:00),
-                (5, 5, 1, 2026-04-03 20:00:00),
-                (6, 6, 2, 2026-04-03 21:00:00),
-                (7, 7, 1, 2026-04-03 22:00:00),
+            var viewingsData = @"
+                INSERT INTO viewings (movie, lounge, start_time) VALUES
+                (1, 1, 2026-04-02 20:00:00),
+                (2, 2, 2026-04-02 21:00:00),
+                (3, 1, 2026-04-02 22:00:00),
+                (4, 2, 2026-04-02 23:00:00),
+                (5, 1, 2026-04-03 20:00:00),
+                (6, 2, 2026-04-03 21:00:00),
+                (7, 1, 2026-04-03 22:00:00),
+                (8, 2, 2026-04-03 23:00:00),
 
-                (8, 8, 1, 2026-04-02 20:00:00),
-                (9, 9, 2, 2026-04-02 21:00:00),
-                (10, 10, 1, 2026-04-02 22:00:00),
-                (11, 11, 2, 2026-04-02 23:00:00),
-                (12, 12, 1, 2026-04-03 20:00:00),
-                (13, 13, 2, 2026-04-03 21:00:00),
-                (14, 14, 1, 2026-04-03 22:00:00),
+                (9, 1, 2026-04-04 20:00:00),
+                (10, 2, 2026-04-04 21:00:00),
+                (11, 1, 2026-04-04 22:00:00),
+                (12, 2, 2026-04-04 23:00:00),
+                (13, 1, 2026-04-05 20:00:00),
+                (14, 2, 2026-04-05 21:00:00),
+                (15, 1, 2026-04-05 22:00:00),
+                (16, 2, 2026-04-05 23:00:00),
 
-                (15, 15, 1, 2026-04-02 20:00:00),
-                (16, 16, 2, 2026-04-02 21:00:00),
-                (17, 17, 1, 2026-04-02 22:00:00),
-                (18, 18, 2, 2026-04-02 23:00:00),
-                (19, 19, 1, 2026-04-03 20:00:00),
-                (20, 1, 2, 2026-04-03 21:00:00),
-                (21, 2, 1, 2026-04-03 22:00:00),
-                (22, 3, 2, 2026-04-03 23:00:00);
+                (17, 1, 2026-04-06 20:00:00),
+                (18, 2, 2026-04-06 21:00:00),
+                (19, 1, 2026-04-06 22:00:00),
+                (1, 2, 2026-04-06 23:00:00),
+                (2, 1, 2026-04-07 20:00:00),
+                (3, 2, 2026-04-07 21:00:00),
+                (4, 1, 2026-04-07 22:00:00),
+                (5, 2, 2026-04-07 23:00:00);
             ";
-            command.CommandText = aclData;
+            command.CommandText = viewingsData;
             command.ExecuteNonQuery();
         }
 
+
+        // seed seats
+        command.CommandText = "SELECT COUNT(*) FROM seats";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var seatsData = @"
+                INSERT INTO seats (lounge, seatRow, number) VALUES
+                (1,'1',1),
+                (1,'1',2),
+                (1,'1',3),
+                (1,'1',4),
+                (1,'1',5),
+                (1,'2',1),
+                (1,'2',2),
+                (1,'2',3),
+                (1,'2',4),
+                (1,'2',5),
+            ";
+            command.CommandText = seatsData;
+            command.ExecuteNonQuery();
+        }
+
+
+        // seed ticketTypes
+        command.CommandText = "SELECT COUNT(*) FROM ticketTypes";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var ticketTypesData = @"
+                INSERT INTO ticketTypes (name, price) VALUES
+                ('Standard', 140),
+                ('Senior', 120;
+                ('Child', 80),
+            ";
+            command.CommandText = ticketTypesData;
+            command.ExecuteNonQuery();
+        }
+
+
+        // seed bookings
+        command.CommandText = "SELECT COUNT(*) FROM bookings";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var bookingsData = @"
+                INSERT INTO bookings (BookingReference, user, email, viewing, status) VALUES
+                ('ABC123', 1, 'admin@cinema.se', 1, 'confirmed');
+            ";
+            command.CommandText = bookingsData;
+            command.ExecuteNonQuery();
+        }
+
+
+        // seed bookingSeats 
+        command.CommandText = "SELECT COUNT(*) FROM bookingSeats";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var bookingSeatsData = @"
+                INSERT INTO bookingSeats (booking, seat, ticketType) VALUES
+                (1, 1, 1),
+                (1, 2, 1),
+                (1, 3, 1),
+                (1, 4, 1),
+                (1, 5, 1),
+                (1, 6, 1),
+                (1, 7, 1),
+                (1, 8, 1),
+                (1, 9, 1),
+                (1, 10, 1);
+            ";
+            command.CommandText = bookingSeatsData;
+            command.ExecuteNonQuery();
+        }
 
     }
 
