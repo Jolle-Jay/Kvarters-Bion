@@ -44,7 +44,7 @@
 /* Ticket display */
 .ticket {
   display: grid;
-  background-image: url("/ticketstubG.webp");
+  background-image: url("/public/images/ticketstubG.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
