@@ -36,15 +36,22 @@ function ConfirmationPage() {
       return;
     }
 
+    //konverterar JSON text till JS objekt och sparar resultet i variabeln data
     const data: BookingData = JSON.parse(storedData);
+    // uppdaterar useState med objektet data
     setBookingData(data);
 
-    //om inte inloggad visa gäst formulär
+    //om inte inloggad visa gäst formulär där user måste skriva in email
     if (!loggedIn) {
       setShowGuestForm(true);
     } else {
-      // om inloggad skapa bokning direkt
-      createBooking(data, localStorage.getItem('userEmail') || '');
+      // om inloggad skapa bokning direkt med data från sessionstorage, vet redan email från inloggad användare
+      const email = localStorage.getItem('userEmail');
+      if (!email) {
+        alert('Email saknas, logga in igen');
+        return;
+      }
+      createBooking(data, email);
     }
   }, []);
 
