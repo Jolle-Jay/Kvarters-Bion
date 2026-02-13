@@ -136,7 +136,7 @@ function BookingPage() {
       totalPrice,
       salgon: SALONG_LAYOUT.name
     };
-
+    //sparar användarens data av bokningen
     sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
 
     navigate('/confirm');

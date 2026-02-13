@@ -3,8 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import '../CSS/confirmStyles.css';
 
 interface BookingData {
-  bookingReference: string;
+  film: string;
   viewing: string;
+  seats: string[];
+  counts: {
+    adult: number;
+    senior: number;
+    child: number;
+  };
+  totalPrice: number;
+  salong: string;
 }
 
 function ConfirmationPage() {
@@ -20,7 +28,7 @@ function ConfirmationPage() {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
 
-    //hämta booking från sessionStorage
+    //spara användarens val i bookingPage genom getItem och sparar det i storedData
     const storedData = sessionStorage.getItem('bookingData');
     if (!storedData) {
       //ingen booking data, omdirigera tillbaka
@@ -104,15 +112,15 @@ function ConfirmationPage() {
 
           <div className="booking-summary">
             <h3>Sammanfattning</h3>
-            {/* <p><strong>Film:</strong> {bookingData.film}</p>
-            <p><strong>Salong:</strong> {bookingData.salong}</p> */}
+            <p><strong>Film:</strong> {bookingData.film}</p>
+            <p><strong>Salong:</strong> {bookingData.salong}</p>
             <p><strong>Tid:</strong> {bookingData.viewing}</p>
-            {/* <p><strong>Platser:</strong> {bookingData.seats.join(', ')}</p> */}
+            <p><strong>Platser:</strong> {bookingData.seats.join(', ')}</p>
             <p><strong>Antal biljetter:</strong></p>
-            {/* {bookingData.counts.adult > 0 && <p>• Ordinarie: {bookingData.counts.adult}</p>}
+            {bookingData.counts.adult > 0 && <p>• Ordinarie: {bookingData.counts.adult}</p>}
             {bookingData.counts.senior > 0 && <p>• Pensionär: {bookingData.counts.senior}</p>}
             {bookingData.counts.child > 0 && <p>• Barn: {bookingData.counts.child}</p>}
-            <p className="total-price"><strong>Totalt:</strong> {bookingData.totalPrice.toFixed(2).replace('.', ',')} kr</p> */}
+            <p className="total-price"><strong>Totalt:</strong> {bookingData.totalPrice.toFixed(2).replace('.', ',')} kr</p>
           </div>
 
           <form onSubmit={handleGuestSubmit} className="guest-form">
@@ -125,9 +133,9 @@ function ConfirmationPage() {
               placeholder="din@email.se"
               required
             />
-            {/* <button type="submit" className="confirm-btn">
-              Bekräfta och betala {bookingData.totalPrice.toFixed(2).replace('.', ',')} kr */}
-            {/* </button> */}
+            <button type="submit" className="confirm-btn">
+              Bekräfta och betala {bookingData.totalPrice.toFixed(2).replace('.', ',')} kr
+            </button>
           </form>
         </div>
       </main>
@@ -150,20 +158,20 @@ function ConfirmationPage() {
         <h1>Bokning Klar!</h1>
         <p className="booking-id">Bokningsnummer: {bookingId}</p>
       </div>
+
+
+
+      {bookingData.seats.map((seat, index) => {
+        const [row, col] = seat.split('-');
+        return (
+          <div key={seat} className="ticket">
+            {/* <h1 className="ticketTextTitle"><u>{bookingData.film}</u></h1>
+            <p className="ticketTextSeat">{bookingData.salong}, Rad {row}, Plats {col}</p> */}
+            <p className="ticketTextTime">{bookingData.viewing}</p>
+          </div>
+        );
+      })}
     </main>
-
-
-    //   {bookingData.seats.map((seat, index) => {
-    //     const [row, col] = seat.split('-');
-    //     return (
-    //       <div key={seat} className="ticket">
-    //         {/* <h1 className="ticketTextTitle"><u>{bookingData.film}</u></h1>
-    //         <p className="ticketTextSeat">{bookingData.salong}, Rad {row}, Plats {col}</p> */}
-    //         <p className="ticketTextTime">{bookingData.viewing}</p>
-    //       </div>
-    //     );
-    //   })}
-    // </main>
   );
 }
 
