@@ -1,4 +1,5 @@
 namespace WebApp;
+
 public static class RestApi
 {
     public static void Start()
@@ -24,6 +25,8 @@ public static class RestApi
             }
             return RestResult.Parse(context, result);
         });
+
+
 
         App.MapGet("/api/{table}", (
             HttpContext context, string table
