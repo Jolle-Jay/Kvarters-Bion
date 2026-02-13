@@ -4,23 +4,37 @@ body.bistro-theme {
     background-repeat: repeat;
     background-size: 320px 320px;
     color: #ffffff;
-  
-    
 }
 
-
-
-/* Hero: stor bildyta med overlay och ram. */
 .bistro-hero {
-    text-align: center;
-    padding: 4rem 2rem;
-    background:
-        linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-        url("../images/cookingImage.jpg") center/cover no-repeat;
-    border: 2px solid #B8860B;
-    border-radius: 10px;
-    width: calc(100% -2rem);
-    margin: 1.5rem auto 2.5rem auto;
+  position: relative;
+  text-align: center;
+  padding: 7rem 2rem;
+  height: 24rem;
+  background:
+      linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+      url("../images/cookingImage.jpg") center/cover no-repeat;
+  border: 2px solid #B8860B;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1rem 2rem 2rem;
+}
+
+.bistro-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bistro-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+      rgba(0, 26, 0, 0.45),
+      rgba(0, 77, 0, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Varumärkesblock: titel och undertitel staplade. */
@@ -33,25 +47,20 @@ body.bistro-theme {
 
 /* Varumärkestitel: stor, kraftig text med skugga. */
 .brand-title {
-    color: #B8860B;
-    font-weight: 900;
-    letter-spacing: clamp(1px, 0.6vw, 3px);
-    text-transform: uppercase;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8),
-                 0 0 15px rgba(184, 134, 11, 0.4);
-    /* Fluid font-size med clamp */
-    font-size: clamp(1.6rem, 6vw, 2.4rem); 
-    text-align: center;
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #B8860B;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+  margin-bottom: 0.5rem;
 }
 
 /* Undertitel: mindre, luftig text med versaler. */
 .brand-subtitle {
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
     color: #B8860B;
-    letter-spacing: clamp(1px, 0.5vw, 2px);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
-    text-align: center;
+    letter-spacing: 2px;
+    font-weight: bold;
 }
 
 .info-section {

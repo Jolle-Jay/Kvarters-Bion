@@ -7,10 +7,14 @@ import "../css/MovieCards.css";
 
 export default function StartPage() {
 
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // månader börjar på 0
+    const dd = String(today.getDate()).padStart(2, '0');
+
+    const [selectedDate, setSelectedDate] = useState(`${yyyy}-${mm}-${dd}`);
     const [movies, setMovies] = useState<Movie[] | null>(null);
     const [selectedGenre, setSelectedGenre] = useState<string>('alla');
-
-    const [selectedDate, setSelectedDate] = useState<string>('');
     const [selectedSalon, setSelectedSalon] = useState<string>('alla');
 
 
@@ -58,52 +62,54 @@ export default function StartPage() {
             </section>
 
             {/* FILTER */}
-<section className="filter">
+            <section className="filter">
 
-  <div className="filter-item">
-    <h3>Filtrera film</h3>
-  </div>
+                {/* Genre */}
+                <div className="filter-item">
+                  <h3>Filtrera film</h3>
+                  <select
+                    className={`filter-dropdown ${selectedGenre !== 'alla' ? 'active' : ''}`}
+                    value={selectedGenre}
+                    onChange={(e) => setSelectedGenre(e.target.value)}
+                  >
 
-  <div className="filter-item">
-    <select
-      className="filter-dropdown"
-      value={selectedGenre}
-      onChange={(e) => setSelectedGenre(e.target.value)}
-    >
-      <option value="alla">Alla</option>
-      <option value="Science Fiction">Sci-Fi</option>
-      <option value="Drama">Drama</option>
-      <option value="Animerat">Animerat</option>
-      <option value="Thriller">Thriller</option>
-      <option value="Action">Action</option>
-      <option value="Romance">Romance</option>
-      <option value="Adventure">Adventure</option>
-    </select>
-  </div>
+                    <option value="alla">Alla</option>
+                    <option value="Science Fiction">Sci-Fi</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Animerat">Animerat</option>
+                    <option value="Thriller">Thriller</option>
+                    <option value="Action">Action</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Adventure">Adventure</option>
+                  </select>
+                </div>
 
-  <div className="filter-item">
-    <input
-      type="date"
-      className="filter-date"
-      value={selectedDate}
-      onChange={(e) => setSelectedDate(e.target.value)}
-    />
-  </div>
+                {/* Datum */}
+                <div className="filter-item">
+                  <h3>Välj datum</h3>
+                  <input
+                    type="date"
+                    className={`filter-date ${selectedDate ? 'active' : ''}`}
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                  />
+                </div>
 
-  <div className="filter-item">
-    <select
-      className="filter-dropdown"
-      value={selectedSalon}
-      onChange={(e) => setSelectedSalon(e.target.value)}
-    >
-      <option value="alla">Alla salonger</option>
-      <option value="1">Salong 1</option>
-      <option value="2">Salong 2</option>
-      <option value="IMAX">IMAX</option>
-    </select>
-  </div>
+                {/* Salong */}
+                <div className="filter-item">
+                  <h3>Salong</h3>
+                  <select
+                    className={`filter-dropdown ${selectedSalon !== 'alla' ? 'active' : ''}`}
+                    value={selectedSalon}
+                    onChange={(e) => setSelectedSalon(e.target.value)}
+                  >
+                    <option value="alla">Alla salonger</option>
+                    <option value="1">Lilla Salongen</option>
+                    <option value="2">Stora Salongen</option>
+                  </select>
+                </div>
 
-</section>
+            </section>
 
             {/* MOVIES */}
             <div className="movies">
