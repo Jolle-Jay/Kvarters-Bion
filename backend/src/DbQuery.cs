@@ -742,8 +742,8 @@ public static class DbQuery
             var ticketTypesData = @"
                 INSERT INTO ticketTypes (name, price) VALUES
                 ('Standard', 140),
-                ('Senior', 120;
-                ('Child', 80),
+                ('Senior', 120),
+                ('Child', 80);
             ";
             command.CommandText = ticketTypesData;
             command.ExecuteNonQuery();
