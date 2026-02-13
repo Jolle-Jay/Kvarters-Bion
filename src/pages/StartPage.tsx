@@ -10,6 +10,10 @@ export default function StartPage() {
     const [movies, setMovies] = useState<Movie[] | null>(null);
     const [selectedGenre, setSelectedGenre] = useState<string>('alla');
 
+    const [selectedDate, setSelectedDate] = useState<string>('');
+    const [selectedSalon, setSelectedSalon] = useState<string>('alla');
+
+
     // Fetch movies
     useEffect(() => {
         (async () => {
@@ -18,8 +22,10 @@ export default function StartPage() {
     }, []);
 
     // Scroll to top
-    App();
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    useEffect(() => {
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}, []);
+
 
     // Genre filtering only
 //   const filteredMovies = movies.filter(movies =>
@@ -29,7 +35,7 @@ export default function StartPage() {
     return (
         <main>
             {/* HERO + CAROUSEL */}
-            <section className="hero">
+            <section className="startpage-hero">
 
                 <div className="carousel">
                     <div className="carousel-track">
@@ -52,25 +58,52 @@ export default function StartPage() {
             </section>
 
             {/* FILTER */}
-            <section className="filter">
-                <div className="filter-item">
-                    <h3>Filtrera film</h3>
-                    <select
-                        className="filter-dropdown"
-                        value={selectedGenre}
-                        onChange={(e) => setSelectedGenre(e.target.value)}
-                    >
-                        <option value="alla">Alla</option>
-                        <option value="Science Fiction">Sci-Fi</option>
-                        <option value="Drama">Drama</option>
-                        <option value="Animerat">Animerat</option>
-                        <option value="Thriller">Thriller</option>
-                        <option value="Action">Action</option>
-                        <option value="Romance">Romance</option>
-                        <option value="Adventure">Adventure</option>
-                    </select>
-                </div>
-            </section>
+<section className="filter">
+
+  <div className="filter-item">
+    <h3>Filtrera film</h3>
+  </div>
+
+  <div className="filter-item">
+    <select
+      className="filter-dropdown"
+      value={selectedGenre}
+      onChange={(e) => setSelectedGenre(e.target.value)}
+    >
+      <option value="alla">Alla</option>
+      <option value="Science Fiction">Sci-Fi</option>
+      <option value="Drama">Drama</option>
+      <option value="Animerat">Animerat</option>
+      <option value="Thriller">Thriller</option>
+      <option value="Action">Action</option>
+      <option value="Romance">Romance</option>
+      <option value="Adventure">Adventure</option>
+    </select>
+  </div>
+
+  <div className="filter-item">
+    <input
+      type="date"
+      className="filter-date"
+      value={selectedDate}
+      onChange={(e) => setSelectedDate(e.target.value)}
+    />
+  </div>
+
+  <div className="filter-item">
+    <select
+      className="filter-dropdown"
+      value={selectedSalon}
+      onChange={(e) => setSelectedSalon(e.target.value)}
+    >
+      <option value="alla">Alla salonger</option>
+      <option value="1">Salong 1</option>
+      <option value="2">Salong 2</option>
+      <option value="IMAX">IMAX</option>
+    </select>
+  </div>
+
+</section>
 
             {/* MOVIES */}
             <div className="movies">
