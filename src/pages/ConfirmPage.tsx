@@ -4,7 +4,7 @@ import '../CSS/confirmStyles.css';
 
 interface BookingData {
   film: string;
-  viewing: string;
+  viewings: string;
   seats: string[];
   counts: {
     adult: number;
@@ -12,7 +12,7 @@ interface BookingData {
     child: number;
   };
   totalPrice: number;
-  salong: string;
+  lounge: string;
 }
 
 function ConfirmationPage() {
@@ -65,28 +65,37 @@ function ConfirmationPage() {
     const id = generateBookingId();
     setBookingId(id);
 
-    // TODO: Replace with actual API call to your C# backend
-    // Example:
-    // const response = await fetch('/api/bookings', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     bookingId: id,
-    //     email,
-    //     film: data.film,
-    //     showtime: data.showtime,
-    //     seats: data.seats,
-    //     counts: data.counts,
-    //     totalPrice: data.totalPrice,
-    //     salong: data.salong
-    //   })
-    // });
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'applications/json',
+          'Authorization': `Bearer
+          ${localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify({
+          bookingID: id,
+          email,
+          film: data.film,
+          viewings: data.viewings,
+          seats: data.seats,
+          counts: data.counts,
+          totalPrice: data.totalPrice,
+          lounge: data.lounge
+        })
+      });
 
-    console.log('Bokning skapad:', {
-      bookingId: id,
-      email,
-      ...data
-    });
+      if (!response.ok) {
+        throw new Error('Booking Failed!');
+      }
+
+      const result = await response.json();
+      console.log('Bookin saved:', result);
+    } catch (error) {
+      alert(' Något gick fel med bokningen. Försök igen!');
+    }
+
+
   };
 
   // hantera inlämning av gäst bokningar
