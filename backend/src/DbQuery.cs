@@ -25,6 +25,12 @@ public static class DbQuery
         var db = new MySqlConnection(connectionString);
         db.Open();
 
+        // Reset database if requested
+        if (config.resetDb == true)
+        {
+            DropTables(db);
+        }
+
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
         {
@@ -38,6 +44,33 @@ public static class DbQuery
         }
 
         db.Close();
+    }
+
+    private static void DropTables(MySqlConnection db)
+    {
+        var dropTablesSql = @"
+            DROP TABLE IF EXISTS bookingSeats;
+            DROP TABLE IF EXISTS bookings;
+            DROP TABLE IF EXISTS seats;
+            DROP TABLE IF EXISTS viewings;
+            DROP TABLE IF EXISTS ticketTypes;
+            DROP TABLE IF EXISTS users;
+            DROP TABLE IF EXISTS lounges;
+            DROP TABLE IF EXISTS movies;
+            DROP TABLE IF EXISTS acl;
+            DROP TABLE IF EXISTS sessions;
+        ";
+
+        foreach (var sql in dropTablesSql.Split(';'))
+        {
+            var trimmed = sql.Trim();
+            if (!string.IsNullOrEmpty(trimmed))
+            {
+                var command = db.CreateCommand();
+                command.CommandText = trimmed;
+                command.ExecuteNonQuery();
+            }
+        }
     }
 
     private static void CreateTablesIfNotExist(MySqlConnection db)
@@ -207,7 +240,7 @@ public static class DbQuery
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var movieDir = Path.Combine(
-                AppContext.BaseDirectory, "..", "..", "..", "public", "movies"
+                AppContext.BaseDirectory, "..", "..", "..", "..", "public", "movies"
             );
 
             if (!Directory.Exists(movieDir))
@@ -255,7 +288,7 @@ public static class DbQuery
             var loungesData = @"
                 INSERT INTO lounges (name) VALUES
                 ('Stora salongen'),
-                ('Lilla slaongen');
+                ('Lilla salongen');
             ";
             command.CommandText = loungesData;
             command.ExecuteNonQuery();
