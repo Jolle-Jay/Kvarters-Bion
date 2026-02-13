@@ -186,6 +186,7 @@ public static class DbQuery
             command.ExecuteNonQuery();
         }
 
+
         // Seed users
         command.CommandText = "SELECT COUNT(*) FROM users";
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
@@ -244,6 +245,56 @@ public static class DbQuery
             }
             db2.Close();
         }
+
+        // seed Lounge
+        command.CommandText = "SELECT COUNT(*) FROM lounges";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var aclData = @"
+                INSERT INTO lounges (id, name) VALUES
+                (1, 'Stora salongen'),
+                (2, 'Lilla slaongen');
+            ";
+            command.CommandText = aclData;
+            command.ExecuteNonQuery();
+        }
+
+        // seed 
+        command.CommandText = "SELECT COUNT(*) FROM viewings";
+        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+        {
+            var aclData = @"
+                INSERT INTO viewings (id, movie, lounge, start_time) VALUES
+                (1, 1, 1, 2026-04-02 20:00:00),
+                (2, 2, 2, 2026-04-02 21:00:00),
+                (3, 3, 1, 2026-04-02 22:00:00),
+                (4, 4, 2, 2026-04-02 23:00:00),
+                (5, 5, 1, 2026-04-03 20:00:00),
+                (6, 6, 2, 2026-04-03 21:00:00),
+                (7, 7, 1, 2026-04-03 22:00:00),
+
+                (8, 8, 1, 2026-04-02 20:00:00),
+                (9, 9, 2, 2026-04-02 21:00:00),
+                (10, 10, 1, 2026-04-02 22:00:00),
+                (11, 11, 2, 2026-04-02 23:00:00),
+                (12, 12, 1, 2026-04-03 20:00:00),
+                (13, 13, 2, 2026-04-03 21:00:00),
+                (14, 14, 1, 2026-04-03 22:00:00),
+
+                (15, 15, 1, 2026-04-02 20:00:00),
+                (16, 16, 2, 2026-04-02 21:00:00),
+                (17, 17, 1, 2026-04-02 22:00:00),
+                (18, 18, 2, 2026-04-02 23:00:00),
+                (19, 19, 1, 2026-04-03 20:00:00),
+                (20, 1, 2, 2026-04-03 21:00:00),
+                (21, 2, 1, 2026-04-03 22:00:00),
+                (22, 3, 2, 2026-04-03 23:00:00);
+            ";
+            command.CommandText = aclData;
+            command.ExecuteNonQuery();
+        }
+
+
     }
 
     // Helper to create an object from the DataReader
