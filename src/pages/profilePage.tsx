@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../CSS/profile.css';
-import productsLoader from '../utils/productsLoader';
 import type { JSX } from 'react';
 
 
@@ -9,7 +8,7 @@ function ProfilePage() {
   const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false); // är någon inloggad?
-  const [isLoading, setIsLoading] = useState(true); //laddare vi data?
+  const [isLoading, setIsLoading] = useState(true); //laddar vi data?
   const [userData, setUserData] = useState({
     // Startvärden = Standardvärden som visas innan vi laddat riktiga värden från localStorage
 
@@ -94,7 +93,6 @@ ProfilePage.route = {
   path: '/profile',
   menuLabel: 'profile',
   index: 7,
-  loader: productsLoader,
 };
 
 export default ProfilePage;

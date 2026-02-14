@@ -7,8 +7,8 @@ import NotFoundPage from './pages/NotFoundPage.tsx';
 import OurVisionPage from './pages/OurVisionPage.tsx';
 import Bistro from './pages/Bistro.tsx';
 import ProductsPage from './pages/ProductsPage.tsx';
-import ProfilePage from './pages/ProfilePage.tsx';
-import LoginPage from './pages/LoginPage.tsx';
+import ProfilePage from './pages/profilePage.tsx';
+import LoginPage from './pages/loginPage.tsx';
 
 import LillaSalongen from './pages/LillaSalongen.tsx';
 import StoraSalongen from './pages/StoraSalongen.tsx';

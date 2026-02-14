@@ -1,7 +1,6 @@
 import React, { useState, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import type { LoginFormData } from '../types/auth.types';
-import productsLoader from '../utils/productsLoader';
 import '../CSS/Login.css';
 
 
@@ -9,7 +8,7 @@ function LoginPage() {
   // gör det möjligt att kunna navigera till /profile
   const navigate = useNavigate();
 
-  // Loginformdata TS typ som säger att deft är mail och pass
+  // Loginformdata är typen/mallen som säger "måste ha email opch pass"
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
@@ -20,29 +19,31 @@ function LoginPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const [succesMessage, setSuccessMessage] = useState('');
 
-  // funktion som körs VARJE tanget använder skriver i input
-  // e = "event objektet" inehåller info om vad som hände
-  //e.target det specifika input fält som ändrades
+  //e har typen React.changevent e = parametern (eventet-objektet) e inehåller vad som skrevs
+  // "detta är ett change event från ett input fält"
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //DESTRUCURING plockar ut name och value från unput fältet
+    //e = inehåller info om vad som hände
+    // e.target det HTML element som användaren skrev i
+    //e. target.name = vilket fält
+    // e.target.value vad användaren skrev
     const { name, value } = e.target;
-    // prev = formdata som det var innan ändring
-    // ...prev = kopiera allt från prev (spread operator)
-    //[name]: value = uppdata bara det fält som ändrades
-    //returnera nya objektet
+    //prev tar emot gamla värdet
+    // ... sprider ut prev // kopiera allt från gamla objektet
+    // [name]: value lägg till / uppdatera ändrafältet
+    // })); returnera
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   // async väntar på API anrop
-  // event = info om formulär inlämingen
+  // event har typen FormEvent som triggas när formulär skickas in (submit) /enter
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
-    // STOPPA standard beteende (inge omladdning sida) gör allt med JS istället
+    // utan preventdefault formulär skickas, sidan laddar om, all data försvinner
     event.preventDefault();
 
     // rensa gamla meddelanden innan inloggning
     setErrorMessage('');
     setSuccessMessage('');
-    // error om det inte stämmer med login & password
+    // error om login & password är tomma
     if (!formData.email || !formData.password) {
       setErrorMessage('Vänligen fyll i e-post och lösenord');
       return;
@@ -54,19 +55,24 @@ function LoginPage() {
     }
     // try = frsök göra detta om mysslickas hoppa till catch
     try {
-      const response = await fetch('/api/login', { //HTTP anrop till servern
+      // vänta på svar från backend skicka till /api/
+      const response = await fetch('/api/login', {
         method: 'POST',
+        //jag skickar JSON format som ett brev
         headers: { 'Content-Type': 'application/json' },
+        //konverterar formdata (email & pass) till JSON så att server kan läsa
         body: JSON.stringify(formData),
       });
 
+      //om response inte är ok hoppa direkt till catch
       if (!response.ok) throw new Error();
-      // konvertera servernes svar från JSON till JS objekt
+      //Väntar och läser in JSON som backend skickar och sparar det i data
       const data = await response.json();
-      // localstorage = webbläsarens lagring borta när fliken är
-      localStorage.setItem('isLoggedIn', 'true'); // = spara data
-      //Data.email email från servern Fdata, email som användaren skrev in
-      //om användaren inte skickar tillbaka email använd det användaren skrev
+      //eftersom response var ok, då sätter vi inloggad till true
+      //local storage inbyggt objeklt i alla moderna webbläsare lagara data till cache rensad
+      //setItem inbyggs metod på local storage, sparar data som nyckel värde par
+      localStorage.setItem('isLoggedIn', 'true');
+      // använd data.email från backend om det saknas använd formData (det som user skrev)
       localStorage.setItem('userEmail', data.email || formData.email);
 
       setSuccessMessage('Inloggningen lyckades! Omdirigerar...');
@@ -98,7 +104,6 @@ LoginPage.route = {
   path: '/login',
   menuLabel: 'login',
   index: 8,
-  loader: productsLoader,
 };
 
 export default LoginPage;
