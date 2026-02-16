@@ -11,6 +11,9 @@ export interface MovieJson {
   Plot: string;
   Poster: string;
   Genre: string[];
+  Language: string;
+  imdbRating: string;
+  imdbVotes: string;
 }
 
 export interface MovieDB {
