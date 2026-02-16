@@ -3,7 +3,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider }
   from 'react-router-dom';
-import '../sass/index.scss';
+import './css/Body.css';
 import routes from './routes';
 import App from './App';
 

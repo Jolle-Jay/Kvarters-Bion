@@ -1,13 +1,47 @@
-import { Container, Row, Col } from 'react-bootstrap';
+import React from "react";
+import { Link } from "react-router-dom";
+import '../css/Footer.css';
 
 export default function Footer() {
-  return <footer>
-    <Container fluid>
-      <Row>
-        <Col className="text-center py-3 text-bg-primary">
-          © The Good Grocery {new Date().getFullYear()}
-        </Col>
-      </Row>
-    </Container>
-  </footer>;
+  return (
+    <footer className="site-footer">
+      <div className="footer-grid">
+
+        <div className="footer-section">
+          <h4>KvartersBion</h4>
+          <p>
+            Din lokala kvartersbio med premiärer, klassiker och äkta biokänsla.
+            Filmupplevelser – precis som de ska vara.
+          </p>
+        </div>
+
+        <div className="footer-section">
+          <h4>Kontakt</h4>
+          <p>📍 Storgatan 12, 123 45 kvartersbion</p>
+          <p>📞 +467-0123456</p>
+          <p>✉️ info@kvartersbion.se</p>
+        </div>
+
+        <div className="footer-section">
+          <h4>Öppettider</h4>
+          <p>Mån–Fre: 16:00 – 23:00</p>
+          <p>Lör–Sön: 13:00 – 00:00</p>
+        </div>
+
+        <div className="footer-section">
+          <h4>Snabblänkar</h4>
+          <Link to="/">Start</Link>
+          <Link to="/bistro">Bistro</Link>
+          <Link to="/lilla-salongen">Lilla Salongen</Link>
+          <Link to="/stora-salongen">Stora Salongen</Link>
+          <Link to="/profile">Profil</Link>
+        </div>
+
+      </div>
+
+      <div className="footer-bottom">
+        <p>© 2026 KvartersBion · Alla rättigheter förbehållna</p>
+      </div>
+    </footer>
+  );
 }
