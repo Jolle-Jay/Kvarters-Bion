@@ -96,6 +96,8 @@ function LoginPage() {
         <Link to="/profile" className="btn-primary">Avbryt
         </Link>
       </form>
+
+      <Link to="/registration">Registrera</Link>
     </main >
   );
 }
