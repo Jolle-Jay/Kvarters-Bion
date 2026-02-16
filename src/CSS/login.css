@@ -104,6 +104,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  align-self: center;
 }
 
 .btn-primary:hover {
