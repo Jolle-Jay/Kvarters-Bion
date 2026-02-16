@@ -26,10 +26,7 @@ public static class DbQuery
         db.Open();
 
         // Reset database if requested
-        if (config.resetDb == true)
-        {
-            DropTables(db);
-        }
+        DropTables(db);
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
