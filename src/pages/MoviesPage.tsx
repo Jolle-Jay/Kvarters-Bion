@@ -1,104 +1,42 @@
-import type { SortOption } from '../utils/moviePageHelpers';
-import { useLoaderData } from 'react-router-dom';
-import { Row, Col, Form } from 'react-bootstrap';
-import { useStateContext } from '../utils/useStateObject';
-import Select from '../parts/Select';
-import MovieCard from '../parts/MovieCard';
-import movieLoader from '../utils/moviesLoader';
-import { getHelpers } from '../utils/moviePageHelpers';
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import type { Movie } from "../interfaces/Movie";
+import { mapMovieArray } from "../interfaces/Movie";
 
+export default function MoviePage() {
+    const { id } = useParams(); // hämtar id från URL
+    const [movie, setMovie] = useState<Movie | null>(null);
 
-moviePage.route = {
-  path: '/',
-  menuLabel: 'movie',
-  index: 1,
-  parent: '/',
-  loader: movieLoader
-};
+    useEffect(() => {
+        (async () => {
+            const data = mapMovieArray(
+                await (await fetch("/api/movies")).json()
+            );
 
-export default function moviePage() {
-  
-  let {
-    movies,
-    Genre,
-    sortOptions,
-    sortGenres
-  } = getHelpers(useLoaderData().movie);
-  
-  // get state object and setter from the outlet context
-  const [
-    { categoryChoice, sortChoice, bwImages },
-    setState
-  ] = useStateContext();
+            const foundMovie = data.find(m => m.id.toString() === id);
+            setMovie(foundMovie || null);
+        })();
+    }, [id]);
 
-  // get the chosen category without the Movie count part
-  const category = categoryChoice.split(' (')[0];
-  // get the key and order to from the chosen sort option
-  const { key: sortKey, order: sortOrder } =
-  sortOptions.find(x => x.Genre === sortChoice) ?? {key:'Title', order: 1};
-    
+    if (!movie) return <p>Laddar film...</p>;
 
-  return <>
-    <Row>
-      <Col>
-        <h2 className="text-primary">Filmer</h2>
-        <p>
-          Alla våra filmer 
-        </p>
-      </Col>
-    </Row>
-    <Row>
-      <Col className="px-4 pt-1 pb-4">
-        <Row className="bg-primary-subtle pt-3 rounded">
-          <Col md="4">
-            <label className="d-block">
-              <div className="d-none d-md-block">
-                Color images:
-              </div>
-              <div
-                className={'form-switch-text position-absolute' +
-                  ' d-md-none px-5' + (bwImages ? '' : ' text-white')}
-              >
-                B/W Images
-                <span className="float-end">Color Images</span>
-              </div>
-              <Form.Switch
-                className="mt-2 mb-4 mb-md-2"
-                defaultChecked={!bwImages}
-                onChange={e => setState('bwImages', !e.target.checked)}
-              />
-            </label>
-          </Col>
-          <Col md="4">
-            <Select
-              label="Genger"
-              value={categoryChoice}
-              changeHandler={(x: string) => setState('categoryChoice', x)}
-              options={Genre}
-            />
-          </Col>
-          <Col md="4">
-            <Select
-              label="Sortera efter"
-              value={sortChoice}
-              changeHandler={(x: string) => setState('sortChoice', x)}
-              options={sortGenres}
-            />
-          </Col>
-        </Row>
-      </Col >
-    </Row >
-    <Row className="mt-1 mb-n3">
-      {movies
-        // filter by the chosen category
-        .filter(x => category === 'All' || x.Genre.includes(category))
-        // sort by the chosen choice for sorting
-        .sort((a, b) => (a[sortKey] > b[sortKey] ? 1 : -1) * sortOrder)
-        // map to Movie cards
-        .map(Movies => <Col xs={12} lg={6} key={Movies.id}>
-          <MovieCard {...Movies} />
-        </Col>)
-      }
-    </Row>
-  </>;
+    return (
+        <main className="movie-page">
+            <section className="movie-hero">
+                <img src={movie.Poster} alt={movie.Title} />
+                <div className="movie-info">
+                    <h1>{movie.Title}</h1>
+                    <p><strong>Genre:</strong> {movie.Genre}</p>
+                    <p><strong>Längd:</strong> {movie.Runtime}</p>
+                    <p><strong>Beskrivning:</strong> {movie.Description}</p>
+                </div>
+            </section>
+        </main>
+    );
+}
+
+MoviePage.route = {
+    path: "/movie/:id",
+    menuLabel: "Movie",
+    index: 2
 };
