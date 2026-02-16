@@ -30,8 +30,13 @@ export default function Bistro() {
         </div>
       </section>
 
-      <section className="info-section">
+      <section className="bistro-info">
+        <div className="bistro-header">
         <h3>MAT OCH DRYCK PÅ BIOGRAFEN</h3>
+        <span className="bistro-stars">★ ★ ★ ★ ★</span>
+        </div>
+
+        <div className="info-box"> 
         <p>
           Hos Kvarter Bion hittar du något för alla. Välj mellan snacks som popcorn, chips,
           godis och choklad, eller mättande favoriter som nachos, pizza, hamburgare,
@@ -40,6 +45,7 @@ export default function Bistro() {
           Till dryck erbjuder vi läsk, vatten, kolsyrat vatten, energidryck samt öl och vin.
           Kombinera gärna med våra menyer för en smidig filmupplevelse.
         </p>
+        </div>
       </section>
 
       <main className="menu">

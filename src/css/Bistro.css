@@ -63,40 +63,54 @@ body.bistro-theme {
     font-weight: bold;
 }
 
-.info-section {
-    max-width: 1100px;
-    margin: 0 auto 2rem auto;
-    padding: 1.5rem;
-    background: transparent;
-    justify-items: center;
-    border: none;
-    border-radius: 12px;
-    color: #c3cac3;
+/* BISTRO INFO */
+.bistro-info {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 1rem;
 }
 
-/* Info-rubrik: stor rubrik med skugga. */
-.info-section h3 {
-    color: #B8860B;
-    margin-bottom: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-        /* fluid font-size */
-    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.65);
+/* BISTRO HEADER */
+.bistro-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.bistro-header h3 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #B8860B;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+  margin-bottom: 0.5rem;
+}
+
+.bistro-stars {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: #B8860B;
+  letter-spacing: 4px;
 }
 
 /* Info-paragrafer: större läsbar text. */
-.info-section p {
-    margin-bottom: 0.8rem;
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
-        /* fluid font-size */
-    line-height: 1.6;
-    text-align: center;
+.info-box {
+    background: rgba(10, 25, 10, 0.7);
+  border: 2px solid #B8860B;
+  border-radius: 12px;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  margin: 0 auto 3rem;
+  max-width: 1000px;
+}
+
+.info-box p {
+    font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+  color: #c3cac3;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
 }
 
 /* Mobil: minskar marginaler för info. */
 @media (max-width: 768px) {
-    .info-section {
+    .bistro-header {
         margin: 1rem;
     }
 }
