@@ -4,6 +4,7 @@ export interface MovieJson {
   Title: string;
   Year: number;
   Rated: string;
+  Trailer: string;
   Released: string;
   Runtime: string;
   Director: string;

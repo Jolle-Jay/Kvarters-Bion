@@ -11,28 +11,28 @@ export default function MoviePage() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
 
-    useEffect(() => {
-        (async () => {
-            const data = mapMovieArray(
-                await (await fetch("/api/movies")).json()
-            );
+  useEffect(() => {
+    (async () => {
+      const data = mapMovieArray(
+        await (await fetch("/api/movies")).json()
+      );
 
-            const foundMovie = data.find(m => m.id.toString() === id);
-            setMovie(foundMovie || null);
-        })();
-    }, [id]);
+      const foundMovie = data.find(m => m.id.toString() === id);
+      setMovie(foundMovie || null);
+    })();
+  }, [id]);
 
-    if (!movie) return <p>Laddar film...</p>;
+  if (!movie) return <p>Laddar film...</p>;
 
- return (
+  return (
     <section className="movie-detail">
 
       {/* TRAILER (tillfällig placeholder om du ej har trailer i DB) */}
       <div className="movie-trailer">
         <h3>Trailer</h3>
         <iframe
-          src={`https://www.youtube.com/embed?listType=search&list=${movie.Title} trailer`}
-          title={`${movie.Title} Trailer`}
+          src={`${movie.Trailer} `}
+          title={`${movie.Trailer} Trailer`}
           allowFullScreen
         />
       </div>
@@ -99,18 +99,16 @@ export default function MoviePage() {
               </div>
 
               <span
-                className={`dropdown-menu ${
-                  dropdownOpen ? "open" : ""
-                }`}
+                className={`dropdown-menu ${dropdownOpen ? "open" : ""
+                  }`}
               >
                 ⋯
               </span>
             </div>
 
             <div
-              className={`dropdown-content ${
-                dropdownOpen ? "show" : ""
-              }`}
+              className={`dropdown-content ${dropdownOpen ? "show" : ""
+                }`}
             >
               <div className="info-row">
                 <span className="info-label">Regissör:</span>
@@ -145,7 +143,7 @@ export default function MoviePage() {
 }
 
 MoviePage.route = {
-    path: "/movie/:id",
-    menuLabel: "Movie",
-    index: 2
+  path: "/movie/:id",
+  menuLabel: "Movie",
+  index: 2
 };
