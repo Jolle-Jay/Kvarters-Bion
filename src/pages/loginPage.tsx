@@ -93,11 +93,8 @@ function LoginPage() {
         <input name="email" value={formData.email} onChange={handleInputChange} />
         <input name="password" type="password" value={formData.password} onChange={handleInputChange} />
         <button type="submit" className="btn-primary">Logga in</button>
-        <Link to="/profile" className="btn-primary">Avbryt
-        </Link>
+        <Link to="/registration" className="btn-primary">Registrera</Link>
       </form>
-
-      <Link to="/registration">Registrera</Link>
     </main >
   );
 }

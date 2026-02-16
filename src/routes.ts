@@ -9,6 +9,7 @@ import MoviesPage from './pages/MoviesPage.tsx';
 import Bistro from './pages/Bistro.tsx';
 import ProfilePage from './pages/profilePage.tsx';
 import LoginPage from './pages/loginPage.tsx';
+import RegPage from './pages/Registrera.tsx';
 
 import LillaSalongen from './pages/LillaSalongen.tsx';
 import StoraSalongen from './pages/StoraSalongen.tsx';
@@ -32,7 +33,8 @@ export default [
   StoraSalongen,
   Bistro,
   ProfilePage,
-  LoginPage
+  LoginPage,
+  RegPage
 ]
   // map the route property of each page component to a Route
   .map(x => (({ element: createElement(x), ...x.route }) as Route))

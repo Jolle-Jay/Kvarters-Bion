@@ -4,7 +4,7 @@ import type { RegisterFormData } from '../interfaces/Register';
 import '../CSS/Login.css';
 
 
-function LoginPage() {
+function RegPage() {
     // gör det möjligt att kunna navigera till /profile
     const navigate = useNavigate();
 
@@ -46,8 +46,8 @@ function LoginPage() {
         setErrorMessage('');
         setSuccessMessage('');
         // error om login & password är tomma
-        if (!formData.email || !formData.password) {
-            setErrorMessage('Vänligen fyll i e-post och lösenord');
+        if (!formData.email || !formData.password || formData.name || formData.lastName) {
+            setErrorMessage('Vänligen fyll i alla fällt!');
             return;
         }
 
@@ -58,7 +58,7 @@ function LoginPage() {
         // try = frsök göra detta om mysslickas hoppa till catch
         try {
             // vänta på svar från backend skicka till /api/
-            const response = await fetch('/api/login', {
+            const response = await fetch('/api/login', {// ---------------------------- Kolla detta David
                 method: 'POST',
                 //jag skickar JSON format som ett brev
                 headers: { 'Content-Type': 'application/json' },
@@ -75,39 +75,42 @@ function LoginPage() {
             //setItem inbyggs metod på local storage, sparar data som nyckel värde par
             localStorage.setItem('isLoggedIn', 'true');
             // använd data.email från backend om det saknas använd formData (det som user skrev)
-            localStorage.setItem('userEmail', data.email || formData.email);
+            localStorage.setItem('userEmail', data.email || formData.email);// --------------------------?????
 
-            setSuccessMessage('Inloggningen lyckades! Omdirigerar...');
+            setSuccessMessage('Registrering lyckades! Omdirigerar...');
             setTimeout(() => navigate('/profile'), 1500);
         } catch {
-            setErrorMessage('Ett fel uppstod vid inloggning, försök igen.');
+            setErrorMessage('Ett fel uppstod vid registrering, försök igen.');
         }
     };
 
     return (
         <main className="login-container">
-            <h2>Logga in</h2>
+            <h2>Registrering</h2>
 
             {errorMessage && <div className="error-message">{errorMessage}</div>}
             {succesMessage && <div className="success-message">{succesMessage}</div>}
 
             <form onSubmit={handleLogin}>
-                <input name="E-post" value={formData.email} onChange={handleInputChange} />
+                <p>E-post:</p>
+                <input name="E-post" value={formData.email} onChange={handleInputChange} placeholder='Epost@hotmail.com' />
+                <p>Lösenord:</p>
                 <input name="Lösenord" type="password" value={formData.password} onChange={handleInputChange} />
+                <p>Namn:</p>
                 <input name="Namn" value={formData.name} onChange={handleInputChange} />
+                <p>Efternamn:</p>
                 <input name="Efternamn" value={formData.lastName} onChange={handleInputChange} />
                 <button type="submit" className="btn-primary">Registrera</button>
-                <Link to="/startPage" className="btn-primary">Avbryt
-                </Link>
+                <Link to="/startPage" className="btn-primary">Avbryt</Link>
             </form>
         </main >
     );
 }
 
-LoginPage.route = {
+RegPage.route = {
     path: '/registration',
-    menuLabel: 'registrration',
+    menuLabel: 'registration',
     index: 9,
 };
 
-export default LoginPage;
+export default RegPage;
