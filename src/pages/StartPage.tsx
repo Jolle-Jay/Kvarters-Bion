@@ -1,4 +1,3 @@
-import App from '../App';
 import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
 import { useState, useEffect } from 'react';
@@ -32,8 +31,8 @@ export default function StartPage() {
 
 
     // Genre filtering only
-//   const filteredMovies = movies.filter(movies =>
-//     selectedGenre === 'alla' || movie.Genre.includes(selectedGenre)
+// const filteredMovies = movies.filter(movies =>
+// selectedGenre === 'alla' || movie.Genre.includes(selectedGenre)
 // );
 
     return (
