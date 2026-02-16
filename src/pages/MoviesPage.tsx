@@ -24,6 +24,20 @@ export default function MoviePage() {
 
   if (!movie) return <p>Laddar film...</p>;
 
+  const getEmbedUrl = (url: string) => {
+  if (!url) return "";
+
+  const videoIdMatch = url.match(
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/
+  );
+
+  return videoIdMatch
+    ? `https://www.youtube.com/embed/${videoIdMatch[1]}`
+    : url;
+};
+
+console.log(movie?.Trailer);
+
   return (
     <section className="movie-detail">
 
@@ -31,10 +45,10 @@ export default function MoviePage() {
       <div className="movie-trailer">
         <h3>Trailer</h3>
         <iframe
-          src={`${movie.Trailer} `}
-          title={`${movie.Trailer} Trailer`}
+          src={getEmbedUrl(movie.Trailer)}
+          title={`${movie.Title} Trailer`}
           allowFullScreen
-        />
+/>
       </div>
 
       {/* POSTER + SHOWTIMES */}
