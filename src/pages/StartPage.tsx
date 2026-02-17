@@ -32,9 +32,19 @@ export default function StartPage() {
 
 
     // Genre filtering only
-//   const filteredMovies = movies.filter(movies =>
-//     selectedGenre === 'alla' || movie.Genre.includes(selectedGenre)
-// );
+const filteredMovies = movies
+  ? movies.filter(movie => {
+      // Dela upp genrerna i en array: "Horror, Sci-Fi" → ["horror", "sci-fi"]
+      const genres = movie.Genre.split(',').map(g => g.trim().toLowerCase());
+
+      const matchGenre =
+        selectedGenre === 'alla' ||
+        genres.includes(selectedGenre.toLowerCase());
+
+      return matchGenre;
+    })
+  : [];
+
 
     return (
         <main>
@@ -74,9 +84,9 @@ export default function StartPage() {
                   >
 
                     <option value="alla">Alla</option>
-                    <option value="Science Fiction">Sci-Fi</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
                     <option value="Drama">Drama</option>
-                    <option value="Animerat">Animerat</option>
+                    <option value="Animation">Animation</option>
                     <option value="Thriller">Thriller</option>
                     <option value="Action">Action</option>
                     <option value="Romance">Romance</option>
@@ -113,7 +123,7 @@ export default function StartPage() {
 
             {/* MOVIES */}
             <div className="movies">
-                {movies && movies.map(movie => (
+                {filteredMovies.map(movie => (
                     <Link
                         key={movie.id}
                         to={`/movie/${movie.id}`}
