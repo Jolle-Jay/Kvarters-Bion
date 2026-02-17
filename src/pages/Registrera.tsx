@@ -57,7 +57,7 @@ function RegistreraPage() {
         // try = frsök göra detta om mysslickas hoppa till catch
         try {
             // vänta på svar från backend skicka till /api/
-            const response = await fetch('/api/users', {
+            const response = await fetch('/api/user', {
                 method: 'POST',
                 //jag skickar JSON format som ett brev
                 headers: { 'Content-Type': 'application/json' },
@@ -106,7 +106,7 @@ function RegistreraPage() {
                 <p>Efternamn:</p>
                 <input name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder='Karlsson'/>
                 <button type="submit" className="btn-primary">Registrera</button>
-                <Link to="StartPage" className="btn-primary">Avbryt</Link>
+                <Link to="/" className="btn-primary">Avbryt</Link>
             </form>
         </main >
     );
