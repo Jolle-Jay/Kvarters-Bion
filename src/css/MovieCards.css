@@ -326,7 +326,7 @@
 /* MOVIES GRID */
 .movies {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 2rem;
   padding: 2rem;
 }
@@ -381,7 +381,6 @@
   text-align: center;
 }
 
-/* RESPONSIV */
 @media (max-width: 1024px) {
   .movies {
     grid-template-columns: repeat(3, 1fr);
@@ -403,12 +402,15 @@
   }
 
   .movie-card {
-       padding: 0.75rem;
-       /* mindre padding i korten */
+    padding: 0.75rem;
+     /* mindre padding i korten  */
   }
-  
+
   .poster img {
        height: 200px;
-       /* anpassa höjden för mobil */
+       /* anpassa höjden för mobil  */
   }
 }
+
+ 
+
