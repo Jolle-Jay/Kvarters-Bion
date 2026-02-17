@@ -20,16 +20,16 @@ public static class DbQuery
 
         connectionString =
             $"Server={config.host};Port={config.port};Database={config.database};" +
-            $"User={config.username};Password={config.password};";
+            $"Users={config.usersname};Password={config.password};";
 
         var db = new MySqlConnection(connectionString);
         db.Open();
 
         // Reset database if requested
-        if (config.resetDb == true)
-        {
-            DropTables(db);
-        }
+        // if (config.resetDb == true)
+        // {
+        //     DropTables(db);
+        // }
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
@@ -54,7 +54,7 @@ public static class DbQuery
             DROP TABLE IF EXISTS seats;
             DROP TABLE IF EXISTS viewings;
             DROP TABLE IF EXISTS ticketTypes;
-            DROP TABLE IF EXISTS users;
+            DROP TABLE IF EXISTS userss;
             DROP TABLE IF EXISTS lounges;
             DROP TABLE IF EXISTS movies;
             DROP TABLE IF EXISTS acl;
@@ -85,13 +85,13 @@ public static class DbQuery
 
             CREATE TABLE IF NOT EXISTS acl (
                 id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                userRoles VARCHAR(255) NOT NULL,
+                usersRoles VARCHAR(255) NOT NULL,
                 method VARCHAR(50) NOT NULL DEFAULT 'GET',
                 allow ENUM('allow', 'disallow') NOT NULL DEFAULT 'allow',
                 route VARCHAR(255) NOT NULL,
                 `match` ENUM('true', 'false') NOT NULL DEFAULT 'true',
                 comment VARCHAR(500) NOT NULL DEFAULT '',
-                UNIQUE KEY unique_acl (userRoles, method, route)
+                UNIQUE KEY unique_acl (usersRoles, method, route)
             );
             
             CREATE TABLE IF NOT EXISTS movies (
@@ -138,14 +138,14 @@ public static class DbQuery
                 firstName VARCHAR(255) NOT NULL,
                 lastName VARCHAR(255),
                 created DATETIME DEFAULT (CURDATE()) NOT NULL,
-                role VARCHAR(50) NOT NULL DEFAULT 'users',
+                role VARCHAR(50) NOT NULL DEFAULT 'userss',
                 password VARCHAR(255) NOT NULL
             );
 
             CREATE TABLE IF NOT EXISTS bookings (
 	            id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	            BookingReference VARCHAR(255) NOT NULL UNIQUE,
-	            user INTEGER,
+	            users INTEGER,
 	            email VARCHAR(255) NOT NULL,
 	            viewing INTEGER NOT NULL,
 	            status VARCHAR(255) NOT NULL
@@ -153,7 +153,7 @@ public static class DbQuery
 
                 -- alter bookings for the foreign keys
                 ALTER TABLE bookings
-                ADD FOREIGN KEY(user) REFERENCES users(id)
+                ADD FOREIGN KEY(users) REFERENCES userss(id)
                 ON UPDATE NO ACTION ON DELETE NO ACTION,
                 ADD FOREIGN KEY(viewing) REFERENCES viewings(id)
                 ON UPDATE NO ACTION ON DELETE NO ACTION;
@@ -205,32 +205,32 @@ public static class DbQuery
         {
             var aclData = @"
                 INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
-                ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
-                ('visitor,user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
-                ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
-                ('visitor, user,admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
-                ('visitor,user,admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
-                ('admin', '*', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
+                ('visitor, users', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal userss'),
+                ('visitor,users, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
+                ('visitor', 'POST', 'allow', '/api/userss', 'true', 'Allow registration as new users for visitors'),
+                ('visitor, users,admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
+                ('visitor,users,admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all users roles to access AI chat'),
+                ('admin', '*', 'allow', '/api/userss', 'true', 'Allow admins to see and edit userss'),
                 ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
                 ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
-                ('visitor,user,admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies');
+                ('visitor,users,admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all users roles to read movies');
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
         }
 
 
-        // Seed users
+        // Seed userss
         command.CommandText = "SELECT COUNT(*) FROM users";
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
-            var usersData = @"
+            var userssData = @"
                 INSERT INTO users (created, email, firstName, lastName, role, password) VALUES
                 ('2024-04-02', 'thomas@nodehill.com', 'Thomas', 'Frank', 'admin', '$2a$13$IahRVtN2pxc1Ne1NzJUPpOQO5JCtDZvXpSF.IF8uW85S6VoZKCwZq'),
-                ('2024-04-02', 'olle@nodehill.com', 'Olle', 'Olofsson', 'user', '$2a$13$O2Gs3FME3oA1DAzwE0FkOuMAOOAgRyuvNQq937.cl7D.xq0IjgzN.'),
-                ('2024-04-02', 'maria@nodehill.com', 'Maria', 'Mårtensson', 'user', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS');
+                ('2024-04-02', 'olle@nodehill.com', 'Olle', 'Olofsson', 'users', '$2a$13$O2Gs3FME3oA1DAzwE0FkOuMAOOAgRyuvNQq937.cl7D.xq0IjgzN.'),
+                ('2024-04-02', 'maria@nodehill.com', 'Maria', 'Mårtensson', 'users', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS');
             ";
-            command.CommandText = usersData;
+            command.CommandText = userssData;
             command.ExecuteNonQuery();
         }
 
@@ -788,7 +788,7 @@ public static class DbQuery
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var bookingsData = @"
-                INSERT INTO bookings (BookingReference, user, email, viewing, status) VALUES
+                INSERT INTO bookings (BookingReference, users, email, viewing, status) VALUES
                 ('ABC123', 1, 'admin@cinema.se', 1, 'confirmed');
             ";
             command.CommandText = bookingsData;
