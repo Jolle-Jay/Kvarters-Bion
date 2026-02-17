@@ -14,7 +14,7 @@ export default function StartPage() {
     const [selectedDate, setSelectedDate] = useState(`${yyyy}-${mm}-${dd}`);
     const [movies, setMovies] = useState<Movie[] | null>(null);
     const [selectedGenre, setSelectedGenre] = useState<string>('alla');
-    const [selectedSalon, setSelectedSalon] = useState<string>('alla');
+    const [selectedAge, setSelectedAge] = useState<string>('alla');
 
 
     // Fetch movies
@@ -27,8 +27,31 @@ export default function StartPage() {
     // Scroll to top
     useEffect(() => {
   window.scrollTo({ top: 0, behavior: 'instant' });
-}, []);
+    }, []);
+  
+  const mapToSwedishAge = (rating: string) => {
+  switch (rating) {
+    case "G":
+    case "Approved":
+      return "Barntillåten";
 
+    case "TV-Y7":
+    case "PG":
+      return "7+";
+
+    case "PG-13":
+      return "11+";
+
+    case "R":
+      return "15+";
+
+    case "N/A":
+      return "Ingen åldersgräns";
+
+    default:
+      return "Ingen åldersgräns";
+  }
+};
 
     // Genre filtering only
 const filteredMovies = movies
@@ -39,11 +62,21 @@ const filteredMovies = movies
       const matchGenre =
         selectedGenre === 'alla' ||
         genres.includes(selectedGenre.toLowerCase());
+        
+    const matchAge =
+      selectedAge === "alla" ||
+      mapToSwedishAge(movie.Rated) === selectedAge;
+    
+    // här ska en likadan för datum ligga
 
-      return matchGenre;
+      return matchGenre && matchAge; //&& matchDate
     })
   : [];
 
+  const ageOptions = movies
+    ? ['alla', ...Array.from(new Set(movies.map(m => mapToSwedishAge(m.Rated))))] : ['alla'];
+
+  
 
     return (
         <main>
@@ -104,17 +137,19 @@ const filteredMovies = movies
                   />
                 </div>
 
-                {/* Salong */}
+                {/* Åldersgräns */}
                 <div className="filter-item">
-                  <h3>Salong</h3>
+                  <h3>Åldersgräns</h3>
                   <select
-                    className={`filter-dropdown ${selectedSalon !== 'alla' ? 'active' : ''}`}
-                    value={selectedSalon}
-                    onChange={(e) => setSelectedSalon(e.target.value)}
+                    className={`filter-dropdown ${selectedAge !== 'alla' ? 'active' : ''}`}
+                    value={selectedAge}
+                    onChange={(e) => setSelectedAge(e.target.value)}
                   >
-                    <option value="alla">Alla salonger</option>
-                    <option value="1">Lilla Salongen</option>
-                    <option value="2">Stora Salongen</option>
+                    {ageOptions.map(age => (
+                      <option key={age} value={age}>
+                      {age === 'alla' ? 'Alla åldrar' : age}
+                    </option>
+                  ))}
                   </select>
                 </div>
 
