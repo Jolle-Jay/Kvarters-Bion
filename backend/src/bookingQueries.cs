@@ -5,12 +5,13 @@ public static class BookingQueries
 
 
 
-    public static Obj CreateBooking(string BookingReference, int? userId, string email, int viewingId)
+    public static Obj CreateBooking(string BookingReference, int? userId, string email, int viewingId, string lounges)
     {
         SQLQueryOne(
             @"INSERT INTO bookings (BookingReference, user, email, viewing, status)
-            VALUES (@BookingReference, @user, @email, @viewing, 'Confirmed')",
-            new { BookingReference, userId, email, viewingId }
+            VALUES (@BookingReference, @user, @email, @viewing, 'Confirmed'),
+            INSERT INTO lounges (name)",
+            new { BookingReference, userId, email, viewingId, lounges }
         );
 
         return SQLQueryOne("SELECT * FROM bookings WHERE booking_reference = @bookingReference",
@@ -18,7 +19,7 @@ public static class BookingQueries
         );
     }
 
-    public static void CreateSeats(int bookingId, List<string> seats, string lounge)
+    public static void CreateSeats(int bookingId, List<string> seats)
     {
         foreach (string seat in seats)
         {
@@ -28,8 +29,8 @@ public static class BookingQueries
 
             SQLQuery(
                 @"INSERT INTO seats (bookingId, seatRow, number, lounge)
-                VALUES (@bookingId, @seatRow, @number, @lounge)",
-                new { bookingId, seatRow, number, lounge }
+                VALUES (@bookingId, @seatRow, @number)",
+                new { bookingId, seatRow, number }
             );
         }
 
@@ -66,6 +67,8 @@ public static class BookingQueries
             );
         }
     }
+
+
 
 
 }
