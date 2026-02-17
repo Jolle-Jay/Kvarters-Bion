@@ -396,8 +396,6 @@
 /* Style för moviePage filtrering */
 
 /* --- STARTPAGE MOVIE GRID FIX --- */
-
-
 .movies {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -422,3 +420,34 @@
   display: block;
 }
 
+/* RESPONSIV */
+@media (max-width: 1024px) {
+  .movies {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .movies {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .movies {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+
+  .movie-card {
+       padding: 0.75rem;
+       /* mindre padding i korten */
+  }
+  
+  .poster img {
+       height: 200px;
+       /* anpassa höjden för mobil */
+  }
+}
