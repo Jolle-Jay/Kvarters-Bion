@@ -4,15 +4,14 @@ import type { RegisterFormData } from '../interfaces/Register';
 import '../CSS/Login.css';
 
 
-function RegPage() {
-    // gör det möjligt att kunna navigera till /profile
+function RegistreraPage() {
     const navigate = useNavigate();
 
-    // Loginformdata är typen/mallen som säger "måste ha email opch pass"
+    // Registerformdata är typen/mallen som säger "måste ha email, password, name och lastname"
     const [formData, setFormData] = useState<RegisterFormData>({
         email: '',
         password: '',
-        name: '',
+        firstName: '',
         lastName: ''
     });
 
@@ -38,16 +37,16 @@ function RegPage() {
 
     // async väntar på API anrop
     // event har typen FormEvent som triggas när formulär skickas in (submit) /enter
-    const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+    const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
         // utan preventdefault formulär skickas, sidan laddar om, all data försvinner
         event.preventDefault();
 
         // rensa gamla meddelanden innan inloggning
         setErrorMessage('');
         setSuccessMessage('');
-        // error om login & password är tomma
-        if (!formData.email || !formData.password || formData.name || formData.lastName) {
-            setErrorMessage('Vänligen fyll i alla fällt!');
+        // error om något fält är tomt
+        if (!formData.email || !formData.password || !formData.firstName || !formData.lastName) {
+            setErrorMessage('Vänligen fyll i alla fält!');
             return;
         }
 
@@ -58,12 +57,17 @@ function RegPage() {
         // try = frsök göra detta om mysslickas hoppa till catch
         try {
             // vänta på svar från backend skicka till /api/
-            const response = await fetch('/api/login', {// ---------------------------- Kolla detta David
+            const response = await fetch('/api/users', {
                 method: 'POST',
                 //jag skickar JSON format som ett brev
                 headers: { 'Content-Type': 'application/json' },
-                //konverterar formdata (email & pass) till JSON så att server kan läsa
-                body: JSON.stringify(formData),
+                //konverterar hela formData-objektet till JSON så att servern kan läsa det
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password,
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                }),
             });
 
             //om response inte är ok hoppa direkt till catch
@@ -75,7 +79,8 @@ function RegPage() {
             //setItem inbyggs metod på local storage, sparar data som nyckel värde par
             localStorage.setItem('isLoggedIn', 'true');
             // använd data.email från backend om det saknas använd formData (det som user skrev)
-            localStorage.setItem('userEmail', data.email || formData.email);// --------------------------?????
+            localStorage.setItem('userEmail', data.email || formData.email);
+            localStorage.setItem('userName', `${formData.firstName} ${formData.lastName}`);
 
             setSuccessMessage('Registrering lyckades! Omdirigerar...');
             setTimeout(() => navigate('/profile'), 1500);
@@ -91,26 +96,26 @@ function RegPage() {
             {errorMessage && <div className="error-message">{errorMessage}</div>}
             {succesMessage && <div className="success-message">{succesMessage}</div>}
 
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleRegister}>
                 <p>E-post:</p>
-                <input name="E-post" value={formData.email} onChange={handleInputChange} placeholder='Epost@hotmail.com' />
+                <input name="email" value={formData.email} onChange={handleInputChange} placeholder='Epost@hotmail.com' />
                 <p>Lösenord:</p>
-                <input name="Lösenord" type="password" value={formData.password} onChange={handleInputChange} />
+                <input name="password" type="password" value={formData.password} onChange={handleInputChange} placeholder='Lösenord'/>
                 <p>Namn:</p>
-                <input name="Namn" value={formData.name} onChange={handleInputChange} />
+                <input name="firstName" value={formData.firstName} onChange={handleInputChange} placeholder='Karl'/>
                 <p>Efternamn:</p>
-                <input name="Efternamn" value={formData.lastName} onChange={handleInputChange} />
+                <input name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder='Karlsson'/>
                 <button type="submit" className="btn-primary">Registrera</button>
-                <Link to="/startPage" className="btn-primary">Avbryt</Link>
+                <Link to="StartPage" className="btn-primary">Avbryt</Link>
             </form>
         </main >
     );
 }
 
-RegPage.route = {
+RegistreraPage.route = {
     path: '/registration',
     menuLabel: 'registration',
     index: 9,
 };
 
-export default RegPage;
+export default RegistreraPage;
