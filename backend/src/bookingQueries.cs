@@ -5,31 +5,31 @@ public static class BookingQueries
 
 
 
-    public static Obj CreateBooking(string bookingReference, int? userId, string email, int viewingId)
+    public static Obj CreateBooking(string BookingReference, int? userId, string email, int viewingId)
     {
         SQLQueryOne(
-            @"INSERT INTO bookings (booking_reference, user, email, viewing, status)
-            VALUES (@bookingReference, @user, @email, @viewing, 'Confirmed')",
-            new { bookingReference, userId, email, viewingId }
+            @"INSERT INTO bookings (BookingReference, user, email, viewing, status)
+            VALUES (@BookingReference, @user, @email, @viewing, 'Confirmed')",
+            new { BookingReference, userId, email, viewingId }
         );
 
         return SQLQueryOne("SELECT * FROM bookings WHERE booking_reference = @bookingReference",
-            new { bookingReference }
+            new { BookingReference }
         );
     }
 
-    public static void CreateSeats(int bookingId, List<string> seats)
+    public static void CreateSeats(int bookingId, List<string> seats, string lounge)
     {
         foreach (string seat in seats)
         {
             var parts = seat.Split('-');
-            int row = int.Parse(parts[0]);
-            int seatNumber = int.Parse(parts[1]);
+            int seatRow = int.Parse(parts[0]);
+            int number = int.Parse(parts[1]);
 
             SQLQuery(
-                @"INSERT INTO seats (id, seatRow, number)
-                VALUES (@id, @seatRow, @number)",
-                new { bookingId, row, seatNumber }
+                @"INSERT INTO seats (bookingId, seatRow, number, lounge)
+                VALUES (@bookingId, @seatRow, @number, @lounge)",
+                new { bookingId, seatRow, number, lounge }
             );
         }
 

@@ -51,7 +51,7 @@ public static class vadDuVill
     int bookingId = (int)booking["id"];
     System.Console.WriteLine("=== STEP 6: Creating seats ===");
 
-    BookingQueries.CreateSeats(bookingId, body.seats);
+    BookingQueries.CreateSeats(bookingId, body.seats, (string)body.lounge);
     System.Console.WriteLine("=== STEP 7: Creating tickets ===");
 
     BookingQueries.CreateTickets(bookingId, body.counts);

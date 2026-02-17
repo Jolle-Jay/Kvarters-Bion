@@ -78,7 +78,7 @@ function ConfirmationPage() {
         seats: data.seats,
         counts: data.counts,
         totalPrice: data.totalPrice,
-        salong: data.lounge
+        lounge: data.lounge
       })
     });
 
