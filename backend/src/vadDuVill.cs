@@ -7,7 +7,47 @@ public static class vadDuVill
     return Session.Get(context, "user");
   }
 
-  
+  public static object HandleCustomBooking(HttpContext context, JsonElement bodyJson)
+  {
+    var user = Session.Get(context, "user");
+    var body = JSON.Parse(bodyJson.ToString());
+
+    string email;
+    int? userID = null;
+
+    if (user != null)
+    {
+        email = (string)user.email;
+        userID = (int)user.id;
+    }
+    else
+    {
+        if (body.email == null)
+        {
+            return RestResult.Parse(context, new { error = "Email is required."});
+        }
+        email = (string)body.email;
+    }
+
+    BookingQueries.CreateBooking(
+        (string)body.bookingId,
+        userID,
+        email,
+        (int)body.viewingId
+    );
+
+    var booking = BookingQueries.GetBooking((string)body.bookingId);
+    int bookingId = (int)booking.id;
+
+    BookingQueries.CreateSeats(bookingId, body.seats);
+    BookingQueries.CreateTickets(bookingId, body.counts);
+
+    return RestResult.Parse(context, new
+    {
+        success = true,
+        bookingReference = (string)body.bookingId
+    });
+  }
 
   public static void Start()
   {
