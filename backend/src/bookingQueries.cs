@@ -2,6 +2,9 @@ namespace WebApp;
 
 public static class BookingQueries
 {
+
+
+
     public static Obj CreateBooking(string bookingReference, int? userId, string email, int viewingId)
     {
         SQLQueryOne(
@@ -29,7 +32,7 @@ public static class BookingQueries
                 new { bookingId, row, seatNumber }
             );
         }
-        
+
     }
 
     public static void CreateTickets(int bookingId, dynamic counts)
@@ -63,4 +66,6 @@ public static class BookingQueries
             );
         }
     }
+
+
 }

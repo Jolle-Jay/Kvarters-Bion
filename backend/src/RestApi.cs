@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace WebApp;
 
 public static class RestApi
@@ -7,6 +9,7 @@ public static class RestApi
         App.MapPost("/api/{table}", (
             HttpContext context, string table, JsonElement bodyJson
         ) =>
+
         {
             if (table == "customBooking")
             {
@@ -28,6 +31,8 @@ public static class RestApi
                 ).__insertId;
             }
             return RestResult.Parse(context, result);
+
+
         });
 
 
