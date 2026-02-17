@@ -12,7 +12,7 @@ interface BookingData {
     child: number;
   };
   totalPrice: number;
-  salong: string;
+  lounge: string;
 }
 
 function ConfirmationPage() {
@@ -67,20 +67,20 @@ function ConfirmationPage() {
 
     // TODO: Replace with actual API call to your C# backend
     // Example:
-     const response = await fetch('/api/bookings', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({
-         bookingId: id,
-         email,
-         film: data.film,
-         showtime: data.viewing,
-         seats: data.seats,
-         counts: data.counts,
-         totalPrice: data.totalPrice,
-         salong: data.salong
-       })
-     });
+    const response = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        bookingId: id,
+        email,
+        film: data.film,
+        viewing: data.viewing,
+        seats: data.seats,
+        counts: data.counts,
+        totalPrice: data.totalPrice,
+        salong: data.lounge
+      })
+    });
 
     console.log('Bokning skapad:', {
       bookingId: id,
@@ -120,7 +120,7 @@ function ConfirmationPage() {
           <div className="booking-summary">
             <h3>Sammanfattning</h3>
             <p><strong>Film:</strong> {bookingData.film}</p>
-            <p><strong>Salong:</strong> {bookingData.salong}</p>
+            <p><strong>Salong:</strong> {bookingData.lounge}</p>
             <p><strong>Tid:</strong> {bookingData.viewing}</p>
             <p><strong>Platser:</strong> {bookingData.seats.join(', ')}</p>
             <p><strong>Antal biljetter:</strong></p>
@@ -168,12 +168,12 @@ function ConfirmationPage() {
 
 
 
-       {bookingData.seats.map((seat, index) => {
+      {bookingData.seats.map((seat, index) => {
         const [row, col] = seat.split('-');
         return (
           <div key={seat} className="ticket">
             <h1 className="ticketTextTitle"><u>{bookingData.film}</u></h1>
-            <p className="ticketTextSeat">{bookingData.salong}, Rad {row}, Plats {col}</p>
+            <p className="ticketTextSeat">{bookingData.lounge}, Rad {row}, Plats {col}</p>
             <p className="ticketTextTime">{bookingData.viewing}</p>
           </div>
         );

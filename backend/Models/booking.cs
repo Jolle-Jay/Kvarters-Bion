@@ -1,6 +1,6 @@
-namespace App;
+// namespace App;
 
-public class Booking
-{
-    
-}
+// public class Booking
+// {
+
+// }
