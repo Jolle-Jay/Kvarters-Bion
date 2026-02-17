@@ -60,15 +60,6 @@ function ProfilePage() {
     return <main className="profile-container">Laddar profil...</main>;
   }
 
-  if (!isLoggedIn) {
-    return (
-      <main className="profile-container">
-        <h2>Du är inte inloggad</h2>
-        <Link to="/login">Logga in</Link>
-        <Link to="/registration">Registrera</Link>
-      </main>
-    );
-  }
 
   return (
     <main className="profile-container">
