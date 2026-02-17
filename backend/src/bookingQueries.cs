@@ -4,18 +4,19 @@ public static class BookingQueries
 {
     public static Obj CreateBooking(string bookingReference, int? userId, string email, int viewingId)
     {
-        return SQLQueryOne(
+        SQLQueryOne(
             @"INSERT INTO bookings (booking_reference, user_id, email, viewingId, status, created_at)
             VALUES (@bookingReference, @userId, @email, @viewingId, 'Confirmed', NOW())",
             new { bookingReference, userId, email, viewingId }
         );
+
+        return SQLQueryOne("SELECT LAST_INSERT_ID() AS id");
     }
 
     public static Obj GetBooking(string bookingReference)
     {
         return SQLQueryOne(
             "SELECT * FROM booking WHERE booking_reference = @bookingReference"
-
         );
     }
 
