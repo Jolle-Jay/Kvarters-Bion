@@ -11,7 +11,7 @@ export interface MovieJson {
   Actors: string;
   Plot: string;
   Poster: string;
-  Genre: string[];
+  Genre: string;
   Language: string;
   imdbRating: string;
   imdbVotes: string;
