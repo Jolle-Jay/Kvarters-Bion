@@ -76,7 +76,7 @@ const filteredMovies = movies
 
                 {/* Genre */}
                 <div className="filter-item">
-                  <h3>Filtrera film</h3>
+                  <h3>Filtrera genre</h3>
                   <select
                     className={`filter-dropdown ${selectedGenre !== 'alla' ? 'active' : ''}`}
                     value={selectedGenre}
