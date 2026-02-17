@@ -29,15 +29,14 @@ public static class vadDuVill
         email = (string)body.email;
     }
 
-    BookingQueries.CreateBooking(
+    var booking = BookingQueries.CreateBooking(
         (string)body.bookingId,
         userID,
         email,
         (int)body.viewingId
     );
 
-    var booking = BookingQueries.GetBooking((string)body.bookingId);
-    int bookingId = (int)booking.id;
+    int bookingId = (int)booking["id"];
 
     BookingQueries.CreateSeats(bookingId, body.seats);
     BookingQueries.CreateTickets(bookingId, body.counts);
