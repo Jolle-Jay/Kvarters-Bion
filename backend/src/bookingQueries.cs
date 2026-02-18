@@ -5,13 +5,12 @@ public static class BookingQueries
 
 
 
-    public static Obj CreateBooking(string BookingReference, int? userId, string email, int viewingId, string lounges)
+    public static Obj CreateBooking(string BookingReference, int? userId, string email, int viewingId)
     {
         SQLQueryOne(
             @"INSERT INTO bookings (BookingReference, user, email, viewing, status)
-            VALUES (@BookingReference, @user, @email, @viewing, 'Confirmed'),
-            INSERT INTO lounges (name)",
-            new { BookingReference, userId, email, viewingId, lounges }
+            VALUES (@BookingReference, @user, @email, @viewing, 'Confirmed')",
+            new { BookingReference, userId, email, viewingId }
         );
 
         return SQLQueryOne("SELECT * FROM bookings WHERE booking_reference = @bookingReference",

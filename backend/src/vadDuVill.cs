@@ -42,8 +42,7 @@ public static class vadDuVill
         (string)body.bookingId,
         userID,
         email,
-        (int)body.viewingId,
-        (string)body.lounges
+        (int)body.viewingId
     );
 
     System.Console.WriteLine("=== STEP 5: Getting booking ===");
