@@ -206,15 +206,15 @@ public static class DbQuery
       var aclData = @"
                 INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
                 ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
-                ('visitor,user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
+                ('visitor, user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
                 ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
-                ('visitor, user,admin', '', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
-                ('visitor,user,admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
-                ('admin', '', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
-                ('admin', '', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
-                ('admin', '', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
-                ('visitor,user,admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
-                ('visitor, user,admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
+                ('visitor, user, admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
+                ('visitor, user, admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
+                ('admin', '*', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
+                ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
+                ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
             ";
       command.CommandText = aclData;
       command.ExecuteNonQuery();
@@ -229,7 +229,7 @@ public static class DbQuery
                 INSERT INTO users (created, email, firstName, lastName, role, password) VALUES
                 ('2024-04-02', 'thomas@nodehill.com', 'Thomas', 'Frank', 'admin', '$2a$13$IahRVtN2pxc1Ne1NzJUPpOQO5JCtDZvXpSF.IF8uW85S6VoZKCwZq'),
                 ('2024-04-02', 'olle@nodehill.com', 'Olle', 'Olofsson', 'user', '$2a$13$O2Gs3FME3oA1DAzwE0FkOuMAOOAgRyuvNQq937.cl7D.xq0IjgzN.'),
-                ('2024-04-02', 'maria@nodehill.com', 'Maria', 'Mårtensson', 'user', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS');
+                ('2024-04-02', 'maria@nodehill.com', 'Maria', 'Mårtensson', 'user', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS'),
                 ('2026-02-17', 'davidpuscas@live.se', 'David', 'Puscas', 'user', '$2a$13$IimwlKfAZFbDq8ELStMuN.4vnocpMUTLMLSp3PIdOC9f6OMwfrHwS');
             ";
       command.CommandText = usersData;

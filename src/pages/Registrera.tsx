@@ -4,7 +4,7 @@ import type { RegisterFormData } from '../interfaces/Register';
 import '../CSS/Login.css';
 
 
-function RegistreraPage() {
+export default function RegistreraPage() {
     const navigate = useNavigate();
 
     // Registerformdata är typen/mallen som säger "måste ha email, password, name och lastname"
@@ -83,7 +83,31 @@ function RegistreraPage() {
             localStorage.setItem('userName', `${formData.firstName} ${formData.lastName}`);
 
             setSuccessMessage('Registrering lyckades! Omdirigerar...');
-            setTimeout(() => navigate('/profile'), 1500);
+                        // Try to log the user in on the server so session cookie is created
+                        try {
+                            const loginResp = await fetch('/api/login', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email: formData.email, password: formData.password })
+                            });
+                            if (loginResp.ok) {
+                                const loginData = await loginResp.json();
+                                localStorage.setItem('isLoggedIn', 'true');
+                                localStorage.setItem('userEmail', loginData.email || formData.email);
+                                localStorage.setItem('userName', `${formData.firstName} ${formData.lastName}`);
+                            } else {
+                                // fallback: set client-side auth only
+                                localStorage.setItem('isLoggedIn', 'true');
+                                localStorage.setItem('userEmail', formData.email);
+                                localStorage.setItem('userName', `${formData.firstName} ${formData.lastName}`);
+                            }
+                        } catch {
+                            // network error -> fallback to client-side only
+                            localStorage.setItem('isLoggedIn', 'true');
+                            localStorage.setItem('userEmail', formData.email);
+                            localStorage.setItem('userName', `${formData.firstName} ${formData.lastName}`);
+                        }
+                        setTimeout(() => navigate('/profile'), 1500);
         } catch {
             setErrorMessage('Ett fel uppstod vid registrering, försök igen.');
         }
@@ -97,14 +121,14 @@ function RegistreraPage() {
             {succesMessage && <div className="success-message">{succesMessage}</div>}
 
             <form onSubmit={handleRegister}>
-                <p>E-post:</p>
-                <input name="email" value={formData.email} onChange={handleInputChange} placeholder='Epost@hotmail.com' />
-                <p>Lösenord:</p>
-                <input name="password" type="password" value={formData.password} onChange={handleInputChange} placeholder='Lösenord'/>
-                <p>Namn:</p>
-                <input name="firstName" value={formData.firstName} onChange={handleInputChange} placeholder='Karl'/>
-                <p>Efternamn:</p>
-                <input name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder='Karlsson'/>
+                <label htmlFor="email">E-post:</label>
+                <input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder='Epost@hotmail.com' autoComplete="email" />
+                <label htmlFor="password">Lösenord:</label>
+                <input id="password" name="password" type="password" value={formData.password} onChange={handleInputChange} placeholder='Lösenord' autoComplete="new-password" />
+                <label htmlFor="firstName">Namn:</label>
+                <input id="firstName" name="firstName" value={formData.firstName} onChange={handleInputChange} placeholder='Karl' autoComplete="given-name" />
+                <label htmlFor="lastName">Efternamn:</label>
+                <input id="lastName" name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder='Karlsson' autoComplete="family-name" />
                 <button type="submit" className="btn-primary">Registrera</button>
                 <Link to="/" className="btn-primary">Avbryt</Link>
             </form>
@@ -118,4 +142,4 @@ RegistreraPage.route = {
     index: 9,
 };
 
-export default RegistreraPage;
+

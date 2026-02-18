@@ -1,15 +1,16 @@
 import { Navigate } from 'react-router-dom';
-import type { JSX } from 'react';
+import type { ReactNode } from 'react';
 
+type Props = { children: ReactNode };
 
-const ProtectedRoute = ({ children }: { children: JSX.Element; }) => {
+const ProtectedRoute = ({ children }: Props) => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

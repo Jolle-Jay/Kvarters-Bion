@@ -1,7 +1,4 @@
-export interface UserData {
-    name: string;
-    email: string;
-}
+import type { UserData, AuthResponse } from './Authentication';
 
 export interface RegisterFormData {
     email: string;
@@ -10,9 +7,4 @@ export interface RegisterFormData {
     lastName: string;
 }
 
-export interface AuthResponse {
-    success: boolean;
-    message?: string;
-    user?: UserData;
-    token?: string;
-}
+export type { UserData, AuthResponse };

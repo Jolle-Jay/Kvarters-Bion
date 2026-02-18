@@ -5,11 +5,31 @@ public static class FileServer
 
     public static void Start()
     {
-        // Convert frontendPath to an absolute path
-        FPath = Path.Combine(
-            Directory.GetCurrentDirectory(),
-            Globals.frontendPath
-        );
+        // Resolve frontendPath to an absolute path and normalize it.
+        var gp = (string)Globals.frontendPath;
+        if (Path.IsPathRooted(gp))
+        {
+            FPath = Path.GetFullPath(gp);
+        }
+        else
+        {
+            FPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, gp));
+        }
+
+        // If the resolved path doesn't exist, try the repo-level public folder as a fallback
+        if (!Directory.Exists(FPath))
+        {
+            var fallback = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "public"));
+            if (Directory.Exists(fallback))
+            {
+                FPath = fallback;
+            }
+            else
+            {
+                Console.WriteLine($"Frontend directory not found: {FPath}");
+                Console.WriteLine($"Also tried fallback: {fallback}");
+            }
+        }
 
         HandleStatusCodes();
         ServeFiles();

@@ -48,7 +48,8 @@ public static partial class Session
     {
         var session = GetRawSession(context);
         // data is already parsed as JSON by ObjFromReader
-        return session.data[key];
+        var data = session.data ?? Obj();
+        return data[key];
     }
 
     public static void Set(HttpContext context, string key, object value)
