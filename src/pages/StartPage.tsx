@@ -11,7 +11,7 @@ export default function StartPage() {
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // månader börjar på 0
     const dd = String(today.getDate()).padStart(2, '0');
 
-    const [selectedDate, setSelectedDate] = useState(`${yyyy}-${mm}-${dd}`);
+    const [selectedDate, setSelectedDate] = useState('');
     const [movies, setMovies] = useState<Movie[] | null>(null);
     const [selectedGenre, setSelectedGenre] = useState<string>('alla');
     const [selectedAge, setSelectedAge] = useState<string>('alla');
@@ -28,7 +28,7 @@ export default function StartPage() {
   useEffect(() => {
     (async () => {
         try {
-            const res = await fetch('/api/viewings');
+            const res = await fetch('/api/viewings/all');
             if (!res.ok) throw new Error('Fetch failed: ' + res.status);
             const viewingsData = await res.json();
             console.log("Viewings fetched:", viewingsData); // <-- Felsökning
@@ -82,11 +82,13 @@ export default function StartPage() {
         selectedAge === "alla" ||
         mapToSwedishAge(movie.Rated) === selectedAge;
     
-   const matchDate = viewings?.some(v => {
-        if (!v.start_time) return false;
-        const viewingDate = v.start_time.substring(0, 10); // Tar bara YYYY-MM-DD
-        return v.movie === movie.id && viewingDate === selectedDate;
-    }) ?? true;
+ const matchDate =
+  !selectedDate || // om inget datum är valt → visa alla
+  viewings?.some(v => {
+    if (!v.start_time) return false;
+    const viewingDate = v.start_time.substring(0, 10);
+    return v.movie === movie.id && viewingDate === selectedDate;
+  });
 
       return matchGenre && matchAge && matchDate;
     }) : [];
