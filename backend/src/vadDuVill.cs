@@ -37,16 +37,8 @@ public static class vadDuVill
       email = (string)body.email;
     }
     System.Console.WriteLine("=== STEP 4: Creating booking ===");
-    var seatsList = new List<string>();
-    foreach (var seat in body.seats)
-    {
-      seatsList.Add((string)seat);
-    }
-    BookingQueries.CreateBookingSeats((int)body.bookingId, (List<string>)body.seats, (string)body.lounges, (dynamic)body.counts);
-    System.Console.WriteLine("=== STEP 5: Getting booking ===");
 
     var booking = BookingQueries.CreateBooking(
-
         (string)body.bookingId,
         userID,
         email,
@@ -54,14 +46,22 @@ public static class vadDuVill
         (string)body.lounges
     );
 
+    System.Console.WriteLine("=== STEP 5: Getting booking ===");
     int bookingId = (int)booking["id"];
+
     System.Console.WriteLine("=== STEP 6: Creating seats ===");
+    var seatsList = new List<string>();
+    foreach (var seat in body.seats)
+    {
+      seatsList.Add((string)seat);
+    }
 
+    BookingQueries.CreateBookingSeats((int)body.bookingId, seatsList, (string)body.lounges, (dynamic)body.counts);
+    
     System.Console.WriteLine("=== STEP 7: Creating tickets ===");
-
     BookingQueries.CreateTickets(bookingId, body.counts);
-    System.Console.WriteLine("=== STEP 8: Success! ===");
 
+    System.Console.WriteLine("=== STEP 8: Success! ===");
     return RestResult.Parse(context, new
     {
       success = true,
