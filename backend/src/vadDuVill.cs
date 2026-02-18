@@ -32,8 +32,8 @@ public static class vadDuVill
 
     if (user != null)
     {
-      email = (string)user.Get("email");
-      userID = (int)user.Get("id");
+      email = (string)user["email"];
+      userID = (int)user["id"];
       System.Console.WriteLine("=== STEP 3: Logged in user: " + email + " ===");
     }
     else
@@ -76,7 +76,7 @@ public static class vadDuVill
       );
     }
 
-    viewingId = (int)viewing.Get("id");
+    viewingId = (int)viewing["id"];
     System.Console.WriteLine("=== Using viewing ID: " + viewingId + " ===");
 
     // STEP 5: Create booking
