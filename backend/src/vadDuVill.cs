@@ -37,7 +37,7 @@ public static class vadDuVill
       email = (string)body.email;
     }
     System.Console.WriteLine("=== STEP 4: Creating booking ===");
-    BookingQueries.CreateBookingSeats((string)body.bookingId, userID, email, (int)body.viewingId, (string)body.lounges);
+    BookingQueries.CreateBookingSeats((int)body.bookingId, (List<string>)body.seats, (string)body.lounges, (dynamic)body.counts);
     System.Console.WriteLine("=== STEP 5: Getting booking ===");
 
     var booking = BookingQueries.CreateBooking(

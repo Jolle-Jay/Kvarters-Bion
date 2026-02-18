@@ -77,6 +77,20 @@ public static class BookingQueries
 
                 new { seatId, viewingId }
             );
+
+            if (alreadyBooked != null)
+            {
+                System.Console.WriteLine($"Seat {seatId} is already booked for this viewing.");
+                continue;
+            }
+
+            SQLQuery(
+                @"INSERT INTO bookingSeats (booking, seat, ticketType)
+                VALUES (@bookingId, @seatId, @ticketType)",
+                new { bookingId, seatId, ticketType }
+            );
+
+            System.Console.WriteLine($"Successfully booked seat {seatId} with ticket type {ticketType}");
         }
 
     }
