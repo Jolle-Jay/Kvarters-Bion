@@ -67,7 +67,7 @@ function ConfirmationPage() {
 
     // TODO: Replace with actual API call to your C# backend
     // Example:
-    const response = await fetch('/api/bookings', {
+    const response = await fetch('/api/customBooking', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

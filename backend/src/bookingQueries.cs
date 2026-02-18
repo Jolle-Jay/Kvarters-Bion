@@ -9,11 +9,12 @@ public static class BookingQueries
     {
         SQLQueryOne(
             @"INSERT INTO bookings (BookingReference, user, email, viewing, status)
-            VALUES (@BookingReference, @user, @email, @viewing, 'Confirmed')",
+          VALUES (@BookingReference, @userId, @email, @viewingId, 'Confirmed')",
             new { BookingReference, userId, email, viewingId }
         );
 
-        return SQLQueryOne("SELECT * FROM bookings WHERE booking_reference = @bookingReference",
+        return SQLQueryOne(
+            "SELECT * FROM bookings WHERE BookingReference = @BookingReference",
             new { BookingReference }
         );
     }
@@ -37,7 +38,7 @@ public static class BookingQueries
             "SELECT viewing FROM bookings WHERE id = @bookingId",
             new { bookingId }
         );
-        int viewingId = (int)currentBooking.Get("viewing");
+        int viewingId = (int)currentBooking["viewing"];
 
         for (int i = 0; i < seats.Count; i++)
         {
@@ -63,7 +64,7 @@ public static class BookingQueries
                 continue;
             }
 
-            int seatId = (int)existingSeat.Get("id");
+            int seatId = (int)existingSeat["id"];
             System.Console.WriteLine($"Found seat ID: {seatId}");
 
             //Check if seat is already booked for THIS viewing
