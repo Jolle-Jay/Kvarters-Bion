@@ -95,37 +95,37 @@ public static class BookingQueries
 
     }
 
-    public static void CreateTickets(int bookingId, dynamic counts)
-    {
-        var prices = new { adult = 140, senior = 120, child = 80 };
+    // public static void CreateTickets(int bookingId, dynamic counts)
+    // {
+    //     var prices = new { adult = 140, senior = 120, child = 80 };
 
-        for (int i = 0; i < (int)counts.adult; i++)
-        {
-            SQLQuery(
-                @"INSERT INTO ticketTypes (id, name, price)
-                VALUES (@id, 'Adult', @price)",
-                new { bookingId, price = prices.adult }
-            );
-        }
+    //     for (int i = 0; i < (int)counts.adult; i++)
+    //     {
+    //         SQLQuery(
+    //             @"INSERT INTO ticketTypes (id, name, price)
+    //             VALUES (@id, 'Adult', @price)",
+    //             new { bookingId, price = prices.adult }
+    //         );
+    //     }
 
-        for (int i = 0; i < (int)counts.senior; i++)
-        {
-            SQLQuery(
-                @"INSERT INTO ticketTypes (id, name, price)
-                VALUES (@id, 'Senior', @price)",
-                new { bookingId, price = prices.senior }
-            );
-        }
+    //     for (int i = 0; i < (int)counts.senior; i++)
+    //     {
+    //         SQLQuery(
+    //             @"INSERT INTO ticketTypes (id, name, price)
+    //             VALUES (@id, 'Senior', @price)",
+    //             new { bookingId, price = prices.senior }
+    //         );
+    //     }
 
-        for (int i = 0; i < (int)counts.child; i++)
-        {
-            SQLQuery(
-                @"INSERT INTO ticketTypes (id, name, price)
-                VALUES (@id, 'Child', @price)",
-                new { bookingId, price = prices.child }
-            );
-        }
-    }
+    //     for (int i = 0; i < (int)counts.child; i++)
+    //     {
+    //         SQLQuery(
+    //             @"INSERT INTO ticketTypes (id, name, price)
+    //             VALUES (@id, 'Child', @price)",
+    //             new { bookingId, price = prices.child }
+    //         );
+    //     }
+    // }
 
 
 

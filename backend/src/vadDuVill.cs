@@ -57,9 +57,9 @@ public static class vadDuVill
     }
 
     BookingQueries.CreateBookingSeats((int)body.bookingId, seatsList, (string)body.lounges, (dynamic)body.counts);
-    
+
     System.Console.WriteLine("=== STEP 7: Creating tickets ===");
-    BookingQueries.CreateTickets(bookingId, body.counts);
+    // BookingQueries.CreateTickets(bookingId, body.counts);
 
     System.Console.WriteLine("=== STEP 8: Success! ===");
     return RestResult.Parse(context, new
