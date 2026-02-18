@@ -71,7 +71,7 @@ export default function StartPage() {
     // Genre filtering only
   const filteredMovies = movies
     ? movies.filter(movie => {
-      // Dela upp genrerna i en array: "Horror, Sci-Fi" → ["horror", "sci-fi"]
+      // Dela upp genrerna i en array: "Horror, Sci-Fi" -> ["horror", "sci-fi"]
       const genres = movie.Genre.split(',').map(g => g.trim().toLowerCase());
 
       const matchGenre =
@@ -83,7 +83,7 @@ export default function StartPage() {
         mapToSwedishAge(movie.Rated) === selectedAge;
     
  const matchDate =
-  !selectedDate || // om inget datum är valt → visa alla
+  !selectedDate || // om inget datum är valt -> visa alla
   viewings?.some(v => {
     if (!v.start_time) return false;
     const viewingDate = v.start_time.substring(0, 10);
