@@ -22,7 +22,7 @@ public static class vadDuVill
     System.Console.WriteLine("body is null? " + (body == null));
     if (body != null)
     {
-      System.Console.WriteLine("body.film exists? " + (body.film != null));
+      System.Console.WriteLine("body.movie exists? " + (body.movie != null));
       System.Console.WriteLine("body.viewing exists? " + (body.viewing != null));
       System.Console.WriteLine("body.lounges exists? " + (body.lounges != null));
     }
@@ -51,30 +51,35 @@ public static class vadDuVill
     System.Console.WriteLine("=== STEP 4: Finding/creating viewing ===");
     var viewing = SQLQueryOne(
         @"SELECT * FROM viewings 
-          WHERE film = @film 
-          AND viewing = @viewing 
-          AND lounge = @lounges",
-        new { film = (string)body.film, viewing = (string)body.viewing, lounges = (string)body.lounges }
+      WHERE movie = @movie 
+      AND start_time = @start_time 
+      AND lounge = @lounge",
+        new { movie = (string)body.film, start_time = (string)body.viewing, lounge = (string)body.lounges }
     );
 
     int viewingId;
     if (viewing == null)
     {
       System.Console.WriteLine("=== Creating new viewing ===");
-      SQLQueryOne(
-          @"INSERT INTO viewings (film, viewing, lounge) 
-              VALUES (@film, @viewing, @lounges)",
-          new { film = (string)body.film, viewing = (string)body.viewing, lounges = (string)body.lounges }
+      var insertResult = SQLQueryOne(
+          @"INSERT INTO viewings (movie, start_time, lounge) 
+        VALUES (@movie, @start_time, @lounge)",
+          new { movie = (string)body.film, start_time = (string)body.viewing, lounge = (string)body.lounges }
       );
+      System.Console.WriteLine("=== Insert result: " + insertResult + " ===");
 
       viewing = SQLQueryOne(
           @"SELECT * FROM viewings 
-              WHERE film = @film 
-              AND viewing = @viewing 
-              AND lounge = @lounges",
-          new { film = (string)body.film, viewing = (string)body.viewing, lounges = (string)body.lounges }
+        WHERE movie = @movie 
+        AND start_time = @start_time 
+        AND lounge = @lounge",
+          new { movie = (string)body.film, start_time = (string)body.viewing, lounge = (string)body.lounges }
       );
+      System.Console.WriteLine("=== After insert, viewing: " + viewing + " ===");
     }
+
+    System.Console.WriteLine("=== viewing object: " + viewing + " ===");
+    System.Console.WriteLine("=== viewing['id']: " + viewing["id"] + " ===");
 
     viewingId = (int)viewing["id"];
     System.Console.WriteLine("=== Using viewing ID: " + viewingId + " ===");
