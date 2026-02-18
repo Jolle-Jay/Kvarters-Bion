@@ -54,7 +54,7 @@ const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
 function BookingPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const film = searchParams.get('movie') || 'Okänd film';
+  const film = searchParams.get('movie') || 'Shrek';
   const showtime = searchParams.get('showtime') || '2026-03-01 | 20:00';
 
   const [counts, setCounts] = useState<TicketCounts>({
