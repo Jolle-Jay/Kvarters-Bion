@@ -18,6 +18,15 @@ public static class vadDuVill
     System.Console.WriteLine("=== STEP 2: Body received ===");
     System.Console.WriteLine(body);
 
+    System.Console.WriteLine("=== Checking body properties ===");
+    System.Console.WriteLine("body is null? " + (body == null));
+    if (body != null)
+    {
+      System.Console.WriteLine("body.film exists? " + (body.film != null));
+      System.Console.WriteLine("body.viewing exists? " + (body.viewing != null));
+      System.Console.WriteLine("body.lounges exists? " + (body.lounges != null));
+    }
+
     string email;
     int? userID = null;
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import '../CSS/booking-styles.css';
 
-
 // Price per ticket category
 const PRICES = {
   adult: 140,
@@ -56,14 +55,13 @@ function BookingPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const film = searchParams.get('movie') || 'Okänd film';
-  const showtime = searchParams.get('showtime');
+  const showtime = searchParams.get('showtime') || '2026-03-01 | 20:00';
 
   const [counts, setCounts] = useState<TicketCounts>({
     adult: 0,
     senior: 0,
     child: 0
   });
-
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [bookedSeats, setBookedSeats] = useState<Set<string>>(new Set());
 
@@ -130,11 +128,11 @@ function BookingPage() {
 
     const bookingData = {
       film,
-      showtime,
+      viewing: showtime,
       seats: selectedSeats,
       counts,
       totalPrice,
-      salgon: SALONG_LAYOUT.name
+      lounges: SALONG_LAYOUT.name
     };
     //sparar användarens data av bokningen
     sessionStorage.setItem('bookingData', JSON.stringify(bookingData));

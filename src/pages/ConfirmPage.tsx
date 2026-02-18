@@ -12,7 +12,7 @@ interface BookingData {
     child: number;
   };
   totalPrice: number;
-  lounge: string;
+  lounges: string;
 }
 
 function ConfirmationPage() {
@@ -65,6 +65,22 @@ function ConfirmationPage() {
     const id = generateBookingId();
     setBookingId(id);
 
+
+    // Add this debug
+    const payload = {
+      bookingId: id,
+      email,
+      film: data.film,
+      viewing: data.viewing,
+      seats: data.seats,
+      counts: data.counts,
+      totalPrice: data.totalPrice,
+      lounges: data.lounges
+    };
+
+    console.log('=== SENDING TO BACKEND ===');
+    console.log(payload);
+    console.log('=========================');
     // TODO: Replace with actual API call to your C# backend
     // Example:
     const response = await fetch('/api/customBooking', {
@@ -78,7 +94,7 @@ function ConfirmationPage() {
         seats: data.seats,
         counts: data.counts,
         totalPrice: data.totalPrice,
-        lounge: data.lounge
+        lounges: data.lounges
       })
     });
 
@@ -120,7 +136,7 @@ function ConfirmationPage() {
           <div className="booking-summary">
             <h3>Sammanfattning</h3>
             <p><strong>Film:</strong> {bookingData.film}</p>
-            <p><strong>Salong:</strong> {bookingData.lounge}</p>
+            <p><strong>Salong:</strong> {bookingData.lounges}</p>
             <p><strong>Tid:</strong> {bookingData.viewing}</p>
             <p><strong>Platser:</strong> {bookingData.seats.join(', ')}</p>
             <p><strong>Antal biljetter:</strong></p>
@@ -173,7 +189,7 @@ function ConfirmationPage() {
         return (
           <div key={seat} className="ticket">
             <h1 className="ticketTextTitle"><u>{bookingData.film}</u></h1>
-            <p className="ticketTextSeat">{bookingData.lounge}, Rad {row}, Plats {col}</p>
+            <p className="ticketTextSeat">{bookingData.lounges}, Rad {row}, Plats {col}</p>
             <p className="ticketTextTime">{bookingData.viewing}</p>
           </div>
         );
