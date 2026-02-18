@@ -11,11 +11,11 @@ export default function StartPage() {
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // månader börjar på 0
     const dd = String(today.getDate()).padStart(2, '0');
 
-    const [selectedDate, setSelectedDate] = useState(`${yyyy}-${mm}-${dd}`);
+    const [selectedDate, setSelectedDate] = useState('');
     const [movies, setMovies] = useState<Movie[] | null>(null);
     const [selectedGenre, setSelectedGenre] = useState<string>('alla');
     const [selectedAge, setSelectedAge] = useState<string>('alla');
-
+    const [viewings, setViewings] = useState<{ movie: number; start_time: string }[] | null>(null);
 
     // Fetch movies
     useEffect(() => {
@@ -23,6 +23,21 @@ export default function StartPage() {
             setMovies(mapMovieArray(await (await fetch('/api/movies')).json()));
         })();
     }, []);
+  
+      // Fetch viewings
+  useEffect(() => {
+    (async () => {
+        try {
+            const res = await fetch('/api/viewings/all');
+            if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+            const viewingsData = await res.json();
+            console.log("Viewings fetched:", viewingsData); // <-- Felsökning
+            setViewings(viewingsData);
+        } catch (err) {
+            console.error("Error fetching viewings:", err);
+        }
+    })();
+}, []);
 
     // Scroll to top
     useEffect(() => {
@@ -54,24 +69,29 @@ export default function StartPage() {
 };
 
     // Genre filtering only
-const filteredMovies = movies
-  ? movies.filter(movie => {
-      // Dela upp genrerna i en array: "Horror, Sci-Fi" → ["horror", "sci-fi"]
+  const filteredMovies = movies
+    ? movies.filter(movie => {
+      // Dela upp genrerna i en array: "Horror, Sci-Fi" -> ["horror", "sci-fi"]
       const genres = movie.Genre.split(',').map(g => g.trim().toLowerCase());
 
       const matchGenre =
         selectedGenre === 'alla' ||
         genres.includes(selectedGenre.toLowerCase());
         
-    const matchAge =
-      selectedAge === "alla" ||
-      mapToSwedishAge(movie.Rated) === selectedAge;
+      const matchAge =
+        selectedAge === "alla" ||
+        mapToSwedishAge(movie.Rated) === selectedAge;
     
-    // här ska en likadan för datum ligga
+ const matchDate =
+  !selectedDate || // om inget datum är valt -> visa alla
+  viewings?.some(v => {
+    if (!v.start_time) return false;
+    const viewingDate = v.start_time.substring(0, 10);
+    return v.movie === movie.id && viewingDate === selectedDate;
+  });
 
-      return matchGenre && matchAge; //&& matchDate
-    })
-  : [];
+      return matchGenre && matchAge && matchDate;
+    }) : [];
 
   const ageOptions = movies
     ? ['alla', ...Array.from(new Set(movies.map(m => mapToSwedishAge(m.Rated))))] : ['alla'];

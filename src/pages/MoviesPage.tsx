@@ -43,7 +43,6 @@ console.log(movie?.Trailer);
 
       {/* TRAILER (tillfällig placeholder om du ej har trailer i DB) */}
       <div className="movie-trailer">
-        <h3>Trailer</h3>
         <iframe
           src={getEmbedUrl(movie.Trailer)}
           title={`${movie.Title} Trailer`}
