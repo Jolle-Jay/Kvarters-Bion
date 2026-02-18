@@ -2,53 +2,53 @@ namespace WebApp;
 
 public static class DbQuery
 {
-    // Setup the database connection from config
-    private static string connectionString;
+  // Setup the database connection from config
+  private static string connectionString;
 
-    // JSON columns for _CONTAINS_ validation
-    public static Arr JsonColumns = Arr(new[] { "Genre" });
+  // JSON columns for _CONTAINS_ validation
+  public static Arr JsonColumns = Arr(new[] { "Genre" });
 
-    public static bool IsJsonColumn(string column) => JsonColumns.Includes(column);
+  public static bool IsJsonColumn(string column) => JsonColumns.Includes(column);
 
-    static DbQuery()
+  static DbQuery()
+  {
+    var configPath = Path.Combine(
+        AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
+    );
+    var configJson = File.ReadAllText(configPath);
+    var config = JSON.Parse(configJson);
+
+    connectionString =
+        $"Server={config.host};Port={config.port};Database={config.database};" +
+        $"User={config.username};Password={config.password};";
+
+    var db = new MySqlConnection(connectionString);
+    db.Open();
+
+    // Reset database if requested
+    if (config.resetDb == true)
     {
-        var configPath = Path.Combine(
-            AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
-        );
-        var configJson = File.ReadAllText(configPath);
-        var config = JSON.Parse(configJson);
-
-        connectionString =
-            $"Server={config.host};Port={config.port};Database={config.database};" +
-            $"User={config.username};Password={config.password};";
-
-        var db = new MySqlConnection(connectionString);
-        db.Open();
-
-        // Reset database if requested
-        if (config.resetDb == true)
-        {
-            DropTables(db);
-        }
-
-        // Create tables if they don't exist
-        if (config.createTablesIfNotExist == true)
-        {
-            CreateTablesIfNotExist(db);
-        }
-
-        // Seed data if tables are empty
-        if (config.seedDataIfEmpty == true)
-        {
-            SeedDataIfEmpty(db);
-        }
-
-        db.Close();
+        DropTables(db);
     }
 
-    private static void DropTables(MySqlConnection db)
+    // Create tables if they don't exist
+    if (config.createTablesIfNotExist == true)
     {
-        var dropTablesSql = @"
+      CreateTablesIfNotExist(db);
+    }
+
+    // Seed data if tables are empty
+    if (config.seedDataIfEmpty == true)
+    {
+      SeedDataIfEmpty(db);
+    }
+
+    db.Close();
+  }
+
+  private static void DropTables(MySqlConnection db)
+  {
+    var dropTablesSql = @"
             DROP TABLE IF EXISTS bookingSeats;
             DROP TABLE IF EXISTS bookings;
             DROP TABLE IF EXISTS seats;
@@ -61,21 +61,21 @@ public static class DbQuery
             DROP TABLE IF EXISTS sessions;
         ";
 
-        foreach (var sql in dropTablesSql.Split(';'))
-        {
-            var trimmed = sql.Trim();
-            if (!string.IsNullOrEmpty(trimmed))
-            {
-                var command = db.CreateCommand();
-                command.CommandText = trimmed;
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-    private static void CreateTablesIfNotExist(MySqlConnection db)
+    foreach (var sql in dropTablesSql.Split(';'))
     {
-        var createTablesSql = @"
+      var trimmed = sql.Trim();
+      if (!string.IsNullOrEmpty(trimmed))
+      {
+        var command = db.CreateCommand();
+        command.CommandText = trimmed;
+        command.ExecuteNonQuery();
+      }
+    }
+  }
+
+  private static void CreateTablesIfNotExist(MySqlConnection db)
+  {
+    var createTablesSql = @"
             CREATE TABLE IF NOT EXISTS sessions (
                 id VARCHAR(255) PRIMARY KEY NOT NULL,
                 created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -181,126 +181,127 @@ public static class DbQuery
                 ON UPDATE NO ACTION ON DELETE NO ACTION;
         ";
 
-        // Execute each statement separately
-        foreach (var sql in createTablesSql.Split(';'))
-        {
-            var trimmed = sql.Trim();
-            if (!string.IsNullOrEmpty(trimmed))
-            {
-                var command = db.CreateCommand();
-                command.CommandText = trimmed;
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-    private static void SeedDataIfEmpty(MySqlConnection db)
+    // Execute each statement separately
+    foreach (var sql in createTablesSql.Split(';'))
     {
-        // Check if tables are empty and seed if needed
+      var trimmed = sql.Trim();
+      if (!string.IsNullOrEmpty(trimmed))
+      {
         var command = db.CreateCommand();
+        command.CommandText = trimmed;
+        command.ExecuteNonQuery();
+      }
+    }
+  }
 
-        // Seed ACL rules
-        command.CommandText = "SELECT COUNT(*) FROM acl";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var aclData = @"
+  private static void SeedDataIfEmpty(MySqlConnection db)
+  {
+    // Check if tables are empty and seed if needed
+    var command = db.CreateCommand();
+
+    // Seed ACL rules
+    command.CommandText = "SELECT COUNT(*) FROM acl";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var aclData = @"
                 INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
                 ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
                 ('visitor,user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
                 ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
-                ('visitor, user,admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
+                ('visitor, user,admin', '', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
                 ('visitor,user,admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
-                ('admin', '*', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
-                ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
-                ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
-                ('visitor,user,admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies');
+                ('admin', '', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
+                ('admin', '', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
+                ('admin', '', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
+                ('visitor,user,admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
+                ('visitor, user,admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
             ";
-            command.CommandText = aclData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = aclData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // Seed users
-        command.CommandText = "SELECT COUNT(*) FROM users";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var usersData = @"
+    // Seed users
+    command.CommandText = "SELECT COUNT(*) FROM users";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var usersData = @"
                 INSERT INTO users (created, email, firstName, lastName, role, password) VALUES
                 ('2024-04-02', 'thomas@nodehill.com', 'Thomas', 'Frank', 'admin', '$2a$13$IahRVtN2pxc1Ne1NzJUPpOQO5JCtDZvXpSF.IF8uW85S6VoZKCwZq'),
                 ('2024-04-02', 'olle@nodehill.com', 'Olle', 'Olofsson', 'user', '$2a$13$O2Gs3FME3oA1DAzwE0FkOuMAOOAgRyuvNQq937.cl7D.xq0IjgzN.'),
                 ('2024-04-02', 'maria@nodehill.com', 'Maria', 'Mårtensson', 'user', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS');
                 ('2026-02-17', 'davidpuscas@live.se', 'David', 'Puscas', 'user', '$2a$13$IimwlKfAZFbDq8ELStMuN.4vnocpMUTLMLSp3PIdOC9f6OMwfrHwS');
             ";
-            command.CommandText = usersData;
-            command.ExecuteNonQuery();
+      command.CommandText = usersData;
+      command.ExecuteNonQuery();
+    }
+
+
+    // Seed movies
+    command.CommandText = "SELECT COUNT(*) FROM movies";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var movieDir = Path.Combine(
+          AppContext.BaseDirectory, "..", "..", "..", "..", "public", "movies"
+      );
+
+      if (!Directory.Exists(movieDir))
+        throw new Exception("Movie directory not found: " + movieDir);
+
+      var files = Directory.GetFiles(movieDir, "*.json");
+      if (files.Length == 0)
+      {
+        throw new Exception("No movie JSON files found in: " + movieDir);
+      }
+
+      using var db2 = new MySqlConnection(connectionString);
+      db2.Open();
+
+      foreach (var file in files)
+      {
+        var json = File.ReadAllText(file);
+
+        try
+        {
+          // Validera JSON innan insert
+          JSON.Parse(json);
+        }
+        catch (Exception ex)
+        {
+          Console.WriteLine($"JSON validation failed for file {file}: {ex.Message}");
+          continue; // hoppa över ogiltiga JSON-filer
         }
 
+        using var cmd = db2.CreateCommand();
+        cmd.CommandText = "INSERT INTO movies (movies_raw) VALUES (@json)";
+        cmd.Parameters.AddWithValue("@json", json);
+        cmd.ExecuteNonQuery();
 
-        // Seed movies
-        command.CommandText = "SELECT COUNT(*) FROM movies";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var movieDir = Path.Combine(
-                AppContext.BaseDirectory, "..", "..", "..", "..", "public", "movies"
-            );
-
-            if (!Directory.Exists(movieDir))
-                throw new Exception("Movie directory not found: " + movieDir);
-
-            var files = Directory.GetFiles(movieDir, "*.json");
-            if (files.Length == 0)
-            {
-                throw new Exception("No movie JSON files found in: " + movieDir);
-            }
-
-            using var db2 = new MySqlConnection(connectionString);
-            db2.Open();
-
-            foreach (var file in files)
-            {
-                var json = File.ReadAllText(file);
-
-                try
-                {
-                    // Validera JSON innan insert
-                    JSON.Parse(json);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"JSON validation failed for file {file}: {ex.Message}");
-                    continue; // hoppa över ogiltiga JSON-filer
-                }
-
-                using var cmd = db2.CreateCommand();
-                cmd.CommandText = "INSERT INTO movies (movies_raw) VALUES (@json)";
-                cmd.Parameters.AddWithValue("@json", json);
-                cmd.ExecuteNonQuery();
-
-                Console.WriteLine($"Inserted movie from file: {Path.GetFileName(file)}");
-            }
-            db2.Close();
-        }
+        Console.WriteLine($"Inserted movie from file: {Path.GetFileName(file)}");
+      }
+      db2.Close();
+    }
 
 
-        // seed Lounge
-        command.CommandText = "SELECT COUNT(*) FROM lounges";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var loungesData = @"
+    // seed Lounge
+    command.CommandText = "SELECT COUNT(*) FROM lounges";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var loungesData = @"
                 INSERT INTO lounges (name) VALUES
                 ('Stora salongen'),
                 ('Lilla salongen');
             ";
-            command.CommandText = loungesData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = loungesData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed viewings
-        command.CommandText = "SELECT COUNT(*) FROM viewings";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var viewingsData = @"
+    // seed viewings
+    command.CommandText = "SELECT COUNT(*) FROM viewings";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var viewingsData = @"
                 INSERT INTO viewings (movie, lounge, start_time) VALUES
 
                 (1, 1, '2026-03-01 20:00:00'),
@@ -603,205 +604,205 @@ public static class DbQuery
                 (1, 1, '2026-04-30 22:00:00'),
                 (2, 2, '2026-04-30 23:00:00');
             ";
-            command.CommandText = viewingsData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = viewingsData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed seats
-        command.CommandText = "SELECT COUNT(*) FROM seats";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var seatsData = @"
+    // seed seats
+    command.CommandText = "SELECT COUNT(*) FROM seats";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var seatsData = @"
                 INSERT INTO seats (lounge, seatRow, number) VALUES
-                (1, '1', 111),
-                (1, '1', 112),
-                (1, '1', 113),
-                (1, '1', 114),
-                (1, '1', 115),
-                (1, '1', 116),
-                (1, '1', 117),
-                (1, '1', 118),
+                (1, '1', 1),
+                (1, '1', 2),
+                (1, '1', 3),
+                (1, '1', 4),
+                (1, '1', 5),
+                (1, '1', 6),
+                (1, '1', 7),
+                (1, '1', 8),
 
-                (1, '2', 121),
-                (1, '2', 122),
-                (1, '2', 123),
-                (1, '2', 124),
-                (1, '2', 125),
-                (1, '2', 126),
-                (1, '2', 127),
-                (1, '2', 128),
-                (1, '2', 129),
+                (1, '2', 1),
+                (1, '2', 2),
+                (1, '2', 3),
+                (1, '2', 4),
+                (1, '2', 5),
+                (1, '2', 6),
+                (1, '2', 7),
+                (1, '2', 8),
+                (1, '2', 9),
 
-                (1, '3', 131),
-                (1, '3', 132),
-                (1, '3', 133),
-                (1, '3', 134),
-                (1, '3', 135),
-                (1, '3', 136),
-                (1, '3', 137),
-                (1, '3', 138),
-                (1, '3', 139),
-                (1, '3', 1310),
+                (1, '3', 1),
+                (1, '3', 2),
+                (1, '3', 3),
+                (1, '3', 4),
+                (1, '3', 5),
+                (1, '3', 6),
+                (1, '3', 7),
+                (1, '3', 8),
+                (1, '3', 9),
+                (1, '3', 10),
 
-                (1, '4', 141),
-                (1, '4', 142),
-                (1, '4', 143),
-                (1, '4', 144),
-                (1, '4', 145),
-                (1, '4', 146),
-                (1, '4', 147),
-                (1, '4', 148),
-                (1, '4', 149),
-                (1, '4', 150),
-                
-                (1, '5', 151),
-                (1, '5', 152),
-                (1, '5', 153),
-                (1, '5', 154),
-                (1, '5', 155),
-                (1, '5', 156),
-                (1, '5', 157),
-                (1, '5', 158),
-                (1, '5', 159),
-                (1, '5', 160),
+                (1, '4', 1),
+                (1, '4', 2),
+                (1, '4', 3),
+                (1, '4', 4),
+                (1, '4', 5),
+                (1, '4', 6),
+                (1, '4', 7),
+                (1, '4', 8),
+                (1, '4', 9),
+                (1, '4', 10),
 
-                (1, '6', 161),
-                (1, '6', 162),
-                (1, '6', 163),
-                (1, '6', 164),
-                (1, '6', 165),
-                (1, '6', 166),
-                (1, '6', 167),
-                (1, '6', 168),
-                (1, '6', 169),
-                (1, '6', 170),
+                (1, '5', 1),
+                (1, '5', 2),
+                (1, '5', 3),
+                (1, '5', 4),
+                (1, '5', 5),
+                (1, '5', 6),
+                (1, '5', 7),
+                (1, '5', 8),
+                (1, '5', 9),
+                (1, '5', 10),
 
-                (1, '7', 171),
-                (1, '7', 172),
-                (1, '7', 173),
-                (1, '7', 174),
-                (1, '7', 175),
-                (1, '7', 176),
-                (1, '7', 177),
-                (1, '7', 178),
-                (1, '7', 179),
-                (1, '7', 180),
-                (1, '7', 181),
-                (1, '7', 182),
+                (1, '6', 1),
+                (1, '6', 2),
+                (1, '6', 3),
+                (1, '6', 4),
+                (1, '6', 5),
+                (1, '6', 6),
+                (1, '6', 7),
+                (1, '6', 8),
+                (1, '6', 9),
+                (1, '6', 10),
 
-                (1, '8', 183),
-                (1, '8', 184),
-                (1, '8', 185),
-                (1, '8', 186),
-                (1, '8', 187),
-                (1, '8', 188),
-                (1, '8', 189),
-                (1, '8', 190),
-                (1, '8', 191),
-                (1, '8', 192),
-                (1, '8', 193),
-                (1, '8', 194),
+                (1, '7', 1),
+                (1, '7', 2),
+                (1, '7', 3),
+                (1, '7', 4),
+                (1, '7', 5),
+                (1, '7', 6),
+                (1, '7', 7),
+                (1, '7', 8),
+                (1, '7', 9),
+                (1, '7', 10),
+                (1, '7', 11),
+                (1, '7', 12),
 
-                (2, '1', 211),
-                (2, '1', 212),
-                (2, '1', 213),
-                (2, '1', 214),
-                (2, '1', 215),
-                (2, '1', 216),
+                (1, '8', 1),
+                (1, '8', 2),
+                (1, '8', 3),
+                (1, '8', 4),
+                (1, '8', 5),
+                (1, '8', 6),
+                (1, '8', 7),
+                (1, '8', 8),
+                (1, '8', 9),
+                (1, '8', 10),
+                (1, '8', 11),
+                (1, '8', 12),
 
-                (2, '2', 221),
-                (2, '2', 222),
-                (2, '2', 223),
-                (2, '2', 224),
-                (2, '2', 225),
-                (2, '2', 226),
-                (2, '2', 227),
-                (2, '2', 228),
+                (2, '1', 1),
+                (2, '1', 2),
+                (2, '1', 3),
+                (2, '1', 4),
+                (2, '1', 5),
+                (2, '1', 6),
 
-                (2, '3', 231),
-                (2, '3', 232),
-                (2, '3', 233),
-                (2, '3', 234),
-                (2, '3', 235),
-                (2, '3', 236),
-                (2, '3', 237),
-                (2, '3', 238),
-                (2, '3', 239),
+                (2, '2', 1),
+                (2, '2', 2),
+                (2, '2', 3),
+                (2, '2', 4),
+                (2, '2', 5),
+                (2, '2', 6),
+                (2, '2', 7),
+                (2, '2', 8),
 
-                (2, '4', 241),
-                (2, '4', 242),
-                (2, '4', 243),
-                (2, '4', 244),
-                (2, '4', 245),
-                (2, '4', 246),
-                (2, '4', 247),
-                (2, '4', 248),
-                (2, '4', 249),
-                (2, '4', 250),
+                (2, '3', 1),
+                (2, '3', 2),
+                (2, '3', 3),
+                (2, '3', 4),
+                (2, '3', 5),
+                (2, '3', 6),
+                (2, '3', 7),
+                (2, '3', 8),
+                (2, '3', 9),
 
-                (2, '5', 251),
-                (2, '5', 252),
-                (2, '5', 253),
-                (2, '5', 254),
-                (2, '5', 255),
-                (2, '5', 256),
-                (2, '5', 257),
-                (2, '5', 258),
-                (2, '5', 259),
-                (2, '5', 260),
+                (2, '4', 1),
+                (2, '4', 2),
+                (2, '4', 3),
+                (2, '4', 4),
+                (2, '4', 5),
+                (2, '4', 6),
+                (2, '4', 7),
+                (2, '4', 8),
+                (2, '4', 9),
+                (2, '4', 10),
 
-                (2, '6', 261),
-                (2, '6', 262),
-                (2, '6', 263),
-                (2, '6', 264),
-                (2, '6', 265),
-                (2, '6', 266),
-                (2, '6', 267),
-                (2, '6', 268),
-                (2, '6', 269),
-                (2, '6', 270),
-                (2, '6', 271),
-                (2, '6', 272);
+                (2, '5', 1),
+                (2, '5', 2),
+                (2, '5', 3),
+                (2, '5', 4),
+                (2, '5', 5),
+                (2, '5', 6),
+                (2, '5', 7),
+                (2, '5', 8),
+                (2, '5', 9),
+                (2, '5', 10),
+
+                (2, '6', 1),
+                (2, '6', 2),
+                (2, '6', 3),
+                (2, '6', 4),
+                (2, '6', 5),
+                (2, '6', 6),
+                (2, '6', 7),
+                (2, '6', 8),
+                (2, '6', 9),
+                (2, '6', 10),
+                (2, '6', 11),
+                (2, '6', 12);
             ";
-            command.CommandText = seatsData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = seatsData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed ticketTypes
-        command.CommandText = "SELECT COUNT(*) FROM ticketTypes";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var ticketTypesData = @"
+    // seed ticketTypes
+    command.CommandText = "SELECT COUNT(*) FROM ticketTypes";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var ticketTypesData = @"
                 INSERT INTO ticketTypes (name, price) VALUES
                 ('Standard', 140),
                 ('Senior', 120),
                 ('Child', 80);
             ";
-            command.CommandText = ticketTypesData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = ticketTypesData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed bookings
-        command.CommandText = "SELECT COUNT(*) FROM bookings";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var bookingsData = @"
+    // seed bookings
+    command.CommandText = "SELECT COUNT(*) FROM bookings";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var bookingsData = @"
                 INSERT INTO bookings (BookingReference, user, email, viewing, status) VALUES
                 ('ABC123', 1, 'admin@cinema.se', 1, 'confirmed');
             ";
-            command.CommandText = bookingsData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = bookingsData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed bookingSeats 
-        command.CommandText = "SELECT COUNT(*) FROM bookingSeats";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var bookingSeatsData = @"
+    // seed bookingSeats 
+    command.CommandText = "SELECT COUNT(*) FROM bookingSeats";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var bookingSeatsData = @"
                 INSERT INTO bookingSeats (booking, seat, ticketType) VALUES
                 (1, 1, 1),
                 (1, 2, 1),
@@ -814,115 +815,115 @@ public static class DbQuery
                 (1, 9, 1),
                 (1, 10, 1);
             ";
-            command.CommandText = bookingSeatsData;
-            command.ExecuteNonQuery();
-        }
-
+      command.CommandText = bookingSeatsData;
+      command.ExecuteNonQuery();
     }
 
-    // Helper to create an object from the DataReader
-    private static dynamic ObjFromReader(MySqlDataReader reader)
-    {
-        var obj = Obj();
-        for (var i = 0; i < reader.FieldCount; i++)
-        {
-            var key = reader.GetName(i);
-            var value = reader.GetValue(i);
+  }
 
-            // Handle NULL values
-            if (value == DBNull.Value)
-            {
-                obj[key] = null;
-            }
-            // Handle DateTime - convert to ISO string
-            else if (value is DateTime dt)
-            {
-                obj[key] = dt.ToString("yyyy-MM-ddTHH:mm:ss");
-            }
-            // Handle boolean (MySQL returns sbyte for TINYINT(1))
-            else if (value is sbyte sb)
-            {
-                obj[key] = sb != 0;
-            }
-            else if (value is bool b)
-            {
-                obj[key] = b;
-            }
-            // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
-            else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
-            {
-                try
-                {
-                    obj[key] = JSON.Parse(strValue);
-                }
-                catch
-                {
-                    // If parsing fails, keep the original value and try to convert to number
-                    obj[key] = strValue.TryToNum();
-                }
-            }
-            else
-            {
-                // Normal handling - convert to string and try to parse as number
-                obj[key] = value.ToString().TryToNum();
-            }
-        }
-        return obj;
-    }
-
-    // Run a query - rows are returned as an array of objects
-    public static Arr SQLQuery(
-        string sql, object parameters = null, HttpContext context = null
-    )
+  // Helper to create an object from the DataReader
+  private static dynamic ObjFromReader(MySqlDataReader reader)
+  {
+    var obj = Obj();
+    for (var i = 0; i < reader.FieldCount; i++)
     {
-        var paras = parameters == null ? Obj() : Obj(parameters);
-        using var db = new MySqlConnection(connectionString);
-        db.Open();
-        var command = db.CreateCommand();
-        command.CommandText = @sql;
-        var entries = (Arr)paras.GetEntries();
-        entries.ForEach(x => command.Parameters.AddWithValue("@" + x[0], x[1]));
-        if (context != null)
-        {
-            DebugLog.Add(context, new
-            {
-                sqlQuery = sql.Regplace(@"\s+", " "),
-                sqlParams = paras
-            });
-        }
-        var rows = Arr();
+      var key = reader.GetName(i);
+      var value = reader.GetValue(i);
+
+      // Handle NULL values
+      if (value == DBNull.Value)
+      {
+        obj[key] = null;
+      }
+      // Handle DateTime - convert to ISO string
+      else if (value is DateTime dt)
+      {
+        obj[key] = dt.ToString("yyyy-MM-ddTHH:mm:ss");
+      }
+      // Handle boolean (MySQL returns sbyte for TINYINT(1))
+      else if (value is sbyte sb)
+      {
+        obj[key] = sb != 0;
+      }
+      else if (value is bool b)
+      {
+        obj[key] = b;
+      }
+      // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
+      else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
+      {
         try
         {
-            if (sql.StartsWith("SELECT ", true, null))
-            {
-                var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    rows.Push(ObjFromReader(reader));
-                }
-                reader.Close();
-            }
-            else
-            {
-                rows.Push(new
-                {
-                    command = sql.Split(" ")[0].ToUpper(),
-                    rowsAffected = command.ExecuteNonQuery()
-                });
-            }
+          obj[key] = JSON.Parse(strValue);
         }
-        catch (Exception err)
+        catch
         {
-            rows.Push(new { error = err.Message });
+          // If parsing fails, keep the original value and try to convert to number
+          obj[key] = strValue.TryToNum();
         }
-        return rows;
+      }
+      else
+      {
+        // Normal handling - convert to string and try to parse as number
+        obj[key] = value.ToString().TryToNum();
+      }
     }
+    return obj;
+  }
 
-    // Run a query - only return the first row, as an object
-    public static dynamic SQLQueryOne(
-        string sql, object parameters = null, HttpContext context = null
-    )
+  // Run a query - rows are returned as an array of objects
+  public static Arr SQLQuery(
+      string sql, object parameters = null, HttpContext context = null
+  )
+  {
+    var paras = parameters == null ? Obj() : Obj(parameters);
+    using var db = new MySqlConnection(connectionString);
+    db.Open();
+    var command = db.CreateCommand();
+    command.CommandText = @sql;
+    var entries = (Arr)paras.GetEntries();
+    entries.ForEach(x => command.Parameters.AddWithValue("@" + x[0], x[1]));
+    if (context != null)
     {
-        return SQLQuery(sql, parameters, context)[0];
+      DebugLog.Add(context, new
+      {
+        sqlQuery = sql.Regplace(@"\s+", " "),
+        sqlParams = paras
+      });
     }
+    var rows = Arr();
+    try
+    {
+      if (sql.StartsWith("SELECT ", true, null))
+      {
+        var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+          rows.Push(ObjFromReader(reader));
+        }
+        reader.Close();
+      }
+      else
+      {
+        rows.Push(new
+        {
+          command = sql.Split(" ")[0].ToUpper(),
+          rowsAffected = command.ExecuteNonQuery()
+        });
+      }
+    }
+    catch (Exception err)
+    {
+      rows.Push(new { error = err.Message });
+    }
+    return rows;
+  }
+
+  // Run a query - only return the first row, as an object
+  public static dynamic SQLQueryOne(
+      string sql, object parameters = null, HttpContext context = null
+  )
+  {
+    return SQLQuery(sql, parameters, context)[0];
+  }
 }

@@ -1,4 +1,3 @@
-import App from '../App';
 import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
 import { useState, useEffect } from 'react';
@@ -12,11 +11,11 @@ export default function StartPage() {
     const mm = String(today.getMonth() + 1).padStart(2, '0'); // månader börjar på 0
     const dd = String(today.getDate()).padStart(2, '0');
 
-    const [selectedDate, setSelectedDate] = useState(`${yyyy}-${mm}-${dd}`);
+    const [selectedDate, setSelectedDate] = useState('');
     const [movies, setMovies] = useState<Movie[] | null>(null);
     const [selectedGenre, setSelectedGenre] = useState<string>('alla');
-    const [selectedSalon, setSelectedSalon] = useState<string>('alla');
-
+    const [selectedAge, setSelectedAge] = useState<string>('alla');
+    const [viewings, setViewings] = useState<{ movie: number; start_time: string }[] | null>(null);
 
     // Fetch movies
     useEffect(() => {
@@ -24,17 +23,80 @@ export default function StartPage() {
             setMovies(mapMovieArray(await (await fetch('/api/movies')).json()));
         })();
     }, []);
+  
+      // Fetch viewings
+  useEffect(() => {
+    (async () => {
+        try {
+            const res = await fetch('/api/viewings/all');
+            if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+            const viewingsData = await res.json();
+            console.log("Viewings fetched:", viewingsData); // <-- Felsökning
+            setViewings(viewingsData);
+        } catch (err) {
+            console.error("Error fetching viewings:", err);
+        }
+    })();
+}, []);
 
     // Scroll to top
     useEffect(() => {
   window.scrollTo({ top: 0, behavior: 'instant' });
-}, []);
+    }, []);
+  
+  const mapToSwedishAge = (rating: string) => {
+  switch (rating) {
+    case "G":
+    case "Approved":
+      return "Barntillåten";
 
+    case "TV-Y7":
+    case "PG":
+      return "7+";
+
+    case "PG-13":
+      return "11+";
+
+    case "R":
+      return "15+";
+
+    case "N/A":
+      return "Ingen åldersgräns";
+
+    default:
+      return "Ingen åldersgräns";
+  }
+};
 
     // Genre filtering only
-//   const filteredMovies = movies.filter(movies =>
-//     selectedGenre === 'alla' || movie.Genre.includes(selectedGenre)
-// );
+  const filteredMovies = movies
+    ? movies.filter(movie => {
+      // Dela upp genrerna i en array: "Horror, Sci-Fi" -> ["horror", "sci-fi"]
+      const genres = movie.Genre.split(',').map(g => g.trim().toLowerCase());
+
+      const matchGenre =
+        selectedGenre === 'alla' ||
+        genres.includes(selectedGenre.toLowerCase());
+        
+      const matchAge =
+        selectedAge === "alla" ||
+        mapToSwedishAge(movie.Rated) === selectedAge;
+    
+ const matchDate =
+  !selectedDate || // om inget datum är valt -> visa alla
+  viewings?.some(v => {
+    if (!v.start_time) return false;
+    const viewingDate = v.start_time.substring(0, 10);
+    return v.movie === movie.id && viewingDate === selectedDate;
+  });
+
+      return matchGenre && matchAge && matchDate;
+    }) : [];
+
+  const ageOptions = movies
+    ? ['alla', ...Array.from(new Set(movies.map(m => mapToSwedishAge(m.Rated))))] : ['alla'];
+
+  
 
     return (
         <main>
@@ -66,7 +128,7 @@ export default function StartPage() {
 
                 {/* Genre */}
                 <div className="filter-item">
-                  <h3>Filtrera film</h3>
+                  <h3>Filtrera genre</h3>
                   <select
                     className={`filter-dropdown ${selectedGenre !== 'alla' ? 'active' : ''}`}
                     value={selectedGenre}
@@ -74,9 +136,9 @@ export default function StartPage() {
                   >
 
                     <option value="alla">Alla</option>
-                    <option value="Science Fiction">Sci-Fi</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
                     <option value="Drama">Drama</option>
-                    <option value="Animerat">Animerat</option>
+                    <option value="Animation">Animation</option>
                     <option value="Thriller">Thriller</option>
                     <option value="Action">Action</option>
                     <option value="Romance">Romance</option>
@@ -95,17 +157,19 @@ export default function StartPage() {
                   />
                 </div>
 
-                {/* Salong */}
+                {/* Åldersgräns */}
                 <div className="filter-item">
-                  <h3>Salong</h3>
+                  <h3>Åldersgräns</h3>
                   <select
-                    className={`filter-dropdown ${selectedSalon !== 'alla' ? 'active' : ''}`}
-                    value={selectedSalon}
-                    onChange={(e) => setSelectedSalon(e.target.value)}
+                    className={`filter-dropdown ${selectedAge !== 'alla' ? 'active' : ''}`}
+                    value={selectedAge}
+                    onChange={(e) => setSelectedAge(e.target.value)}
                   >
-                    <option value="alla">Alla salonger</option>
-                    <option value="1">Lilla Salongen</option>
-                    <option value="2">Stora Salongen</option>
+                    {ageOptions.map(age => (
+                      <option key={age} value={age}>
+                      {age === 'alla' ? 'Alla åldrar' : age}
+                    </option>
+                  ))}
                   </select>
                 </div>
 
@@ -113,7 +177,7 @@ export default function StartPage() {
 
             {/* MOVIES */}
             <div className="movies">
-                {movies && movies.map(movie => (
+                {filteredMovies.map(movie => (
                     <Link
                         key={movie.id}
                         to={`/movie/${movie.id}`}
