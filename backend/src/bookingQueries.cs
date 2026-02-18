@@ -19,18 +19,63 @@ public static class BookingQueries
         );
     }
 
-    public static void CreateSeats(int bookingId, List<string> seats)
+    public static void CreateBookingSeats(int bookingId, List<string> seats, string lounge, dynamic counts)
     {
-        foreach (string seat in seats)
-        {
-            var parts = seat.Split('-');
-            int seatRow = int.Parse(parts[0]);
-            int number = int.Parse(parts[1]);
+        var ticketTypes = new List<string>();
 
-            SQLQuery(
-                @"INSERT INTO seats (bookingId, seatRow, number, lounge)
-                VALUES (@bookingId, @seatRow, @number)",
-                new { bookingId, seatRow, number }
+        // Build list of ticket types in order: Adult first, then Senior, then Child
+        for (int i = 0; i < (int)counts.adult; i++)
+            ticketTypes.Add("Adult");
+        for (int i = 0; i < (int)counts.senior; i++)
+            ticketTypes.Add("Senior");
+        for (int i = 0; i < (int)counts.child; i++)
+            ticketTypes.Add("Child");
+
+        int loungeNumber = lounge == "Stora Salongen" ? 1 : 2;
+
+        //get the viewingId from the current booking (need to check availability)
+        var currentBooking = SQLQueryOne(
+            "SELECT viewing FROM bookings WHERE id = @bookingId",
+            new { bookingId }
+        );
+        int viewingId = (int)currentBooking.Get("viewing");
+
+        for (int i = 0; i < seats.Count; i++)
+        {
+            var parts = seats[i].Split('-');
+            int seatRow = int.Parse(parts[0]);
+            int seatNum = int.Parse(parts[1]);
+            string ticketType = ticketTypes[i];
+
+            System.Console.WriteLine($"Looking for: lounge={loungeNumber}, row={seatRow}, number={seatNum}");
+            // Find existing seat in seats table
+
+            var existingSeat = SQLQueryOne(
+                 @"SELECT * FROM seats
+                WHERE lounge = @loungeNumber
+                AND seatRow = @seatRow
+                AND number = @seatNum",
+                 new { loungeNumber, seatRow, seatNum }
+             );
+
+            if (existingSeat == null)
+            {
+                System.Console.WriteLine($"Seat not found: lounge {loungeNumber}, row {seatRow}, number {seatNum}");
+                continue;
+            }
+
+            int seatId = (int)existingSeat.Get("id");
+            System.Console.WriteLine($"Found seat ID: {seatId}");
+
+            //Check if seat is already booked for THIS viewing
+            var alreadyBooked = SQLQueryOne(
+                @"SELECT * FROM bookingSeats bs
+                INNER JOIN bookings b ON bs.booking = b.id
+                WHERE bs.seat = @seatId
+                AND b.viewing = @viewingId
+                AND b.status = 'Confirmed'",
+
+                new { seatId, viewingId }
             );
         }
 
