@@ -49,55 +49,70 @@ public static class vadDuVill
 
     // STEP 4: Find or create viewing
     System.Console.WriteLine("=== STEP 4: Finding/creating viewing ===");
+    var movie = SQLQueryOne(
+        @"SELECT id FROM movies WHERE JSON_EXTRACT(movies_raw, '$.title') = @filmTitle",
+        new { filmTitle = (string)body.film }
+    );
+
+    if (movie == null)
+    {
+      return RestResult.Parse(context, new { error = "Movie not Found"});
+    }
+    int movieId = (int)movie["id"];
+    
+    // STEP 5: Find Lounge ID
+    System.Console.WriteLine("=== STEP 5: Finding lounge ID ===");
+    var lounge = SQLQueryOne(
+      "SELECT id FROM lounges WHERE name = @loungeName",
+      new { loungeName = (string)body.lounges }
+    );
+    int loungeId = (int)lounge["id"];
+
+    // STEP 6: Find or create viewing
+    System.Console.WriteLine("=== Step 6: Finding/Creating viewing ===");
     var viewing = SQLQueryOne(
-        @"SELECT * FROM viewings 
-      WHERE movie = @movie 
-      AND start_time = @start_time 
-      AND lounge = @lounge",
-        new { movie = (string)body.film, start_time = (string)body.viewing, lounge = (string)body.lounges }
+      @"SELECT * FROM viewings
+        WHERE movie = @movieId
+        AND lounge = @loungeId
+        AND start_time = @startTime",
+      new { movieId, loungeId, startTime = (string)body.viewing }
     );
 
     int viewingId;
     if (viewing == null)
     {
       System.Console.WriteLine("=== Creating new viewing ===");
-      var insertResult = SQLQueryOne(
-          @"INSERT INTO viewings (movie, start_time, lounge) 
-        VALUES (@movie, @start_time, @lounge)",
-          new { movie = (string)body.film, start_time = (string)body.viewing, lounge = (string)body.lounges }
+      SQLQueryOne(
+        @"INSERT INTO viewing (movie, lounge, start_time)
+          VALUES (@movieId, @loungeId, @startTime)",
+        new {movieId, loungeId, startTime = (string)body.viewing}
       );
-      System.Console.WriteLine("=== Insert result: " + insertResult + " ===");
-
-      viewing = SQLQueryOne(
-          @"SELECT * FROM viewings 
-        WHERE movie = @movie 
-        AND start_time = @start_time 
-        AND lounge = @lounge",
-          new { movie = (string)body.film, start_time = (string)body.viewing, lounge = (string)body.lounges }
-      );
-      System.Console.WriteLine("=== After insert, viewing: " + viewing + " ===");
     }
-
-    System.Console.WriteLine("=== viewing object: " + viewing + " ===");
-    System.Console.WriteLine("=== viewing['id']: " + viewing["id"] + " ===");
+    viewing = SQLQueryOne(
+      @"SELECT * FROM viewings
+      WHERE movie = @movieId
+      AND lounge = @loungeId
+      AND start_time = @startTime",
+      new { movieId, loungeId, startTime = (string)body.viewing }
+    );
 
     viewingId = (int)viewing["id"];
-    System.Console.WriteLine("=== Using viewing ID: " + viewingId + " ===");
+    System.Console.WriteLine($"=== Using Viewing ID: {viewingId} ===");
 
-    // STEP 5: Create booking
-    System.Console.WriteLine("=== STEP 5: Creating booking ===");
+    // STEP 7: Create booking
+    System.Console.WriteLine("=== STEP 7: Creating booking ===");
     var booking = BookingQueries.CreateBooking(
         (string)body.bookingId,
         userID,
         email,
-        viewingId
+        movieId
     );
 
-    System.Console.WriteLine("=== STEP 6: Getting booking ID ===");
+    System.Console.WriteLine("=== STEP 8: Getting booking ID ===");
     int bookingId = (int)booking["id"];
 
-    // STEP 7: Create booking seats
-    System.Console.WriteLine("=== STEP 7: Creating booking seats ===");
+    // STEP 9: Create booking seats
+    System.Console.WriteLine("=== STEP 9: Creating booking seats ===");
     var seatsList = new List<string>();
     foreach (var seat in body.seats)
     {
@@ -106,7 +121,7 @@ public static class vadDuVill
 
     BookingQueries.CreateBookingSeats(bookingId, seatsList, (string)body.lounges, (dynamic)body.counts);
 
-    System.Console.WriteLine("=== STEP 8: Success! ===");
+    System.Console.WriteLine("=== STEP 10: Success! ===");
     return RestResult.Parse(context, new
     {
       success = true,
