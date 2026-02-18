@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../CSS/profile.css';
-import type { JSX } from 'react';
+
 
 
 function ProfilePage() {
@@ -24,26 +24,46 @@ function ProfilePage() {
   });
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const userName = localStorage.getItem('userName') || 'användare';
-    const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
-    // localStorage sparar ALLT som text
+    const checkLoginStatus = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('/api/login');
+        if (response.ok) {
+          const user = await response.json();
+          setIsLoggedIn(true);
+          setUserData({ name: `${user.firstName} ${user.lastName}`, email: user.email });
+          // Uppdatera localStorage för att vara synkad med backend
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userName', `${user.firstName} ${user.lastName}`);
+          localStorage.setItem('userEmail', user.email);
+        } else {
+          // Inte inloggad på backend, rensa och omdirigera till login
+          localStorage.removeItem('isLoggedIn');
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userEmail');
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Kunde inte kontrollera inloggningsstatus:', error);
+        // Vid fel, anta utloggad och omdirigera
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userEmail');
+        navigate('/login');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
+    checkLoginStatus();
+  }, [navigate]);
 
-    // Uppdatera state: Sätt inloggningsstatus till det vi hittade i localStorage
-    setIsLoggedIn(loggedIn);
-    // Uppdatera state: Sätt användardata till det vi hittade i localStorage
-    // Skapar ett nytt objekt med name och email
-    setUserData({ name: userName, email: userEmail });
-
-
-
-    setIsLoading(false);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    // Ta bort isLoggedIn, userName, userEmail, etc.
+  const handleLogout = async () => {
+    await fetch('/api/login', { method: 'DELETE' });
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    setIsLoggedIn(false);
 
     navigate('/');
   };

@@ -74,6 +74,7 @@ function LoginPage() {
       localStorage.setItem('isLoggedIn', 'true');
       // använd data.email från backend om det saknas använd formData (det som user skrev)
       localStorage.setItem('userEmail', data.email || formData.email);
+      localStorage.setItem('userName', `${data.firstName} ${data.lastName}`);
 
       setSuccessMessage('Inloggningen lyckades! Omdirigerar...');
       setTimeout(() => navigate('/profile'), 1500);
@@ -90,8 +91,10 @@ function LoginPage() {
       {succesMessage && <div className="success-message">{succesMessage}</div>}
 
       <form onSubmit={handleLogin}>
-        <input name="email" value={formData.email} onChange={handleInputChange} />
-        <input name="password" type="password" value={formData.password} onChange={handleInputChange} />
+        <p>E-post:</p>
+        <input name="email" value={formData.email} onChange={handleInputChange} placeholder='Epost@hotmail.com' />
+        <p>Lösenord:</p>
+        <input name="password" type="password" value={formData.password} onChange={handleInputChange} placeholder='Lösenord' />
         <button type="submit" className="btn-primary">Logga in</button>
         <Link to="/registration" className="btn-primary">Registrera</Link>
       </form>
