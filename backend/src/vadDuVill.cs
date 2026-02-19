@@ -222,7 +222,7 @@ public static class vadDuVill
       // STEP 4: Find movie ID
       System.Console.WriteLine("=== STEP 4: Finding movie ID ===");
       var movie = SQLQueryOne(
-          "SELECT id FROM movies WHERE JSON_EXTRACT(movies_raw, '$.title') = @filmTitle",
+          "SELECT id FROM movies WHERE JSON_EXTRACT(movies_raw, '$.Title') = @filmTitle",
           new { filmTitle }
       );
       if (movie == null)

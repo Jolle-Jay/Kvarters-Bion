@@ -138,7 +138,6 @@ function BookingPage() {
     }
   };
 
-  // Confirm booking
   const confirmBooking = () => {
     const totalTickets = getTotalTickets();
     if (totalTickets === 0) {
@@ -154,25 +153,33 @@ function BookingPage() {
       (counts.senior * PRICES.senior) +
       (counts.child * PRICES.child);
 
-    // Extract title from movies_raw
+    // DEBUG
+    console.log('=== FULL MOVIE OBJECT:', JSON.stringify(movie, null, 2));
+    console.log('=== movie.movies_raw:', movie?.movies_raw);
+    console.log('=== typeof movie.movies_raw:', typeof movie?.movies_raw);
+
+    // movies_raw is already an object, don't parse it
     let movieTitle = 'Okänd film';
-    if (movie?.movies_raw) {
-      try {
-        const movieData = JSON.parse(movie.movies_raw);
-        movieTitle = movieData.title || 'Okänd film';
-      } catch (e) {
-        console.error('Failed to parse movies_raw:', e);
-      }
+    if (movie?.movies_raw?.Title) {
+      movieTitle = movie.movies_raw.Title;
+      console.log('=== GOT TITLE FROM movies_raw.Title:', movieTitle);
+    } else if (movie?.Title) {
+      movieTitle = movie.Title;
+      console.log('=== GOT TITLE FROM movie.Title:', movieTitle);
+    } else {
+      console.log('=== NO TITLE FOUND, using default');
     }
 
     const bookingData = {
-      film: movieTitle,  // ← Use extracted title
+      film: movieTitle,
       viewing: showtime,
       seats: selectedSeats,
       counts,
       totalPrice,
       lounges: SALONG_LAYOUT.name
     };
+
+    console.log('=== BOOKING DATA TO SAVE:', bookingData);
 
     sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
     navigate('/confirm');
@@ -193,7 +200,7 @@ function BookingPage() {
   //     (counts.child * PRICES.child);
 
   //   const bookingData = {
-  //     film: movie?.title || 'okänd film',
+  //     film: movie?.Title || 'okänd film',
   //     viewing: showtime,
   //     seats: selectedSeats,
   //     counts,
@@ -224,7 +231,7 @@ function BookingPage() {
       {/* Ticket selector + summary */}
       <section className="hero">
         {/* ÄNDRAD KOD */}
-        <h2>Boka biljetter för: <span id="filmTitle">{movie.title}</span></h2>
+        <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
         <p>Välj antal biljetter och platser.</p>
         <div className="ticket-layout">
           {/* Panel: Select number of tickets */}
