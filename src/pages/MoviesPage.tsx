@@ -25,104 +25,78 @@ export default function MoviePage() {
   if (!movie) return <p>Laddar film...</p>;
 
   const getEmbedUrl = (url: string) => {
-  if (!url) return "";
+    if (!url) return "";
 
-  const videoIdMatch = url.match(
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/
-  );
+    const videoIdMatch = url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/
+    );
 
-  return videoIdMatch
-    ? `https://www.youtube.com/embed/${videoIdMatch[1]}`
-    : url;
-};
+    return videoIdMatch
+      ? `https://www.youtube.com/embed/${videoIdMatch[1]}`
+      : url;
+  };
 
-console.log(movie?.Trailer);
+  console.log(movie?.Trailer);
 
   return (
     <section className="movie-detail">
 
-      {/* TRAILER (tillfällig placeholder om du ej har trailer i DB) */}
-      <div className="movie-trailer">
-        <iframe
-          src={getEmbedUrl(movie.Trailer)}
-          title={`${movie.Title} Trailer`}
-          allowFullScreen
-/>
+      {/* TOP HERO SECTION */}
+      <div className="movie-hero">
+
+        {/* POSTER */}
+        <div className="movie-poster">
+          <img src={movie.Poster} alt={movie.Title} />
+        </div>
+
+        {/* TRAILER */}
+        <div className="movie-trailer">
+          <iframe
+            src={getEmbedUrl(movie.Trailer)}
+            title={`${movie.Title} Trailer`}
+            allowFullScreen
+          />
+        </div>
+
       </div>
 
-      {/* POSTER + SHOWTIMES */}
-      <div className="movie-poster-column">
-        <img src={movie.Poster} alt={movie.Title} />
+      {/* INFO SECTION */}
+      <div className="movie-content">
 
-        <div className="movie-times">
-          <h3>Visningstider</h3>
+        <div className="movie-info">
+          <h1>{movie.Title}</h1>
 
-          {/* TILLFÄLLIGT statiska tider tills du har showtimes i DB */}
-          <div className="showtime-date">
-            <h4>Idag</h4>
-
-            <div className="showtime-card">
-              <div className="showtime-poster">
-                <img src={movie.Poster} alt={movie.Title} />
-              </div>
-
-              <div className="showtime-info">
-                <div className="showtime-time">19:00</div>
-                <div className="showtime-location">Stora Salongen</div>
-
-                <div className="showtime-meta">
-                  <span className="meta-tag">{movie.Genre}</span>
-                  <span className="meta-tag">{movie.Runtime}</span>
-                  <span className="meta-tag">
-                    {movie.id}
-                  </span>
-                </div>
-              </div>
-
-              <Link to={`/booking/${movie.id}`} className="book-btn">
-                Boka biljett
-              </Link>
-            </div>
+          <div className="movie-meta">
+            <p><strong>Genre:</strong> {movie.Genre}</p>
+            <p><strong>Längd:</strong> {movie.Runtime}</p>
+            <p><strong>Årtal:</strong> {movie.Year}</p>
+            <p><strong>Åldersgräns:</strong> {movie.Rated}</p>
           </div>
 
-        </div>
-      </div>
-
-      {/* MOVIE INFO */}
-      <div className="movie-info">
-        <h1>{movie.Title}</h1>
-
-        <div className="movie-meta">
-          <p><strong>Genre:</strong> {movie.Genre}</p>
-          <p><strong>Längd:</strong> {movie.Runtime}</p>
-          <p><strong>Årtal:</strong> {movie.Year}</p>
-          <p><strong>Åldersgräns:</strong> {movie.Rated}</p>
-        </div>
-
-        <div className="movie-description">
-          <div className="dropdown-section">
+          
+          {/* hela dropdown-section här */}
+          <div className="movie-description">
+            <div className="dropdown-section">
 
             <div
               className="dropdown-header"
               onClick={() => setDropdownOpen(!dropdownOpen)}
-            >
+              >
               <div className="description-text">
                 <h3>Om filmen</h3>
-                <p>{movie.Plot}</p>
-              </div>
+             </div>
 
               <span
-                className={`dropdown-menu ${dropdownOpen ? "open" : ""
-                  }`}
-              >
-                ⋯
+                className={`dropdown-menu ${dropdownOpen ? "open" : ""}`}
+                > ⋯
               </span>
             </div>
 
             <div
-              className={`dropdown-content ${dropdownOpen ? "show" : ""
-                }`}
-            >
+              className={`dropdown-content ${dropdownOpen ? "show" : ""}`}
+              >
+                <p>{movie.Plot}</p>
+
               <div className="info-row">
                 <span className="info-label">Regissör:</span>
                 <span className="info-value">{movie.Director}</span>
@@ -139,20 +113,48 @@ console.log(movie?.Trailer);
               </div>
 
               <div className="info-row">
-                <span className="info-label">IMDb:</span>
-                <span className="info-value">
-                  ⭐ {movie.imdbRating} ({movie.imdbVotes} röster)
-                </span>
+               <span className="info-label">IMDb:</span>
+               <span className="info-value">
+              ⭐ {movie.imdbRating} ({movie.imdbVotes} röster)
+              </span>
               </div>
             </div>
-
           </div>
         </div>
       </div>
+    </div>
 
+        {/* SHOWTIMES */}
+        <div className="movie-times">
+          <h3>Visningstider</h3>
+
+          <div className="showtime-date">
+            <h4>Idag</h4>
+
+            <div className="showtime-card">
+              <div className="showtime-poster">
+                <img src={movie.Poster} alt={movie.Title} />
+              </div>
+
+              <div className="showtime-info">
+                <div className="showtime-time">19:00</div>
+                <div className="showtime-location">Stora Salongen</div>
+
+                <div className="showtime-meta">
+                  <span className="meta-tag">{movie.Genre}</span>
+                  <span className="meta-tag">{movie.Runtime}</span>
+                  <span className="meta-tag">{movie.id}</span>
+                </div>
+              </div>
+
+              <Link to={`/booking/${movie.id}`} className="book-btn">
+                Boka biljett
+              </Link>
+            </div>
+          </div>
+        </div>
     </section>
   );
-
 }
 
 MoviePage.route = {

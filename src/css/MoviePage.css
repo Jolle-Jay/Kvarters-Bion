@@ -1,39 +1,6 @@
-/* Movie Detail Section */
-.movie-detail {
-  display: flex;
-  gap: 2rem;
-  margin: 2rem;
-  padding: 2rem;
-  background: rgba(10, 25, 10, 0.7);
-  border: 2px solid #B8860B;
-  border-radius: 10px;
-}
-
-/* Movie Trailer Section */
-.movie-trailer {
-  flex: 0 0 350px;
-  display: flex;
-  flex-direction: column;
-}
-
-.movie-trailer h3 {
-  color: #B8860B;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.movie-trailer iframe {
-  border: 2px solid #B8860B;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 270px;
-}
-
 .movie-times {
   margin-top: 2rem;
+  flex: 1;
 }
 
 .movie-times h3 {
@@ -42,27 +9,6 @@
   margin-bottom: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-}
-
-.movie-poster-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.movie-poster-column img {
-  width: 80%;
-  height: auto;
-  border: 2px solid #B8860B;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-  display: block;
-  margin: 0;
-}
-
-.movie-info {
-  flex: 1;
 }
 
 .movie-info h1 {
@@ -98,19 +44,13 @@
   margin-bottom: 2rem;
 }
 
-.movie-description h3 {
-  color: #B8860B;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
 
 .movie-description p {
   color: #c3cac3;
   font-size: 1rem;
   line-height: 1.6;
   margin: 0;
+  margin-bottom: 0.5rem;
 }
 
 .description-text {
@@ -121,7 +61,7 @@
   color: #B8860B;
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  margin-top: 0;
+  margin-top: 0.5rem;
   text-transform: none;
   letter-spacing: normal;
 }
@@ -208,18 +148,6 @@
   color: #c3cac3;
   font-size: 0.95rem;
   line-height: 1.6;
-}
-
-.movie-times {
-  margin-top: 2rem;
-}
-
-.movie-times h3 {
-  color: #B8860B;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .time-slots {
@@ -393,5 +321,152 @@
   color: #faf8f8;
 }
 
+/* MAIN WRAPPER */
+.movie-detail {
+  margin: 2rem;
+  padding: 2rem;
+  background: rgba(10, 25, 10, 0.7);
+  border: 2px solid #B8860B;
+  border-radius: 12px;
+}
+
+/* HERO SECTION (Poster + Trailer) */
+.movie-hero {
+  display: flex;
+  gap: 2.5rem;
+  align-items: stretch;
+  margin-bottom: 3rem;
+}
+
+/* POSTER */
+.movie-poster {
+  flex: 0 0 400px;
+}
+
+.movie-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 3px solid #B8860B;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* TRAILER */
+.movie-trailer {
+  flex: 1;
+  position: relative;
+  aspect-ratio: 16/9;
+}
+
+.movie-trailer iframe {
+  width: 100%;
+  height: 100%;
+  border: 3px solid #B8860B;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* CONTENT UNDER HERO */
+.movie-content {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+/* INFO + SHOWTIMES layout */
+.movie-info {
+  flex: 2;
+}
+
+@media (max-width: 1024px) {
+
+  .movie-hero {
+    flex-direction: column;
+  }
+
+  .movie-poster {
+    flex: none;
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .movie-content {
+    flex-direction: column;
+  }
+
+  .movie-times {
+    margin-top: 2rem;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .movie-detail {
+    margin: 1rem;
+    padding: 1.2rem;
+  }
+
+  .movie-info h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .movie-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .movie-poster {
+    width: 100%;
+  }
+
+  .movie-hero {
+    gap: 1.5rem;
+  }
+
+  /* Showtime card mobil */
+  .showtime-card {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .showtime-poster {
+    flex: 0 0 70px;
+  }
+
+  .showtime-poster img {
+    width: 70px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  .showtime-info {
+    flex: 1;
+  }
+  
+  .showtime-time {
+    font-size: 1.1rem;
+  }
+  
+  .showtime-location {
+    font-size: 0.8rem;
+  }
+  
+  .showtime-meta {
+    display: none;
+      /* Tar bort taggar för bättre luft */
+  }
+  
+  .showtime-card .book-btn {
+    flex: 0 0 auto;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+}
 
 
