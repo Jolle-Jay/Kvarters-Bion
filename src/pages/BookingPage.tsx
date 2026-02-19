@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // gets movie ID from thje URL /booking/
 import '../CSS/booking-styles.css';
 
 // Price per ticket category
@@ -52,10 +52,12 @@ const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
 };
 
 function BookingPage() {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const film = searchParams.get('movie') || 'Okänd film';
-  const showtime = searchParams.get('showtime');
+  const navigate = useNavigate(); // 
+  const { id } = useParams(); // gets movie ID from /booking/id
+  //Why: Now we get the ID from the URL path instead of query parameters
+
+  const [movie, setMovie] = useState<any>(null); // new
+  const [showtime, setShowtime] = useState('viewing'); //new
 
   const [counts, setCounts] = useState<TicketCounts>({
     adult: 0,
@@ -69,6 +71,32 @@ function BookingPage() {
   const formatPrice = (value: number): string => {
     return `${value.toFixed(2).replace('.', ',')} kr`;
   };
+
+
+  // NEW
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const response = await fetch(`/api/movies/${id}`);
+        const data = await response.json();
+        setMovie(data);
+
+        const viewingREsponse = await fetch(`/api/viewings?movieId=${id}`);
+        const viewingsData = await viewingREsponse.json();
+
+        if (viewingsData.length > 0) {
+          setShowtime(viewingsData[0].start_time);
+        }
+      } catch (error) {
+        console.error('Failed to fetch movie:', error);
+        alert('Kunde inte ladda filmen');
+      }
+    };
+
+    if (id) {
+      fetchMovie();
+    }
+  }, [id]); // this whole code-
 
   // Get total number of tickets
   const getTotalTickets = (): number => {
@@ -126,20 +154,66 @@ function BookingPage() {
       (counts.senior * PRICES.senior) +
       (counts.child * PRICES.child);
 
+    // Extract title from movies_raw
+    let movieTitle = 'Okänd film';
+    if (movie?.movies_raw) {
+      try {
+        const movieData = JSON.parse(movie.movies_raw);
+        movieTitle = movieData.title || 'Okänd film';
+      } catch (e) {
+        console.error('Failed to parse movies_raw:', e);
+      }
+    }
+
     const bookingData = {
-      film,
+      film: movieTitle,  // ← Use extracted title
       viewing: showtime,
       seats: selectedSeats,
       counts,
       totalPrice,
       lounges: SALONG_LAYOUT.name
     };
-    //sparar användarens data av bokningen
+
     sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
-
     navigate('/confirm');
-
   };
+  // const confirmBooking = () => {
+  //   const totalTickets = getTotalTickets();
+  //   if (totalTickets === 0) {
+  //     alert('Välj antal biljetter först.');
+  //     return;
+  //   }
+  //   if (selectedSeats.length !== totalTickets) {
+  //     alert(`Välj ${totalTickets} platser innan du bekräftar.`);
+  //     return;
+  //   }
+
+  //   const totalPrice = (counts.adult * PRICES.adult) +
+  //     (counts.senior * PRICES.senior) +
+  //     (counts.child * PRICES.child);
+
+  //   const bookingData = {
+  //     film: movie?.title || 'okänd film',
+  //     viewing: showtime,
+  //     seats: selectedSeats,
+  //     counts,
+  //     totalPrice,
+  //     lounges: SALONG_LAYOUT.name
+  //   };
+  //   //sparar användarens data av bokningen
+  //   sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
+
+  //   navigate('/confirm');
+
+  // };
+
+  if (!movie) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <p>Laddar film...</p>
+      </div>
+    );
+  }
 
   const totalPrice = (counts.adult * PRICES.adult) +
     (counts.senior * PRICES.senior) +
@@ -149,7 +223,8 @@ function BookingPage() {
     <>
       {/* Ticket selector + summary */}
       <section className="hero">
-        <h2>Boka biljetter för: <span id="filmTitle">{film}</span></h2>
+        {/* ÄNDRAD KOD */}
+        <h2>Boka biljetter för: <span id="filmTitle">{movie.title}</span></h2>
         <p>Välj antal biljetter och platser.</p>
         <div className="ticket-layout">
           {/* Panel: Select number of tickets */}
@@ -321,7 +396,7 @@ function BookingPage() {
 };
 
 BookingPage.route = {
-  path: '/booking',
+  path: '/booking/:id',
   menuLabel: 'booking',
   index: 8,
 };

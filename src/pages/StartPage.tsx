@@ -52,157 +52,157 @@ export default function StartPage() {
       case "Approved":
         return "Barntillåten";
 
-    case "TV-Y7":
-    case "PG":
-      return "7+";
+      case "TV-Y7":
+      case "PG":
+        return "7+";
 
-    case "PG-13":
-      return "11+";
+      case "PG-13":
+        return "11+";
 
-    case "R":
-      return "15+";
+      case "R":
+        return "15+";
 
-    case "N/A":
-      return "Ingen åldersgräns";
+      case "N/A":
+        return "Ingen åldersgräns";
 
-    default:
-      return "Ingen åldersgräns";
-  }
-    };
+      default:
+        return "Ingen åldersgräns";
+    }
+  };
 
-    // Genre filtering only
-    const filteredMovies = movies
-      ? movies.filter(movie => {
-        // Dela upp genrerna i en array: "Horror, Sci-Fi" -> ["horror", "sci-fi"]
-        const genres = movie.Genre.split(',').map(g => g.trim().toLowerCase());
+  // Genre filtering only
+  const filteredMovies = movies
+    ? movies.filter(movie => {
+      // Dela upp genrerna i en array: "Horror, Sci-Fi" -> ["horror", "sci-fi"]
+      const genres = movie.Genre.split(',').map(g => g.trim().toLowerCase());
 
-        const matchGenre =
-          selectedGenre === 'alla' ||
-          genres.includes(selectedGenre.toLowerCase());
+      const matchGenre =
+        selectedGenre === 'alla' ||
+        genres.includes(selectedGenre.toLowerCase());
 
-        const matchAge =
-          selectedAge === "alla" ||
-          mapToSwedishAge(movie.Rated) === selectedAge;
+      const matchAge =
+        selectedAge === "alla" ||
+        mapToSwedishAge(movie.Rated) === selectedAge;
 
-        const matchDate =
-          !selectedDate || // om inget datum är valt -> visa alla
-          viewings?.some(v => {
-            if (!v.start_time) return false;
-            const viewingDate = v.start_time.substring(0, 10);
-            return v.movie === movie.id && viewingDate === selectedDate;
-          });
+      const matchDate =
+        !selectedDate || // om inget datum är valt -> visa alla
+        viewings?.some(v => {
+          if (!v.start_time) return false;
+          const viewingDate = v.start_time.substring(0, 10);
+          return v.movie === movie.id && viewingDate === selectedDate;
+        });
 
-        return matchGenre && matchAge && matchDate;
-      }) : [];
+      return matchGenre && matchAge && matchDate;
+    }) : [];
 
-    const ageOptions = movies
-      ? ['alla', ...Array.from(new Set(movies.map(m => mapToSwedishAge(m.Rated))))] : ['alla'];
+  const ageOptions = movies
+    ? ['alla', ...Array.from(new Set(movies.map(m => mapToSwedishAge(m.Rated))))] : ['alla'];
 
 
 
-    return (
-      <main>
-        {/* HERO + CAROUSEL */}
-        <section className="startpage-hero">
+  return (
+    <main>
+      {/* HERO + CAROUSEL */}
+      <section className="startpage-hero">
 
-          <div className="carousel">
-            <div className="carousel-track">
-              <div className="group">
-                {movies && movies.map(({ Poster }) => <img src={Poster} alt="poster of" />)}
-              </div>
+        <div className="carousel">
+          <div className="carousel-track">
+            <div className="group">
+              {movies && movies.map(({ Poster }) => <img src={Poster} alt="poster of" />)}
+            </div>
 
-              {/* Duplicate group for infinite scroll animation */}
-              <div className="group" aria-hidden>
-                {movies && movies.map(({ Poster }) => <img src={Poster} alt="poster of" />)}
-              </div>
+            {/* Duplicate group for infinite scroll animation */}
+            <div className="group" aria-hidden>
+              {movies && movies.map(({ Poster }) => <img src={Poster} alt="poster of" />)}
             </div>
           </div>
-
-          <h2>Upplev film på riktigt</h2>
-          <div className="hero-sub">
-            <p>Premiärer • Klassiker • IMAX-känsla</p>
-            <span className="stars">★ ★ ★ ★ ★</span>
-          </div>
-        </section>
-
-        {/* FILTER */}
-        <section className="filter">
-
-          {/* Genre */}
-          <div className="filter-item">
-            <h3>Filtrera genre</h3>
-            <select
-              className={`filter-dropdown ${selectedGenre !== 'alla' ? 'active' : ''}`}
-              value={selectedGenre}
-              onChange={(e) => setSelectedGenre(e.target.value)}
-            >
-
-              <option value="alla">Alla</option>
-              <option value="Sci-Fi">Sci-Fi</option>
-              <option value="Drama">Drama</option>
-              <option value="Animation">Animation</option>
-              <option value="Thriller">Thriller</option>
-              <option value="Action">Action</option>
-              <option value="Romance">Romance</option>
-              <option value="Adventure">Adventure</option>
-            </select>
-          </div>
-
-          {/* Datum */}
-          <div className="filter-item">
-            <h3>Välj datum</h3>
-            <input
-              type="date"
-              className={`filter-date ${selectedDate ? 'active' : ''}`}
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-            />
-          </div>
-
-          {/* Åldersgräns */}
-          <div className="filter-item">
-            <h3>Åldersgräns</h3>
-            <select
-              className={`filter-dropdown ${selectedAge !== 'alla' ? 'active' : ''}`}
-              value={selectedAge}
-              onChange={(e) => setSelectedAge(e.target.value)}
-            >
-              {ageOptions.map(age => (
-                <option key={age} value={age}>
-                  {age === 'alla' ? 'Alla åldrar' : age}
-                </option>
-              ))}
-            </select>
-          </div>
-
-        </section>
-
-        {/* MOVIES */}
-        <div className="movies">
-          {filteredMovies.map(movie => (
-            <Link
-              key={movie.id}
-              to={`/movie/${movie.id}`}
-              className="movie-card"
-            >
-              <div className="poster">
-                <img
-                  src={movie.Poster}
-                  alt={movie.Title}
-                />
-              </div>
-
-              <h3>{movie.Title}</h3>
-              <p>{movie.Genre}</p>
-            </Link>
-          ))}
         </div>
-      </main>
-    );
-  };
 
-  StartPage.route = {
-    path: '/',
-    menuLabel: 'StartPage',
-    index: 1
-  };
+        <h2>Upplev film på riktigt</h2>
+        <div className="hero-sub">
+          <p>Premiärer • Klassiker • IMAX-känsla</p>
+          <span className="stars">★ ★ ★ ★ ★</span>
+        </div>
+      </section>
+
+      {/* FILTER */}
+      <section className="filter">
+
+        {/* Genre */}
+        <div className="filter-item">
+          <h3>Filtrera genre</h3>
+          <select
+            className={`filter-dropdown ${selectedGenre !== 'alla' ? 'active' : ''}`}
+            value={selectedGenre}
+            onChange={(e) => setSelectedGenre(e.target.value)}
+          >
+
+            <option value="alla">Alla</option>
+            <option value="Sci-Fi">Sci-Fi</option>
+            <option value="Drama">Drama</option>
+            <option value="Animation">Animation</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Action">Action</option>
+            <option value="Romance">Romance</option>
+            <option value="Adventure">Adventure</option>
+          </select>
+        </div>
+
+        {/* Datum */}
+        <div className="filter-item">
+          <h3>Välj datum</h3>
+          <input
+            type="date"
+            className={`filter-date ${selectedDate ? 'active' : ''}`}
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+        </div>
+
+        {/* Åldersgräns */}
+        <div className="filter-item">
+          <h3>Åldersgräns</h3>
+          <select
+            className={`filter-dropdown ${selectedAge !== 'alla' ? 'active' : ''}`}
+            value={selectedAge}
+            onChange={(e) => setSelectedAge(e.target.value)}
+          >
+            {ageOptions.map(age => (
+              <option key={age} value={age}>
+                {age === 'alla' ? 'Alla åldrar' : age}
+              </option>
+            ))}
+          </select>
+        </div>
+
+      </section>
+
+      {/* MOVIES */}
+      <div className="movies">
+        {filteredMovies.map(movie => (
+          <Link
+            key={movie.id}
+            to={`/movie/${movie.id}`}
+            className="movie-card"
+          >
+            <div className="poster">
+              <img
+                src={movie.Poster}
+                alt={movie.Title}
+              />
+            </div>
+
+            <h3>{movie.Title}</h3>
+            <p>{movie.Genre}</p>
+          </Link>
+        ))}
+      </div>
+    </main>
+  );
+};
+
+StartPage.route = {
+  path: '/',
+  menuLabel: 'StartPage',
+  index: 1
+};
