@@ -5,10 +5,19 @@ import type { Movie } from "../interfaces/Movie";
 import { mapMovieArray } from "../interfaces/Movie";
 import "../css/MoviePage.css";
 
+interface Viewing {
+  id: number;
+  movie: number;
+  lounge: string;
+  start_time: string;
+}
+
 export default function MoviePage() {
   const { id } = useParams(); // hämtar id från URL
   const [movie, setMovie] = useState<Movie | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [viewings, setViewings] = useState<Viewing[]>([]);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -20,6 +29,33 @@ export default function MoviePage() {
       const foundMovie = data.find(m => m.id.toString() === id);
       setMovie(foundMovie || null);
     })();
+  }, [id]);
+
+  // Hämta visningstider från databasen
+  useEffect(() => {
+    const fetchViewings = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/viewings/all');
+        if (response.ok) {
+          const allViewings = await response.json();
+          // Filtrera visningstider för denna film
+          const filmViewings = allViewings.filter((v: Viewing) => 
+            v.movie === parseInt(id || '0')
+          );
+          setViewings(filmViewings);
+        }
+      } catch (err) {
+        console.error('Fel vid hämtning av visningstider:', err);
+        setViewings([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchViewings();
+    }
   }, [id]);
 
   if (!movie) return <p>Laddar film...</p>;
@@ -35,8 +71,6 @@ export default function MoviePage() {
     ? `https://www.youtube.com/embed/${videoIdMatch[1]}`
     : url;
 };
-
-console.log(movie?.Trailer);
 
   return (
     <section className="movie-detail">
@@ -57,32 +91,40 @@ console.log(movie?.Trailer);
         <div className="movie-times">
           <h3>Visningstider</h3>
 
-          {/* TILLFÄLLIGT statiska tider tills du har showtimes i DB */}
+          {/* Visa visningstider från databasen */}
           <div className="showtime-date">
             <h4>Idag</h4>
 
-            <div className="showtime-card">
-              <div className="showtime-poster">
-                <img src={movie.Poster} alt={movie.Title} />
-              </div>
+            {loading ? (
+              <p>Laddar visningstider...</p>
+            ) : viewings.length === 0 ? (
+              <p>Inga visningstider tillgängliga för denna film.</p>
+            ) : (
+              viewings.map((viewing) => (
+                <div key={viewing.id} className="showtime-card">
+                  <div className="showtime-poster">
+                    <img src={movie.Poster} alt={movie.Title} />
+                  </div>
 
-              <div className="showtime-info">
-                <div className="showtime-time">19:00</div>
-                <div className="showtime-location">Stora Salongen</div>
+                  <div className="showtime-info">
+                    <div className="showtime-time">{viewing.start_time}</div>
+                    <div className="showtime-location">{viewing.lounge}</div>
 
-                <div className="showtime-meta">
-                  <span className="meta-tag">{movie.Genre}</span>
-                  <span className="meta-tag">{movie.Runtime}</span>
-                  <span className="meta-tag">
-                    {movie.id}
-                  </span>
+                    <div className="showtime-meta">
+                      <span className="meta-tag">{movie.Genre}</span>
+                      <span className="meta-tag">{movie.Runtime}</span>
+                      <span className="meta-tag">
+                        {movie.id}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link to={`/booking?movieId=${movie.id}&showtime=${viewing.start_time}`} className="book-btn">
+                    Boka biljett
+                  </Link>
                 </div>
-              </div>
-
-              <Link to={`/booking/${movie.id}`} className="book-btn">
-                Boka biljett
-              </Link>
-            </div>
+              ))
+            )}
           </div>
 
         </div>

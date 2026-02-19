@@ -33,7 +33,6 @@ export default function StartPage() {
         const res = await fetch('/api/viewings/all');
         if (!res.ok) throw new Error('Fetch failed: ' + res.status);
         const viewingsData = await res.json();
-        console.log("Viewings fetched:", viewingsData); // <-- Felsökning
         setViewings(viewingsData);
       } catch (err) {
         console.error("Error fetching viewings:", err);

@@ -65,8 +65,6 @@ function ConfirmationPage() {
     const id = generateBookingId();
     setBookingId(id);
 
-
-    // Add this debug
     const payload = {
       bookingId: id,
       email,
@@ -81,28 +79,40 @@ function ConfirmationPage() {
     console.log('=== SENDING TO BACKEND ===');
     console.log(payload);
     console.log('=========================');
-    // TODO: Replace with actual API call to your C# backend
-    // Example:
-    const response = await fetch('/api/customBooking', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    
+    try {
+      const response = await fetch('/api/customBooking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      console.log('Response status:', response.status);
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
+
+      if (!response.ok) {
+        alert('Fel vid bokning: ' + (responseData.error || response.statusText));
+        return;
+      }
+
+      if (responseData.error) {
+        alert('Fel vid bokning: ' + responseData.error);
+        return;
+      }
+
+      console.log('✅ Bokning skapad framgångsrikt:', {
         bookingId: id,
         email,
-        film: data.film,
-        viewing: data.viewing,
-        seats: data.seats,
-        counts: data.counts,
-        totalPrice: data.totalPrice,
-        lounges: data.lounges
-      })
-    });
+        ...data
+      });
 
-    console.log('Bokning skapad:', {
-      bookingId: id,
-      email,
-      ...data
-    });
+      // Visa success message - komponenten uppdateras automatiskt med bookingId
+      alert(`✅ Bokning bekräftad! Bokningsnummer: ${id}\n\nBokningsbekräftelse skickad till: ${email}`);
+    } catch (error) {
+      console.error('❌ Fel vid sending av bokning:', error);
+      alert('Fel vid sending av bokning: ' + error);
+    }
   };
 
   // hantera inlämning av gäst bokningar

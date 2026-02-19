@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import '../CSS/booking-styles.css';
+import type { Movie } from '../interfaces/Movie';
 
 // Price per ticket category
 const PRICES = {
@@ -9,11 +10,33 @@ const PRICES = {
   child: 80
 };
 
-// Stora Salongen layout
-const SALONG_LAYOUT = {
-  name: "Stora Salongen",
-  seatsPerRow: [8, 9, 10, 10, 10, 10, 12, 12]
+// Salong configurations
+const SALONGER = {
+  'Stora salongen': {
+    name: "Stora salongen",
+    seatsPerRow: [8, 9, 10, 10, 10, 10, 12, 12]
+  },
+  'Lilla salongen': {
+    name: "Lilla salongen",
+    seatsPerRow: [6, 8, 9, 10, 10, 12]
+  }
 };
+
+interface Viewing {
+  id: number;
+  movie: number;
+  lounge: string;
+  start_time: string;
+}
+
+interface BookingData {
+  film: string;
+  viewing: string;
+  seats: string[];
+  counts: TicketCounts;
+  totalPrice: number;
+  lounges: string;
+}
 
 interface TicketCounts {
   adult: number;
@@ -24,7 +47,7 @@ interface TicketCounts {
 interface SeatProps {
   row: number;
   col: number;
-  type: 'available' | 'vip' | 'elder';
+  type: 'available' | 'vip' | 'elder'; // ????
   isSelected: boolean;
   isBooked: boolean;
   onClick: () => void;
@@ -54,8 +77,14 @@ const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
 function BookingPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const film = searchParams.get('movie') || 'Okänd film';
+  const movieId = searchParams.get('movieId') || '';
   const showtime = searchParams.get('showtime');
+  
+  // State for data
+  const [filmTitle, setFilmTitle] = useState<string>('Laddar...');
+  const [currentLounge, setCurrentLounge] = useState<string>('Stora salongen');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [counts, setCounts] = useState<TicketCounts>({
     adult: 0,
@@ -64,6 +93,81 @@ function BookingPage() {
   });
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [bookedSeats, setBookedSeats] = useState<Set<string>>(new Set());
+
+  // Hämta filminformation från databasen
+  useEffect(() => {
+    const fetchMovieData = async () => {
+      try {
+        setLoading(true);
+        // Hämta filminformation
+        const movieResponse = await fetch(`/api/movies/${movieId}`);
+        if (!movieResponse.ok) throw new Error('Kunde inte hämta filmdata');
+        
+        const movieData = await movieResponse.json();
+        // SQLQueryOne returnerar ett objekt, inte en array
+        const movieTitle = movieData.movies_raw?.Title || 'Okänd film';
+        setFilmTitle(movieTitle);
+
+        // Hämta visnings- och salongsinformation
+        if (showtime) {
+          const viewingsResponse = await fetch('/api/viewings/all');
+          if (viewingsResponse.ok) {
+            const viewingsData = await viewingsResponse.json();
+            
+            // Hitta rätt visning baserat på film-ID och tid
+            const matching = viewingsData.find((v: any) => {
+              const match = v.movie === parseInt(movieId) && v.start_time === showtime;
+              return match;
+            });
+            
+            if (matching && matching.lounge) {
+              setCurrentLounge(matching.lounge);
+              
+              // Hämta bokade platser för denna visning
+              try {
+                const bookedResponse = await fetch(`/api/booked-seats/${matching.id}`);
+                if (bookedResponse.ok) {
+                  let bookedData = await bookedResponse.json();
+                  
+                  // RestResult.Parse kan returnera data på olika sätt
+                  // Hantera både direkta arrays och wrappade objekter
+                   if (bookedData && typeof bookedData === 'object') {
+                    // Om det är ett objekt kan det vara wrapt, försök att hitta arrayen
+                    if (Array.isArray(bookedData.data)) {
+                      bookedData = bookedData.data;
+                    }
+                  }
+                  
+                  const bookedSeatsArray = (Array.isArray(bookedData) ? bookedData : []);
+                  
+                  const bookedSeatsSet = new Set<string>(
+                    bookedSeatsArray.map((item: any) => {
+                      // Sätena kan returneras som {seat: "5-3"} eller bara strängen "5-3"
+                      const seat = typeof item === 'string' ? item : item.seat;
+                      return seat;
+                    })
+                  );
+                  setBookedSeats(bookedSeatsSet);
+                }
+              } catch (bookedErr) {
+                // Det är ok om detta misslyckas
+              }
+            }
+          }
+        }
+        setError(null);
+      } catch (err) {
+        console.error('Fel vid hämtning av data:', err);
+        setError('Kunde inte ladda filminformation');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (movieId) {
+      fetchMovieData();
+    }
+  }, [movieId, showtime]);
 
   // Format price to "123,00 kr"
   const formatPrice = (value: number): string => {
@@ -127,12 +231,12 @@ function BookingPage() {
       (counts.child * PRICES.child);
 
     const bookingData = {
-      film,
+      film: filmTitle,
       viewing: showtime,
       seats: selectedSeats,
       counts,
       totalPrice,
-      lounges: SALONG_LAYOUT.name
+      lounges: currentLounge
     };
     //sparar användarens data av bokningen
     sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
@@ -147,10 +251,20 @@ function BookingPage() {
 
   return (
     <>
+      {loading ? (
+        <div className="hero">
+          <p>Laddar filminformation...</p>
+        </div>
+      ) : error ? (
+        <div className="hero">
+          <p style={{ color: 'red' }}>{error}</p>
+        </div>
+      ) : (
+      <>
       {/* Ticket selector + summary */}
       <section className="hero">
-        <h2>Boka biljetter för: <span id="filmTitle">{film}</span></h2>
-        <p>Välj antal biljetter och platser.</p>
+        <h2>Boka biljetter för: <span id="filmTitle">{filmTitle}</span></h2>
+        <p>Välj antal biljetter och platser i {currentLounge}.</p>
         <div className="ticket-layout">
           {/* Panel: Select number of tickets */}
           <div className="ticket-panel">
@@ -277,7 +391,7 @@ function BookingPage() {
           id="seats"
           className="seats-grid"
         >
-          {SALONG_LAYOUT.seatsPerRow.map((numSeats, index) => {
+          {(SALONGER[currentLounge as keyof typeof SALONGER]?.seatsPerRow || SALONGER['Stora salongen'].seatsPerRow).map((numSeats: number, index: number) => {
             const row = index + 1;
             return (
               <div key={`row-${row}`} className="seat-row">
@@ -316,6 +430,8 @@ function BookingPage() {
           Bekräfta bokning
         </button>
       </section>
+      </>
+      )}
     </>
   );
 };

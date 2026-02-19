@@ -87,8 +87,21 @@ public static class RestApi
         // --- Lägg till viewings-specialroute här ---
         App.MapGet("/api/viewings/all", (HttpContext context) =>
         {
-            var sql = "SELECT movie, start_time FROM viewings";
+            // Extrahera bara tidssdelen från start_time (HH:MM:SS) och join med lounges för att få namn
+            var sql = "SELECT v.id, v.movie, l.name as lounge, TIME_FORMAT(v.start_time, '%H:%i:%s') as start_time FROM viewings v JOIN lounges l ON v.lounge = l.id";
             var data = SQLQuery(sql, null, context);
+            System.Console.WriteLine($"=== Alla visningar från DB ===");
+            System.Console.WriteLine(JSON.Stringify(data));
+            return RestResult.Parse(context, data);
+        });
+
+        // --- Hämta bokade platser för en visning ---
+        App.MapGet("/api/booked-seats/{viewingId}", (HttpContext context, string viewingId) =>
+        {
+            System.Console.WriteLine($"=== Hämtar bokade platser för visning {viewingId} ===");
+            var sql = "SELECT CONCAT(s.seatRow, '-', s.number) as seat FROM bookingSeats bs JOIN bookings b ON bs.booking = b.id JOIN seats s ON bs.seat = s.id WHERE b.viewing = @viewingId AND b.status = 'Confirmed'";
+            var data = SQLQuery(sql, new { viewingId }, context);
+            System.Console.WriteLine($"Bokade platser från DB: {JSON.Stringify(data)}");
             return RestResult.Parse(context, data);
         });
     }

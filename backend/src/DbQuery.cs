@@ -214,7 +214,9 @@ public static class DbQuery
                 ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
                 ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
-                ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
+                ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/booked-seats/*', 'true', 'Allowing all to visit the /api/booked-seats/{viewingId}'),
+                ('visitor, user, admin', 'POST', 'allow', '/api/customBooking', 'true', 'Allowing all to create a booking with custom route');
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
