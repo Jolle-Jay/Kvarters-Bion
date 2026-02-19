@@ -52,34 +52,6 @@ export default function StartPage() {
       case "Approved":
         return "Barntillåten";
 
-<<<<<<< HEAD
-        //map movie and add al the values wished to execute
-        return <main>
-          <section className='hero'>
-            <div className='carousel'>
-              <div className="carousel-track">
-                <div className="group">
-                  {movies && movies.map(({ Poster }) => <img src={Poster} alt="poster of" />)}
-                </div>
-              </div>
-            </div>
-
-            <div className="hero-sub">
-              <p>Premiärer • Klassiker • IMAX-känsla</p>
-              <span className='stars'>★ ★ ★ ★ ★</span>
-            </div>
-          </section>
-          <div className='filter'>
-
-          </div>
-          <div className="movie-list">
-            {movies && movies.map(({ Title, id, Poster }) => <article key={id} className="movie-card">
-              <h3>{Title}</h3>
-              <img src={Poster} alt="poster of" />
-            </article>)}
-          </div>;
-        </main>;
-=======
     case "TV-Y7":
     case "PG":
       return "7+";
@@ -96,7 +68,6 @@ export default function StartPage() {
     default:
       return "Ingen åldersgräns";
   }
->>>>>>> dev
     };
 
     // Genre filtering only
