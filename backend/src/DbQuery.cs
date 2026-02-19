@@ -852,15 +852,23 @@ public static class DbQuery
       // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
       else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
       {
-        try
-        {
-          obj[key] = JSON.Parse(strValue);
-        }
-        catch
-        {
-          // If parsing fails, keep the original value and try to convert to number
-          obj[key] = strValue.TryToNum();
-        }
+        // Special case: Don't parse 'data' column from sessions - keep as string
+                if (key == "data")
+                {
+                    obj[key] = strValue;
+                }
+                else
+                {
+                    try
+                    {
+                        obj[key] = JSON.Parse(strValue);
+                    }
+                    catch
+                    {
+                        // If parsing fails, keep the original value and try to convert to number
+                        obj[key] = strValue.TryToNum();
+                    }
+                }
       }
       else
       {
