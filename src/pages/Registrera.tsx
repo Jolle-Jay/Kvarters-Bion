@@ -57,7 +57,7 @@ export default function RegistreraPage() {
         // try = frsök göra detta om mysslickas hoppa till catch
         try {
             // vänta på svar från backend skicka till /api/
-            const response = await fetch('/api/users', {
+            const response = await fetch('/api/user', {
                 method: 'POST',
                 //jag skickar JSON format som ett brev
                 headers: { 'Content-Type': 'application/json' },

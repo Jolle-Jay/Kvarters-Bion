@@ -41,7 +41,7 @@ export default function Header() {
         <Link className="nav-item" to="/lilla-salongen">Lilla Salongen</Link>
         <Link className="nav-item" to="/stora-salongen">Stora Salongen</Link>
 
-        <Link className="nav-profile" to="/profile">
+        <Link className="nav-profile" to="/login">
           <img
             src="/images/profile-gold.svg"
             alt="Profil"
