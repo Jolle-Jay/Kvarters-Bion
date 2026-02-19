@@ -28,38 +28,7 @@ public static class DbQuery
         // Reset database if requested
         if (config.resetDb == true)
         {
-            var configPath = Path.Combine(
-                AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
-            );
-            var configJson = File.ReadAllText(configPath);
-            var config = JSON.Parse(configJson);
-
-            connectionString =
-                $"Server={config.host};Port={config.port};Database={config.database};" +
-                $"User={config.username};Password={config.password};";
-
-            var db = new MySqlConnection(connectionString);
-            db.Open();
-
-            // Reset database if requested
-            // if (config.resetDb == true)
-            // {
-            //     DropTables(db);
-            // }
-
-            // Create tables if they don't exist
-            if (config.createTablesIfNotExist == true)
-            {
-                CreateTablesIfNotExist(db);
-            }
-
-            // Seed data if tables are empty
-            if (config.seedDataIfEmpty == true)
-            {
-                SeedDataIfEmpty(db);
-            }
-
-            db.Close();
+            DropTables(db);
         }
 
         // Create tables if they don't exist
@@ -169,7 +138,7 @@ public static class DbQuery
                 firstName VARCHAR(255) NOT NULL,
                 lastName VARCHAR(255),
                 created DATETIME DEFAULT (CURDATE()) NOT NULL,
-                role VARCHAR(50) NOT NULL DEFAULT 'users',
+                role VARCHAR(50) NOT NULL DEFAULT 'user',
                 password VARCHAR(255) NOT NULL
             );
 
@@ -237,15 +206,15 @@ public static class DbQuery
             var aclData = @"
                 INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
                 ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
-                ('visitor,user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
+                ('visitor, user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
                 ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
-                ('visitor, user,admin', '', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
-                ('visitor,user,admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
-                ('admin', '', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
-                ('admin', '', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
-                ('admin', '', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
-                ('visitor,user,admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
-                ('visitor, user,admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
+                ('visitor, user, admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
+                ('visitor, user, admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
+                ('admin', '*', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
+                ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
+                ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
@@ -260,7 +229,8 @@ public static class DbQuery
                 INSERT INTO users (created, email, firstName, lastName, role, password) VALUES
                 ('2024-04-02', 'thomas@nodehill.com', 'Thomas', 'Frank', 'admin', '$2a$13$IahRVtN2pxc1Ne1NzJUPpOQO5JCtDZvXpSF.IF8uW85S6VoZKCwZq'),
                 ('2024-04-02', 'olle@nodehill.com', 'Olle', 'Olofsson', 'user', '$2a$13$O2Gs3FME3oA1DAzwE0FkOuMAOOAgRyuvNQq937.cl7D.xq0IjgzN.'),
-                ('2024-04-02', 'maria@nodehill.com', 'Maria', 'Mårtensson', 'user', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS');
+                ('2024-04-02', 'maria@nodehill.com', 'Maria', 'MÃ¥rtensson', 'user', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS'),
+                ('2026-02-17', 'davidpuscas@live.se', 'David', 'Puscas', 'user', '$2a$13$IimwlKfAZFbDq8ELStMuN.4vnocpMUTLMLSp3PIdOC9f6OMwfrHwS');
             ";
             command.CommandText = usersData;
             command.ExecuteNonQuery();
@@ -299,7 +269,7 @@ public static class DbQuery
                 catch (Exception ex)
                 {
                     Console.WriteLine($"JSON validation failed for file {file}: {ex.Message}");
-                    continue; // hoppa över ogiltiga JSON-filer
+                    continue; // hoppa Ã¶ver ogiltiga JSON-filer
                 }
 
                 using var cmd = db2.CreateCommand();
