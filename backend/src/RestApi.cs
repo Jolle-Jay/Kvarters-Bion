@@ -10,30 +10,32 @@ public static class RestApi
             HttpContext context, string table, JsonElement bodyJson
         ) =>
 
-        {
-            if (table == "customBooking")
+
+
             {
-                return vadDuVill.HandleCustomBooking(context, bodyJson);
-            }
-            var body = JSON.Parse(bodyJson.ToString());
-            body.Delete("id");
-            var parsed = ReqBodyParse(table, body);
-            var columns = parsed.insertColumns;
-            var values = parsed.insertValues;
-            var sql = $"INSERT INTO {table}({columns}) VALUES({values})";
-            var result = SQLQueryOne(sql, parsed.body, context);
-            if (!result.HasKey("error"))
-            {
-                // Get the insert id and add to our result
-                result.insertId = SQLQueryOne(
-                    @$"SELECT id AS __insertId 
+                if (table == "customBooking")
+                {
+                    return vadDuVill.HandleCustomBooking(context, bodyJson);
+                }
+                var body = JSON.Parse(bodyJson.ToString());
+                body.Delete("id");
+                var parsed = ReqBodyParse(table, body);
+                var columns = parsed.insertColumns;
+                var values = parsed.insertValues;
+                var sql = $"INSERT INTO {table}({columns}) VALUES({values})";
+                var result = SQLQueryOne(sql, parsed.body, context);
+                if (!result.HasKey("error"))
+                {
+                    // Get the insert id and add to our result
+                    result.insertId = SQLQueryOne(
+                        @$"SELECT id AS __insertId 
                        FROM {table} ORDER BY id DESC LIMIT 1"
-                ).__insertId;
-            }
-            return RestResult.Parse(context, result);
+                    ).__insertId;
+                }
+                return RestResult.Parse(context, result);
 
 
-        });
+            });
 
 
 
@@ -82,5 +84,14 @@ public static class RestApi
                 context
             ))
         );
+        // --- Lägg till viewings-specialroute här ---
+        App.MapGet("/api/viewings/all", (HttpContext context) =>
+        {
+            var sql = "SELECT movie, start_time FROM viewings";
+            var data = SQLQuery(sql, null, context);
+            return RestResult.Parse(context, data);
+        });
     }
+
+
 }

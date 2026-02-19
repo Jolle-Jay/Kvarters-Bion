@@ -4,13 +4,17 @@ export interface MovieJson {
   Title: string;
   Year: number;
   Rated: string;
+  Trailer: string;
   Released: string;
   Runtime: string;
   Director: string;
   Actors: string;
   Plot: string;
   Poster: string;
-  Genre: string[];
+  Genre: string;
+  Language: string;
+  imdbRating: string;
+  imdbVotes: string;
 }
 
 export interface MovieDB {

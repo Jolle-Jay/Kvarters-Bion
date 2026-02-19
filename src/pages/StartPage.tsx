@@ -1,56 +1,237 @@
-import App from '../App';
 import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import "../css/MovieCards.css";
 import "../css/Carousel.css";
 import "../css/Stars.css";
 
 export default function StartPage() {
 
-    const [movies, setMovies] = useState<Movie[] | null>(null);
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); // månader börjar på 0
+  const dd = String(today.getDate()).padStart(2, '0');
 
-    useEffect(() => {
-        (async () => {
-            setMovies(mapMovieArray(await (await fetch('/api/movies')).json()));
-        })();
-    }, []);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [movies, setMovies] = useState<Movie[] | null>(null);
+  const [selectedGenre, setSelectedGenre] = useState<string>('alla');
+  const [selectedAge, setSelectedAge] = useState<string>('alla');
+  const [viewings, setViewings] = useState<{ movie: number; start_time: string; }[] | null>(null);
 
-    console.log(movies);
-    // scroll to top when the route changes
-    App();
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  // Fetch movies
+  useEffect(() => {
+    (async () => {
+      setMovies(mapMovieArray(await (await fetch('/api/movies')).json()));
+    })();
+  }, []);
 
-    //map movie and add al the values wished to execute
-    return <main>
-        <section className='hero'>
+  // Fetch viewings
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/viewings/all');
+        if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+        const viewingsData = await res.json();
+        console.log("Viewings fetched:", viewingsData); // <-- Felsökning
+        setViewings(viewingsData);
+      } catch (err) {
+        console.error("Error fetching viewings:", err);
+      }
+    })();
+  }, []);
+
+  // Scroll to top
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
+  const mapToSwedishAge = (rating: string) => {
+    switch (rating) {
+      case "G":
+      case "Approved":
+        return "Barntillåten";
+
+<<<<<<< HEAD
+        //map movie and add al the values wished to execute
+        return <main>
+          <section className='hero'>
             <div className='carousel'>
-                <div className="carousel-track">
-                    <div className="group">
-                        {movies && movies.map(({Poster }) => <img src={Poster} alt="poster of" />)}
-                    </div>
+              <div className="carousel-track">
+                <div className="group">
+                  {movies && movies.map(({ Poster }) => <img src={Poster} alt="poster of" />)}
                 </div>
+              </div>
             </div>
-        
+
             <div className="hero-sub">
-                <p>Premiärer • Klassiker • IMAX-känsla</p>
-                <span className='stars'>★ ★ ★ ★ ★</span>
+              <p>Premiärer • Klassiker • IMAX-känsla</p>
+              <span className='stars'>★ ★ ★ ★ ★</span>
             </div>
-        </section>
-        <div className='filter'>
+          </section>
+          <div className='filter'>
 
-        </div>
-        <div className="movie-list">
+          </div>
+          <div className="movie-list">
             {movies && movies.map(({ Title, id, Poster }) => <article key={id} className="movie-card">
-                <h3>{Title}</h3>
-                <img src={Poster} alt="poster of" />
+              <h3>{Title}</h3>
+              <img src={Poster} alt="poster of" />
             </article>)}
-        </div>;
-    </main>
-};
+          </div>;
+        </main>;
+=======
+    case "TV-Y7":
+    case "PG":
+      return "7+";
 
-StartPage.route = {
+    case "PG-13":
+      return "11+";
+
+    case "R":
+      return "15+";
+
+    case "N/A":
+      return "Ingen åldersgräns";
+
+    default:
+      return "Ingen åldersgräns";
+  }
+>>>>>>> dev
+    };
+
+    // Genre filtering only
+    const filteredMovies = movies
+      ? movies.filter(movie => {
+        // Dela upp genrerna i en array: "Horror, Sci-Fi" -> ["horror", "sci-fi"]
+        const genres = movie.Genre.split(',').map(g => g.trim().toLowerCase());
+
+        const matchGenre =
+          selectedGenre === 'alla' ||
+          genres.includes(selectedGenre.toLowerCase());
+
+        const matchAge =
+          selectedAge === "alla" ||
+          mapToSwedishAge(movie.Rated) === selectedAge;
+
+        const matchDate =
+          !selectedDate || // om inget datum är valt -> visa alla
+          viewings?.some(v => {
+            if (!v.start_time) return false;
+            const viewingDate = v.start_time.substring(0, 10);
+            return v.movie === movie.id && viewingDate === selectedDate;
+          });
+
+        return matchGenre && matchAge && matchDate;
+      }) : [];
+
+    const ageOptions = movies
+      ? ['alla', ...Array.from(new Set(movies.map(m => mapToSwedishAge(m.Rated))))] : ['alla'];
+
+
+
+    return (
+      <main>
+        {/* HERO + CAROUSEL */}
+        <section className="startpage-hero">
+
+          <div className="carousel">
+            <div className="carousel-track">
+              <div className="group">
+                {movies && movies.map(({ Poster }) => <img src={Poster} alt="poster of" />)}
+              </div>
+
+              {/* Duplicate group for infinite scroll animation */}
+              <div className="group" aria-hidden>
+                {movies && movies.map(({ Poster }) => <img src={Poster} alt="poster of" />)}
+              </div>
+            </div>
+          </div>
+
+          <h2>Upplev film på riktigt</h2>
+          <div className="hero-sub">
+            <p>Premiärer • Klassiker • IMAX-känsla</p>
+            <span className="stars">★ ★ ★ ★ ★</span>
+          </div>
+        </section>
+
+        {/* FILTER */}
+        <section className="filter">
+
+          {/* Genre */}
+          <div className="filter-item">
+            <h3>Filtrera genre</h3>
+            <select
+              className={`filter-dropdown ${selectedGenre !== 'alla' ? 'active' : ''}`}
+              value={selectedGenre}
+              onChange={(e) => setSelectedGenre(e.target.value)}
+            >
+
+              <option value="alla">Alla</option>
+              <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Drama">Drama</option>
+              <option value="Animation">Animation</option>
+              <option value="Thriller">Thriller</option>
+              <option value="Action">Action</option>
+              <option value="Romance">Romance</option>
+              <option value="Adventure">Adventure</option>
+            </select>
+          </div>
+
+          {/* Datum */}
+          <div className="filter-item">
+            <h3>Välj datum</h3>
+            <input
+              type="date"
+              className={`filter-date ${selectedDate ? 'active' : ''}`}
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
+          </div>
+
+          {/* Åldersgräns */}
+          <div className="filter-item">
+            <h3>Åldersgräns</h3>
+            <select
+              className={`filter-dropdown ${selectedAge !== 'alla' ? 'active' : ''}`}
+              value={selectedAge}
+              onChange={(e) => setSelectedAge(e.target.value)}
+            >
+              {ageOptions.map(age => (
+                <option key={age} value={age}>
+                  {age === 'alla' ? 'Alla åldrar' : age}
+                </option>
+              ))}
+            </select>
+          </div>
+
+        </section>
+
+        {/* MOVIES */}
+        <div className="movies">
+          {filteredMovies.map(movie => (
+            <Link
+              key={movie.id}
+              to={`/movie/${movie.id}`}
+              className="movie-card"
+            >
+              <div className="poster">
+                <img
+                  src={movie.Poster}
+                  alt={movie.Title}
+                />
+              </div>
+
+              <h3>{movie.Title}</h3>
+              <p>{movie.Genre}</p>
+            </Link>
+          ))}
+        </div>
+      </main>
+    );
+  };
+
+  StartPage.route = {
     path: '/',
     menuLabel: 'StartPage',
     index: 1
-};
+  };

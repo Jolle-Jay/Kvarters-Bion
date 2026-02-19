@@ -3,11 +3,11 @@ Globals = Obj(new
 {
     debugOn = true,
     detailedAclDebug = false,
-    aclOn = false,
-    isSpa = false,  // ← MUST be false
-    port = args.Length > 0 ? args[0] : "5000",  // ← Add default
+    aclOn = true,
+    isSpa = true,
+    port = args[0],
     serverName = "Minimal API Backend",
-    frontendPath = args.Length > 1 ? args[1] : "../frontend/dist",  // ← Add default
+    frontendPath = args[1],
     sessionLifeTimeHours = 2
 });
 

@@ -26,10 +26,41 @@ public static class DbQuery
         db.Open();
 
         // Reset database if requested
-        // if (config.resetDb == true)
-        // {
-        //     DropTables(db);
-        // }
+        if (config.resetDb == true)
+        {
+            var configPath = Path.Combine(
+                AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
+            );
+            var configJson = File.ReadAllText(configPath);
+            var config = JSON.Parse(configJson);
+
+            connectionString =
+                $"Server={config.host};Port={config.port};Database={config.database};" +
+                $"User={config.username};Password={config.password};";
+
+            var db = new MySqlConnection(connectionString);
+            db.Open();
+
+            // Reset database if requested
+            // if (config.resetDb == true)
+            // {
+            //     DropTables(db);
+            // }
+
+            // Create tables if they don't exist
+            if (config.createTablesIfNotExist == true)
+            {
+                CreateTablesIfNotExist(db);
+            }
+
+            // Seed data if tables are empty
+            if (config.seedDataIfEmpty == true)
+            {
+                SeedDataIfEmpty(db);
+            }
+
+            db.Close();
+        }
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
@@ -208,12 +239,13 @@ public static class DbQuery
                 ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
                 ('visitor,user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
                 ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
-                ('visitor, user,admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
+                ('visitor, user,admin', '', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
                 ('visitor,user,admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
-                ('admin', '*', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
-                ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
-                ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
-                ('visitor,user,admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies');
+                ('admin', '', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
+                ('admin', '', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
+                ('admin', '', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
+                ('visitor,user,admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
+                ('visitor, user,admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
@@ -614,154 +646,154 @@ public static class DbQuery
             var seatsData = @"
                 INSERT INTO seats (lounge, seatRow, number) VALUES
                 (1, '1', 1),
-(1, '1', 2),
-(1, '1', 3),
-(1, '1', 4),
-(1, '1', 5),
-(1, '1', 6),
-(1, '1', 7),
-(1, '1', 8),
+                (1, '1', 2),
+                (1, '1', 3),
+                (1, '1', 4),
+                (1, '1', 5),
+                (1, '1', 6),
+                (1, '1', 7),
+                (1, '1', 8),
 
-(1, '2', 1),
-(1, '2', 2),
-(1, '2', 3),
-(1, '2', 4),
-(1, '2', 5),
-(1, '2', 6),
-(1, '2', 7),
-(1, '2', 8),
-(1, '2', 9),
+                (1, '2', 1),
+                (1, '2', 2),
+                (1, '2', 3),
+                (1, '2', 4),
+                (1, '2', 5),
+                (1, '2', 6),
+                (1, '2', 7),
+                (1, '2', 8),
+                (1, '2', 9),
 
-(1, '3', 1),
-(1, '3', 2),
-(1, '3', 3),
-(1, '3', 4),
-(1, '3', 5),
-(1, '3', 6),
-(1, '3', 7),
-(1, '3', 8),
-(1, '3', 9),
-(1, '3', 10),
+                (1, '3', 1),
+                (1, '3', 2),
+                (1, '3', 3),
+                (1, '3', 4),
+                (1, '3', 5),
+                (1, '3', 6),
+                (1, '3', 7),
+                (1, '3', 8),
+                (1, '3', 9),
+                (1, '3', 10),
 
-(1, '4', 1),
-(1, '4', 2),
-(1, '4', 3),
-(1, '4', 4),
-(1, '4', 5),
-(1, '4', 6),
-(1, '4', 7),
-(1, '4', 8),
-(1, '4', 9),
-(1, '4', 10),
+                (1, '4', 1),
+                (1, '4', 2),
+                (1, '4', 3),
+                (1, '4', 4),
+                (1, '4', 5),
+                (1, '4', 6),
+                (1, '4', 7),
+                (1, '4', 8),
+                (1, '4', 9),
+                (1, '4', 10),
 
-(1, '5', 1),
-(1, '5', 2),
-(1, '5', 3),
-(1, '5', 4),
-(1, '5', 5),
-(1, '5', 6),
-(1, '5', 7),
-(1, '5', 8),
-(1, '5', 9),
-(1, '5', 10),
+                (1, '5', 1),
+                (1, '5', 2),
+                (1, '5', 3),
+                (1, '5', 4),
+                (1, '5', 5),
+                (1, '5', 6),
+                (1, '5', 7),
+                (1, '5', 8),
+                (1, '5', 9),
+                (1, '5', 10),
 
-(1, '6', 1),
-(1, '6', 2),
-(1, '6', 3),
-(1, '6', 4),
-(1, '6', 5),
-(1, '6', 6),
-(1, '6', 7),
-(1, '6', 8),
-(1, '6', 9),
-(1, '6', 10),
+                (1, '6', 1),
+                (1, '6', 2),
+                (1, '6', 3),
+                (1, '6', 4),
+                (1, '6', 5),
+                (1, '6', 6),
+                (1, '6', 7),
+                (1, '6', 8),
+                (1, '6', 9),
+                (1, '6', 10),
 
-(1, '7', 1),
-(1, '7', 2),
-(1, '7', 3),
-(1, '7', 4),
-(1, '7', 5),
-(1, '7', 6),
-(1, '7', 7),
-(1, '7', 8),
-(1, '7', 9),
-(1, '7', 10),
-(1, '7', 11),
-(1, '7', 12),
+                (1, '7', 1),
+                (1, '7', 2),
+                (1, '7', 3),
+                (1, '7', 4),
+                (1, '7', 5),
+                (1, '7', 6),
+                (1, '7', 7),
+                (1, '7', 8),
+                (1, '7', 9),
+                (1, '7', 10),
+                (1, '7', 11),
+                (1, '7', 12),
 
-(1, '8', 1),
-(1, '8', 2),
-(1, '8', 3),
-(1, '8', 4),
-(1, '8', 5),
-(1, '8', 6),
-(1, '8', 7),
-(1, '8', 8),
-(1, '8', 9),
-(1, '8', 10),
-(1, '8', 11),
-(1, '8', 12),
+                (1, '8', 1),
+                (1, '8', 2),
+                (1, '8', 3),
+                (1, '8', 4),
+                (1, '8', 5),
+                (1, '8', 6),
+                (1, '8', 7),
+                (1, '8', 8),
+                (1, '8', 9),
+                (1, '8', 10),
+                (1, '8', 11),
+                (1, '8', 12),
 
-(2, '1', 1),
-(2, '1', 2),
-(2, '1', 3),
-(2, '1', 4),
-(2, '1', 5),
-(2, '1', 6),
+                (2, '1', 1),
+                (2, '1', 2),
+                (2, '1', 3),
+                (2, '1', 4),
+                (2, '1', 5),
+                (2, '1', 6),
 
-(2, '2', 1),
-(2, '2', 2),
-(2, '2', 3),
-(2, '2', 4),
-(2, '2', 5),
-(2, '2', 6),
-(2, '2', 7),
-(2, '2', 8),
+                (2, '2', 1),
+                (2, '2', 2),
+                (2, '2', 3),
+                (2, '2', 4),
+                (2, '2', 5),
+                (2, '2', 6),
+                (2, '2', 7),
+                (2, '2', 8),
 
-(2, '3', 1),
-(2, '3', 2),
-(2, '3', 3),
-(2, '3', 4),
-(2, '3', 5),
-(2, '3', 6),
-(2, '3', 7),
-(2, '3', 8),
-(2, '3', 9),
+                (2, '3', 1),
+                (2, '3', 2),
+                (2, '3', 3),
+                (2, '3', 4),
+                (2, '3', 5),
+                (2, '3', 6),
+                (2, '3', 7),
+                (2, '3', 8),
+                (2, '3', 9),
 
-(2, '4', 1),
-(2, '4', 2),
-(2, '4', 3),
-(2, '4', 4),
-(2, '4', 5),
-(2, '4', 6),
-(2, '4', 7),
-(2, '4', 8),
-(2, '4', 9),
-(2, '4', 10),
+                (2, '4', 1),
+                (2, '4', 2),
+                (2, '4', 3),
+                (2, '4', 4),
+                (2, '4', 5),
+                (2, '4', 6),
+                (2, '4', 7),
+                (2, '4', 8),
+                (2, '4', 9),
+                (2, '4', 10),
 
-(2, '5', 1),
-(2, '5', 2),
-(2, '5', 3),
-(2, '5', 4),
-(2, '5', 5),
-(2, '5', 6),
-(2, '5', 7),
-(2, '5', 8),
-(2, '5', 9),
-(2, '5', 10),
+                (2, '5', 1),
+                (2, '5', 2),
+                (2, '5', 3),
+                (2, '5', 4),
+                (2, '5', 5),
+                (2, '5', 6),
+                (2, '5', 7),
+                (2, '5', 8),
+                (2, '5', 9),
+                (2, '5', 10),
 
-(2, '6', 1),
-(2, '6', 2),
-(2, '6', 3),
-(2, '6', 4),
-(2, '6', 5),
-(2, '6', 6),
-(2, '6', 7),
-(2, '6', 8),
-(2, '6', 9),
-(2, '6', 10),
-(2, '6', 11),
-(2, '6', 12);
+                (2, '6', 1),
+                (2, '6', 2),
+                (2, '6', 3),
+                (2, '6', 4),
+                (2, '6', 5),
+                (2, '6', 6),
+                (2, '6', 7),
+                (2, '6', 8),
+                (2, '6', 9),
+                (2, '6', 10),
+                (2, '6', 11),
+                (2, '6', 12);
             ";
             command.CommandText = seatsData;
             command.ExecuteNonQuery();

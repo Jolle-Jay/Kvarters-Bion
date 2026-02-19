@@ -1,104 +1,162 @@
-import type { SortOption } from '../utils/moviePageHelpers';
-import { useLoaderData } from 'react-router-dom';
-import { Row, Col, Form } from 'react-bootstrap';
-import { useStateContext } from '../utils/useStateObject';
-import Select from '../parts/Select';
-import MovieCard from '../parts/MovieCard';
-import movieLoader from '../utils/moviesLoader';
-import { getHelpers } from '../utils/moviePageHelpers';
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import type { Movie } from "../interfaces/Movie";
+import { mapMovieArray } from "../interfaces/Movie";
+import "../css/MoviePage.css";
+
+export default function MoviePage() {
+  const { id } = useParams(); // hämtar id från URL
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
 
-moviePage.route = {
-  path: '/',
-  menuLabel: 'movie',
-  index: 1,
-  parent: '/',
-  loader: movieLoader
+  useEffect(() => {
+    (async () => {
+      const data = mapMovieArray(
+        await (await fetch("/api/movies")).json()
+      );
+
+      const foundMovie = data.find(m => m.id.toString() === id);
+      setMovie(foundMovie || null);
+    })();
+  }, [id]);
+
+  if (!movie) return <p>Laddar film...</p>;
+
+  const getEmbedUrl = (url: string) => {
+  if (!url) return "";
+
+  const videoIdMatch = url.match(
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/
+  );
+
+  return videoIdMatch
+    ? `https://www.youtube.com/embed/${videoIdMatch[1]}`
+    : url;
 };
 
-export default function moviePage() {
-  
-  let {
-    movies,
-    Genre,
-    sortOptions,
-    sortGenres
-  } = getHelpers(useLoaderData().movie);
-  
-  // get state object and setter from the outlet context
-  const [
-    { categoryChoice, sortChoice, bwImages },
-    setState
-  ] = useStateContext();
+console.log(movie?.Trailer);
 
-  // get the chosen category without the Movie count part
-  const category = categoryChoice.split(' (')[0];
-  // get the key and order to from the chosen sort option
-  const { key: sortKey, order: sortOrder } =
-  sortOptions.find(x => x.Genre === sortChoice) ?? {key:'Title', order: 1};
-    
+  return (
+    <section className="movie-detail">
 
-  return <>
-    <Row>
-      <Col>
-        <h2 className="text-primary">Filmer</h2>
-        <p>
-          Alla våra filmer 
-        </p>
-      </Col>
-    </Row>
-    <Row>
-      <Col className="px-4 pt-1 pb-4">
-        <Row className="bg-primary-subtle pt-3 rounded">
-          <Col md="4">
-            <label className="d-block">
-              <div className="d-none d-md-block">
-                Color images:
+      {/* TRAILER (tillfällig placeholder om du ej har trailer i DB) */}
+      <div className="movie-trailer">
+        <iframe
+          src={getEmbedUrl(movie.Trailer)}
+          title={`${movie.Title} Trailer`}
+          allowFullScreen
+/>
+      </div>
+
+      {/* POSTER + SHOWTIMES */}
+      <div className="movie-poster-column">
+        <img src={movie.Poster} alt={movie.Title} />
+
+        <div className="movie-times">
+          <h3>Visningstider</h3>
+
+          {/* TILLFÄLLIGT statiska tider tills du har showtimes i DB */}
+          <div className="showtime-date">
+            <h4>Idag</h4>
+
+            <div className="showtime-card">
+              <div className="showtime-poster">
+                <img src={movie.Poster} alt={movie.Title} />
               </div>
-              <div
-                className={'form-switch-text position-absolute' +
-                  ' d-md-none px-5' + (bwImages ? '' : ' text-white')}
+
+              <div className="showtime-info">
+                <div className="showtime-time">19:00</div>
+                <div className="showtime-location">Stora Salongen</div>
+
+                <div className="showtime-meta">
+                  <span className="meta-tag">{movie.Genre}</span>
+                  <span className="meta-tag">{movie.Runtime}</span>
+                  <span className="meta-tag">
+                    {movie.id}
+                  </span>
+                </div>
+              </div>
+
+              <Link to={`/booking/${movie.id}`} className="book-btn">
+                Boka biljett
+              </Link>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* MOVIE INFO */}
+      <div className="movie-info">
+        <h1>{movie.Title}</h1>
+
+        <div className="movie-meta">
+          <p><strong>Genre:</strong> {movie.Genre}</p>
+          <p><strong>Längd:</strong> {movie.Runtime}</p>
+          <p><strong>Årtal:</strong> {movie.Year}</p>
+          <p><strong>Åldersgräns:</strong> {movie.Rated}</p>
+        </div>
+
+        <div className="movie-description">
+          <div className="dropdown-section">
+
+            <div
+              className="dropdown-header"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <div className="description-text">
+                <h3>Om filmen</h3>
+                <p>{movie.Plot}</p>
+              </div>
+
+              <span
+                className={`dropdown-menu ${dropdownOpen ? "open" : ""
+                  }`}
               >
-                B/W Images
-                <span className="float-end">Color Images</span>
+                ⋯
+              </span>
+            </div>
+
+            <div
+              className={`dropdown-content ${dropdownOpen ? "show" : ""
+                }`}
+            >
+              <div className="info-row">
+                <span className="info-label">Regissör:</span>
+                <span className="info-value">{movie.Director}</span>
               </div>
-              <Form.Switch
-                className="mt-2 mb-4 mb-md-2"
-                defaultChecked={!bwImages}
-                onChange={e => setState('bwImages', !e.target.checked)}
-              />
-            </label>
-          </Col>
-          <Col md="4">
-            <Select
-              label="Genger"
-              value={categoryChoice}
-              changeHandler={(x: string) => setState('categoryChoice', x)}
-              options={Genre}
-            />
-          </Col>
-          <Col md="4">
-            <Select
-              label="Sortera efter"
-              value={sortChoice}
-              changeHandler={(x: string) => setState('sortChoice', x)}
-              options={sortGenres}
-            />
-          </Col>
-        </Row>
-      </Col >
-    </Row >
-    <Row className="mt-1 mb-n3">
-      {movies
-        // filter by the chosen category
-        .filter(x => category === 'All' || x.Genre.includes(category))
-        // sort by the chosen choice for sorting
-        .sort((a, b) => (a[sortKey] > b[sortKey] ? 1 : -1) * sortOrder)
-        // map to Movie cards
-        .map(Movies => <Col xs={12} lg={6} key={Movies.id}>
-          <MovieCard {...Movies} />
-        </Col>)
-      }
-    </Row>
-  </>;
+
+              <div className="info-row">
+                <span className="info-label">Skådespelare:</span>
+                <span className="info-value">{movie.Actors}</span>
+              </div>
+
+              <div className="info-row">
+                <span className="info-label">Språk:</span>
+                <span className="info-value">{movie.Language}</span>
+              </div>
+
+              <div className="info-row">
+                <span className="info-label">IMDb:</span>
+                <span className="info-value">
+                  ⭐ {movie.imdbRating} ({movie.imdbVotes} röster)
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+  );
+
+}
+
+MoviePage.route = {
+  path: "/movie/:id",
+  menuLabel: "Movie",
+  index: 2
 };
