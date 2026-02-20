@@ -14,7 +14,7 @@
 //     try
 //     {
 //       System.Console.WriteLine("=== STEP 1: Entered HandleCustomBooking ===");
-//       var user = Session.Get(context, "user");
+//        user = Sessvarion.Get(context, "user");
 //       var body = JSON.Parse(bodyJson.ToString());
 
 //       System.Console.WriteLine("=== STEP 2: Body received ===");
@@ -173,14 +173,17 @@ public static class vadDuVill
       System.Console.WriteLine("=== STEP 1: Entered HandleCustomBooking ===");
       var user = Session.Get(context, "user");
 
-      // Extract values directly from JsonElement (avoids circular reference)
+      // hämtar värdena individuellt som strängar och sen för in dem i variablerna
       string bookingReference = bodyJson.GetProperty("bookingId").GetString();
       string emailFromBody = bodyJson.GetProperty("email").GetString();
       string filmTitle = bodyJson.GetProperty("film").GetString();
       string viewingTime = bodyJson.GetProperty("viewing").GetString();
       string loungeName = bodyJson.GetProperty("lounges").GetString();
 
-      // Get seats array
+      // hämtar seats från bodyJson
+      // gör en lista av strängar till seatslist
+      //loopar igenom alla seatarray
+      // lägger till seat som en sträng i seatslist
       var seatsArray = bodyJson.GetProperty("seats");
       var seatsList = new List<string>();
       foreach (var seat in seatsArray.EnumerateArray())
@@ -188,7 +191,8 @@ public static class vadDuVill
         seatsList.Add(seat.GetString());
       }
 
-      // Get counts
+      // hämtar counts från BodyJson och gör det till countsobj
+      // så varje countobj som är adult, senior eller child säts in i variablen counts
       var countsObj = bodyJson.GetProperty("counts");
       var counts = new
       {
@@ -201,7 +205,8 @@ public static class vadDuVill
 
       string email;
       int? userID = null;
-
+      // om användaren inte är null så ska man hämta email från user som är sträng
+      //och Id från user som är id?=
       if (user != null)
       {
         email = (string)user["email"];
@@ -209,6 +214,7 @@ public static class vadDuVill
         System.Console.WriteLine("=== STEP 3: Logged in user: " + email + " ===");
       }
       else
+      // kollar om string emailfrom body är null om den inte är null hämtar den email från body
       {
         System.Console.WriteLine("=== STEP 3: Guest user ===");
         if (string.IsNullOrEmpty(emailFromBody))
@@ -219,7 +225,7 @@ public static class vadDuVill
         email = emailFromBody;
       }
 
-      // STEP 4: Find movie ID
+      // letar efter en film i databasen som titeln matchar filmTitle och hämtar tillbaka id
       System.Console.WriteLine("=== STEP 4: Finding movie ID ===");
       var movie = SQLQueryOne(
           "SELECT id FROM movies WHERE JSON_EXTRACT(movies_raw, '$.Title') = @filmTitle",
@@ -229,9 +235,10 @@ public static class vadDuVill
       {
         return RestResult.Parse(context, new { error = "Movie not found" });
       }
+      // vi hämtar id från movie och gör om värde till en int
       int movieId = (int)movie["id"];
 
-      // STEP 5: Find lounge ID
+      // letar efter en lounge i databasen och om det matchar så har vi ett loungeId
       System.Console.WriteLine("=== STEP 5: Finding lounge ID ===");
       var lounge = SQLQueryOne(
           "SELECT id FROM lounges WHERE name = @loungeName",
@@ -243,7 +250,7 @@ public static class vadDuVill
       }
       int loungeId = (int)lounge["id"];
 
-      // STEP 6: Find or create viewing
+      // vi har en viewing, och om detta stämmer så hänmtar vi en ny visning längre ner
       System.Console.WriteLine("=== STEP 6: Finding/creating viewing ===");
       var viewing = SQLQueryOne(
           @"SELECT * FROM viewings 
@@ -262,7 +269,7 @@ public static class vadDuVill
               VALUES (@movieId, @loungeId, @startTime)",
             new { movieId, loungeId, startTime = viewingTime }
         );
-
+        // eftersom det redan finns i databasen så hämtar vi tiderna, lounge och movie id från viewings
         viewing = SQLQueryOne(
             @"SELECT * FROM viewings 
               WHERE movie = @movieId 
@@ -275,7 +282,8 @@ public static class vadDuVill
       viewingId = (int)viewing["id"];
       System.Console.WriteLine("=== Using viewing ID: " + viewingId + " ===");
 
-      // STEP 7: Create booking
+      // när vi har kollat att allting stämmer med databasen då kan vi göra en bokning
+      // då gör vi en bokning med bookingqueries och createbooking från bookingqueries filen
       System.Console.WriteLine("=== STEP 7: Creating booking ===");
       var booking = BookingQueries.CreateBooking(
           bookingReference,
@@ -289,9 +297,10 @@ public static class vadDuVill
 
       // STEP 9: Create booking seats
       System.Console.WriteLine("=== STEP 9: Creating booking seats ===");
-
+      // skapar en bookning med sätena i logiken från createbookingseats
       BookingQueries.CreateBookingSeats(bookingId, seatsList, loungeName, counts);
 
+      // det är detta vi får i meddelandet till användaren efter vi har slutfört bokningen skickas till frontend
       System.Console.WriteLine("=== STEP 10: Success! ===");
       return RestResult.Parse(context, new
       {
@@ -307,6 +316,7 @@ public static class vadDuVill
     }
   }
 
+  // registrar API route custombooking och skickar vidare anropet till handlecustombooking när någon postar till API/custombooking
   public static void Start()
   {
     App.MapPost("/api/customBooking", (HttpContext context, JsonElement bodyJson) =>

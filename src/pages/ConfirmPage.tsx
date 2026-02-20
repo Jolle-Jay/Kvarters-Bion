@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/confirmStyles.css';
 
+// bestämma hur bookingData ska se ut så att TS kan kolla om rätt upgifter skickas med 
 interface BookingData {
   film: string;
   viewing: string;
@@ -16,19 +17,24 @@ interface BookingData {
 }
 
 function ConfirmationPage() {
+  // navigate för att komma till andra sidor i react appen
   const navigate = useNavigate();
+  // gör att booking id är en generic sträng och har tomt värde att börja med
   const [bookingId, setBookingId] = useState<string>('');
+  // gör att bookingdata är generic bookingdata eller null, börjas med att vara null
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [guestEmail, setGuestEmail] = useState('');
   const [showGuestForm, setShowGuestForm] = useState(false);
 
-  //kolla om användare är inloggad
+  // hämtar värdet från localstorage och kollar om strängen är TRUE FALSE/TRUE sparas i loggedIN och sen uppdateras setIsLoggedin
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
 
-    //spara användarens val i bookingPage genom getItem och sparar det i storedData
+    //bookingData och session storage är dem sparade valen av användaren i bookingPage
+    //det sparas sen i storedData
     const storedData = sessionStorage.getItem('bookingData');
     if (!storedData) {
       //ingen booking data, omdirigera tillbaka
@@ -66,23 +72,25 @@ function ConfirmationPage() {
     setBookingId(id);
 
 
-    // Add this debug
-    const payload = {
-      bookingId: id,
-      email,
-      film: data.film,
-      viewing: data.viewing,
-      seats: data.seats,
-      counts: data.counts,
-      totalPrice: data.totalPrice,
-      lounges: data.lounges
-    };
+    // const payload = {
+    //   bookingId: id,
+    //   email,
+    //   film: data.film,
+    //   viewing: data.viewing,
+    //   seats: data.seats,
+    //   counts: data.counts,
+    //   totalPrice: data.totalPrice,
+    //   lounges: data.lounges
+    // };
 
-    console.log('=== SENDING TO BACKEND ===');
-    console.log(payload);
-    console.log('=========================');
-    // TODO: Replace with actual API call to your C# backend
-    // Example:
+    // console.log('=== SENDING TO BACKEND ===');
+    // console.log(payload);
+    // console.log('=========================');
+
+    // skicka en POST request till api/custopmbooking
+    // await väntar på svar från backend om det är 200 eller tex 500 error
+    // 500 kan tex bero på att film inte hittades i databas eller annat
+    //gör om body till JSON format med all data 
     const response = await fetch('/api/customBooking', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -98,6 +106,7 @@ function ConfirmationPage() {
       })
     });
 
+    //användes för debugging
     console.log('Bokning skapad:', {
       bookingId: id,
       email,
