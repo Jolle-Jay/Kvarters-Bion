@@ -61,34 +61,47 @@ function BookingPage() {
   const navigate = useNavigate(); // use navigate to can navigate to the bookingpage URL
   const { id } = useParams(); // routen letar efter vilket id som är efter /booking
 
-  const [movie, setMovie] = useState<any>(null); // new
-  const [showtime, setShowtime] = useState('viewing'); //new
+  // gör att vi kan ändra till vilken film vi vill ha, sätter den till null i början
+  // any gör att den kan hålla vilken datatyp som helst för vi vet inte hur filmen datatyp ser ut ännu
+  const [movie, setMovie] = useState<any>(null);
+  // gör att våran showtime är viewing
+  const [showtime, setShowtime] = useState('viewing');
 
+  // hämtar definitionen ticket counts ovanför och ger dem alla värdet 0 till att börja med 
   const [counts, setCounts] = useState<TicketCounts>({
     adult: 0,
     senior: 0,
     child: 0
   });
+  // ([]) = startvärdet är en tom array
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  //  set som inehåller stärnger new set () = en Set datastruktur, liknar array fast med egna värden.
   const [bookedSeats, setBookedSeats] = useState<Set<string>>(new Set());
 
-  // Format price to "123,00 kr"
+  // tar emot ett nummer, returnerar en sträng
+  // tofixed 2 lägger till 2 decimaler och gör om . till ,
   const formatPrice = (value: number): string => {
     return `${value.toFixed(2).replace('.', ',')} kr`;
   };
 
 
-  // NEW
+
   useEffect(() => {
     const fetchMovie = async () => {
       try {
+        // hämtar data från servern (får tillbaka response objekt med JSON text )
         const response = await fetch(`/api/movies/${id}`);
+        // parsar texten från response till TS objekt
         const data = await response.json();
+        // sparar värdet i movie state
         setMovie(data);
 
+        // samma process som ovan
         const viewingREsponse = await fetch(`/api/viewings?movieId=${id}`);
         const viewingsData = await viewingREsponse.json();
 
+        // data vi har fått från fetchen om den är mer än 0
+        // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
           setShowtime(viewingsData[0].start_time);
         }
@@ -97,26 +110,28 @@ function BookingPage() {
         alert('Kunde inte ladda filmen');
       }
     };
-
+    // om vi kommer till en URL med ID så kör denna funktionen
     if (id) {
       fetchMovie();
     }
-  }, [id]); // this whole code-
+  }, [id]);
 
-  // Get total number of tickets
+  // lägger antalet biljetter i totaltickets
   const getTotalTickets = (): number => {
     return counts.adult + counts.senior + counts.child;
   };
 
-  // Update ticket count
+  // funktionen tar emot vilken biljetttyp
   const updateCount = (type: keyof TicketCounts, delta: number) => {
+    //setcounts uppdaterar värdet, prev är det tidigare värdet
     setCounts(prev => ({
       ...prev,
       [type]: Math.max(0, prev[type] + delta)
+      // uppdaterar endast valda värdet type = nyckeln , mathmax ser till att den aldrig går under 0
     }));
   };
 
-  // Trim selected seats when ticket count decreases
+  // om jag tar bort antal personer när jag har säten valda så försvinner valda säten med 
   useEffect(() => {
     const totalTickets = getTotalTickets();
     if (selectedSeats.length > totalTickets) {
@@ -124,7 +139,7 @@ function BookingPage() {
     }
   }, [counts]);
 
-  // Handle seat selection
+  // bestämmer vilket säte som blir valt
   const selectSeat = (row: number, col: number) => {
     const seatId = `${row}-${col}`;
     const totalTickets = getTotalTickets();
@@ -144,6 +159,7 @@ function BookingPage() {
   };
 
   const confirmBooking = () => {
+    // lägger in totala antalet biljetter vi har valt in i totaltickers
     const totalTickets = getTotalTickets();
     if (totalTickets === 0) {
       alert('Välj antal biljetter först.');
@@ -159,22 +175,26 @@ function BookingPage() {
       (counts.child * PRICES.child);
 
     // DEBUG
-    console.log('=== FULL MOVIE OBJECT:', JSON.stringify(movie, null, 2));
-    console.log('=== movie.movies_raw:', movie?.movies_raw);
-    console.log('=== typeof movie.movies_raw:', typeof movie?.movies_raw);
+    // console.log('=== FULL MOVIE OBJECT:', JSON.stringify(movie, null, 2));
+    // console.log('=== movie.movies_raw:', movie?.movies_raw);
+    // console.log('=== typeof movie.movies_raw:', typeof movie?.movies_raw);
 
-    // movies_raw is already an object, don't parse it
+    // börjar med att movieTitle har värdet 'okänd fillm'
     let movieTitle = 'Okänd film';
+    // om movie.movie_raw.title finns
     if (movie?.movies_raw?.Title) {
+      // använd det då isåfall och lägg in det i movieTitle
       movieTitle = movie.movies_raw.Title;
       console.log('=== GOT TITLE FROM movies_raw.Title:', movieTitle);
     } else if (movie?.Title) {
+      // annars om movie.title finns läggin det i movie.Title
       movieTitle = movie.Title;
       console.log('=== GOT TITLE FROM movie.Title:', movieTitle);
     } else {
       console.log('=== NO TITLE FOUND, using default');
     }
 
+    // sparar alla värden i bookingData som måste matcha med bookindata i confirm page
     const bookingData = {
       film: movieTitle,
       viewing: showtime,
@@ -186,6 +206,8 @@ function BookingPage() {
 
     console.log('=== BOOKING DATA TO SAVE:', bookingData);
 
+    // här så gör vi om bookingdata till JSON och sätter värder i sessionstorage till bookingdata
+    // sen navigerar vi till / confirm
     sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
     navigate('/confirm');
   };

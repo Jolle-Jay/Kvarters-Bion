@@ -72,20 +72,20 @@ function ConfirmationPage() {
     setBookingId(id);
 
 
-    // const payload = {
-    //   bookingId: id,
-    //   email,
-    //   film: data.film,
-    //   viewing: data.viewing,
-    //   seats: data.seats,
-    //   counts: data.counts,
-    //   totalPrice: data.totalPrice,
-    //   lounges: data.lounges
-    // };
+    const payload = {
+      bookingId: id,
+      email,
+      film: data.film,
+      viewing: data.viewing,
+      seats: data.seats,
+      counts: data.counts,
+      totalPrice: data.totalPrice,
+      lounges: data.lounges
+    };
 
-    // console.log('=== SENDING TO BACKEND ===');
-    // console.log(payload);
-    // console.log('=========================');
+    console.log('=== SENDING TO BACKEND ===');
+    console.log(payload);
+    console.log('=========================');
 
     // skicka en POST request till api/custopmbooking
     // await väntar på svar från backend om det är 200 eller tex 500 error
