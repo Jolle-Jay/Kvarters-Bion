@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // gets movie ID from thje URL /booking/
+import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 
-// Price per ticket category
+// pris per kategori för biljetter
 const PRICES = {
   adult: 140,
   senior: 120,
@@ -30,6 +30,9 @@ interface SeatProps {
   onClick: () => void;
 }
 
+// logiken för att när man klickar på ett säte ska något hända
+// alla värden i seatprops läggs in i seat
+// getClassName bestämmer vilken css sätena ska ha, booked, selected eller vanliga typer
 const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
   const getClassName = () => {
     let className = 'seat';
@@ -38,12 +41,15 @@ const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
     return `${className} ${type}`;
   };
 
+  //returnerar en knapp för varje säte
+  //med getClassName sätter CSS klassen på sätet
   return (
     <button
       className={getClassName()}
       data-row={row}
       data-col={col}
       onClick={onClick}
+      // gör att man inte kan klicka på den om den är bokad
       disabled={isBooked}
     >
       {col}
@@ -52,9 +58,8 @@ const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
 };
 
 function BookingPage() {
-  const navigate = useNavigate(); // 
-  const { id } = useParams(); // gets movie ID from /booking/id
-  //Why: Now we get the ID from the URL path instead of query parameters
+  const navigate = useNavigate(); // use navigate to can navigate to the bookingpage URL
+  const { id } = useParams(); // routen letar efter vilket id som är efter /booking
 
   const [movie, setMovie] = useState<any>(null); // new
   const [showtime, setShowtime] = useState('viewing'); //new
