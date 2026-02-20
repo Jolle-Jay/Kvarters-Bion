@@ -1,4 +1,5 @@
 namespace WebApp;
+
 public static class Server
 {
     public static void Start()
@@ -14,6 +15,7 @@ public static class Server
         AiChatRoutes.Start();
         RestApi.Start();
         Session.Start();
+        vadDuVill.Start();
         // Start the server on port 3001
         var runUrl = "http://localhost:" + Globals.port;
         Log("Server running on:", runUrl);

@@ -7,12 +7,13 @@ import NotFoundPage from './pages/NotFoundPage.tsx';
 import MovieDetailsPage from './pages/MovieDetailsPage.tsx';
 import MoviesPage from './pages/MoviesPage.tsx';
 import Bistro from './pages/Bistro.tsx';
-import ProfilePage from './pages/profilePage.tsx';
 import LoginPage from './pages/loginPage.tsx';
 import RegPage from './pages/Registrera.tsx';
-
+import ProfilePage from './pages/profilePage.tsx';
 import LillaSalongen from './pages/LillaSalongen.tsx';
 import StoraSalongen from './pages/StoraSalongen.tsx';
+import BookingPage from './pages/BookingPage.tsx';
+import ConfirmationPage from './pages/ConfirmPage.tsx';
 
 interface Route {
   element: JSX.Element;
@@ -32,6 +33,8 @@ export default [
   LillaSalongen,
   StoraSalongen,
   Bistro,
+  BookingPage,
+  ConfirmationPage,
   ProfilePage,
   LoginPage,
   RegPage
