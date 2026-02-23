@@ -22,21 +22,27 @@ export default function Bistro() {
   
   
   return (
-    <>
-      <section className="bistro-hero">
-        <div className="brand-block">
-          <h2 className="brand-title">KvartersBistron</h2>
-          <p className="brand-subtitle">Mat ᆞSnacks ᆞ Dryck</p>
+    <main>
+      <section className="hero">
+        <img
+          src="/images/cookingImage.jpg" alt="cooking image"
+          className="hero-image"
+        />
+        <div className="bistro-hero-overlay">
+          <div className="hero-text">
+            <h1>KvartersBistron</h1>
+            <p>MatᆞSnacksᆞDryck</p>
+          </div>
         </div>
       </section>
 
-      <section className="bistro-info">
-        <div className="bistro-header">
-        <h3>MAT OCH DRYCK PÅ BIOGRAFEN</h3>
-        <span className="bistro-stars">★ ★ ★ ★ ★</span>
+      <section className="content">
+        <div className="section-header">
+        <h2>Om vår bistro</h2>
+        <span className="stars">★ ★ ★ ★ ★</span>
         </div>
 
-        <div className="info-box"> 
+        <div className="description-box"> 
         <p>
           Hos Kvarter Bion hittar du något för alla. Välj mellan snacks som popcorn, chips,
           godis och choklad, eller mättande favoriter som nachos, pizza, hamburgare,
@@ -46,9 +52,9 @@ export default function Bistro() {
           Kombinera gärna med våra menyer för en smidig filmupplevelse.
         </p>
         </div>
-      </section>
+      
 
-      <main className="menu">
+      <section className="menu">
         <div className="menu-top-row">
           <div className="menu-child">
             <h3>MENY – Barn</h3>
@@ -103,7 +109,8 @@ export default function Bistro() {
             </ul>
           </div>
         </div>
+        </section>
+        </section>
       </main>
-    </>
   );
 }

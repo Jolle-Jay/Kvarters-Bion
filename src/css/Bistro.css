@@ -6,122 +6,25 @@ body.bistro-theme {
     color: #ffffff;
 }
 
-.bistro-hero {
-  position: relative;
-  text-align: center;
-  padding: 7rem 2rem;
-  height: 24rem;
-  background:
-      linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-      url("../images/cookingImage.jpg") center/cover no-repeat;
-  border: 2px solid #B8860B;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 1rem 2rem 2rem;
-}
-
-.bistro-hero-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .bistro-hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg,
       rgba(0, 26, 0, 0.45),
-      rgba(0, 77, 0, 0.3));
+      rgba(60, 30, 0, 0.35));
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Varumärkesblock: titel och undertitel staplade. */
-.brand-block {
-    display: inline-flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    margin-top: 1.2rem;
-}
-
-/* Varumärkestitel: stor, kraftig text med skugga. */
-.brand-title {
-  font-size: clamp(2rem, 6vw, 3rem);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #B8860B;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
-  margin-bottom: 0.5rem;
-}
-
-/* Undertitel: mindre, luftig text med versaler. */
-.brand-subtitle {
-  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-    color: #B8860B;
-    letter-spacing: 2px;
-    font-weight: bold;
-}
-
-/* BISTRO INFO */
-.bistro-info {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 4rem 1rem;
-}
-
-/* BISTRO HEADER */
-.bistro-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.bistro-header h3 {
-  font-size: clamp(1.8rem, 5vw, 2.6rem);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #B8860B;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
-  margin-bottom: 0.5rem;
-}
-
-.bistro-stars {
-  font-size: clamp(1rem, 3vw, 1.5rem);
-  color: #B8860B;
-  letter-spacing: 4px;
-}
-
-/* Info-paragrafer: större läsbar text. */
-.info-box {
-    background: rgba(10, 25, 10, 0.7);
-  border: 2px solid #B8860B;
-  border-radius: 12px;
-  padding: clamp(1.5rem, 3vw, 2rem);
-  margin: 0 auto 3rem;
-  max-width: 1000px;
-}
-
-.info-box p {
-    font-size: clamp(0.95rem, 2.5vw, 1.05rem);
-  color: #c3cac3;
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-}
-
-/* Mobil: minskar marginaler för info. */
-@media (max-width: 768px) {
-    .bistro-header {
-        margin: 1rem;
-    }
-}
-
 .menu {
-    max-width: 1200px;
-    margin: 0 auto 2rem auto;
+    max-width: 1000px;
+    margin: 0 auto 3rem auto;
+    margin-top: 0;
     display: flex;
     flex-direction: column;
     gap: 2rem;
-}
+  }
 
 
 /* Övre meny: två rutor (barn/senior) sida vid sida. */
@@ -130,7 +33,7 @@ body.bistro-theme {
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 2rem;
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
 }
 
 /* Nedre meny: tre kolumner (dryck/mat/snacks) sida vid sida. */
@@ -143,7 +46,7 @@ body.bistro-theme {
 
 .menu-child, .menu-senior, .menu-group {
     flex: 1 1 300px;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
 }
 
 
@@ -267,22 +170,5 @@ body.bistro-theme {
 
     .menu {
         margin: 1rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .bistro-hero {
-        padding: 3rem 1.2rem;
-        margin: 1rem;
-    }
-
-    .brand-title {
-        letter-spacing: 1px;
-        /* mindre spacing i mobil */
-        line-height: 1.2;
-    }
-
-    .brand-subtitle {
-        letter-spacing: 1px;
     }
 }
