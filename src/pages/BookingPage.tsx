@@ -260,7 +260,9 @@ function BookingPage() {
         {/* ÄNDRAD KOD */}
         <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
         <p>Välj antal biljetter och platser.</p>
+        <div className="ticket-wrapper">
         <div className="ticket-layout">
+
           {/* Panel: Select number of tickets */}
           <div className="ticket-panel">
             <h3>Välj antal biljetter</h3>
@@ -353,8 +355,10 @@ function BookingPage() {
             <div className="summary-total">
               <span>Summa</span>
               <span>{formatPrice(totalPrice)}</span>
-            </div>
-          </aside>
+              </div>
+            </aside>
+            
+          </div>
         </div>
       </section>
 
