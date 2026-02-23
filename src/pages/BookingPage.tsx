@@ -232,7 +232,6 @@ function BookingPage() {
       <section className="hero">
         {/* ÄNDRAD KOD */}
         <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
-        <p>Välj antal biljetter och platser.</p>
         <div className="ticket-layout">
           {/* Panel: Select number of tickets */}
           <div className="ticket-panel">
