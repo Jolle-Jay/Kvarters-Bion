@@ -1,3 +1,22 @@
+/* Snygg styling för login-input fält */
+.login-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.2rem;
+  border: 2px solid #B8860B;
+  border-radius: 8px;
+  background: #1a2a1a;
+  color: #FFD700;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(184, 134, 11, 0.08);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.login-input:focus {
+  border-color: #FFD700;
+  box-shadow: 0 0 8px #FFD700;
+  background: #223322;
+}
 /* Logga in/Registrera rad och boxar */
 .login-register-row {
   display: flex; /* Lägger elementen på rad */
