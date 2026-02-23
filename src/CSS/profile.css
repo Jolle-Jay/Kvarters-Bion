@@ -1,3 +1,36 @@
+/* Logga in/Registrera rad och boxar */
+.login-register-row {
+  display: flex; /* Lägger elementen på rad */
+  justify-content: center; /* Centrerar boxarna horisontellt */
+  gap: 2rem; /* Avstånd mellan boxarna */
+  margin-top: 2rem; /* Avstånd ovanför raden */
+}
+
+.login-register-box {
+  background: #112611; /* Mörk bakgrund på boxen */
+  border: 2px solid #B8860B; /* Gul ram */
+  border-radius: 8px; /* Rundade hörn */
+  padding: 1.5rem 2.5rem; /* Inre avstånd i boxen */
+  display: flex; /* Centrerar innehållet i boxen */
+  align-items: center; /* Vertikal centrering */
+  justify-content: center; /* Horisontell centrering */
+  min-width: 120px; /* Minsta bredd på boxen */
+  transition: box-shadow 0.2s; /* Mjuk övergång för skugga vid hover */
+}
+.login-register-box:hover {
+  box-shadow: 0 0 10px #B8860B; /* Ljusgul skugga vid hover */
+}
+.login-register-box a {
+  color: #B8860B; /* Gul textfärg */
+  font-size: 1.2rem; /* Lite större text */
+  font-weight: bold; /* Fet text */
+  text-decoration: none; /* Ingen understrykning */
+  letter-spacing: 1px; /* Lite extra bokstavsavstånd */
+  transition: color 0.2s; /* Mjuk färgövergång vid hover */
+}
+.login-register-box a:hover {
+  color: #FFD700; /* Ändrar textfärg till ljusgul vid hover */
+}
 .profile-container {
   max-width: 600px;
   margin: 120px auto 40px;
