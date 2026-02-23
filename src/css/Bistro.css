@@ -46,7 +46,6 @@ body.bistro-theme {
 
 .menu-child, .menu-senior, .menu-group {
     flex: 1 1 300px;
-    /* margin-bottom: 1rem; */
 }
 
 
@@ -56,7 +55,6 @@ body.bistro-theme {
   border: 2px solid #B8860B;
   border-radius: 14px;
   padding: 1.5rem;
-  margin-bottom: 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
