@@ -1,0 +1,438 @@
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
+import '../CSS/booking-styles.css';
+
+// pris per kategori för biljetter
+const PRICES = {
+  adult: 140,
+  senior: 120,
+  child: 80
+};
+
+// Stora Salongen layout
+const SALONG_LAYOUT = {
+  name: "Stora Salongen",
+  seatsPerRow: [8, 9, 10, 10, 10, 10, 12, 12]
+};
+
+interface TicketCounts {
+  adult: number;
+  senior: number;
+  child: number;
+}
+
+interface SeatProps {
+  row: number;
+  col: number;
+  type: 'available' | 'vip' | 'elder';
+  isSelected: boolean;
+  isBooked: boolean;
+  onClick: () => void;
+}
+
+// logiken för att när man klickar på ett säte ska något hända
+// alla värden i seatprops läggs in i seat
+// getClassName bestämmer vilken css sätena ska ha, booked, selected eller vanliga typer
+const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
+  const getClassName = () => {
+    let className = 'seat';
+    if (isBooked) return `${className} booked`;
+    if (isSelected) return `${className} selected`;
+    return `${className} ${type}`;
+  };
+
+  //returnerar en knapp för varje säte
+  //med getClassName sätter CSS klassen på sätet
+  return (
+    <button
+      className={getClassName()}
+      data-row={row}
+      data-col={col}
+      onClick={onClick}
+      // gör att man inte kan klicka på den om den är bokad
+      disabled={isBooked}
+    >
+      {col}
+    </button>
+  );
+};
+
+function BookingPage() {
+  const navigate = useNavigate(); // use navigate to can navigate to the bookingpage URL
+  const { id } = useParams(); // routen letar efter vilket id som är efter /booking
+
+  // gör att vi kan ändra till vilken film vi vill ha, sätter den till null i början
+  // any gör att den kan hålla vilken datatyp som helst för vi vet inte hur filmen datatyp ser ut ännu
+  const [movie, setMovie] = useState<any>(null);
+  // gör att våran showtime är viewing
+  const [showtime, setShowtime] = useState('viewing');
+
+  // hämtar definitionen ticket counts ovanför och ger dem alla värdet 0 till att börja med 
+  const [counts, setCounts] = useState<TicketCounts>({
+    adult: 0,
+    senior: 0,
+    child: 0
+  });
+  // ([]) = startvärdet är en tom array
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  //  set som inehåller stärnger new set () = en Set datastruktur, liknar array fast med egna värden.
+  const [bookedSeats, setBookedSeats] = useState<Set<string>>(new Set());
+
+  // tar emot ett nummer, returnerar en sträng
+  // tofixed 2 lägger till 2 decimaler och gör om . till ,
+  const formatPrice = (value: number): string => {
+    return `${value.toFixed(2).replace('.', ',')} kr`;
+  };
+
+
+
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        // hämtar data från servern (får tillbaka response objekt med JSON text )
+        const response = await fetch(`/api/movies/${id}`);
+        // parsar texten från response till TS objekt
+        const data = await response.json();
+        // sparar värdet i movie state
+        setMovie(data);
+
+        // samma process som ovan
+        const viewingREsponse = await fetch(`/api/viewings?movieId=${id}`);
+        const viewingsData = await viewingREsponse.json();
+
+        // data vi har fått från fetchen om den är mer än 0
+        // sätter showtime till första visningens starttid
+        if (viewingsData.length > 0) {
+          setShowtime(viewingsData[0].start_time);
+        }
+      } catch (error) {
+        console.error('Failed to fetch movie:', error);
+        alert('Kunde inte ladda filmen');
+      }
+    };
+    // om vi kommer till en URL med ID så kör denna funktionen
+    if (id) {
+      fetchMovie();
+    }
+  }, [id]);
+
+  // lägger antalet biljetter i totaltickets
+  const getTotalTickets = (): number => {
+    return counts.adult + counts.senior + counts.child;
+  };
+
+  // funktionen tar emot vilken biljetttyp
+  const updateCount = (type: keyof TicketCounts, delta: number) => {
+    //setcounts uppdaterar värdet, prev är det tidigare värdet
+    setCounts(prev => ({
+      ...prev,
+      [type]: Math.max(0, prev[type] + delta)
+      // uppdaterar endast valda värdet type = nyckeln , mathmax ser till att den aldrig går under 0
+    }));
+  };
+
+  // om jag tar bort antal personer när jag har säten valda så försvinner valda säten med 
+  useEffect(() => {
+    const totalTickets = getTotalTickets();
+    if (selectedSeats.length > totalTickets) {
+      setSelectedSeats(prev => prev.slice(0, totalTickets));
+    }
+  }, [counts]);
+
+  // bestämmer vilket säte som blir valt
+  const selectSeat = (row: number, col: number) => {
+    const seatId = `${row}-${col}`;
+    const totalTickets = getTotalTickets();
+
+    if (totalTickets === 0) {
+      alert('Välj antal biljetter först.');
+      return;
+    }
+
+    if (selectedSeats.includes(seatId)) {
+      setSelectedSeats(prev => prev.filter(s => s !== seatId));
+    } else if (selectedSeats.length < totalTickets) {
+      setSelectedSeats(prev => [...prev, seatId]);
+    } else {
+      alert('Du har redan valt max antal platser.');
+    }
+  };
+
+  const confirmBooking = () => {
+    // lägger in totala antalet biljetter vi har valt in i totaltickers
+    const totalTickets = getTotalTickets();
+    if (totalTickets === 0) {
+      alert('Välj antal biljetter först.');
+      return;
+    }
+    if (selectedSeats.length !== totalTickets) {
+      alert(`Välj ${totalTickets} platser innan du bekräftar.`);
+      return;
+    }
+
+    const totalPrice = (counts.adult * PRICES.adult) +
+      (counts.senior * PRICES.senior) +
+      (counts.child * PRICES.child);
+
+    // DEBUG
+    // console.log('=== FULL MOVIE OBJECT:', JSON.stringify(movie, null, 2));
+    // console.log('=== movie.movies_raw:', movie?.movies_raw);
+    // console.log('=== typeof movie.movies_raw:', typeof movie?.movies_raw);
+
+    // börjar med att movieTitle har värdet 'okänd fillm'
+    let movieTitle = 'Okänd film';
+    // om movie.movie_raw.title finns
+    if (movie?.movies_raw?.Title) {
+      // använd det då isåfall och lägg in det i movieTitle
+      movieTitle = movie.movies_raw.Title;
+      console.log('=== GOT TITLE FROM movies_raw.Title:', movieTitle);
+    } else if (movie?.Title) {
+      // annars om movie.title finns läggin det i movie.Title
+      movieTitle = movie.Title;
+      console.log('=== GOT TITLE FROM movie.Title:', movieTitle);
+    } else {
+      console.log('=== NO TITLE FOUND, using default');
+    }
+
+    // sparar alla värden i bookingData som måste matcha med bookindata i confirm page
+    const bookingData = {
+      film: movieTitle,
+      viewing: showtime,
+      seats: selectedSeats,
+      counts,
+      totalPrice,
+      lounges: SALONG_LAYOUT.name
+    };
+
+    console.log('=== BOOKING DATA TO SAVE:', bookingData);
+
+    // här så gör vi om bookingdata till JSON och sätter värder i sessionstorage till bookingdata
+    // sen navigerar vi till / confirm
+    sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
+    navigate('/confirm');
+  };
+  // const confirmBooking = () => {
+  //   const totalTickets = getTotalTickets();
+  //   if (totalTickets === 0) {
+  //     alert('Välj antal biljetter först.');
+  //     return;
+  //   }
+  //   if (selectedSeats.length !== totalTickets) {
+  //     alert(`Välj ${totalTickets} platser innan du bekräftar.`);
+  //     return;
+  //   }
+
+  //   const totalPrice = (counts.adult * PRICES.adult) +
+  //     (counts.senior * PRICES.senior) +
+  //     (counts.child * PRICES.child);
+
+  //   const bookingData = {
+  //     film: movie?.Title || 'okänd film',
+  //     viewing: showtime,
+  //     seats: selectedSeats,
+  //     counts,
+  //     totalPrice,
+  //     lounges: SALONG_LAYOUT.name
+  //   };
+  //   //sparar användarens data av bokningen
+  //   sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
+
+  //   navigate('/confirm');
+
+  // };
+
+  if (!movie) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <p>Laddar film...</p>
+      </div>
+    );
+  }
+
+  const totalPrice = (counts.adult * PRICES.adult) +
+    (counts.senior * PRICES.senior) +
+    (counts.child * PRICES.child);
+
+  return (
+    <>
+      {/* Ticket selector + summary */}
+      <section className="hero">
+        {/* ÄNDRAD KOD */}
+        <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
+        <p>Välj antal biljetter och platser.</p>
+        <div className="ticket-layout">
+          {/* Panel: Select number of tickets */}
+          <div className="ticket-panel">
+            <h3>Välj antal biljetter</h3>
+
+            <div className="ticket-row">
+              <div className="ticket-label">
+                <strong>Ordinarie</strong>
+                <span className="ticket-note">Standard</span>
+              </div>
+              <div className="ticket-controls">
+                <button
+                  className="ticket-btn"
+                  onClick={() => updateCount('adult', -1)}
+                  disabled={counts.adult === 0}
+                >
+                  −
+                </button>
+                <span className="ticket-count">{counts.adult}</span>
+                <button
+                  className="ticket-btn"
+                  onClick={() => updateCount('adult', 1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div className="ticket-row">
+              <div className="ticket-label">
+                <strong>Pensionär</strong>
+                <span className="ticket-note">10% rabatt</span>
+              </div>
+              <div className="ticket-controls">
+                <button
+                  className="ticket-btn"
+                  onClick={() => updateCount('senior', -1)}
+                  disabled={counts.senior === 0}
+                >
+                  −
+                </button>
+                <span className="ticket-count">{counts.senior}</span>
+                <button
+                  className="ticket-btn"
+                  onClick={() => updateCount('senior', 1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div className="ticket-row">
+              <div className="ticket-label">
+                <strong>Barn (t.o.m 11 år)</strong>
+                <span className="ticket-note">20% rabatt</span>
+              </div>
+              <div className="ticket-controls">
+                <button
+                  className="ticket-btn"
+                  onClick={() => updateCount('child', -1)}
+                  disabled={counts.child === 0}
+                >
+                  −
+                </button>
+                <span className="ticket-count">{counts.child}</span>
+                <button
+                  className="ticket-btn"
+                  onClick={() => updateCount('child', 1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Panel: Summary */}
+          <aside className="ticket-summary">
+            <h4>Sammanfattning</h4>
+            <div className="summary-row">
+              <span>Ordinarie</span>
+              <span>{counts.adult} × {formatPrice(PRICES.adult)}</span>
+            </div>
+            <div className="summary-row">
+              <span>Pensionär</span>
+              <span>{counts.senior} × {formatPrice(PRICES.senior)}</span>
+            </div>
+            <div className="summary-row">
+              <span>Barn</span>
+              <span>{counts.child} × {formatPrice(PRICES.child)}</span>
+            </div>
+            <div className="summary-total">
+              <span>Summa</span>
+              <span>{formatPrice(totalPrice)}</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      {/* Seat map */}
+      <section className="cinema">
+        <div className="cinema-header">
+          <h3>Salong - Skärm</h3>
+          <div className="seat-legend">
+            <div className="legend-item">
+              <span className="legend-color available"></span>
+              <span className="legend-text">Lediga platser</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-color elder"></span>
+              <span className="legend-text">Äldre platser</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-color vip"></span>
+              <span className="legend-text">VIP platser</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-color unavailable"></span>
+              <span className="legend-text">Ej tillgängliga</span>
+            </div>
+          </div>
+        </div>
+        <div className="screen">Bio Skärm</div>
+        <div
+          id="seats"
+          className="seats-grid"
+        >
+          {SALONG_LAYOUT.seatsPerRow.map((numSeats, index) => {
+            const row = index + 1;
+            return (
+              <div key={`row-${row}`} className="seat-row">
+                <div className="row-label">{row}</div>
+                <div className="seat-row-inner">
+                  {Array.from({ length: numSeats }, (_, i) => {
+                    const col = i + 1;
+                    const seatId = `${row}-${col}`;
+                    let seatType: 'available' | 'vip' | 'elder' = 'available';
+
+                    if (row === 5 && col >= 4 && col <= 7) {
+                      seatType = 'vip';
+                    } else if (row === 3 && col >= 1 && col <= 3) {
+                      seatType = 'elder';
+                    }
+
+                    return (
+                      <Seat
+                        key={seatId}
+                        row={row}
+                        col={col}
+                        type={seatType}
+                        isSelected={selectedSeats.includes(seatId)}
+                        isBooked={bookedSeats.has(seatId)}
+                        onClick={() => selectSeat(row, col)}
+                      />
+                    );
+                  })}
+                </div>
+                <div className="row-label">{row}</div>
+              </div>
+            );
+          })}
+        </div>
+        <button onClick={confirmBooking}>
+          Bekräfta bokning
+        </button>
+      </section>
+    </>
+  );
+};
+
+BookingPage.route = {
+  path: '/booking/:id',
+  menuLabel: 'booking',
+  index: 8,
+};
+
+export default BookingPage;

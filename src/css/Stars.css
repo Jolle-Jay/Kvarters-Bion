@@ -1,0 +1,14 @@
+.hero {
+    background: linear-gradient(rgba(0, 51, 0, 0.7), rgba(4, 15, 4, 0.9));
+    text-align: center;
+    padding: 4rem 2rem;
+    width: auto;
+    height: auto;
+}
+
+.hero-sub p {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
