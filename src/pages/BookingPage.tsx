@@ -15,6 +15,7 @@ const SALONG_LAYOUT = {
   seatsPerRow: [8, 9, 10, 10, 10, 10, 12, 12]
 };
 
+
 interface TicketCounts {
   adult: number;
   senior: number;

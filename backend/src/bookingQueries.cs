@@ -22,15 +22,15 @@ public static class BookingQueries
 
     public static void CreateBookingSeats(int bookingId, List<string> seats, string lounge, dynamic counts)
     {
-        var ticketTypes = new List<string>();
+        var ticketTypes = new List<int>();
 
         // bygger en lista för olika biljetter vuxen först.
         for (int i = 0; i < (int)counts.adult; i++)
-            ticketTypes.Add("Adult");
+            ticketTypes.Add(1);
         for (int i = 0; i < (int)counts.senior; i++)
-            ticketTypes.Add("Senior");
+            ticketTypes.Add(2);
         for (int i = 0; i < (int)counts.child; i++)
-            ticketTypes.Add("Child");
+            ticketTypes.Add(3);
 
         int loungeNumber = lounge == "Stora Salongen" ? 1 : 2;
 
@@ -46,7 +46,7 @@ public static class BookingQueries
             var parts = seats[i].Split('-');
             int seatRow = int.Parse(parts[0]);
             int seatNum = int.Parse(parts[1]);
-            string ticketType = ticketTypes[i];
+            int ticketType = ticketTypes[i];
 
             System.Console.WriteLine($"Looking for: lounge={loungeNumber}, row={seatRow}, number={seatNum}");
             //skriva ut i kojnsolen för debuggiong
