@@ -71,6 +71,10 @@ public static class BookingQueries
             int seatId = (int)existingSeat["id"];
             System.Console.WriteLine($"Found seat ID: {seatId}");
 
+
+            // using var transaction = connection.BeginTransaction();
+            // // SELECT + INSERT här inne
+            // transaction.Commit();
             // kolla om sätet redan är bokat för visningen, bokar sätet genom att lägga in rad i bookingseats
             var alreadyBooked = SQLQueryOne(
                 @"SELECT * FROM bookingSeats bs

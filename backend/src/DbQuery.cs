@@ -1,3 +1,5 @@
+using System.Data;
+
 namespace WebApp;
 
 public static class DbQuery
@@ -927,3 +929,6 @@ public static class DbQuery
         return SQLQuery(sql, parameters, context)[0];
     }
 }
+
+// kör samma queries i samma transaktion 
+
