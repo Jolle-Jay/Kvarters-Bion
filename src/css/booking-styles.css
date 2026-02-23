@@ -12,7 +12,7 @@
 
 .hero h2 {
     text-align: center;
-    color: #FFD700;
+    color: #B8860B;
     font-size: 2rem;
     margin-bottom: 0.5rem;
 }
@@ -53,7 +53,7 @@
 }
 
 .ticket-panel h3 {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1rem;
     margin-bottom: 0.4rem;
 }
@@ -80,7 +80,7 @@
 }
 
 .ticket-label strong {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1.1rem;
 }
 
@@ -100,7 +100,7 @@
     width: 40px;
     height: 40px;
     background: #0a3d0a;
-    color: #FFD700;
+    color: #B8860B;
     border: 2px solid #B8860B;
     border-radius: 6px;
     font-size: 1.5rem;
@@ -144,7 +144,7 @@
 }
 
 .ticket-summary h4 {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1.3rem;
     margin-bottom: 1rem;
     border-bottom: 2px solid #B8860B;
@@ -165,7 +165,7 @@
     padding: 1rem 0;
     margin-top: 1rem;
     border-top: 2px solid #B8860B;
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1.2rem;
     font-weight: bold;
 }
@@ -182,7 +182,7 @@
 
 .cinema h3 {
     text-align: center;
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1.8rem;
     margin-bottom: 1rem;
 }
@@ -246,7 +246,7 @@
 }
 
 .legend-text {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 0.7rem;
     font-weight: bold;
 }
@@ -254,7 +254,7 @@
 /* Skärm: visuell markör för scen/skärm. */
 .screen {
     background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-    color: #FFD700;
+    color: #B8860B;
     text-align: center;
     padding: 1rem;
     margin: 1rem auto 2rem;
@@ -295,7 +295,7 @@
 
 /* Radetiketter. */
 .row-label {
-    color: #FFD700;
+    color: #B8860B;
     font-weight: bold;
     font-size: 1rem;
     text-align: center;
@@ -398,7 +398,7 @@
     margin: 2rem auto 0;
     padding: 1rem 3rem;
     background: #0a3d0a;
-    color: #FFD700;
+    color: #B8860B;
     border: 2px solid #B8860B;
     border-radius: 8px;
     font-size: 1.2rem;
