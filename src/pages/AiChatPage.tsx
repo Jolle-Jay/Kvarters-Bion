@@ -10,6 +10,7 @@ AiChatPage.route = {
 interface Message {
   role: 'user' | 'bot';
   content: string;
+  isHtml?: boolean;
 }
 
 function getBotReply(text: string) {
