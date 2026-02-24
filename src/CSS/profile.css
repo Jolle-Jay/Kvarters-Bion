@@ -29,7 +29,7 @@
   background: #112611; /* Mörk bakgrund på boxen */
   border: 2px solid #B8860B; /* Gul ram */
   border-radius: 8px; /* Rundade hörn */
-  padding: 1.5rem 2.5rem; /* Inre avstånd i boxen */
+  padding: 1rem 2rem; /* Inre avstånd i boxen */
   display: flex; /* Centrerar innehållet i boxen */
   align-items: center; /* Vertikal centrering */
   justify-content: center; /* Horisontell centrering */
@@ -188,11 +188,10 @@
 } */
 
 /* Mobile responsive styles */
-@media (max-width: 768px) {
+@media (max-width: 481px) {
   .profile-container {
-    max-width: 100%;
-    margin: 100px 1rem 2rem;
-    padding: 1.5rem;
+    max-width: 95vw;
+    padding: 1rem;
   }
 
   .profile-container h2 {
@@ -214,6 +213,18 @@
     text-align: center;
     padding: 0.65rem 1rem;
     font-size: 0.95rem;
+  }
+
+  .login-register-row {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .login-register-box {
+    width: 100%;
+    min-width: 0;
+    padding: 1rem 0.5rem;
   }
 
   .not-logged-in {
