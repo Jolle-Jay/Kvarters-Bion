@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 import LillaSalongen from './LillaSalongen';
+import { cwd } from 'process';
 
 // pris per kategori för biljetter
 const PRICES = {
@@ -84,6 +85,9 @@ function BookingPage() {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   //  set som inehåller stärnger new set () = en Set datastruktur, liknar array fast med egna värden.
   const [bookedSeats, setBookedSeats] = useState<Set<string>>(new Set());
+  const [availableViewigs, setavailableViewigs] = useState<any[]>([]);
+  const [selectedViewing, setselectedViewing] = useState<any>(null);
+  const [CurrentLounge, setCurrentLounge] = useState<any>(null);
 
   // tar emot ett nummer, returnerar en sträng
   // tofixed 2 lägger till 2 decimaler och gör om . till ,
@@ -107,9 +111,13 @@ function BookingPage() {
         const viewingREsponse = await fetch(`/api/viewings?movieId=${id}`);
         const viewingsData = await viewingREsponse.json();
 
+        console.log("Visnings Tider: ", viewingsData);
+
         // data vi har fått från fetchen om den är mer än 0
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
+          setavailableViewigs(viewingsData);
+          setselectedViewing(viewingsData[0]);
           setShowtime(viewingsData[0].start_time);
         }
       } catch (error) {
@@ -122,6 +130,54 @@ function BookingPage() {
       fetchMovie();
     }
   }, [id]);
+
+  useEffect(() => {
+    const fetchBookedSeats = async () => {
+    if (!selectedViewing || !selectedViewing.id) {
+      return;
+    }
+
+    console.log('Hämtar bokade platser:', selectedViewing.id)
+
+    setCurrentLounge(selectedViewing.lounge);
+
+    try {
+      const bookedResponse = await fetch(`/api/bookingSeats/${selectedViewing.id}`)
+
+      if (bookedResponse.ok) {
+        let bookedData = await bookedResponse.json();
+
+        if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
+          if ('data' in bookedData && Array.isArray(bookedData.data))
+          {
+            bookedData = bookedData.data;
+          }
+        }
+
+        const bookedSeatsArray = Array.isArray(bookedData) ? bookedData : [];
+
+        const bookedSeatsSet = new Set<string>(
+          bookedSeatsArray.map((item: any) => {
+            const seat = typeof item === `string` ? item : item.seat;
+            return seat;
+          })
+        );
+
+        console.log("Bokade Platser: ", Array.from(bookedSeatsSet));
+        setBookedSeats(bookedSeatsSet);
+      } 
+      else {
+          console.log('Inga bokade platser');
+          setBookedSeats(new Set());
+        }
+      } catch (error) {
+        console.error('Kunde inte hitta bokade platser', error);
+        setBookedSeats(new Set());
+    }
+  };
+
+  fetchBookedSeats();
+}, [selectedViewing]);
 
   // lägger antalet biljetter i totaltickets
   const getTotalTickets = (): number => {
