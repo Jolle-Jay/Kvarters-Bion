@@ -5,7 +5,7 @@
   right: 24px;
   z-index: 1000;
   cursor: pointer;
-  background: #B8860B;
+  background: #936d0c;
   border-radius: 50%;
   width: 56px;
   height: 56px;
@@ -27,6 +27,7 @@
 .chat-popup-inner {
   position: relative;
 }
+
 .chat-popup-close {
   position: absolute;
   top: 8px;

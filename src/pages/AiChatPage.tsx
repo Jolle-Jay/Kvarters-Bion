@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import '../CSS/AIChat.css';
 
@@ -14,6 +13,7 @@ interface Message {
 }
 
 function getBotReply(text: string) {
+   
   const lower = text.toLowerCase();
   if (lower.includes("öppettider") || lower.includes("öppet")) {
     return "Vi har öppet måndag–fredag 10–22, lördag–söndag 12–23.";
@@ -24,11 +24,12 @@ function getBotReply(text: string) {
   if (
     lower.includes("bistro") ||
     lower.includes("mat") ||
+    lower.includes("drinkar") ||
     lower.includes("meny") ||
     lower.includes("erbjudande") ||
     lower.includes("utbud")
   ) {
-    return "Bistro erbjuder popcorn, snacks, godis, läsk, kaffe, smörgåsar och varm korv. Vissa dagar har vi även specialerbjudanden på fika och mat!";
+    return "Bistro erbjuder popcorn, snacks, godis, läsk, kaffe, smörgåsar och varm korv. Vissa dagar har vi även specialerbjudanden på fika och mat! För mer info trycker du på Bistro som ligger högst upp.";
   }
   if (
     lower.includes("filmer") ||
@@ -39,7 +40,53 @@ function getBotReply(text: string) {
   ) {
     return "Just nu visar vi: Avatar, Phantom of the Opera, Ready Player One, Shrek, The Notebook, Grown Ups, Hamilton, Batman, Alien, Wicked, Star Trek, SpongeBob, Poor Things, Koops, Dark Crystal, New Kids Turbo och The Exorcist.";
   }
-  return "Jag är biografens chatbot! Har du frågor om öppettider, biljettpriser, Bistro utbud eller vilka filmer som visas?";
+   if (
+      lower.includes("logga in") ||
+      lower.includes("inlogg") ||
+      lower.includes("loggar in") ||
+      lower.includes("registrera") ||
+      lower.includes("hur registrerar") ||
+      lower.includes("registrering") ||
+      lower.includes("hur loggar")
+    ) {
+      return "För att logga in klickar du på profilknappen uppe till höger på sidan. Där fyller du i ditt användarnamn och lösenord och trycker på 'Logga in'. Om du inte har ett konto kan du välja 'Registrera' för att skapa ett nytt konto.";
+    }
+    if (
+      lower.includes("boka") ||
+      lower.includes("bokar") ||
+      lower.includes("bokning") ||
+      lower.includes("hur köper") ||
+      lower.includes("köpa biljett")
+    ) {
+      return "För att boka biljett klickar du på filmen du vill se på startsidan eller under 'Filmer'. Välj sedan tid och plats, och följ stegen för att slutföra bokningen. Du får en bekräftelse på mejl när bokningen är klar!";
+    }
+    if (
+      lower.includes("betala") ||
+      lower.includes("betalning") ||
+      lower.includes("hur betalar") ||
+      lower.includes("qr") ||
+      lower.includes("skanna")
+    ) {
+      return "När du har bokat en biljett får du en QR-kod. Du visar och skannar QR-koden på plats i bion och betalar din biljett i kassan innan föreställningen börjar.";
+    }
+    if (
+      lower === "hej" ||
+      lower === "hej!" ||
+      lower === "hejsan" ||
+      lower === "tjena" ||
+      lower === "hallå" ||
+      lower === "hello" ||
+      lower === "hi"
+    ) {
+      return "Hej och välkommen till biografens BioBot! Hur kan jag hjälpa dig idag?";
+    }
+    if (
+      lower === "tack" ||
+      lower === "hejdå"
+    ) {
+      return "Tack själv! Ha en fantastisk dag och hoppas vi ses snart på bion!";
+    }
+  return ("Förlåt, jag förstår inte din fråga. Prova att fråga om våra öppettider, biljettpriser, aktuella filmer eller hur du loggar in och bokar biljetter!");
 }
 
 export default function AiChatPage() {
@@ -53,7 +100,7 @@ export default function AiChatPage() {
     setInput("");
     setTimeout(() => {
       const reply = getBotReply(text);
-      setMessages(prev => [...prev, { role: "bot", content: reply }]);
+      setMessages(prev => [...prev, { role: "bot", content: reply, isHtml: reply.startsWith('<div>') }]);
     }, 400);
   };
 
@@ -63,7 +110,10 @@ export default function AiChatPage() {
       <div className="aichat-messages">
         {messages.map((msg, i) => (
           <div key={i} className={`aichat-message ${msg.role}`}>
-            <b>{msg.role === 'bot' ? 'BiografBot' : 'Du'}:</b> {msg.content}
+            <b>{msg.role === 'bot' ? 'BioBot' : 'Du'}:</b>{' '}
+            {msg.isHtml
+              ? <span dangerouslySetInnerHTML={{ __html: msg.content }} />
+              : msg.content}
           </div>
         ))}
       </div>
