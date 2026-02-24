@@ -331,6 +331,29 @@ function BookingPage() {
       <section className="hero">
         {/* ÄNDRAD KOD */}
         <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
+        {availableViewigs.length > 0 && (
+          <div style={{ margin: '1rem 0' }}>
+            <label htmlFor="viewing-select" style={{ marginRight: '0.5rem' }}>
+              <strong>Välj visningstid:</strong>
+            </label>
+            <select
+              id="viewing-select"
+              value={selectedViewing?.id || ''}
+              onChange={(e) => {
+                const viewing = availableViewigs.find(v => v.id === parseInt(e.target.value));
+                setselectedViewing(viewing);
+                setShowtime(viewing.start_time);
+                setSelectedSeats([]);
+              }}
+            >
+              {availableViewigs.map(viewing => (
+                <option key={viewing.id} value={viewing.id}>
+                  {viewing.start_time} - {viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <div className="ticket-layout">
           {/* Panel: Select number of tickets */}
           <div className="ticket-panel">
