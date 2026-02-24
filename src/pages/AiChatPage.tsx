@@ -21,7 +21,16 @@ function getBotReply(text: string) {
   if (lower.includes("pris") || lower.includes("biljett")) {
     return "Biljettpriser: Ordinarie 140 kr, Pensionär 120 kr, Barn 80 kr.";
   }
-  return "Jag är biografens chatbot! Fråga om öppettider eller biljettpriser.";
+  if (
+    lower.includes("bistro") ||
+    lower.includes("mat") ||
+    lower.includes("meny") ||
+    lower.includes("erbjudande") ||
+    lower.includes("utbud")
+  ) {
+    return "Bistro erbjuder popcorn, snacks, godis, läsk, kaffe, smörgåsar och varm korv. Vissa dagar har vi även specialerbjudanden på fika och mat!";
+  }
+  return "Jag är biografens chatbot! Har du frågor om öppettider, biljettpriser eller Bistro utbud?";
 }
 
 export default function AiChatPage() {
