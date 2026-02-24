@@ -29,7 +29,8 @@
     "react-dom": "^19.2.0",
     "react-rapide": "^1.0.35",
     "react-router-dom": "^7.5.0",
-    "sass": "1.77.6"
+    "sass": "1.77.6",
+    "typescript-cookie": "^1.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
