@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
+import LillaSalongen from './LillaSalongen';
 
 // pris per kategori för biljetter
 const PRICES = {
@@ -11,10 +12,15 @@ const PRICES = {
 
 // Stora Salongen layout
 const SALONG_LAYOUT = {
-  name: "Stora Salongen",
-  seatsPerRow: [8, 9, 10, 10, 10, 10, 12, 12]
+  'Stora Salongen': {
+    name: "Stora Salongen",
+    seatsPerRow: [8, 9, 10, 10, 10, 10, 12, 12]
+  },
+  'Lilla Salongen': {
+    name: "Lilla Salongen",
+    seatsPerRow: [6, 8, 9, 10, 10, 12]
+  }
 };
-
 
 interface TicketCounts {
   adult: number;
@@ -202,7 +208,7 @@ function BookingPage() {
       seats: selectedSeats,
       counts,
       totalPrice,
-      lounges: SALONG_LAYOUT.name
+      lounges: SALONG_LAYOUT['Stora Salongen'].name
     };
 
     console.log('=== BOOKING DATA TO SAVE:', bookingData);
@@ -386,7 +392,7 @@ function BookingPage() {
           id="seats"
           className="seats-grid"
         >
-          {SALONG_LAYOUT.seatsPerRow.map((numSeats, index) => {
+          {SALONG_LAYOUT['Stora Salongen'].seatsPerRow.map((numSeats, index) => {
             const row = index + 1;
             return (
               <div key={`row-${row}`} className="seat-row">
