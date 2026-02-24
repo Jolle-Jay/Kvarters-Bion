@@ -38,15 +38,15 @@
   font-size: 22px;
   cursor: pointer;
 }
-/* AIChat.css - styling för biografens chatbot */
 
 .aichat-container {
-  max-width: 500px;
-  margin: 40px auto;
+  width: 350px; /* Fast bredd för popupen */
+  margin: 0;    /* Ta bort marginaler som centrerar den på sidan */
   background: #0a1c0a;
   border: 2px solid #B8860B;
   border-radius: 10px;
-  padding: 2rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 .aichat-title {
@@ -54,9 +54,11 @@
   text-align: center;
 }
 
-.aichat-messages {
-  min-height: 120px;
+.aichat-messages { 
+  max-height: 300px;    /* Max höjd */
+  overflow-y: auto;     /* Aktivera skroll */
   margin-bottom: 20px;
+  padding-right: 5px;   /* Plats för scrollbar */
 }
 
 .aichat-message {
@@ -91,4 +93,17 @@
   font-weight: bold;
   font-size: 1.1rem;
   border: none;
+}
+
+a{
+  color: #f8b303;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .aichat-container {
+    width: 90%; /* Gör popupen bredare på små skärmar */
+    /* Centrera popupen på skärmen */
+    margin-left: auto;
+  }
 }
