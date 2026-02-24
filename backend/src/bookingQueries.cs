@@ -41,6 +41,30 @@ public static class BookingQueries
         );
         int viewingId = (int)currentBooking["viewing"];
 
+        App.MapGet($"/api/bookingSeats/{viewingId}", (HttpContext context, string viewingId) =>
+        {
+           System.Console.WriteLine("Hämtar bokade platser för visning ");
+           int viewingIdParam = int.Parse(viewingId);
+           var bookedSeats = SQLQuery(
+            @"SELECT s.seatRow, s.number
+            FROM bookingSeats bs
+            INNER JOIN bookings b ON bs.booking = b.id
+            INNER JOIN seats s ON bs.seat = s.id
+            WHERE b.viewing = @viewingId
+            AND b.status = 'Confirmed'",
+            new { viewingId = viewingIdParam }
+           );
+
+           var formattedSeats = new List<string>();
+           foreach (var seat in bookedSeats)
+            {
+            string seatString = $"{seat["seatRow"]}-{seat["number"]}";
+            formattedSeats.Add(seatString);
+            }
+            System.Console.WriteLine($"=== Hittade {formattedSeats.Count} bokade platser ===");
+            return RestResult.Parse(context, formattedSeats);
+        });
+
         for (int i = 0; i < seats.Count; i++)
         {
             var parts = seats[i].Split('-');

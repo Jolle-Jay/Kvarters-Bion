@@ -324,5 +324,23 @@ public static class vadDuVill
       System.Console.WriteLine("Vi är inne i customBooking");
       return vadDuVill.HandleCustomBooking(context, bodyJson);
     });
+
+    App.MapGet("/api/viewings", (HttpContext context) =>
+    {
+      var movieIdParam = context.Request.Query["movieId"].ToString();
+      if (string.IsNullOrEmpty(movieIdParam))
+      {
+        var allViewings = SQLQuery("SELECT * FROM viewings ORDER BY start_time");
+        return RestResult.Parse(context, allViewings);
+      }
+
+      int movieId = int.Parse(movieIdParam);
+      var viewings = SQLQuery(
+        "SELECT * FROM viewings WHERE movie = @movieId ORDER BY start_time",
+        new { movieId }
+      );
+
+      return RestResult.Parse(context, viewings);
+    });
   }
 }
