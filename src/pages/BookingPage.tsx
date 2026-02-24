@@ -92,14 +92,13 @@ function BookingPage() {
   const [CurrentLounge, setCurrentLounge] = useState<any>(null);
 
   const getCurrentSalongLayout = () => {
-    if (!selectedViewing)
-    {
+    if (!selectedViewing) {
       return SALONG_LAYOUT['Stora Salongen']; // Default
     }
 
     return selectedViewing.lounge === 1
-    ? SALONG_LAYOUT['Stora Salongen']
-    : SALONG_LAYOUT['Lilla Salongen'];
+      ? SALONG_LAYOUT['Stora Salongen']
+      : SALONG_LAYOUT['Lilla Salongen'];
   };
 
   // tar emot ett nummer, returnerar en sträng
@@ -146,51 +145,50 @@ function BookingPage() {
 
   useEffect(() => {
     const fetchBookedSeats = async () => {
-    if (!selectedViewing || !selectedViewing.id) {
-      return;
-    }
+      if (!selectedViewing || !selectedViewing.id) {
+        return;
+      }
 
-    console.log('Hämtar bokade platser:', selectedViewing.id)
+      console.log('Hämtar bokade platser:', selectedViewing.id);
 
-    setCurrentLounge(selectedViewing.lounge);
+      setCurrentLounge(selectedViewing.lounge);
 
-    try {
-      const bookedResponse = await fetch(`/api/bookingSeats/${selectedViewing.id}`)
+      try {
+        const bookedResponse = await fetch(`/api/bookingSeats/${selectedViewing.id}`);
 
-      if (bookedResponse.ok) {
-        let bookedData = await bookedResponse.json();
+        if (bookedResponse.ok) {
+          let bookedData = await bookedResponse.json();
 
-        if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
-          if ('data' in bookedData && Array.isArray(bookedData.data))
-          {
-            bookedData = bookedData.data;
+          if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
+            if ('data' in bookedData && Array.isArray(bookedData.data)) {
+              bookedData = bookedData.data;
+            }
           }
+
+          const bookedSeatsArray = Array.isArray(bookedData) ? bookedData : [];
+
+          const bookedSeatsSet = new Set<string>(
+            bookedSeatsArray.map((item: any) => {
+              const seat = typeof item === `string` ? item : item.seat;
+              return seat;
+            })
+          );
+
+          console.log("Bokade Platser: ", Array.from(bookedSeatsSet));
+          setBookedSeats(bookedSeatsSet);
         }
-
-        const bookedSeatsArray = Array.isArray(bookedData) ? bookedData : [];
-
-        const bookedSeatsSet = new Set<string>(
-          bookedSeatsArray.map((item: any) => {
-            const seat = typeof item === `string` ? item : item.seat;
-            return seat;
-          })
-        );
-
-        console.log("Bokade Platser: ", Array.from(bookedSeatsSet));
-        setBookedSeats(bookedSeatsSet);
-      } 
-      else {
+        else {
           console.log('Inga bokade platser');
           setBookedSeats(new Set());
         }
       } catch (error) {
         console.error('Kunde inte hitta bokade platser', error);
         setBookedSeats(new Set());
-    }
-  };
+      }
+    };
 
-  fetchBookedSeats();
-}, [selectedViewing]);
+    fetchBookedSeats();
+  }, [selectedViewing]);
 
   // lägger antalet biljetter i totaltickets
   const getTotalTickets = (): number => {
@@ -277,7 +275,7 @@ function BookingPage() {
       seats: selectedSeats,
       counts,
       totalPrice,
-      lounges: getCurrentSalongLayout.name
+      lounges: getCurrentSalongLayout().name
     };
 
     console.log('=== BOOKING DATA TO SAVE:', bookingData);
