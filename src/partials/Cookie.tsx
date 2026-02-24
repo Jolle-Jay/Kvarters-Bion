@@ -25,7 +25,13 @@ export default function CookieBanner() {
   return (
     <div className="cookie-banner">
       <div className="cookie-content">
-        <p>Vi använder cookies för att förbättra din upplevelse.</p>
+        <p> 
+            Denna webbplats använder nödvändiga tekniska cookies för att möjliggöra grundläggande funktioner, 
+            såsom inloggning och säker användning av tjänsten. Inom kort kan vi även komma att använda 
+            statistikcookies för att analysera hur webbplatsen används i syfte att förbättra användarupplevelsen. 
+            Insamlad statistik kan även utgöra underlag för framtida marknadsföringsinsatser. Du har möjlighet 
+            att själv välja om du vill samtycka till användningen av statistikcookies. 
+        </p>
         <div className="cookie-buttons">
           <button onClick={handleAccept} className="accept">Godkänn</button>
           <button onClick={handleDecline} className="decline">Avvisa</button>
