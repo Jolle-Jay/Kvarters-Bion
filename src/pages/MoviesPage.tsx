@@ -9,7 +9,7 @@ export default function MoviePage() {
   const { id } = useParams(); // hämtar id från URL
   const [movie, setMovie] = useState<Movie | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const [openDates, setOpenDates] = useState<Set<string>>(new Set());
   const [viewings, setViewings] = useState<any[]>([]);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function MoviePage() {
     } else if (date.toDateString() === tomorrow.toDateString()) {
       return 'Imorgon';
     } else {
-      return date.toLocaleDateString('sv - SE', {
+      return date.toLocaleDateString('sv-SE', {
         weekday: 'long',
         month: 'long',
         day: 'numeric'
@@ -88,6 +88,18 @@ export default function MoviePage() {
     return acc;
   }, {});
 
+  //funktoon för drop down menu
+  const toggleDate = (date: string) => {
+    const newOpenDates = new Set(openDates);
+    if (newOpenDates.has(date)) {
+      newOpenDates.delete(date);
+    } else {
+      newOpenDates.add(date);
+    }
+    setOpenDates(newOpenDates);
+  };
+
+
 
 
 
@@ -96,13 +108,10 @@ export default function MoviePage() {
 
       {/* TOP HERO SECTION */}
       <div className="movie-hero">
-
-        {/* POSTER */}
         <div className="movie-poster">
           <img src={movie.Poster} alt={movie.Title} />
         </div>
 
-        {/* TRAILER */}
         <div className="movie-trailer">
           <iframe
             src={getEmbedUrl(movie.Trailer)}
@@ -110,12 +119,10 @@ export default function MoviePage() {
             allowFullScreen
           />
         </div>
-
       </div>
 
       {/* INFO SECTION */}
       <div className="movie-content">
-
         <div className="movie-info">
           <h1>{movie.Title}</h1>
 
@@ -126,11 +133,8 @@ export default function MoviePage() {
             <p><strong>Åldersgräns:</strong> {movie.Rated}</p>
           </div>
 
-
-          {/* hela dropdown-section här */}
           <div className="movie-description">
             <div className="dropdown-section">
-
               <div
                 className="dropdown-header"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -139,15 +143,12 @@ export default function MoviePage() {
                   <h3>Om filmen</h3>
                 </div>
 
-                <span
-                  className={`dropdown-menu ${dropdownOpen ? "open" : ""}`}
-                > ⋯
+                <span className={`dropdown-menu ${dropdownOpen ? "open" : ""}`}>
+                  ⋯
                 </span>
               </div>
 
-              <div
-                className={`dropdown-content ${dropdownOpen ? "show" : ""}`}
-              >
+              <div className={`dropdown-content ${dropdownOpen ? "show" : ""}`}>
                 <p>{movie.Plot}</p>
 
                 <div className="info-row">
@@ -175,35 +176,56 @@ export default function MoviePage() {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* SHOWTIMES */}
-      <div className="movie-times">
-        <h3>Visningstider</h3>
+        {/* Uppdaterad shotimes */}
+        <div className="movie-times">
+          <h3>Visningstider</h3>
 
-        <div className="showtime-date">
-          <h4>Idag</h4>
+          {viewings.length === 0 ? (
+            <p>Inga visningstider tillgängliga</p>
+          ) : (
+            Object.entries(groupedViewings).map(([date, dateViewings]: [string, any]) => (
+              <div key={date} className="showtime-date">
 
-          <div className="showtime-card">
-            <div className="showtime-poster">
-              <img src={movie.Poster} alt={movie.Title} />
-            </div>
+                <h4
+                  onClick={() => toggleDate(date)}
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                >
+                  {formatDate(dateViewings[0].start_time)}
+                  <span style={{ marginLeft: '10px' }}>
+                    {openDates.has(date) ? '▼' : '▶'}
+                  </span>
+                </h4>
 
-            <div className="showtime-info">
-              <div className="showtime-time">19:00</div>
-              <div className="showtime-location">Stora Salongen</div>
+                {openDates.has(date) && dateViewings.map((viewing: any) => (
+                  <div key={viewing.id} className="showtime-card">
+                    <div className="showtime-poster">
+                      <img src={movie.Poster} alt={movie.Title} />
+                    </div>
 
-              <div className="showtime-meta">
-                <span className="meta-tag">{movie.Genre}</span>
-                <span className="meta-tag">{movie.Runtime}</span>
-                <span className="meta-tag">{movie.id}</span>
+                    <div className="showtime-info">
+                      <div className="showtime-time">
+                        {formatDateTime(viewing.start_time)}
+                      </div>
+                      <div className="showtime-location">
+                        {viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}
+                      </div>
+
+                      <div className="showtime-meta">
+                        <span className="meta-tag">{movie.Genre}</span>
+                        <span className="meta-tag">{movie.Runtime}</span>
+                      </div>
+                    </div>
+
+                    <Link to={`/booking/${movie.id}`} className="book-btn">
+                      Boka biljett
+                    </Link>
+                  </div>
+                ))}
               </div>
-            </div>
 
-            <Link to={`/booking/${movie.id}`} className="book-btn">
-              Boka biljett
-            </Link>
-          </div>
+            ))
+          )}
         </div>
       </div>
     </section>
