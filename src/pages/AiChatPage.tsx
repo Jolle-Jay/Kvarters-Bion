@@ -30,7 +30,16 @@ function getBotReply(text: string) {
   ) {
     return "Bistro erbjuder popcorn, snacks, godis, läsk, kaffe, smörgåsar och varm korv. Vissa dagar har vi även specialerbjudanden på fika och mat!";
   }
-  return "Jag är biografens chatbot! Har du frågor om öppettider, biljettpriser eller Bistro utbud?";
+  if (
+    lower.includes("filmer") ||
+    lower.includes("bio") ||
+    lower.includes("visas") ||
+    lower.includes("program") ||
+    lower.includes("aktuella")
+  ) {
+    return "Just nu visar vi: Avatar, Phantom of the Opera, Ready Player One, Shrek, The Notebook, Grown Ups, Hamilton, Batman, Alien, Wicked, Star Trek, SpongeBob, Poor Things, Koops, Dark Crystal, New Kids Turbo och The Exorcist.";
+  }
+  return "Jag är biografens chatbot! Har du frågor om öppettider, biljettpriser, Bistro utbud eller vilka filmer som visas?";
 }
 
 export default function AiChatPage() {
