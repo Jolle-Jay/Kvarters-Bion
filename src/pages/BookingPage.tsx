@@ -239,7 +239,7 @@ function BookingPage() {
 
   //   navigate('/confirm');
 
-  // };
+  // }; 
 
   if (!movie) {
     return (
@@ -357,7 +357,7 @@ function BookingPage() {
               <span>{formatPrice(totalPrice)}</span>
               </div>
             </aside>
-            
+
           </div>
         </div>
       </section>
