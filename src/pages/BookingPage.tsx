@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 import LillaSalongen from './LillaSalongen';
-import { cwd } from 'process';
+/* import { cwd } from 'process'; */
 
 // pris per kategori för biljetter
 const PRICES = {
