@@ -15,10 +15,12 @@ const PRICES = {
 const SALONG_LAYOUT = {
   'Stora Salongen': {
     name: "Stora Salongen",
+    loungeId: 1,
     seatsPerRow: [8, 9, 10, 10, 10, 10, 12, 12]
   },
   'Lilla Salongen': {
     name: "Lilla Salongen",
+    loungeId: 2,
     seatsPerRow: [6, 8, 9, 10, 10, 12]
   }
 };
@@ -88,6 +90,17 @@ function BookingPage() {
   const [availableViewigs, setavailableViewigs] = useState<any[]>([]);
   const [selectedViewing, setselectedViewing] = useState<any>(null);
   const [CurrentLounge, setCurrentLounge] = useState<any>(null);
+
+  const getCurrentSalongLayout = () => {
+    if (!selectedViewing)
+    {
+      return SALONG_LAYOUT['Stora Salongen']; // Default
+    }
+
+    return selectedViewing.lounge === 1
+    ? SALONG_LAYOUT['Stora Salongen']
+    : SALONG_LAYOUT['Lilla Salongen'];
+  };
 
   // tar emot ett nummer, returnerar en sträng
   // tofixed 2 lägger till 2 decimaler och gör om . till ,
@@ -264,7 +277,7 @@ function BookingPage() {
       seats: selectedSeats,
       counts,
       totalPrice,
-      lounges: SALONG_LAYOUT['Stora Salongen'].name
+      lounges: getCurrentSalongLayout.name
     };
 
     console.log('=== BOOKING DATA TO SAVE:', bookingData);
@@ -448,7 +461,7 @@ function BookingPage() {
           id="seats"
           className="seats-grid"
         >
-          {SALONG_LAYOUT['Stora Salongen'].seatsPerRow.map((numSeats, index) => {
+          {getCurrentSalongLayout().seatsPerRow.map((numSeats, index) => {
             const row = index + 1;
             return (
               <div key={`row-${row}`} className="seat-row">
