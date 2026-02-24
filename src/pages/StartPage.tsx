@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import "../css/MovieCards.css";
 import "../css/Carousel.css";
-import "../css/Stars.css";
 
 export default function StartPage() {
 

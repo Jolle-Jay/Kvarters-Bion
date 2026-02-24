@@ -1,14 +1,14 @@
 /* Fil: Bokningssida - Biljettväljare och sammanfattning */
 
 /* Hero section: Innehåller biljettväljare och sammanfattning */
-.hero {
+/* .hero {
     padding: 2rem;
     background: #0a1a0a;
     border-bottom: 2px solid #5e460f;
     max-width: 1400px;
     margin: 0 auto;
 
-}
+} */
 
 .hero h2 {
     text-align: center;
@@ -17,11 +17,6 @@
     margin-bottom: 0.5rem;
 }
 
-.hero p {
-    text-align: center;
-    color: #ccc;
-    margin-bottom: 2rem;
-}
 
 /* Layout för biljettväljare och sammanfattning */
 .ticket-layout {
@@ -428,9 +423,9 @@
 
 
 @media (max-width: 768px) {
-    .hero {
+    /* .hero {
         padding: 1.5rem 1rem;
-    }
+    } */
 
     .hero h2 {
         font-size: 1.5rem;
