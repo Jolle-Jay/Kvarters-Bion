@@ -2,10 +2,8 @@ import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getCookie, setCookie} from 'typescript-cookie';
 import "../css/MovieCards.css";
 import "../css/Carousel.css";
-import "../css/Cookies.css";
 
 export default function StartPage() {
 
@@ -34,7 +32,7 @@ export default function StartPage() {
         const res = await fetch('/api/viewings/all');
         if (!res.ok) throw new Error('Fetch failed: ' + res.status);
         const viewingsData = await res.json();
-        console.log("Viewings fetched:", viewingsData);
+        console.log("Viewings fetched:", viewingsData); // <-- Felsökning
         setViewings(viewingsData);
       } catch (err) {
         console.error("Error fetching viewings:", err);
@@ -46,25 +44,6 @@ export default function StartPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
-  
-  // Cookie consent
-  useEffect(() => {
-    const consent = getCookie("cookieConsent");
-    setCookieConsent(consent ?? null);
-  }, []);
-
-  const [cookieConsent, setCookieConsent] = useState<string | null>(null);
-  
-  const handleAcceptCookies = () => {
-    setCookie("cookieConsent", "accepted", { expires: 7 });
-    setCookieConsent("accepted");
-  };
-
-  const handleDeclineCookies = () => {
-    setCookie("cookieConsent", "declined", { expires: 7 });
-    setCookieConsent("declined");
-  };
-
 
   const mapToSwedishAge = (rating: string) => {
     switch (rating) {
@@ -217,20 +196,6 @@ export default function StartPage() {
           </Link>
         ))}
       </div>
-
-
-        {/* COOKIE CONSENT */}
-        {!cookieConsent && (
-          <div className="cookie-banner">
-            <div className="cookie-content">
-              <p>Vi använder cookies för att förbättra din upplevelse.</p>
-              <div className="cookie-buttons">
-                <button onClick={handleAcceptCookies} className="accept">Godkänn</button>
-                <button onClick={handleDeclineCookies} className="decline">Avvisa</button>
-              </div>
-            </div>
-          </div>
-        )}
     </main>
   );
 };
