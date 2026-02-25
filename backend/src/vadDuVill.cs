@@ -375,7 +375,7 @@ public static class vadDuVill
 
       System.Console.WriteLine("");
       System.Console.WriteLine($"Hittade {formattedSeats.Count} bokade plater för viewing: {vId}");
-      // Returns formattedSeats as seats which becomes a Json object when parsed so it returns data 
+      // Returns formattedSeats as seats which becomes a Json ojbect when parsed so it returns data 
       // in the form of: {"seats": ["1-1", "1-2", "1-3"]}
       return RestResult.Parse(context, new { seats = formattedSeats });
     });

@@ -141,7 +141,6 @@ function BookingPage() {
     }
   }, [id]);
 
-  
   useEffect(() => {
     const fetchBookedSeats = async () => {
       if (!selectedViewing || !selectedViewing.id) {
@@ -158,20 +157,14 @@ function BookingPage() {
         if (bookedResponse.ok) {
           const bookedData = await bookedResponse.json();
 
-          // Made unnessecary after adding the .seat object to bookedRespone when returning
-          // values from SQL query.
-          /*if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
+/*           if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
             if ('data' in bookedData && Array.isArray(bookedData.data)) {
               bookedData = bookedData.data;
             }
           } */
 
-          // Takes the Json object seats what we return with our fetch and checks if it's an
-          // array and then assigns it to bookedSeatsArray.
           const bookedSeatsArray = Array.isArray(bookedData.seats) ? bookedData.seats : [];
 
-          // Goes through the array and maps them in bookedSeatsSet so they can then be used to
-          // set seats on our webpage to booked, makes them unavailable to other users to book.
           const bookedSeatsSet = new Set<string>(
             bookedSeatsArray.map((seat: string) => seat)
           );
