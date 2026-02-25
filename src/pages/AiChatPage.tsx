@@ -177,7 +177,7 @@ export default function AiChatPage() {
         <div className="chat-popup">
           <div className="aichat-container">
             <h2 className="aichat-title">Biografens AI-chat</h2>
-            <div className="aichat-messages">
+            <div className="chat-messages">
               {messages.map((msg, i) => (
                 <div key={i} className={`aichat-message ${msg.role}`}>
                   <b>{msg.role === 'bot' ? 'BioBot' : 'Du'}:</b>{' '}

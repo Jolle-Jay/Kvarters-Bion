@@ -1,17 +1,23 @@
-
-/* Custom scrollbar for chat-messages */
-
-/* Chrome, Edge, Safari */
+/* Green custom scrollbar for chat-messages */
+.chat-messages {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding-right: 5px;
+  scrollbar-width: thin; /* Stöds för endast FireFox */
+  scrollbar-color: #394c3b #1a2b1a; /* Stöds för endast FireFox */
+}
 .chat-messages::-webkit-scrollbar {
   width: 8px;
 }
 .chat-messages::-webkit-scrollbar-thumb {
-  background: #354832;
+  background: #104115;
   border-radius: 4px;
 }
 .chat-messages::-webkit-scrollbar-track {
-  background: #1a2b1a; /* dark green */
+  background: #1a2b1a;
 }
+
 /* ChatBubble styling */
 .chat-bubble {
   position: fixed;
