@@ -342,5 +342,35 @@ public static class vadDuVill
 
       return RestResult.Parse(context, viewings);
     });
-  }
+
+    App.MapGet("/api/bookingSeats/{viewingId}", (HttpContext context, string viewingId) =>
+    {
+      System.Console.WriteLine("Hämtar bokade platser för viewing: " + viewingId);
+      
+      int vId = int.Parse(viewingId);
+
+      var bookedSeats = SQLQuery(
+        @"SELECT s.seatRow, s.number
+        FROM bookingSeats bs
+        INNER JOIN bookings b ON bs.booking = b.id
+        INNER JOIN seats s ON bs.seat = s.id
+        WHERE b.viewing = @viewingId
+        AND b.status = 'Confirmed'",
+        new { viewingId = vId }
+      );
+
+      var formattedSeats = new List<string>();
+      System.Console.Write("Seats: ");
+      foreach (var seat in bookedSeats)
+      {
+        string seatString = $"{seat["seatRow"]}-{seat["number"]}";
+        System.Console.Write(seatString + ", ");
+        formattedSeats.Add(seatString);
+      }
+
+      System.Console.WriteLine("");
+      System.Console.WriteLine($"Hittade {formattedSeats.Count} bokade plater för viewing: {viewingId}");
+      return RestResult.Parse(context, formattedSeats);
+    });
+  }  
 }
