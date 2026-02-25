@@ -1,4 +1,7 @@
+using System.Threading.Tasks.Dataflow;
+
 namespace WebApp;
+
 public static class LoginRoutes
 {
     private static Obj GetUser(HttpContext context)
@@ -43,6 +46,17 @@ public static class LoginRoutes
             // Add the user to the session, without password
             dbUser.Delete("password");
             Session.Set(context, "user", dbUser);
+
+            Console.WriteLine("Provar skickar mail.");
+            try
+            {
+                EmailService.SendEmail(body.email, "Login", $"<h1> Hej {body.email}!</h1> <br> <p>Du har lyckats att logga in. </p>");
+                System.Console.WriteLine("Mail skickat!");
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine("Mail misslyckades" + ex.Message);
+            }
 
             // Return the user
             return RestResult.Parse(context, dbUser!);
