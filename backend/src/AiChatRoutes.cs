@@ -4,7 +4,7 @@ public static class AiChatRoutes
 {
     private static string aiAccessToken = "";
     private static string systemPrompt = "";
-    private static readonly string proxyUrl = "https://ai-api.nodehill.com";
+    private static readonly string proxyUrl = "https://ai-api.nodehill.com"; //AI servern
     private static readonly HttpClient httpClient = new HttpClient();
 
     public static void Start()
@@ -40,7 +40,7 @@ public static class AiChatRoutes
                 var requestBody = Obj(new { messages = fullMessages });
 
                 // Make request to AI API
-                var request = new HttpRequestMessage(HttpMethod.Post, $"{proxyUrl}/v1/chat/completions");
+                var request = new HttpRequestMessage(HttpMethod.Post, $"{proxyUrl}/v1/chat/completions");  // AI servern används här
                 request.Headers.Add("Authorization", $"Bearer {aiAccessToken}");
                 request.Content = new StringContent(
                     JSON.Stringify(requestBody),

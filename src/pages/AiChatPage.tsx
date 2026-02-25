@@ -90,6 +90,8 @@ function getBotReply(text: string) {
     }
     if (
       lower === "tack" ||
+      lower === "tack så mycket" ||
+      lower === "tackar" ||
       lower === "hejdå"
     ) {
       return "Tack själv! Ha en fantastisk dag och hoppas vi ses snart på bion!";
