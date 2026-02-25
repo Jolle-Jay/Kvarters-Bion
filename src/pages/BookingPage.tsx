@@ -147,7 +147,7 @@ function BookingPage() {
         return;
       }
 
-      console.log('Hämtar bokade platser:', selectedViewing.id);
+      console.log('Hämtar bokade platser för viewing:', selectedViewing.id);
 
       setCurrentLounge(selectedViewing.lounge);
 
