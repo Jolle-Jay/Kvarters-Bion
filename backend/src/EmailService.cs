@@ -19,10 +19,10 @@ static class EmailService
     var config = JSON.Parse(configJson);
 
     //plockar ut konfigurationen från db config json
-    string smtpServer = config.smtpServer;
-    int smtpPort = Convert.ToInt32(config.smtpPort);
-    string emailUsername = config.emailUsername;
-    string emailPassword = config.emailPassword;
+    string smtpServer = (string)config["smtpServer"];
+    int smtpPort = (int)config["smtpPort"];
+    string emailUsername = (string)config["emailUsername"];
+    string emailPassword = (string)config["emailPassword"];
 
     // sätter ihop ett meddelande ,ed rätt struktur genom att. använda
     //MimeMessafge, rekommendars av mailkit avv använda detta
