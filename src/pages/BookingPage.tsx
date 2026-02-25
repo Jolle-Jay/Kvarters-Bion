@@ -332,12 +332,13 @@ function BookingPage() {
         {/* ÄNDRAD KOD */}
         <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
         {availableViewigs.length > 0 && (
-          <div style={{ margin: '1rem 0' }}>
-            <label htmlFor="viewing-select" style={{ marginRight: '0.5rem' }}>
-              <strong>Välj visningstid:</strong>
+          <div className="viewing-selector">
+            <label htmlFor="viewing-select" className="viewing-label">
+              Välj visningstid:
             </label>
             <select
               id="viewing-select"
+              className="viewing-dropdown"
               value={selectedViewing?.id || ''}
               onChange={(e) => {
                 const viewing = availableViewigs.find(v => v.id === parseInt(e.target.value));
