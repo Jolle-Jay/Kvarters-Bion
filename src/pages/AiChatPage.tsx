@@ -108,6 +108,19 @@ function getBotReply(text: string) {
         "Lilla Salongen passar utmärkt för både vanliga visningar, specialvisningar och privata evenemang."
       );
     }
+     if (
+    lower.includes("stora salongen") ||
+    lower.includes("storasalongen") ||
+    lower.includes("om stora salongen") ||
+    lower.includes("stora salong")
+  ) {
+    return (
+      "Stora Salongen är hjärtat i KvartersBion och vår största biosalong. " +
+      "Salongen har 8 rader med varierande antal platser per rad: 8, 9, 10, 10, 10, 10, 12 och 12 platser, vilket ger totalt 81 sittplatser. " +
+      "Här får du en filmupplevelse utöver det vanliga med stor duk, avancerat ljudsystem och bekväma biosoffor. " +
+      "Stora Salongen passar perfekt för biopremiärer, stora evenemang och när du vill ha maximal biokänsla!"
+    );
+  }
   return ("Förlåt, jag förstår inte din fråga. Prova att fråga om våra öppettider, biljettpriser, aktuella filmer eller hur du loggar in och bokar biljetter!");
 }
 
