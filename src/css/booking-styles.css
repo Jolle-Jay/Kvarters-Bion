@@ -34,9 +34,11 @@
 /* Layout för biljettväljare och sammanfattning */
 .ticket-layout {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-    justify-content: center; /* centrerar kolumnerna */ 
-    justify-items: center; /* centrerar boxarna i kolumnerna */ 
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    justify-content: center;
+    /* centrerar kolumnerna */
+    justify-items: center;
+    /* centrerar boxarna i kolumnerna */
     margin-top: 0;
     gap: 1rem;
     width: 100%;
@@ -44,12 +46,12 @@
 
 /* Panel för biljettval */
 .ticket-panel {
-    background: #061906; 
-    padding: 0.2rem; 
-    border: 2px solid #5e460f; 
-    border-radius: 8px; 
-    max-width: 300px; 
-    width: 100%; 
+    background: #061906;
+    padding: 0.2rem;
+    border: 2px solid #5e460f;
+    border-radius: 8px;
+    max-width: 300px;
+    width: 100%;
 }
 
 .ticket-panel h3 {
@@ -132,14 +134,15 @@
 
 /* Sammanfattningspanel */
 .ticket-summary {
-    background: #061906; 
-    padding: 1.2rem; 
-    border: 2px solid #5e460f; 
-    border-radius: 10px; 
-    height: fit-content; 
-    position: sticky; 
-    top: 2rem; 
-    max-width: 320px; /* ← gör boxen mindre */ 
+    background: #061906;
+    padding: 1.2rem;
+    border: 2px solid #5e460f;
+    border-radius: 10px;
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+    max-width: 320px;
+    /* ← gör boxen mindre */
     width: 100%;
 }
 
@@ -252,7 +255,13 @@
 }
 
 /* Skärm: visuell markör för scen/skärm. */
+.screen-wrapper {
+    perspective: 600px;
+}
+
 .screen {
+    position: relative;
+    /* för att pseudo-elementet ska fungera */
     background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
     color: #B8860B;
     text-align: center;
@@ -263,8 +272,44 @@
     max-width: 600px;
     font-size: 1.2rem;
     font-weight: bold;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+
+    transform: rotateX(-20deg);
+    transform-origin: bottom center;
+    transform-style: preserve-3d;
+
+    overflow: hidden;
+    /* så animationen inte sticker ut */
 }
+
+.screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* fyller hela .screen */
+    border-radius: 20px;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.619), transparent 70%);
+    pointer-events: none;
+    animation: pulseLight 2s infinite alternate ease-in-out;
+}
+
+@keyframes pulseLight {
+    0% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.35;
+        transform: scale(1.02);
+    }
+
+    100% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+}
+
 
 /* Rutnät för säten. */
 .seats-grid {

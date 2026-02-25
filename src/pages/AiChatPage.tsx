@@ -126,100 +126,35 @@ export default function AiChatPage() {
       }
     }
 
-    const mentionedMovie = movies.find(movie => lower.includes(movie.Title.toLowerCase()));
-    if (mentionedMovie) {
-      if (lower.includes("tid") || lower.includes("visas") || lower.includes("spelas") || lower.includes("när")) {
-        const movieViewings = viewings.filter(v => v.movie === mentionedMovie.id);
-        if (movieViewings.length === 0) {
-          return `Tyvärr har vi inga planerade visningar för ${mentionedMovie.Title} just nu.`;
-        }
-        let reply = `Visst! Här är kommande visningstider för ${mentionedMovie.Title}:<div><ul>`;
-        movieViewings.forEach(viewing => {
-          const time = new Date(viewing.start_time).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
-          const date = new Date(viewing.start_time).toLocaleDateString('sv-SE');
-          reply += `<li>${date} kl. ${time} i ${viewing.loungeName}</li>`;
-        });
-        reply += "</ul></div>";
-        return reply;
-      }
-      return `Här kommer information om ${mentionedMovie.Title}! 
-      <div>
-        <ul>
-        <li><p><b>${mentionedMovie.Title}</b></p></li>
-        <li><b>Genre:</b> ${mentionedMovie.Genre}</li>
-        <li><b>År:</b> ${mentionedMovie.Year}</li>
-        <li><b>Handling:</b> ${mentionedMovie.Plot}</li>
-        <li><b>IMDb:</b> ${mentionedMovie.imdbRating}/10</li>
-        </ul>
-      </div>`;
+    // Om det inte är en fråga om historik, skicka till AI-backend
+    try {
+      // Förbered meddelandelistan för API:et
+      // Vi mappar om 'bot' till 'assistant' som är standard för AI-API:er
+      const apiMessages = messages.map(msg => ({
+        role: msg.role === 'bot' ? 'assistant' : 'user',
+        content: msg.content
+      }));
+
+      // Lägg till det nya meddelandet
+      apiMessages.push({ role: 'user', content: text });
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: apiMessages })
+      });
+
+      if (!response.ok) throw new Error('Kunde inte nå AI-servern');
+
+      const data = await response.json();
+
+      // Antar att svaret följer OpenAI-formatet som backend verkar använda
+      return data.choices?.[0]?.message?.content || "Jag fick tyvärr inget svar från AI:n.";
+    } catch (error) {
+      console.error("AI Chat Error:", error);
+      return "Ursäkta, jag har lite problem med uppkopplingen just nu. Försök igen senare.";
     }
-
-    // Ny logik för att svara på frågor om kapacitet
-    if (lower.includes("kapacitet") || lower.includes("platser") || lower.includes("stolar")) {
-      const mentionedLounge = lounges.find(l => lower.includes(l.name.toLowerCase()));
-
-      if (mentionedLounge) {
-        return `${mentionedLounge.name} har en kapacitet på ${mentionedLounge.capacity} platser.`;
-      }
-
-      if (lounges.length > 0) {
-        let reply = "Här är kapaciteten för våra salonger:<div><ul>";
-        lounges.forEach(lounge => {
-          reply += `<li><b>${lounge.name}:</b> ${lounge.capacity} platser</li>`;
-        });
-        reply += "</ul></div>";
-        return reply;
-      }
-
-      return "Jag kunde inte hitta information om salongernas kapacitet just nu.";
-    }
-
-    if (lower.includes("öppettider") || lower.includes("öppet")) 
-      
-      return `Vi har öppet 
-      <div>
-      <ul>
-        <li><b>måndag–fredag:</b> 10–22</li> <li><b>lördag–söndag:</b> 12–23</li>
-      </ul>
-      </div>`;
-
-    if (lower.includes("pris") || lower.includes("biljett")) 
-      return `Biljettpriser: 
-      <div>
-      <ul>
-        <li><b>Ordinarie:</b> 140 kr</li>
-        <li><b>Pensionär:</b> 120 kr</li>
-        <li><b>Barn:</b> 80 kr</li>
-      </ul>
-      </div>`;
-    
-    if (lower.includes("bistro") || lower.includes("mat") || lower.includes("meny")) 
-      return `Bistro erbjuder:
-    <div>
-      <ul>
-        <li><b>popcorn snacks</b></li>
-        <li><b>godis</b></li>
-        <li><b>läsk</b></li>
-        <li><b>kaffe</b></li>
-        <li><b>smörgåsar</b></li>
-        <li><b>varm korv</b></li>
-        <li>För mer info klicka på <a href='/bistro'> Bistro </a> i menyn.
-        </ul>
-        </div>
-        `;
-    
-    if (lower.includes("filmer") || lower.includes("program") || lower.includes("aktuella")) {
-      const allMovieTitles = movies.map(m => m.Title).join(', ');
-      return `Just nu visar vi: ${allMovieTitles || 'laddar filmer...'}. Fråga mig om en specifik film för att få veta mer!`;
-    }
-    if (lower.includes("logga in") || lower.includes("registrera")) return "För att logga in eller registrera dig, klicka på profilikonen uppe till höger på sidan.";
-    if (lower.includes("boka") || lower.includes("köpa biljett")) return "För att boka, hitta filmen du vill se på startsidan och klicka på den för att se tider och göra din bokning.";
-    if (lower.includes("betala") || lower.includes("betalning")) return "När du har bokat en biljett får du en QR-kod. Du visar och skannar QR-koden på plats i bion och betalar din biljett i kassan.";
-    if (["hej", "hej!", "hejsan", "tjena", "hallå", "hello", "hi"].includes(lower)) return "Hej och välkommen till BioBoten! Hur kan jag hjälpa dig idag?";
-    if (["tack", "tack så mycket", "hejdå"].includes(lower)) return "Tack själv! Ha en fantastisk dag och hoppas vi ses på bion!";
-
-    return "Förlåt, jag förstår inte din fråga. Prova att fråga om våra öppettider, biljettpriser, en specifik film eller din bokningshistorik.";
-  }
+  };
 
   const sendMessage = async () => {
     const text = input.trim();
