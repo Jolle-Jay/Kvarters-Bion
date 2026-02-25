@@ -261,100 +261,100 @@ function BookingPage() {
         <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
         <p>Välj antal biljetter och platser.</p>
         <div className="ticket-wrapper">
-        <div className="ticket-layout">
+          <div className="ticket-layout">
 
-          {/* Panel: Select number of tickets */}
-          <div className="ticket-panel">
-            <h3>Välj antal biljetter</h3>
+            {/* Panel: Select number of tickets */}
+            <div className="ticket-panel">
+              <h3>Välj antal biljetter</h3>
 
-            <div className="ticket-row">
-              <div className="ticket-label">
-                <strong>Ordinarie</strong>
-                <span className="ticket-note">Standard</span>
+              <div className="ticket-row">
+                <div className="ticket-label">
+                  <strong>Ordinarie</strong>
+                  <span className="ticket-note">Standard</span>
+                </div>
+                <div className="ticket-controls">
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('adult', -1)}
+                    disabled={counts.adult === 0}
+                  >
+                    −
+                  </button>
+                  <span className="ticket-count">{counts.adult}</span>
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('adult', 1)}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
-              <div className="ticket-controls">
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('adult', -1)}
-                  disabled={counts.adult === 0}
-                >
-                  −
-                </button>
-                <span className="ticket-count">{counts.adult}</span>
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('adult', 1)}
-                >
-                  +
-                </button>
+
+              <div className="ticket-row">
+                <div className="ticket-label">
+                  <strong>Pensionär</strong>
+                  <span className="ticket-note">10% rabatt</span>
+                </div>
+                <div className="ticket-controls">
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('senior', -1)}
+                    disabled={counts.senior === 0}
+                  >
+                    −
+                  </button>
+                  <span className="ticket-count">{counts.senior}</span>
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('senior', 1)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div className="ticket-row">
+                <div className="ticket-label">
+                  <strong>Barn (t.o.m 11 år)</strong>
+                  <span className="ticket-note">20% rabatt</span>
+                </div>
+                <div className="ticket-controls">
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('child', -1)}
+                    disabled={counts.child === 0}
+                  >
+                    −
+                  </button>
+                  <span className="ticket-count">{counts.child}</span>
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('child', 1)}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div className="ticket-row">
-              <div className="ticket-label">
-                <strong>Pensionär</strong>
-                <span className="ticket-note">10% rabatt</span>
+            {/* Panel: Summary */}
+            <aside className="ticket-summary">
+              <h4>Sammanfattning</h4>
+              <div className="summary-row">
+                <span>Ordinarie</span>
+                <span>{counts.adult} × {formatPrice(PRICES.adult)}</span>
               </div>
-              <div className="ticket-controls">
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('senior', -1)}
-                  disabled={counts.senior === 0}
-                >
-                  −
-                </button>
-                <span className="ticket-count">{counts.senior}</span>
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('senior', 1)}
-                >
-                  +
-                </button>
+              <div className="summary-row">
+                <span>Pensionär</span>
+                <span>{counts.senior} × {formatPrice(PRICES.senior)}</span>
               </div>
-            </div>
-
-            <div className="ticket-row">
-              <div className="ticket-label">
-                <strong>Barn (t.o.m 11 år)</strong>
-                <span className="ticket-note">20% rabatt</span>
+              <div className="summary-row">
+                <span>Barn</span>
+                <span>{counts.child} × {formatPrice(PRICES.child)}</span>
               </div>
-              <div className="ticket-controls">
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('child', -1)}
-                  disabled={counts.child === 0}
-                >
-                  −
-                </button>
-                <span className="ticket-count">{counts.child}</span>
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('child', 1)}
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Panel: Summary */}
-          <aside className="ticket-summary">
-            <h4>Sammanfattning</h4>
-            <div className="summary-row">
-              <span>Ordinarie</span>
-              <span>{counts.adult} × {formatPrice(PRICES.adult)}</span>
-            </div>
-            <div className="summary-row">
-              <span>Pensionär</span>
-              <span>{counts.senior} × {formatPrice(PRICES.senior)}</span>
-            </div>
-            <div className="summary-row">
-              <span>Barn</span>
-              <span>{counts.child} × {formatPrice(PRICES.child)}</span>
-            </div>
-            <div className="summary-total">
-              <span>Summa</span>
-              <span>{formatPrice(totalPrice)}</span>
+              <div className="summary-total">
+                <span>Summa</span>
+                <span>{formatPrice(totalPrice)}</span>
               </div>
             </aside>
 
@@ -385,7 +385,9 @@ function BookingPage() {
             </div>
           </div>
         </div>
-        <div className="screen">Bio Skärm</div>
+        <div className='screen-wrapper'>
+          <div className="screen">Bio Skärm</div>
+        </div>
         <div
           id="seats"
           className="seats-grid"
@@ -395,7 +397,7 @@ function BookingPage() {
             return (
               <div key={`row-${row}`} className="seat-row">
                 <div className="row-label">{row}</div>
-                <div className="seat-row-inner">
+                <div className="seat-row-inner" style={{ gridTemplateColumns: `repeat(${numSeats}, minmax(0, 100px))` }}>
                   {Array.from({ length: numSeats }, (_, i) => {
                     const col = i + 1;
                     const seatId = `${row}-${col}`;

@@ -1,5 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import '../CSS/AIChat.css';
+import type { Movie } from '../interfaces/Movie';
+import { mapMovieArray } from '../interfaces/Movie';
+
 
 AiChatPage.route = {
   path: '/ai-chat',
@@ -7,172 +10,195 @@ AiChatPage.route = {
   index: 4
 };
 
+interface Lounge {
+  id: number;
+  name: string;
+  capacity: number;
+}
+
+interface Viewing {
+  id: number;
+  movie: number;
+  lounge: number;
+  start_time: string;
+  loungeName?: string;
+}
+
 interface Message {
   role: 'user' | 'bot';
   content: string;
   isHtml?: boolean;
 }
 
-function getBotReply(text: string) {
-
-  const lower = text.toLowerCase();
-  if (lower.includes("öppettider") ||
-      lower.includes("öppet")
-  ) {
-    return "Vi har öppet måndag–fredag 16:00–23:00, lördag–söndag 13:00–00:00.";
-  }
-  if (lower.includes("pris") ||
-      lower.includes("priset") ||
-      lower.includes("priserna") ||
-      lower.includes("biljett") || 
-      lower.includes("biljetterna")
-  ) {
-    return "Biljettpriser: Ordinarie 140 kr, Pensionär 120 kr, Barn 80 kr.";
-  }
-  if (
-    lower.includes("bistro") ||
-    lower.includes("mat") ||
-    lower.includes("drinkar") ||
-    lower.includes("meny") ||
-    lower.includes("erbjudande") ||
-    lower.includes("utbud")
-  ) {
-    return "Bistro erbjuder popcorn, snacks, godis, läsk, kaffe, smörgåsar och varm korv. Vissa dagar har vi även specialerbjudanden på fika och mat! För mer info trycker du på Bistro som ligger högst upp.";
-  }
-  if (
-    lower.includes("filmer") ||
-    lower.includes("bio") ||
-    lower.includes("visas") ||
-    lower.includes("program") ||
-    lower.includes("aktuella")
-  ) {
-    return "Just nu visar vi: Avatar, Phantom of the Opera, Ready Player One, Shrek, The Notebook, Grown Ups, Hamilton, Batman, Alien, Wicked, Star Trek, SpongeBob, Poor Things, Koops, Dark Crystal, New Kids Turbo och The Exorcist.";
-  }
-   if (
-      lower.includes("logga in") ||
-      lower.includes("inlogg") ||
-      lower.includes("loggar in") ||
-      lower.includes("registrera") ||
-      lower.includes("hur registrerar") ||
-      lower.includes("registrering") ||
-      lower.includes("hur loggar")
-    ) {
-      return "För att logga in klickar du på profilknappen uppe till höger på sidan. Där fyller du i ditt användarnamn och lösenord och trycker på 'Logga in'. Om du inte har ett konto kan du välja 'Registrera' för att skapa ett nytt konto.";
-    }
-    if (
-      lower.includes("boka") ||
-      lower.includes("bokar") ||
-      lower.includes("bokning") ||
-      lower.includes("hur köper") ||
-      lower.includes("köpa biljett")
-    ) {
-      return "För att boka biljett klickar du på filmen du vill se på startsidan eller under 'Filmer'. Välj sedan tid och plats, och följ stegen för att slutföra bokningen. Du får en bekräftelse på mejl när bokningen är klar!";
-    }
-    if (
-      lower.includes("betala") ||
-      lower.includes("betalning") ||
-      lower.includes("hur betalar") ||
-      lower.includes("qr") ||
-      lower.includes("skanna")
-    ) {
-      return "När du har bokat en biljett får du en QR-kod. Du visar och skannar QR-koden på plats i bion och betalar din biljett i kassan innan föreställningen börjar.";
-    }
-    if (
-      lower === "hej" ||
-      lower === "hej!" ||
-      lower === "hejsan" ||
-      lower === "tjena" ||
-      lower === "hallå" ||
-      lower === "hello" ||
-      lower === "hi"
-    ) {
-      return "Hej och välkommen till biografens BioBot! Hur kan jag hjälpa dig idag?";
-    }
-    if (
-      lower === "tack" ||
-      lower === "tack så mycket" ||
-      lower === "tackar" ||
-      lower === "hejdå"
-    ) {
-      return "Tack själv! Ha en fantastisk dag och hoppas vi ses snart på bion!";
-    }
-    if (
-      lower.includes("lilla salongen") ||
-      lower.includes("lillasalongen") ||
-      lower.includes("om lilla salongen") ||
-      lower.includes("lilla salong") ||
-      lower.includes("sittplatser")
-    ) {
-      return (
-        "Lilla Salongen är en intim biosalong, perfekt för dig som söker en personlig och mysig filmupplevelse. " +
-        "Salongen har totalt 8 rader med 10–12 platser per rad, vilket ger plats för 77 personer. " +
-        "Här kan du njuta av film i lugn och ro, nära duken och med bekväma stolar. " +
-        "Lilla Salongen passar utmärkt för både vanliga visningar, specialvisningar och privata evenemang."
-      );
-    }
-     if (
-    lower.includes("stora salongen") ||
-    lower.includes("storasalongen") ||
-    lower.includes("om stora salongen") ||
-    lower.includes("stora salong")
-  ) {
-    return (
-      "Stora Salongen är hjärtat i KvartersBion och vår största biosalong. " +
-      "Salongen har 8 rader med varierande antal platser per rad: 8, 9, 10, 10, 10, 10, 12 och 12 platser, vilket ger totalt 81 sittplatser. " +
-      "Här får du en filmupplevelse utöver det vanliga med stor duk, avancerat ljudsystem och bekväma biosoffor. " +
-      "Stora Salongen passar perfekt för biopremiärer, stora evenemang och när du vill ha maximal biokänsla!"
-    );
-  }
-  return ("Förlåt, jag förstår inte din fråga. Prova att fråga om våra öppettider, biljettpriser, aktuella filmer eller hur du loggar in och bokar biljetter!");
-}
-
 export default function AiChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const chatMessagesRef = useRef<HTMLDivElement>(null);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [lounges, setLounges] = useState<Lounge[]>([]);
+  const [viewings, setViewings] = useState<Viewing[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (chatMessagesRef.current) {
-      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
-    }
-  }, [messages]);
+    const fetchInitialData = async () => {
+      try {
+        const [moviesRes, viewingsRes, loungesRes] = await Promise.all([
+          fetch('/api/movies'),
+          fetch('/api/viewings'),
+          fetch('/api/lounges')
+        ]);
 
-  const sendMessage = () => {
+        if (!moviesRes.ok || !viewingsRes.ok || !loungesRes.ok) {
+          throw new Error('Kunde inte hämta all data för chatten.');
+        }
+
+        const moviesData = await moviesRes.json();
+        const viewingsData: Viewing[] = await viewingsRes.json();
+        const loungesData: Lounge[] = await loungesRes.json();
+
+        const loungeMap = loungesData.reduce((acc: Record<number, string>, lounge) => {
+          acc[lounge.id] = lounge.name;
+          return acc;
+        }, {});
+
+        setMovies(mapMovieArray(moviesData));
+        setLounges(loungesData);
+        setViewings(viewingsData.map((v: Viewing) => ({
+          ...v,
+          loungeName: loungeMap[v.lounge] || 'Okänd salong'
+        })));
+
+      } catch (error) {
+        console.error("Fel vid hämtning av data för AI Chat:", error);
+      }
+    };
+
+    fetchInitialData();
+
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
+    if (loggedIn) {
+      setUserEmail(localStorage.getItem('userEmail'));
+    }
+  }, []);
+
+  // Skrolla till botten när nya meddelanden kommer
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isOpen]);
+
+  const getBotReply = async (text: string): Promise<string> => {
+    const lower = text.toLowerCase();
+
+    if (lower.includes("historik") || lower.includes("mina bokningar") || (lower.includes("bokningar") && !lower.includes("avbokning"))) {
+      if (!isLoggedIn || !userEmail) {
+        return "Du måste vara inloggad för att se din bokningshistorik. Vänligen logga in och försök igen.";
+      }
+      try {
+        const response = await fetch(`/api/bookings?where=email=${userEmail}&orderby=-id&limit=5`);
+        if (!response.ok) throw new Error('Kunde inte hämta bokningar');
+        const userBookings = await response.json();
+
+        if (userBookings.length === 0) {
+          return "Du har inga tidigare bokningar.";
+        }
+
+        let reply = "Här är dina senaste bokningar:<div><ul>";
+        for (const booking of userBookings) {
+          const viewingInfo = viewings.find(v => v.id === booking.viewing);
+          if (!viewingInfo) continue;
+
+          const movieInfo = movies.find(m => m.id === viewingInfo.movie);
+          if (!movieInfo) continue;
+
+          const seats = Array.isArray(booking.seats) ? booking.seats.join(', ') : (typeof booking.seats === 'string' ? booking.seats.replace(/[\[\]"]+/g, '') : 'Okänt');
+          const viewingTime = new Date(viewingInfo.start_time).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' });
+
+          reply += `<li><b>${movieInfo.Title}</b> (${viewingTime}) - Bokn.nr: ${booking.bookingId}. Platser: ${seats}.</li>`;
+        }
+        reply += "</ul></div>";
+        return reply;
+      } catch (error) {
+        console.error("Kunde inte hämta bokningshistorik:", error);
+        return "Jag kunde tyvärr inte hämta din bokningshistorik just nu. Försök igen senare.";
+      }
+    }
+
+    // Om det inte är en fråga om historik, skicka till AI-backend
+    try {
+      // Förbered meddelandelistan för API:et
+      // Vi mappar om 'bot' till 'assistant' som är standard för AI-API:er
+      const apiMessages = messages.map(msg => ({
+        role: msg.role === 'bot' ? 'assistant' : 'user',
+        content: msg.content
+      }));
+
+      // Lägg till det nya meddelandet
+      apiMessages.push({ role: 'user', content: text });
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: apiMessages })
+      });
+
+      if (!response.ok) throw new Error('Kunde inte nå AI-servern');
+
+      const data = await response.json();
+
+      // Antar att svaret följer OpenAI-formatet som backend verkar använda
+      return data.choices?.[0]?.message?.content || "Jag fick tyvärr inget svar från AI:n.";
+    } catch (error) {
+      console.error("AI Chat Error:", error);
+      return "Ursäkta, jag har lite problem med uppkopplingen just nu. Försök igen senare.";
+    }
+  };
+
+  const sendMessage = async () => {
     const text = input.trim();
     if (!text) return;
     setMessages(prev => [...prev, { role: "user", content: text }]);
     setInput("");
-    setTimeout(() => {
-      const reply = getBotReply(text);
-      setMessages(prev => [...prev, { role: "bot", content: reply, isHtml: reply.startsWith('<div>') }]);
-    }, 400);
+    const reply = await getBotReply(text);
+    setMessages(prev => [...prev, { role: "bot", content: reply, isHtml: reply.includes('<div>') }]);
   };
 
   return (
-    <div className="aichat-container">
-      <h2 className="aichat-title">Biografens AI-chat</h2>
-      <div
-        className="chat-messages"
-        style={{ maxHeight: '300px', overflowY: 'auto' }}
-        ref={chatMessagesRef}
-      >
-        {messages.map((msg, i) => (
-          <div key={i} className={`aichat-message ${msg.role}`}>
-            <b>{msg.role === 'bot' ? 'BioBot' : 'Du'}:</b>{' '}
-            {msg.isHtml
-              ? <span dangerouslySetInnerHTML={{ __html: msg.content }} />
-              : msg.content}
-          </div>
-        ))}
+    <>
+      {/* Chattbubbla för att öppna/stänga */}
+      <div className="chat-bubble" onClick={() => setIsOpen(!isOpen)}>
+        <span className="chat-bubble-icon">💬</span>
       </div>
-      <input
-        value={input}
-        onChange={e => setInput(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && sendMessage()}
-        placeholder="Ställ en fråga..."
-        className="aichat-input"
-      />
-      <button onClick={sendMessage} className="aichat-button">Skicka</button>
-    </div>
+
+      {/* Chattfönstret (visas bara om isOpen är true) */}
+      {isOpen && (
+        <div className="chat-popup">
+          <div className="aichat-container">
+            <h2 className="aichat-title">Biografens AI-chat</h2>
+            <div className="aichat-messages">
+              {messages.map((msg, i) => (
+                <div key={i} className={`aichat-message ${msg.role}`}>
+                  <b>{msg.role === 'bot' ? 'BioBot' : 'Du'}:</b>{' '}
+                  {msg.isHtml
+                    ? <span dangerouslySetInnerHTML={{ __html: msg.content }} />
+                    : msg.content}
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+            <input
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && sendMessage()}
+              placeholder="Ställ en fråga..."
+              className="aichat-input"
+            />
+            <button onClick={sendMessage} className="aichat-button">Skicka</button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
