@@ -64,8 +64,14 @@ function ProfilePage() {
     return (
       <main className="profile-container">
         <h2>Du är inte inloggad</h2>
-        <Link to="/login">Logga in</Link>
-        <Link to="/registration">Registrera</Link>
+        <div className="login-register-row">
+          <div className="login-register-box">
+            <Link to="/login">Logga in</Link>
+          </div>
+          <div className="login-register-box">
+            <Link to="/registration">Registrera</Link>
+          </div>
+        </div>
       </main>
     );
   }

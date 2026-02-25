@@ -257,10 +257,13 @@ function BookingPage() {
   return (
     <>
       {/* Ticket selector + summary */}
-      <section className="hero">
+      <section className="booking-hero">
         {/* ÄNDRAD KOD */}
-        <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
+        <h2>Boka biljetter för: <span id="filmTitle">{movie?.movies_raw.Title || movie?.Title}</span></h2>
+        <p className="p-tagg">Välj antal biljetter och platser</p>
+        <div className="ticket-wrapper">
         <div className="ticket-layout">
+          
           {/* Panel: Select number of tickets */}
           <div className="ticket-panel">
             <h3>Välj antal biljetter</h3>
@@ -356,7 +359,8 @@ function BookingPage() {
             </div>
           </aside>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* Seat map */}
       <section className="cinema">
@@ -381,11 +385,12 @@ function BookingPage() {
             </div>
           </div>
         </div>
-        <div className="screen">Bio Skärm</div>
-        <div
-          id="seats"
-          className="seats-grid"
-        >
+        <div className="screen-wrapper">
+          <div className="screen">Bio Skärm</div>
+        </div>
+          <div id="seats"
+          className="seats-grid">
+        
           {SALONG_LAYOUT.seatsPerRow.map((numSeats, index) => {
             const row = index + 1;
             return (
@@ -420,8 +425,8 @@ function BookingPage() {
               </div>
             );
           })}
-        </div>
-        <button onClick={confirmBooking}>
+          </div>
+        <button className="confirm-button" onClick={confirmBooking}>
           Bekräfta bokning
         </button>
       </section>
