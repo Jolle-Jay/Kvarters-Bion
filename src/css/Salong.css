@@ -2,6 +2,7 @@
 .hero {
   position: relative;
   height: 24rem;
+  background: #061906;
   border: 2px solid #B8860B;
   border-radius: 10px;
   overflow: hidden;

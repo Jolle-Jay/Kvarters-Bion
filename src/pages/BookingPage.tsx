@@ -325,34 +325,13 @@ function BookingPage() {
   return (
     <>
       {/* Ticket selector + summary */}
-      <section className="hero">
+      <section className="booking-hero">
         {/* ÄNDRAD KOD */}
-        <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
-        {availableViewigs.length > 0 && (
-          <div className="viewing-selector">
-            <label htmlFor="viewing-select" className="viewing-label">
-              Välj visningstid:
-            </label>
-            <select
-              id="viewing-select"
-              className="viewing-dropdown"
-              value={selectedViewing?.id || ''}
-              onChange={(e) => {
-                const viewing = availableViewigs.find(v => v.id === parseInt(e.target.value));
-                setselectedViewing(viewing);
-                setShowtime(viewing.start_time);
-                setSelectedSeats([]);
-              }}
-            >
-              {availableViewigs.map(viewing => (
-                <option key={viewing.id} value={viewing.id}>
-                  {viewing.start_time} - {viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+        <h2>Boka biljetter för: <span id="filmTitle">{movie?.movies_raw.Title || movie?.Title}</span></h2>
+        <p className="p-tagg">Välj antal biljetter och platser</p>
+        <div className="ticket-wrapper">
         <div className="ticket-layout">
+          
           {/* Panel: Select number of tickets */}
           <div className="ticket-panel">
             <h3>Välj antal biljetter</h3>
@@ -448,7 +427,8 @@ function BookingPage() {
             </div>
           </aside>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* Seat map */}
       <section className="cinema">
@@ -512,8 +492,8 @@ function BookingPage() {
               </div>
             );
           })}
-        </div>
-        <button onClick={confirmBooking}>
+          </div>
+        <button className="confirm-button" onClick={confirmBooking}>
           Bekräfta bokning
         </button>
       </section>
