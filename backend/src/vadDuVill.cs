@@ -345,11 +345,16 @@ public static class vadDuVill
 
     App.MapGet("/api/bookingSeats/{viewingId}", (HttpContext context, string viewingId) =>
     {
-
+      System.Console.WriteLine("Hämtar bokade platser för viewing: " + viewingId);
+      
       int vId = int.Parse(viewingId);
+<<<<<<< HEAD
       System.Console.WriteLine("Hämtar bokade platser för viewing: " + vId);
       // Grabs the Row and Seat from the seats table and joins them with the bookingSeats and bookings table
       // to fetch all seats that are currently linked with an active booking
+=======
+
+>>>>>>> parent of 2f8a07f (runtime error fixed, unavailable seats are now shown as red and can't be booked or selected)
       var bookedSeats = SQLQuery(
         @"SELECT s.seatRow, s.number
         FROM bookingSeats bs
@@ -373,10 +378,15 @@ public static class vadDuVill
       }
 
       System.Console.WriteLine("");
+<<<<<<< HEAD
       System.Console.WriteLine($"Hittade {formattedSeats.Count} bokade plater för viewing: {vId}");
       // Returns formattedSeats as seats which becomes a Json ojbect when parsed so it returns data 
       // in the form of: {"seats": ["1-1", "1-2", "1-3"]}
       return RestResult.Parse(context, new { seats = formattedSeats });
+=======
+      System.Console.WriteLine($"Hittade {formattedSeats.Count} bokade plater för viewing: {viewingId}");
+      return RestResult.Parse(context, formattedSeats);
+>>>>>>> parent of 2f8a07f (runtime error fixed, unavailable seats are now shown as red and can't be booked or selected)
     });
   }  
 }
