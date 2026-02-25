@@ -155,21 +155,18 @@ function BookingPage() {
         const bookedResponse = await fetch(`/api/bookingSeats/${selectedViewing.id}`);
 
         if (bookedResponse.ok) {
-          let bookedData = await bookedResponse.json();
-
-          if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
+          const bookedData = await bookedResponse.json();
+          console.log(bookedData.seats)
+/*           if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
             if ('data' in bookedData && Array.isArray(bookedData.data)) {
               bookedData = bookedData.data;
             }
-          }
+          } */
 
-          const bookedSeatsArray = Array.isArray(bookedData) ? bookedData : [];
+          const bookedSeatsArray = Array.isArray(bookedData.seats) ? bookedData.seats : [];
 
           const bookedSeatsSet = new Set<string>(
-            bookedSeatsArray.map((item: any) => {
-              const seat = typeof item === `string` ? item : item.seat;
-              return seat;
-            })
+            bookedSeatsArray.map((seat: string) => seat)
           );
 
           console.log("Bokade Platser: ", Array.from(bookedSeatsSet));

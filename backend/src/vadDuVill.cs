@@ -345,10 +345,10 @@ public static class vadDuVill
 
     App.MapGet("/api/bookingSeats/{viewingId}", (HttpContext context, string viewingId) =>
     {
-      System.Console.WriteLine("Hämtar bokade platser för viewing: " + viewingId);
-      
-      int vId = int.Parse(viewingId);
 
+      int vId = int.Parse(viewingId);
+      System.Console.WriteLine("Hämtar bokade platser för viewing: " + vId);
+    
       var bookedSeats = SQLQuery(
         @"SELECT s.seatRow, s.number
         FROM bookingSeats bs
@@ -369,8 +369,8 @@ public static class vadDuVill
       }
 
       System.Console.WriteLine("");
-      System.Console.WriteLine($"Hittade {formattedSeats.Count} bokade plater för viewing: {viewingId}");
-      return RestResult.Parse(context, formattedSeats);
+      System.Console.WriteLine($"Hittade {formattedSeats.Count} bokade plater för viewing: {vId}");
+      return RestResult.Parse(context, new { seats = formattedSeats });
     });
   }  
 }
