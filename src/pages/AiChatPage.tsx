@@ -14,12 +14,12 @@ interface Message {
 }
 
 function getBotReply(text: string) {
-   
+
   const lower = text.toLowerCase();
   if (lower.includes("öppettider") ||
       lower.includes("öppet")
   ) {
-    return "Vi har öppet måndag–fredag 10–22, lördag–söndag 12–23.";
+    return "Vi har öppet måndag–fredag 16:00–23:00, lördag–söndag 13:00–00:00.";
   }
   if (lower.includes("pris") ||
       lower.includes("priset") ||
@@ -93,6 +93,20 @@ function getBotReply(text: string) {
       lower === "hejdå"
     ) {
       return "Tack själv! Ha en fantastisk dag och hoppas vi ses snart på bion!";
+    }
+    if (
+      lower.includes("lilla salongen") ||
+      lower.includes("lillasalongen") ||
+      lower.includes("om lilla salongen") ||
+      lower.includes("lilla salong") ||
+      lower.includes("sittplatser")
+    ) {
+      return (
+        "Lilla Salongen är en intim biosalong, perfekt för dig som söker en personlig och mysig filmupplevelse. " +
+        "Salongen har totalt 8 rader med 10–12 platser per rad, vilket ger plats för 77 personer. " +
+        "Här kan du njuta av film i lugn och ro, nära duken och med bekväma stolar. " +
+        "Lilla Salongen passar utmärkt för både vanliga visningar, specialvisningar och privata evenemang."
+      );
     }
   return ("Förlåt, jag förstår inte din fråga. Prova att fråga om våra öppettider, biljettpriser, aktuella filmer eller hur du loggar in och bokar biljetter!");
 }
