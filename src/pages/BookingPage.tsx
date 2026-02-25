@@ -152,7 +152,7 @@ function BookingPage() {
       setCurrentLounge(selectedViewing.lounge);
 
       try {
-        const bookedResponse = await fetch(`/api/bookingSeats/${selectedViewing.id}`);
+        const bookedResponse = await fetch(`/api/booked-seats/${selectedViewing.id}`);
 
         if (bookedResponse.ok) {
           let bookedData = await bookedResponse.json();
