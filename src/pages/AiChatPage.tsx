@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import '../CSS/AIChat.css';
 
 AiChatPage.route = {
@@ -16,10 +16,17 @@ interface Message {
 function getBotReply(text: string) {
    
   const lower = text.toLowerCase();
-  if (lower.includes("öppettider") || lower.includes("öppet")) {
+  if (lower.includes("öppettider") ||
+      lower.includes("öppet")
+  ) {
     return "Vi har öppet måndag–fredag 10–22, lördag–söndag 12–23.";
   }
-  if (lower.includes("pris") || lower.includes("biljett")) {
+  if (lower.includes("pris") ||
+      lower.includes("priset") ||
+      lower.includes("priserna") ||
+      lower.includes("biljett") || 
+      lower.includes("biljetterna")
+  ) {
     return "Biljettpriser: Ordinarie 140 kr, Pensionär 120 kr, Barn 80 kr.";
   }
   if (
@@ -93,6 +100,13 @@ function getBotReply(text: string) {
 export default function AiChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const chatMessagesRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const sendMessage = () => {
     const text = input.trim();
@@ -108,7 +122,11 @@ export default function AiChatPage() {
   return (
     <div className="aichat-container">
       <h2 className="aichat-title">Biografens AI-chat</h2>
-      <div className="aichat-messages">
+      <div
+        className="chat-messages"
+        style={{ maxHeight: '300px', overflowY: 'auto' }}
+        ref={chatMessagesRef}
+      >
         {messages.map((msg, i) => (
           <div key={i} className={`aichat-message ${msg.role}`}>
             <b>{msg.role === 'bot' ? 'BioBot' : 'Du'}:</b>{' '}
