@@ -1,10 +1,11 @@
+using WebApp; // För MovieService och Arr/Obj/JSON om de finns här
 namespace WebApp;
 
 public static class AiChatRoutes
 {
     private static string aiAccessToken = "";
     private static string systemPrompt = "";
-    private static readonly string proxyUrl = "https://ai-api.nodehill.com";
+    private static readonly string proxyUrl = "https://ai-api.nodehill.com"; //AI servern
     private static readonly HttpClient httpClient = new HttpClient();
 
     public static void Start()
@@ -29,18 +30,26 @@ public static class AiChatRoutes
                 }
 
                 // Prepend system prompt if we have one
-                var fullMessages = Arr();
-                if (!string.IsNullOrEmpty(systemPrompt))
-                {
-                    fullMessages.Push(Obj(new { role = "system", content = systemPrompt }));
+                // Kombinera systemPrompt och filmer som två system-meddelanden
+                var movies = SQLQuery("SELECT * FROM movies"); // Hämta filmer från databasen
+                var fullMessages = new Arr();
+                if (!string.IsNullOrWhiteSpace(systemPrompt)) {
+                    fullMessages.Push(Obj(new {
+                        role = "system",
+                        content = systemPrompt
+                    }));
                 }
+                fullMessages.Push(Obj(new {
+                    role = "system",
+                    content = "Här är aktuella filmer och visningstider: " + JSON.Stringify(movies)
+                }));
                 messages.ForEach(msg => fullMessages.Push(msg));
 
                 // Create request payload
                 var requestBody = Obj(new { messages = fullMessages });
 
                 // Make request to AI API
-                var request = new HttpRequestMessage(HttpMethod.Post, $"{proxyUrl}/v1/chat/completions");
+                var request = new HttpRequestMessage(HttpMethod.Post, $"{proxyUrl}/v1/chat/completions");  // AI servern används här
                 request.Headers.Add("Authorization", $"Bearer {aiAccessToken}");
                 request.Content = new StringContent(
                     JSON.Stringify(requestBody),

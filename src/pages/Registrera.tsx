@@ -98,13 +98,13 @@ function RegistreraPage() {
 
             <form onSubmit={handleRegister}>
                 <p>E-post:</p>
-                <input name="email" value={formData.email} onChange={handleInputChange} placeholder='Epost@hotmail.com' />
+                <input name="email" value={formData.email} onChange={handleInputChange} placeholder='Epost@hotmail.com' className="login-input" />
                 <p>Lösenord:</p>
-                <input name="password" type="password" value={formData.password} onChange={handleInputChange} placeholder='Lösenord'/>
+                <input name="password" type="password" value={formData.password} onChange={handleInputChange} placeholder='Lösenord' className="login-input" />
                 <p>Namn:</p>
-                <input name="firstName" value={formData.firstName} onChange={handleInputChange} placeholder='Karl'/>
+                <input name="firstName" value={formData.firstName} onChange={handleInputChange} placeholder='Karl' className="login-input" />
                 <p>Efternamn:</p>
-                <input name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder='Karlsson'/>
+                <input name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder='Karlsson' className="login-input" />
                 <button type="submit" className="btn-primary">Registrera</button>
                 <Link to="/" className="btn-primary">Avbryt</Link>
             </form>

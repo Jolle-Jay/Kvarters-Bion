@@ -3,6 +3,7 @@ import Header from "./partials/Header";
 import Main from './partials/Main';
 import Footer from './partials/Footer';
 import CookieBanner from './partials/Cookie';
+import ChatBubble from './parts/ChatBubble';
 
 
 // turn off when not needed for debugging
@@ -19,6 +20,6 @@ export default function App() {
     <Main />
     <Footer />
     <CookieBanner />
-
+    <ChatBubble />
   </>;
 };
