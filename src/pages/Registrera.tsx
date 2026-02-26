@@ -15,7 +15,7 @@ function RegistreraPage() {
         lastName: ''
     });
 
-
+ 
     //låter error och successmessage vara tomma från början
     const [errorMessage, setErrorMessage] = useState('');
     const [succesMessage, setSuccessMessage] = useState('');
