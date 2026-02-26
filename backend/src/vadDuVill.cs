@@ -302,12 +302,37 @@ public static class vadDuVill
 
       // det är detta vi får i meddelandet till användaren efter vi har slutfört bokningen skickas till frontend
       System.Console.WriteLine("=== STEP 10: Success! ===");
+
+      System.Console.WriteLine("=== STEP 10: Success! ===");
+
+      // Skicka bekräftelse-email
+      try
+      {
+        EmailService.SendEmail(
+            email,
+            "Bokningsbekräftelse - Kvarterbion",
+            $@"<h1>Tack för din bokning!</h1>
+           <p>Hej {email}!</p>
+           <p>Din bokning är bekräftad.</p>
+           <p><strong>Bokningsnummer:</strong> {bookingReference}</p>
+           <p><strong>Antal platser:</strong> {seatsList.Count}</p>
+           <p>Vi ses på biografen!</p>"
+        );
+        System.Console.WriteLine("=== Bokningsmail skickat! ===");
+      }
+      catch (Exception ex)
+      {
+        System.Console.WriteLine($"=== Mail misslyckades: {ex.Message} ===");
+      }
+
       return RestResult.Parse(context, new
       {
         success = true,
         bookingReference,
         email
       });
+
+
     }
     catch (Exception ex)
     {
@@ -346,7 +371,7 @@ public static class vadDuVill
     App.MapGet("/api/bookingSeats/{viewingId}", (HttpContext context, string viewingId) =>
     {
       System.Console.WriteLine("Hämtar bokade platser för viewing: " + viewingId);
-      
+
       int vId = int.Parse(viewingId);
       System.Console.WriteLine("Hämtar bokade platser för viewing: " + vId);
       // Grabs the Row and Seat from the seats table and joins them with the bookingSeats and bookings table
@@ -379,5 +404,5 @@ public static class vadDuVill
       // in the form of: {"seats": ["1-1", "1-2", "1-3"]}
       return RestResult.Parse(context, new { seats = formattedSeats });
     });
-  }  
+  }
 }
