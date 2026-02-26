@@ -41,6 +41,8 @@ public static class BookingQueries
         );
         int viewingId = (int)currentBooking["viewing"];
 
+
+
         for (int i = 0; i < seats.Count; i++)
         {
             var parts = seats[i].Split('-');
