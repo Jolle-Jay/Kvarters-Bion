@@ -1,4 +1,4 @@
-AIChat.css /* Green custom scrollbar for chat-messages */
+/* Green custom scrollbar for chat-messages */
 .chat-messages {
   max-height: 300px;
   overflow-y: auto;
