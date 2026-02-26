@@ -20,7 +20,7 @@ static class EmailService
 
     //plockar ut konfigurationen från db config json
     string smtpServer = (string)config["smtpServer"];
-    int smtpPort = (int)config["smtpPort"];
+    int smtpPort = int.Parse((string)config["smtpPort"]);
     string emailUsername = (string)config["emailUsername"];
     string emailPassword = (string)config["emailPassword"];
 
