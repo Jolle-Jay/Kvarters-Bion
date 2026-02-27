@@ -216,6 +216,9 @@ public static class DbQuery
                 ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
                 ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/viewings', 'false', 'Allow all to access /api/viewings'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/booked-seats', 'false', 'Allow all to access /api/booked-seats'),
+
                 ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
             ";
             command.CommandText = aclData;
@@ -854,14 +857,22 @@ public static class DbQuery
             // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
             else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
             {
-                try
+
+                if (key == "data")
                 {
-                    obj[key] = JSON.Parse(strValue);
+                    obj[key] = strValue;
                 }
-                catch
+                else
                 {
-                    // If parsing fails, keep the original value and try to convert to number
-                    obj[key] = strValue.TryToNum();
+                    try
+                    {
+                        obj[key] = JSON.Parse(strValue);
+                    }
+                    catch
+                    {
+                        // If parsing fails, keep the original value and try to convert to number
+                        obj[key] = strValue.TryToNum();
+                    }
                 }
             }
             else

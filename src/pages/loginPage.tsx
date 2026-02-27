@@ -90,8 +90,8 @@ function LoginPage() {
       {succesMessage && <div className="success-message">{succesMessage}</div>}
 
       <form onSubmit={handleLogin}>
-        <input name="email" value={formData.email} onChange={handleInputChange} />
-        <input name="password" type="password" value={formData.password} onChange={handleInputChange} />
+        <input name="email" value={formData.email} onChange={handleInputChange} className="login-input" />
+        <input name="password" type="password" value={formData.password} onChange={handleInputChange} className="login-input" />
         <button type="submit" className="btn-primary">Logga in</button>
         <Link to="/registration" className="btn-primary">Registrera</Link>
       </form>

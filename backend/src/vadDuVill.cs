@@ -324,5 +324,60 @@ public static class vadDuVill
       System.Console.WriteLine("Vi är inne i customBooking");
       return vadDuVill.HandleCustomBooking(context, bodyJson);
     });
-  }
+
+    App.MapGet("/api/viewings", (HttpContext context) =>
+    {
+      var movieIdParam = context.Request.Query["movieId"].ToString();
+      if (string.IsNullOrEmpty(movieIdParam))
+      {
+        var allViewings = SQLQuery("SELECT * FROM viewings ORDER BY start_time");
+        return RestResult.Parse(context, allViewings);
+      }
+
+      int movieId = int.Parse(movieIdParam);
+      var viewings = SQLQuery(
+        "SELECT * FROM viewings WHERE movie = @movieId ORDER BY start_time",
+        new { movieId }
+      );
+
+      return RestResult.Parse(context, viewings);
+    });
+
+    App.MapGet("/api/bookingSeats/{viewingId}", (HttpContext context, string viewingId) =>
+    {
+      System.Console.WriteLine("Hämtar bokade platser för viewing: " + viewingId);
+      
+      int vId = int.Parse(viewingId);
+      System.Console.WriteLine("Hämtar bokade platser för viewing: " + vId);
+      // Grabs the Row and Seat from the seats table and joins them with the bookingSeats and bookings table
+      // to fetch all seats that are currently linked with an active booking
+      var bookedSeats = SQLQuery(
+        @"SELECT s.seatRow, s.number
+        FROM bookingSeats bs
+        INNER JOIN bookings b ON bs.booking = b.id
+        INNER JOIN seats s ON bs.seat = s.id
+        WHERE b.viewing = @viewingId
+        AND b.status = 'Confirmed'",
+        new { viewingId = vId }
+      );
+
+      var formattedSeats = new List<string>();
+      System.Console.Write("Seats: ");
+
+      // Goes through formattedSeats list and formats all the rows and seats to the format used in 
+      // frontend to identify seats (1-1, 1-2, 1-3... ETC.)
+      foreach (var seat in bookedSeats)
+      {
+        string seatString = $"{seat["seatRow"]}-{seat["number"]}";
+        System.Console.Write(seatString + ", ");
+        formattedSeats.Add(seatString);
+      }
+
+      System.Console.WriteLine("");
+      System.Console.WriteLine($"Hittade {formattedSeats.Count} bokade plater för viewing: {vId}");
+      // Returns formattedSeats as seats which becomes a Json object when parsed so it returns data 
+      // in the form of: {"seats": ["1-1", "1-2", "1-3"]}
+      return RestResult.Parse(context, new { seats = formattedSeats });
+    });
+  }  
 }

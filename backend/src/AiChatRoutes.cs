@@ -4,7 +4,7 @@ public static class AiChatRoutes
 {
     private static string aiAccessToken = "";
     private static string systemPrompt = "";
-    private static readonly string proxyUrl = "https://ai-api.nodehill.com";
+    private static readonly string proxyUrl = "https://ai-api.nodehill.com"; //AI servern
     private static readonly HttpClient httpClient = new HttpClient();
 
     public static void Start()
@@ -29,18 +29,45 @@ public static class AiChatRoutes
                 }
 
                 // Prepend system prompt if we have one
-                var fullMessages = Arr();
-                if (!string.IsNullOrEmpty(systemPrompt))
-                {
-                    fullMessages.Push(Obj(new { role = "system", content = systemPrompt }));
+                // Kombinera systemPrompt och filmer som två system-meddelanden
+                var movies = SQLQuery("SELECT * FROM movies");
+
+                // Querry for Date
+                var dateFilter = SQLQuery(@"SELECT 
+                JSON_UNQUOTE(JSON_EXTRACT(m.movies_raw, '$.Title')) AS Film,
+                v.start_time AS VisningsTid,
+                l.name AS Salong
+                FROM viewings v
+                JOIN movies m ON v.movie = m.id
+                JOIN lounges l ON v.lounge = l.id
+                ORDER BY v.start_time;");
+                
+                var fullMessages = new Arr();
+                if (!string.IsNullOrWhiteSpace(systemPrompt)) {
+                    fullMessages.Push(Obj(new {
+                        role = "system",
+                        content = systemPrompt
+                    }));
                 }
+                //answer for movies
+                fullMessages.Push(Obj(new {
+                    role = "system",
+                    content = "Här är aktuella filmer och visningstider: " + JSON.Stringify(movies)
+                }));
+
+                //answer for date
+                fullMessages.Push(Obj(new {
+                    role = "system",
+                    content = "" + JSON.Stringify(dateFilter)
+                }));
+
                 messages.ForEach(msg => fullMessages.Push(msg));
 
                 // Create request payload
                 var requestBody = Obj(new { messages = fullMessages });
 
                 // Make request to AI API
-                var request = new HttpRequestMessage(HttpMethod.Post, $"{proxyUrl}/v1/chat/completions");
+                var request = new HttpRequestMessage(HttpMethod.Post, $"{proxyUrl}/v1/chat/completions");  // AI servern används här
                 request.Headers.Add("Authorization", $"Bearer {aiAccessToken}");
                 request.Content = new StringContent(
                     JSON.Stringify(requestBody),

@@ -11,10 +11,17 @@ const PRICES = {
 
 // Stora Salongen layout
 const SALONG_LAYOUT = {
-  name: "Stora Salongen",
-  seatsPerRow: [8, 9, 10, 10, 10, 10, 12, 12]
+  'Stora Salongen': {
+    name: "Stora Salongen",
+    loungeId: 1,
+    seatsPerRow: [8, 9, 10, 10, 10, 10, 12, 12]
+  },
+  'Lilla Salongen': {
+    name: "Lilla Salongen",
+    loungeId: 2,
+    seatsPerRow: [6, 8, 9, 10, 10, 12]
+  }
 };
-
 
 interface TicketCounts {
   adult: number;
@@ -78,6 +85,19 @@ function BookingPage() {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   //  set som inehåller stärnger new set () = en Set datastruktur, liknar array fast med egna värden.
   const [bookedSeats, setBookedSeats] = useState<Set<string>>(new Set());
+  const [availableViewigs, setavailableViewigs] = useState<any[]>([]);
+  const [selectedViewing, setselectedViewing] = useState<any>(null);
+  const [CurrentLounge, setCurrentLounge] = useState<any>(null);
+
+  const getCurrentSalongLayout = () => {
+    if (!selectedViewing) {
+      return SALONG_LAYOUT['Stora Salongen']; // Default
+    }
+
+    return selectedViewing.lounge === 1
+      ? SALONG_LAYOUT['Stora Salongen']
+      : SALONG_LAYOUT['Lilla Salongen'];
+  };
 
   // tar emot ett nummer, returnerar en sträng
   // tofixed 2 lägger till 2 decimaler och gör om . till ,
@@ -101,9 +121,13 @@ function BookingPage() {
         const viewingREsponse = await fetch(`/api/viewings?movieId=${id}`);
         const viewingsData = await viewingREsponse.json();
 
+        console.log("Visnings Tider: ", viewingsData);
+
         // data vi har fått från fetchen om den är mer än 0
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
+          setavailableViewigs(viewingsData);
+          setselectedViewing(viewingsData[0]);
           setShowtime(viewingsData[0].start_time);
         }
       } catch (error) {
@@ -116,6 +140,57 @@ function BookingPage() {
       fetchMovie();
     }
   }, [id]);
+
+  
+  useEffect(() => {
+    const fetchBookedSeats = async () => {
+      if (!selectedViewing || !selectedViewing.id) {
+        return;
+      }
+
+      console.log('Hämtar bokade platser för viewing:', selectedViewing.id);
+
+      setCurrentLounge(selectedViewing.lounge);
+
+      try {
+        const bookedResponse = await fetch(`/api/bookingSeats/${selectedViewing.id}`);
+
+        if (bookedResponse.ok) {
+          const bookedData = await bookedResponse.json();
+
+          // Made unnessecary after adding the .seat object to bookedRespone when returning
+          // values from SQL query.
+          /*if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
+            if ('data' in bookedData && Array.isArray(bookedData.data)) {
+              bookedData = bookedData.data;
+            }
+          } */
+
+          // Takes the Json object seats what we return with our fetch and checks if it's an
+          // array and then assigns it to bookedSeatsArray.
+          const bookedSeatsArray = Array.isArray(bookedData.seats) ? bookedData.seats : [];
+
+          // Goes through the array and maps them in bookedSeatsSet so they can then be used to
+          // set seats on our webpage to booked, makes them unavailable to other users to book.
+          const bookedSeatsSet = new Set<string>(
+            bookedSeatsArray.map((seat: string) => seat)
+          );
+
+          console.log("Bokade Platser: ", Array.from(bookedSeatsSet));
+          setBookedSeats(bookedSeatsSet);
+        }
+        else {
+          console.log('Inga bokade platser');
+          setBookedSeats(new Set());
+        }
+      } catch (error) {
+        console.error('Kunde inte hitta bokade platser', error);
+        setBookedSeats(new Set());
+      }
+    };
+
+    fetchBookedSeats();
+  }, [selectedViewing]);
 
   // lägger antalet biljetter i totaltickets
   const getTotalTickets = (): number => {
@@ -202,7 +277,7 @@ function BookingPage() {
       seats: selectedSeats,
       counts,
       totalPrice,
-      lounges: SALONG_LAYOUT.name
+      lounges: getCurrentSalongLayout().name
     };
 
     console.log('=== BOOKING DATA TO SAVE:', bookingData);
@@ -240,7 +315,7 @@ function BookingPage() {
 
   //   navigate('/confirm');
 
-  // };
+  // }; 
 
   if (!movie) {
     return (
@@ -257,106 +332,116 @@ function BookingPage() {
   return (
     <>
       {/* Ticket selector + summary */}
-      <section className="hero">
+      <section className="booking-hero">
         {/* ÄNDRAD KOD */}
-        <h2>Boka biljetter för: <span id="filmTitle">{movie.Title}</span></h2>
+        <h2>Boka biljetter för: <span id="filmTitle">{movie?.movies_raw.Title || movie?.Title}</span></h2>
+        <p className="p-tagg">Välj antal biljetter och platser</p>
+        <div className="ticket-wrapper">
         <div className="ticket-layout">
+          
           {/* Panel: Select number of tickets */}
           <div className="ticket-panel">
             <h3>Välj antal biljetter</h3>
 
-            <div className="ticket-row">
-              <div className="ticket-label">
-                <strong>Ordinarie</strong>
-                <span className="ticket-note">Standard</span>
+            {/* Panel: Select number of tickets */}
+            <div className="ticket-panel">
+              <h3>Välj antal biljetter</h3>
+
+              <div className="ticket-row">
+                <div className="ticket-label">
+                  <strong>Ordinarie</strong>
+                  <span className="ticket-note">Standard</span>
+                </div>
+                <div className="ticket-controls">
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('adult', -1)}
+                    disabled={counts.adult === 0}
+                  >
+                    −
+                  </button>
+                  <span className="ticket-count">{counts.adult}</span>
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('adult', 1)}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
-              <div className="ticket-controls">
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('adult', -1)}
-                  disabled={counts.adult === 0}
-                >
-                  −
-                </button>
-                <span className="ticket-count">{counts.adult}</span>
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('adult', 1)}
-                >
-                  +
-                </button>
+
+              <div className="ticket-row">
+                <div className="ticket-label">
+                  <strong>Pensionär</strong>
+                  <span className="ticket-note">10% rabatt</span>
+                </div>
+                <div className="ticket-controls">
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('senior', -1)}
+                    disabled={counts.senior === 0}
+                  >
+                    −
+                  </button>
+                  <span className="ticket-count">{counts.senior}</span>
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('senior', 1)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div className="ticket-row">
+                <div className="ticket-label">
+                  <strong>Barn (t.o.m 11 år)</strong>
+                  <span className="ticket-note">20% rabatt</span>
+                </div>
+                <div className="ticket-controls">
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('child', -1)}
+                    disabled={counts.child === 0}
+                  >
+                    −
+                  </button>
+                  <span className="ticket-count">{counts.child}</span>
+                  <button
+                    className="ticket-btn"
+                    onClick={() => updateCount('child', 1)}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div className="ticket-row">
-              <div className="ticket-label">
-                <strong>Pensionär</strong>
-                <span className="ticket-note">10% rabatt</span>
+            {/* Panel: Summary */}
+            <aside className="ticket-summary">
+              <h4>Sammanfattning</h4>
+              <div className="summary-row">
+                <span>Ordinarie</span>
+                <span>{counts.adult} × {formatPrice(PRICES.adult)}</span>
               </div>
-              <div className="ticket-controls">
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('senior', -1)}
-                  disabled={counts.senior === 0}
-                >
-                  −
-                </button>
-                <span className="ticket-count">{counts.senior}</span>
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('senior', 1)}
-                >
-                  +
-                </button>
+              <div className="summary-row">
+                <span>Pensionär</span>
+                <span>{counts.senior} × {formatPrice(PRICES.senior)}</span>
               </div>
-            </div>
+              <div className="summary-row">
+                <span>Barn</span>
+                <span>{counts.child} × {formatPrice(PRICES.child)}</span>
+              </div>
+              <div className="summary-total">
+                <span>Summa</span>
+                <span>{formatPrice(totalPrice)}</span>
+              </div>
+            </aside>
 
-            <div className="ticket-row">
-              <div className="ticket-label">
-                <strong>Barn (t.o.m 11 år)</strong>
-                <span className="ticket-note">20% rabatt</span>
-              </div>
-              <div className="ticket-controls">
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('child', -1)}
-                  disabled={counts.child === 0}
-                >
-                  −
-                </button>
-                <span className="ticket-count">{counts.child}</span>
-                <button
-                  className="ticket-btn"
-                  onClick={() => updateCount('child', 1)}
-                >
-                  +
-                </button>
-              </div>
-            </div>
           </div>
-
-          {/* Panel: Summary */}
-          <aside className="ticket-summary">
-            <h4>Sammanfattning</h4>
-            <div className="summary-row">
-              <span>Ordinarie</span>
-              <span>{counts.adult} × {formatPrice(PRICES.adult)}</span>
-            </div>
-            <div className="summary-row">
-              <span>Pensionär</span>
-              <span>{counts.senior} × {formatPrice(PRICES.senior)}</span>
-            </div>
-            <div className="summary-row">
-              <span>Barn</span>
-              <span>{counts.child} × {formatPrice(PRICES.child)}</span>
-            </div>
-            <div className="summary-total">
-              <span>Summa</span>
-              <span>{formatPrice(totalPrice)}</span>
-            </div>
-          </aside>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* Seat map */}
       <section className="cinema">
@@ -381,21 +466,23 @@ function BookingPage() {
             </div>
           </div>
         </div>
-        <div className="screen">Bio Skärm</div>
+        <div className='screen-wrapper'>
+          <div className="screen">Bio Skärm</div>
+        </div>
         <div
           id="seats"
           className="seats-grid"
         >
-          {SALONG_LAYOUT.seatsPerRow.map((numSeats, index) => {
+          {getCurrentSalongLayout().seatsPerRow.map((numSeats, index) => {
             const row = index + 1;
             return (
               <div key={`row-${row}`} className="seat-row">
                 <div className="row-label">{row}</div>
-                <div className="seat-row-inner">
+                <div className="seat-row-inner" style={{ gridTemplateColumns: `repeat(${numSeats}, minmax(0, 100px))` }}>
                   {Array.from({ length: numSeats }, (_, i) => {
                     const col = i + 1;
                     const seatId = `${row}-${col}`;
-                    let seatType: 'available' | 'vip' | 'elder' = 'available';
+                    let seatType: 'available' | 'vip' | 'elder' | 'unavailable' = 'available';
 
                     if (row === 5 && col >= 4 && col <= 7) {
                       seatType = 'vip';
@@ -420,8 +507,8 @@ function BookingPage() {
               </div>
             );
           })}
-        </div>
-        <button onClick={confirmBooking}>
+          </div>
+        <button className="confirm-button" onClick={confirmBooking}>
           Bekräfta bokning
         </button>
       </section>

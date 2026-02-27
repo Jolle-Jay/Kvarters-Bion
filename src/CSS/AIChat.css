@@ -1,0 +1,141 @@
+/* Green custom scrollbar for chat-messages */
+.chat-messages {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding-right: 5px;
+  scrollbar-width: thin; /* Stöds för endast FireFox */
+  scrollbar-color: #394c3b #1a2b1a; /* Stöds för endast FireFox */
+}
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #104115;
+  border-radius: 4px;
+}
+.chat-messages::-webkit-scrollbar-track {
+  background: #1a2b1a;
+}
+
+/* ChatBubble styling */
+.chat-bubble {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  cursor: pointer;
+  background: #936d0c;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.chat-bubble-icon {
+  font-size: 28px;
+  color: #012401;
+}
+.chat-popup {
+  position: fixed;
+  bottom: 70px;
+  right: 24px;
+  z-index: 1001;
+}
+.chat-popup-inner {
+  position: relative;
+}
+
+.chat-popup-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #B8860B;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.aichat-container {
+  width: 350px; /* Fast bredd för popupen */
+  margin: 0;    /* Ta bort marginaler som centrerar den på sidan */
+  background: #0a1c0a;
+  border: 2px solid #B8860B;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.aichat-title {
+  color: #B8860B;
+  text-align: center;
+}
+
+.aichat-messages { 
+  max-height: 300px;    /* Max höjd */
+  overflow-y: auto;     /* Aktivera skroll */
+  margin-bottom: 20px;
+  padding-right: 5px;   /* Plats för scrollbar */
+}
+
+.aichat-message {
+  margin: 8px 0;
+}
+
+.aichat-message.bot {
+  color: #FFD700;
+}
+
+.aichat-message.user {
+  color: #fff;
+}
+
+.aichat-input {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 2px solid #B8860B;
+  margin-bottom: 10px;
+  background: #1a2a1a;
+  color: #FFD700;
+  font-size: 1.1rem;
+}
+
+.aichat-button {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 8px;
+  background: #B8860B;
+  color: #012401;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border: none;
+}
+
+@media (max-width: 481px) {
+  .aichat-container {
+    margin: 0 auto;
+    width: 95vw;
+    max-width: 350px;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .chat-messages {
+    max-height: 220px;
+    width: 100%;
+  }
+  .aichat-title {
+    font-size: 1.2em;
+    text-align: center;
+  }
+  .aichat-input, .aichat-button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
