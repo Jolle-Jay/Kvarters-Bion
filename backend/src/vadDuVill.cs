@@ -305,33 +305,42 @@ public static class vadDuVill
 
       System.Console.WriteLine("=== STEP 10: Success! ===");
 
-      // Skicka bekräftelse-email
-      try
-      {
-        EmailService.SendEmail(
-            email,
-            "Bokningsbekräftelse - Kvarterbion",
-            $@"<h1>Tack för din bokning!</h1>
-           <p>Hej {email}!</p>
-           <p>Din bokning är bekräftad.</p>
-           <p><strong>Bokningsnummer:</strong> {bookingReference}</p>
-           <p><strong>Antal platser:</strong> {seatsList.Count}</p>
-           <p>Vi ses på biografen!</p>"
-        );
-        System.Console.WriteLine("=== Bokningsmail skickat! ===");
-      }
-      catch (Exception ex)
-      {
-        System.Console.WriteLine($"=== Mail misslyckades: {ex.Message} ===");
-      }
-
-      return RestResult.Parse(context, new
+      var response = new
       {
         success = true,
         bookingReference,
         email
+      };
+
+      //returnera till frontend INNAN email skickas
+      var result = RestResult.Parse(context, response);
+
+      //skicka EMAIL EFTER response (async i bakgrunden)
+      Task.Run(() =>
+      {
+        try
+        {
+          EmailService.SendEmail(
+            email,
+            "Bokningsbekräftelse - Kvarterbion",
+            $@"<h1>Tack för din bokning!</h1>
+               <p>Hej {email}!</p>
+               <p>Din bokning är bekräftad.</p>
+               <p><strong>Bokningsnummer:</strong> {bookingReference}</p>
+               <p><strong>Antal platser:</strong> {seatsList.Count}</p>"
+        );
+          System.Console.WriteLine("=== Bokningsmail skickat! ===");
+        }
+        catch (Exception ex)
+
+        {
+          System.Console.WriteLine($"=== Mail misslyckades: {ex.Message} ===");
+
+        }
+
       });
 
+      return result;
 
     }
     catch (Exception ex)
@@ -340,6 +349,11 @@ public static class vadDuVill
       return RestResult.Parse(context, new { error = "Booking failed: " + ex.Message });
     }
   }
+
+
+
+
+
 
   // registrar API route custombooking och skickar vidare anropet till handlecustombooking när någon postar till API/custombooking
   public static void Start()

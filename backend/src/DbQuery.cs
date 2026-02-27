@@ -28,10 +28,10 @@ public static class DbQuery
         db.Open();
 
         // Reset database if requested
-        // if (config.resetDb == true)
-        // {
-        //     DropTables(db);
-        // }
+        //if (config.resetDb == true)
+        //{
+        //    DropTables(db);
+        //}
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
@@ -206,21 +206,21 @@ public static class DbQuery
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
             var aclData = @"
-    INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
-    ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
-    ('visitor, user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
-    ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
-    ('visitor, user, admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
-    ('visitor, user, admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
-    ('visitor, user, admin', 'POST', 'allow', '/api/customBooking', 'true', 'Allow all to create bookings'),
-    ('admin', '*', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
-    ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
-    ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
-    ('visitor, user, admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
-    ('visitor, user, admin', 'GET', 'allow', '/api/viewings', 'false', 'Allow all to access /api/viewings'),
-    ('visitor, user, admin', 'GET', 'allow', '/api/bookingSeats', 'false', 'Allow all to access /api/bookingSeats'),
-    ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
-";
+                INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
+                ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
+                ('visitor, user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
+                ('visitor', 'POST', 'allow', '/api/users', 'true', 'Allow registration as new user for visitors'),
+                ('visitor, user, admin', '*', 'allow', '/api/login', 'true', 'Allow access to all login routes'),
+                ('visitor, user, admin', 'POST', 'allow', '/api/chat', 'true', 'Allow all user roles to access AI chat'),
+                ('admin', '*', 'allow', '/api/users', 'true', 'Allow admins to see and edit users'),
+                ('admin', '*', 'allow', '/api/sessions', 'true', 'Allow admins to see and edit sessions'),
+                ('admin', '*', 'allow', '/api/acl', 'true', 'Allow admins to see and edit acl rules'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/viewings', 'false', 'Allow all to access /api/viewings'),
+                ('visitor, user, admin', 'GET', 'allow', '/api/booked-seats', 'false', 'Allow all to access /api/booked-seats'),
+
+                ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
+            ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
         }
@@ -857,14 +857,22 @@ public static class DbQuery
             // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
             else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
             {
-                try
+
+                if (key == "data")
                 {
-                    obj[key] = JSON.Parse(strValue);
+                    obj[key] = strValue;
                 }
-                catch
+                else
                 {
-                    // If parsing fails, keep the original value and try to convert to number
-                    obj[key] = strValue.TryToNum();
+                    try
+                    {
+                        obj[key] = JSON.Parse(strValue);
+                    }
+                    catch
+                    {
+                        // If parsing fails, keep the original value and try to convert to number
+                        obj[key] = strValue.TryToNum();
+                    }
                 }
             }
             else
@@ -934,4 +942,3 @@ public static class DbQuery
 }
 
 // kör samma queries i samma transaktion 
-

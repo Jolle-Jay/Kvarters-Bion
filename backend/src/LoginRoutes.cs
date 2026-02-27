@@ -96,7 +96,7 @@ public static class LoginRoutes
 
 
 
-            Console.WriteLine("Provar skickar mail.");
+
 
 
 
