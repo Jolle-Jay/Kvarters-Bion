@@ -56,3 +56,8 @@ när du listar filmer för användaren så ska det vara med punkter och tomma ra
 När du använder dateFilter så visa filmerna för dagen efter som användaren ber om men säg att det är samma datum. 
 Jag vill att du dubbelkollar så att du faktiskt listar filmerna för rätt datum.
 till exempel: användare:(Vilka filmer spelas 25 mars.) Du:(hämtar filmer för 26 mars, Visar filmer för 26 mars men säger att det är 25 mars.)
+
+
+
+Boka biljetter: Välj film, tryck på önskat datum sedan tryck boka biljet, Välj önskade biljetter och platser sedan tryck på boka, Fyll sedan i din email ifall du inte är inloggad.
+Det är allt för att boka biljetter. 
