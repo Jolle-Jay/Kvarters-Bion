@@ -300,6 +300,58 @@ public static class vadDuVill
       // skapar en bookning med sätena i logiken från createbookingseats
       BookingQueries.CreateBookingSeats(bookingId, seatsList, loungeName, counts);
 
+      System.Console.WriteLine("=== STEP 9.5 Få biljett priser");
+      var ticketPrices = SQLQuery("SELELCT type, price FROM ticketTypes");
+
+      //gör om till dictionary för enkel lookup
+      // den kommer kunna innehålla priser och namnen
+      var priceMap = new Dictionary<string, int>();
+      //hämtar ticketrpices från databasen
+      foreach (var ticket in ticketPrices)
+      {// kastar om värdet till sträng och int
+        priceMap[(string)ticket["type"]] = (int)ticket["price"];
+      }
+
+      //räkna ut totalpris
+      int totalPrice =
+      (counts.adult * priceMap["adult"]) +
+      (counts.senior * priceMap["senior"]) +
+      (counts.child * priceMap["child"]);
+
+      System.Console.WriteLine($"Total price: {totalPrice} SEK");
+
+      //skapar en Dictionary där nyckeln är en sträng (radnummer)
+      // row = nyckeln
+      // llista med säten = värdet (intehåller i lådan)
+      var seatsByRow = new Dictionary<string, List<string>>();
+      foreach (var seat in seatsList)
+      {
+        // splittrar strängen seat vid - så det går att skilja mellan row & seat
+        var parts = seat.Split('-');
+        string row = parts[0];
+        string number = parts[1];
+
+        if (!seatsByRow.ContainsKey(row))
+        {
+          //skapar en tom lista för den raden
+          // första gången vi ser "rad 1" måste vi skapa en lista för den raden
+          //sen kan vi börja lägga till i den nya raden
+          seatsByRow[row] = new List<string>();
+        }
+        seatsByRow[row].Add(number);
+      }
+
+      //bygg en ny sträng
+      // kvp = key, value pair
+      var seatInfo = "";
+      foreach (var kvp in seatsByRow)
+      {
+        // slår samman alla element i listan till EN sträng med , mellan varje element
+        // += === lägg till på slutet 
+        seatInfo += $"<li>Rad {kvp.Key}: Säte {string.Join(", ", kvp.Value)}</li>";
+      }
+
+
       // det är detta vi får i meddelandet till användaren efter vi har slutfört bokningen skickas till frontend
       System.Console.WriteLine("=== STEP 10: Success! ===");
 
@@ -326,8 +378,25 @@ public static class vadDuVill
             $@"<h1>Tack för din bokning!</h1>
                <p>Hej {email}!</p>
                <p>Din bokning är bekräftad.</p>
+
+               <p>Bokingsinformation.</p>
                <p><strong>Bokningsnummer:</strong> {bookingReference}</p>
-               <p><strong>Antal platser:</strong> {seatsList.Count}</p>"
+
+               <p><strong>Antal platser:</strong></p>
+               <ul>
+               {seatInfo}
+               </ul>
+
+                <h3>Biljetter:</h3>
+       <ul>
+         {(counts.adult > 0 ? $"<li>Vuxen: {counts.adult} x {priceMap["adult"]} SEK = {counts.adult * priceMap["adult"]} SEK</li>" : "")}
+         {(counts.senior > 0 ? $"<li>Pensionär: {counts.senior} x {priceMap["senior"]} SEK = {counts.senior * priceMap["senior"]} SEK</li>" : "")}
+         {(counts.child > 0 ? $"<li>Barn: {counts.child} x {priceMap["child"]} SEK = {counts.child * priceMap["child"]} SEK</li>" : "")}
+       </ul>
+
+       <p><strong>Totalpris: {totalPrice} SEK</strong></p>
+       <p>Vi ses på biografen!</p>"
+
         );
           System.Console.WriteLine("=== Bokningsmail skickat! ===");
         }
