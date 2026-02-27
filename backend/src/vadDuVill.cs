@@ -301,7 +301,7 @@ public static class vadDuVill
       BookingQueries.CreateBookingSeats(bookingId, seatsList, loungeName, counts);
 
       System.Console.WriteLine("=== STEP 9.5 Få biljett priser");
-      var ticketPrices = SQLQuery("SELELCT type, price FROM ticketTypes");
+      var ticketPrices = SQLQuery("SELECT name, price FROM ticketTypes");
 
       //gör om till dictionary för enkel lookup
       // den kommer kunna innehålla priser och namnen
