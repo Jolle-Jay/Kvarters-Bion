@@ -1,4 +1,5 @@
 namespace WebApp;
+
 public static class Acl
 {
     private static Arr rules;
@@ -38,8 +39,8 @@ public static class Acl
         method = method != "" ? method : context.Request.Method;
         path = path != "" ? path : context.Request.Path;
         var user = Session.Get(context, "user");
-        var userRole = user == null ? "visitor" : user.role;
-        var userEmail = user == null ? "" : user.email;
+        var userRole = user == null ? "visitor" : (string)user.role;
+        var userEmail = user == null ? "" : (string)user.email;
 
         // Go through all acl rules to and set allowed accordingly!
         var allowed = false;
