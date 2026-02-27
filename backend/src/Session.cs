@@ -47,8 +47,7 @@ public static partial class Session
     public static dynamic Get(HttpContext context, string key)
     {
         var session = GetRawSession(context);
-        // data is already parsed as JSON by ObjFromReader
-       // data is now a string (not parsed by ObjFromReader anymore)
+        // data is now a string (not parsed by ObjFromReader anymore)
         string dataStr = session.data;
 
         if (string.IsNullOrEmpty(dataStr) || dataStr == "{}")
@@ -103,7 +102,6 @@ public static partial class Session
     public static void Set(HttpContext context, string key, object value)
     {
         var session = GetRawSession(context);
-        // data is already parsed as JSON by ObjFromReader
         // Read existing data as JSON string
         string existingDataJson = session.data is string s ? s : "{}";
 
