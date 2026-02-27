@@ -1,7 +1,7 @@
 // Global settings
 Globals = Obj(new
 {
-    debugOn = false,
+    debugOn = true,
     detailedAclDebug = false,
     aclOn = true,
     isSpa = true,  // ← Changed to false (was true)

@@ -192,11 +192,11 @@ public static class vadDuVill
       }
 
       // hämtar counts från BodyJson och gör det till countsobj
-      // så varje countobj som är adult, senior eller child säts in i variablen counts
+      // så varje countobj som är Standard, senior eller child säts in i variablen counts
       var countsObj = bodyJson.GetProperty("counts");
       var counts = new
       {
-        adult = countsObj.GetProperty("adult").GetInt32(),
+        Standard = countsObj.GetProperty("Standard").GetInt32(),
         senior = countsObj.GetProperty("senior").GetInt32(),
         child = countsObj.GetProperty("child").GetInt32()
       };
@@ -309,14 +309,14 @@ public static class vadDuVill
       //hämtar ticketrpices från databasen
       foreach (var ticket in ticketPrices)
       {// kastar om värdet till sträng och int
-        priceMap[(string)ticket["type"]] = (int)ticket["price"];
+        priceMap[(string)ticket["name"]] = (int)ticket["price"];
       }
 
       //räkna ut totalpris
       int totalPrice =
-      (counts.adult * priceMap["adult"]) +
-      (counts.senior * priceMap["senior"]) +
-      (counts.child * priceMap["child"]);
+      (counts.Standard * priceMap["Standard"]) +
+      (counts.senior * priceMap["Senior"]) +
+      (counts.child * priceMap["Child"]);
 
       System.Console.WriteLine($"Total price: {totalPrice} SEK");
 
@@ -389,7 +389,7 @@ public static class vadDuVill
 
                 <h3>Biljetter:</h3>
        <ul>
-         {(counts.adult > 0 ? $"<li>Vuxen: {counts.adult} x {priceMap["adult"]} SEK = {counts.adult * priceMap["adult"]} SEK</li>" : "")}
+         {(counts.Standard > 0 ? $"<li>Vuxen: {counts.Standard} x {priceMap["Standard"]} SEK = {counts.Standard * priceMap["Standard"]} SEK</li>" : "")}
          {(counts.senior > 0 ? $"<li>Pensionär: {counts.senior} x {priceMap["senior"]} SEK = {counts.senior * priceMap["senior"]} SEK</li>" : "")}
          {(counts.child > 0 ? $"<li>Barn: {counts.child} x {priceMap["child"]} SEK = {counts.child * priceMap["child"]} SEK</li>" : "")}
        </ul>
