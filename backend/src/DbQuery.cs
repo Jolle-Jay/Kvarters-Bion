@@ -1,4 +1,6 @@
 using System.Data;
+using System.Transactions;
+using Org.BouncyCastle.Crypto.Prng;
 
 namespace WebApp;
 
@@ -938,6 +940,33 @@ public static class DbQuery
     )
     {
         return SQLQuery(sql, parameters, context)[0];
+    }
+
+
+    // SQLTransaction tar emot en funktion (operations) som argument.
+    // Den öppnar en databasanslutning, startar ett låst block (transaktion)
+    // och kör operations - dvs SELECT + INSERT - på samma anslutning.
+    // Om något går fel körs Rollback - ingenting sparas.
+    // Om allt går bra körs Commit - allt sparas permanent.
+    // Skyddar mot dubbelbookning när två användare bokar samma säte samtidigt.
+    public static void SQLTransaction(Action<MySqlConnection, MySqlTransaction> operations)
+    {
+        using var db = new MySqlConnection(connectionString);
+        db.Open();
+        MySqlTransaction transaction = null;
+
+        try
+        {
+            transaction = db.BeginTransaction();
+            operations(db, transaction);
+            transaction.Commit();
+        }
+        catch (Exception err)
+        {
+            transaction?.Rollback();
+            Console.WriteLine($"Transaction failed: {err.Message}");
+            throw;
+        }
     }
 }
 

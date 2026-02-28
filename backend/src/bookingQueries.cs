@@ -74,34 +74,39 @@ public static class BookingQueries
             System.Console.WriteLine($"Found seat ID: {seatId}");
 
 
-            // using var transaction = connection.BeginTransaction();
-            // // SELECT + INSERT här inne
-            // transaction.Commit();
-            // kolla om sätet redan är bokat för visningen, bokar sätet genom att lägga in rad i bookingseats
-            var alreadyBooked = SQLQueryOne(
-                @"SELECT * FROM bookingSeats bs
+            // Skyddar mot dubbelbookning - SELECT och INSERT körs i samma låsta transaktion.
+            // Om sätet redan är bokat avbryts funktionen innan INSERT körs.
+            // Ingen annan kan boka samma säte under tiden mellan SELECT och INSERT.
+            SQLTransaction((db, transaction) =>
+            {
+                // kolla om sätet redan är bokat för visningen, bokar sätet genom att lägga in rad i bookingseats
+                var alreadyBooked = SQLQueryOne(
+                    @"SELECT * FROM bookingSeats bs
                 INNER JOIN bookings b ON bs.booking = b.id
                 WHERE bs.seat = @seatId
                 AND b.viewing = @viewingId
                 AND b.status = 'Confirmed'",
 
-                new { seatId, viewingId }
-            );
+                    new { seatId, viewingId }
+                );
 
-            if (alreadyBooked != null)
-            {
-                System.Console.WriteLine($"Seat {seatId} is already booked for this viewing.");
-                continue;
-            }
+                if (alreadyBooked != null)
+                {
+                    System.Console.WriteLine($"Seat {seatId} is already booked for this viewing.");
+                    return;
+                }
 
-            // här bokas sätet genom att lägga in raden i bookingSeats
-            SQLQuery(
-                @"INSERT INTO bookingSeats (booking, seat, ticketType)
+                // här bokas sätet genom att lägga in raden i bookingSeats
+                SQLQuery(
+                    @"INSERT INTO bookingSeats (booking, seat, ticketType)
                 VALUES (@bookingId, @seatId, @ticketType)",
-                new { bookingId, seatId, ticketType }
-            );
+                    new { bookingId, seatId, ticketType }
+                );
 
-            System.Console.WriteLine($"Successfully booked seat {seatId} with ticket type {ticketType}");
+                System.Console.WriteLine($"Successfully booked seat {seatId} with ticket type {ticketType}");
+
+            });
+
         }
 
     }
