@@ -205,121 +205,62 @@
 }
 
 /* Showtime Date Groups */
-.showtime-date {
-  margin-bottom: 2rem;
+/* Veckovy för visningstider */
+.week-view {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-.showtime-date h4 {
-  color: #B8860B;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.showtime-card {
+.week-day {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  background: #f5f5dc;
-  border-radius: 20px;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
-  overflow: hidden;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.showtime-card::before,
-.showtime-card::after {
-  content: '';
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background: #012401;
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.showtime-card::before {
-  left: -20px;
-}
-
-.showtime-card::after {
-  right: -20px;
-}
-
-.showtime-poster {
-  flex: 0 0 110px;
-  position: relative;
-  z-index: 1;
-}
-
-.showtime-poster img {
-  width: 100%;
-  height: 140px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-.showtime-info {
-  flex: 1;
-  position: relative;
-  z-index: 1;
-}
-
-.showtime-time {
-  font-size: 1.3rem;
+.week-day-label {
+  font-size: 1.1rem;
   font-weight: bold;
-  color: #012401;
+  color: #fff;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.showtime-box {
+  background: #2ecc40;
+  color: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(44, 204, 64, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.showtime-box:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(44, 204, 64, 0.25);
+  background: #27ae60;
+}
+
+.showtime-box .salong {
+  font-weight: bold;
+  font-size: 1.1rem;
   margin-bottom: 0.2rem;
 }
-
-.showtime-location {
-  font-size: 0.9rem;
-  color: #333;
-  margin-bottom: 0.6rem;
-}
-
-.showtime-meta {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.meta-tag {
-  display: inline-block;
-  padding: 0.3rem 0.6rem;
-  background: #0a3d0a;
-  color: #90ee90;
-  border-radius: 4px;
-  font-size: 0.75rem;
+.showtime-box .tid {
+  font-size: 1.4rem;
   font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+.showtime-box .info {
+  font-size: 0.95rem;
+  opacity: 0.9;
 }
 
-.showtime-card .book-btn {
-  flex: 0 0 auto;
-  padding: 0.8rem 1.8rem;
-  background: #1b7552;
-  border-color: #092b1e;
-  color: #cda31b;
-  font-weight: bold;
-  position: relative;
-  z-index: 1;
-  border-radius: 4px;
-}
 
-.showtime-card .book-btn::after {
-  content: ' ◆';
-  margin-left: 0.5rem;
-}
-
-.showtime-card .book-btn:hover {
-  background: #0c4a32;
-  border-color: #0c4a32;
-  color: #faf8f8;
-}
 
 /* MAIN WRAPPER */
 .movie-detail {
@@ -468,5 +409,6 @@
   }
 
 }
+
 
 
