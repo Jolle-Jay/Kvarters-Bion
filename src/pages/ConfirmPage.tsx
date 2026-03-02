@@ -28,6 +28,7 @@ function ConfirmationPage() {
   const [guestEmail, setGuestEmail] = useState('');
   const [showGuestForm, setShowGuestForm] = useState(false);
 
+  const hasBooked = useRef(false);
   // hämtar värdet från localstorage och kollar om strängen är TRUE FALSE/TRUE sparas i loggedIN och sen uppdateras setIsLoggedin
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -56,6 +57,9 @@ function ConfirmationPage() {
       if (!email) {
         alert('Email saknas, logga in igen');
         return;
+      }
+      if (!hasBooked.current) {
+        hasBooked.current = true;
       }
       createBooking(data, email);
     }

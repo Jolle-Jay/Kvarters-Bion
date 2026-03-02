@@ -220,7 +220,7 @@ public static class vadDuVill
             "Bokningsbekräftelse - Kvarterbion",
             $@"<h1>Tack för din bokning!</h1>
                <p>Hej {email}!</p>
-               <p>Din bokning är bekräftad.</p>
+               <p>Din bokning till {filmTitle} är bekräftad!.</p>
 
                <p>Bokingsinformation.</p>
                <p><strong>Bokningsnummer:</strong> {bookingReference}</p>

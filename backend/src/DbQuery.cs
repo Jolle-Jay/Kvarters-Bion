@@ -28,10 +28,10 @@ public static class DbQuery
         db.Open();
 
         // Reset database if requested
-        //if (config.resetDb == true)
-        //{
-        //    DropTables(db);
-        //}
+        if (config.resetDb == true)
+        {
+            DropTables(db);
+        }
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
@@ -218,6 +218,8 @@ public static class DbQuery
                 ('visitor, user, admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/viewings', 'false', 'Allow all to access /api/viewings'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/booked-seats', 'false', 'Allow all to access /api/booked-seats'),
+                ('visitor, user, admin', 'POST', 'allow', '/api/customBooking', 'true', 'Allow all to make bookings'),
+
 
                 ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
             ";
