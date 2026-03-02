@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/confirmStyles.css';
 
@@ -28,6 +28,7 @@ function ConfirmationPage() {
   const [guestEmail, setGuestEmail] = useState('');
   const [showGuestForm, setShowGuestForm] = useState(false);
 
+  const hasBooked = useRef(false);
   // hämtar värdet från localstorage och kollar om strängen är TRUE FALSE/TRUE sparas i loggedIN och sen uppdateras setIsLoggedin
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -57,7 +58,10 @@ function ConfirmationPage() {
         alert('Email saknas, logga in igen');
         return;
       }
-      createBooking(data, email);
+      if (!hasBooked.current) {
+        hasBooked.current = true;
+        createBooking(data, email);
+      }
     }
   }, []);
 
