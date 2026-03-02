@@ -343,9 +343,7 @@ function BookingPage() {
           <div className="ticket-panel">
             <h3>Välj antal biljetter</h3>
 
-            {/* Panel: Select number of tickets */}
-            <div className="ticket-panel">
-              <h3>Välj antal biljetter</h3>
+          
 
               <div className="ticket-row">
                 <div className="ticket-label">
@@ -440,7 +438,6 @@ function BookingPage() {
 
           </div>
         </div>
-      </div>
     </section>
 
       {/* Seat map */}
