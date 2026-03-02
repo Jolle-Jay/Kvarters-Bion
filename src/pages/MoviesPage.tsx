@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+// ...existing code...
 import type { Movie } from "../interfaces/Movie";
 import { mapMovieArray } from "../interfaces/Movie";
 import "../css/MoviePage.css";
@@ -59,45 +59,11 @@ export default function MoviePage() {
     return time;
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+// ...existing code...
 
-    if (date.toDateString() === today.toDateString()) {
-      return 'Idag';
-    } else if (date.toDateString() === tomorrow.toDateString()) {
-      return 'Imorgon';
-    } else {
-      return date.toLocaleDateString('sv-SE', {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric'
-      });
-    }
-  };
+// ...existing code...
 
-  //gruppera visningstider per datum
-  const groupedViewings = viewings.reduce((acc: any, viewing: any) => {
-    const date = new Date(viewing.start_time).toDateString();
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(viewing);
-    return acc;
-  }, {});
-
-  //funktoon för drop down menu
-  const toggleDate = (date: string) => {
-    const newOpenDates = new Set(openDates);
-    if (newOpenDates.has(date)) {
-      newOpenDates.delete(date);
-    } else {
-      newOpenDates.add(date);
-    }
-    setOpenDates(newOpenDates);
-  };
+// ...existing code...
 
 
 
@@ -176,57 +142,51 @@ export default function MoviePage() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Uppdaterad shotimes */}
-        <div className="movie-times">
-          <h3>Visningstider</h3>
-
-          {viewings.length === 0 ? (
-            <p>Inga visningstider tillgängliga</p>
-          ) : (
-            Object.entries(groupedViewings).map(([date, dateViewings]: [string, any]) => (
-              <div key={date} className="showtime-date">
-
-                <h4
-                  onClick={() => toggleDate(date)}
-                  style={{ cursor: 'pointer', userSelect: 'none' }}
-                >
-                  {formatDate(dateViewings[0].start_time)}
-                  <span style={{ marginLeft: '10px' }}>
-                    {openDates.has(date) ? '▼' : '▶'}
-                  </span>
-                </h4>
-
-                {openDates.has(date) && dateViewings.map((viewing: any) => (
-                  <div key={viewing.id} className="showtime-card">
-                    <div className="showtime-poster">
-                      <img src={movie.Poster} alt={movie.Title} />
-                    </div>
-
-                    <div className="showtime-info">
-                      <div className="showtime-time">
-                        {formatDateTime(viewing.start_time)}
+      {/* Veckovy för visningstider */}
+      <div className="movie-times">
+        <h3>Visningstider</h3>
+        {viewings.length === 0 ? (
+          <p>Inga visningstider tillgängliga</p>
+        ) : (
+          <div className="week-view">
+            {[...Array(7)].map((_, i) => {
+              // Skapa datum för varje veckodag (mån-sön)
+              const today = new Date();
+              const dayDate = new Date(today);
+              dayDate.setDate(today.getDate() - today.getDay() + i + 1); // Måndag = 1
+              const dayKey = dayDate.toDateString();
+              const dayLabel = dayDate.toLocaleDateString('sv-SE', { weekday: 'long' });
+              // Filtrera visningstider för denna dag
+              const dayViewings = viewings.filter(v => {
+                const vDate = new Date(v.start_time);
+                return vDate.toDateString() === dayKey;
+              });
+              return (
+                <div key={dayKey} className="week-day">
+                  <div className="week-day-label">{dayLabel}</div>
+                  {dayViewings.length === 0 ? (
+                    <div className="showtime-box info">Inga tider</div>
+                  ) : (
+                    dayViewings.map(viewing => (
+                      <div
+                        key={viewing.id}
+                        className="showtime-box"
+                        onClick={() => window.location.href = `/booking/${movie.id}?showtime=${viewing.id}`}
+                        title={`Boka ${formatDateTime(viewing.start_time)} (${viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'})`}
+                      >
+                        <div className="salong">{viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}</div>
+                        <div className="tid">{formatDateTime(viewing.start_time)}</div>
+                        <div className="info">{movie.Title} ({movie.Runtime})</div>
                       </div>
-                      <div className="showtime-location">
-                        {viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}
-                      </div>
-
-                      <div className="showtime-meta">
-                        <span className="meta-tag">{movie.Genre}</span>
-                        <span className="meta-tag">{movie.Runtime}</span>
-                      </div>
-                    </div>
-
-                    <Link to={`/booking/${movie.id}`} className="book-btn">
-                      Boka biljett
-                    </Link>
-                  </div>
-                ))}
-              </div>
-
-            ))
-          )}
-        </div>
+                    ))
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

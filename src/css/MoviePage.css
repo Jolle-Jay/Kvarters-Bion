@@ -1,8 +1,10 @@
+/* Container for the weekly showtimes grid */
 .movie-times {
   margin-top: 2rem;
   flex: 1;
 }
 
+/* Heading for the showtimes section */
 .movie-times h3 {
   color: #B8860B;
   font-size: 1.2rem;
@@ -11,6 +13,7 @@
   letter-spacing: 1px;
 }
 
+/* Movie title styling */
 .movie-info h1 {
   font-size: 3rem;
   color: #B8860B;
@@ -20,6 +23,7 @@
   margin-bottom: 1.5rem;
 }
 
+/* Grid for genre, length, year, age rating */
 .movie-meta {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -31,20 +35,24 @@
   border-radius: 4px;
 }
 
+/* Text for meta info */
 .movie-meta p {
   color: #c3cac3;
   font-size: 1rem;
 }
 
+/* Highlighted meta labels */
 .movie-meta strong {
   color: #B8860B;
 }
 
+/* Wrapper for movie description and dropdown */
 .movie-description {
   margin-bottom: 2rem;
 }
 
 
+/* Description text */
 .movie-description p {
   color: #c3cac3;
   font-size: 1rem;
@@ -53,10 +61,12 @@
   margin-bottom: 0.5rem;
 }
 
+/* Container for dropdown header text */
 .description-text {
   flex: 1;
 }
 
+/* Dropdown header title */
 .description-text h3 {
   color: #B8860B;
   font-size: 1rem;
@@ -66,6 +76,7 @@
   letter-spacing: normal;
 }
 
+/* Dropdown header description */
 .description-text p {
   color: #c3cac3;
   font-size: 0.95rem;
@@ -73,6 +84,7 @@
   margin: 0;
 }
 
+/* Collapsible dropdown for movie info */
 .dropdown-section {
   background: rgba(10, 61, 10, 0.3);
   border: 1px solid rgba(184, 134, 11, 0.3);
@@ -81,10 +93,12 @@
   margin-bottom: 1rem;
 }
 
+/* Remove margin for last dropdown */
 .dropdown-section:last-child {
   margin-bottom: 0;
 }
 
+/* Dropdown clickable header */
 .dropdown-header {
   display: flex;
   justify-content: space-between;
@@ -98,10 +112,12 @@
   user-select: none;
 }
 
+/* Hover effect for dropdown header */
 .dropdown-header:hover {
   background: rgba(10, 61, 10, 0.7);
 }
 
+/* Dropdown menu icon */
 .dropdown-menu {
   font-size: 1.5rem;
   color: #B8860B;
@@ -112,20 +128,24 @@
   cursor: pointer;
 }
 
+/* Rotated icon when open */
 .dropdown-menu.open {
   transform: rotate(90deg);
 }
 
+/* Hidden dropdown content */
 .dropdown-content {
   display: none;
   padding: 1.2rem;
   background: rgba(10, 61, 10, 0.2);
 }
 
+/* Show dropdown content when open */
 .dropdown-content.show {
   display: block;
 }
 
+/* Row for extra info (director, actors, etc) */
 .info-row {
   display: flex;
   margin-bottom: 1rem;
@@ -133,10 +153,12 @@
   align-items: flex-start;
 }
 
+/* Remove margin for last info row */
 .info-row:last-child {
   margin-bottom: 0;
 }
 
+/* Label for info row */
 .info-label {
   color: #FFD700;
   font-weight: bold;
@@ -144,18 +166,21 @@
   flex-shrink: 0;
 }
 
+/* Value for info row */
 .info-value {
   color: #c3cac3;
   font-size: 0.95rem;
   line-height: 1.6;
 }
 
+/* (Legacy) Flex container for time slots */
 .time-slots {
   display: flex;
   gap: 1.5rem;
   flex-wrap: wrap;
 }
 
+/* (Legacy) Individual time slot styling */
 .time-slot {
   display: flex;
   flex-direction: column;
@@ -170,6 +195,7 @@
   text-align: center;
 }
 
+/* (Legacy) Time slot text */
 .time-slot p {
   color: #c3cac3;
   font-weight: normal;
@@ -177,6 +203,7 @@
   font-size: 0.85rem;
 }
 
+/* (Legacy) Time slot time */
 .time-slot span {
   color: #FFD700;
   font-size: 1.8rem;
@@ -185,6 +212,7 @@
   line-height: 1;
 }
 
+/* Book ticket button */
 .book-btn {
   display: inline-block;
   padding: 0.75rem 2rem;
@@ -197,6 +225,7 @@
   border: 2px solid #B8860B;
 }
 
+/* Hover effect for book button */
 .book-btn:hover {
   background: #FFD700;
   color: #333;
@@ -204,124 +233,93 @@
   box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4);
 }
 
-/* Showtime Date Groups */
-.showtime-date {
-  margin-bottom: 2rem;
+/* Weekly grid for showtimes (desktop) */
+.week-view {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-.showtime-date h4 {
-  color: #B8860B;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.showtime-card {
+/* One day column in the week grid */
+.week-day {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  background: #f5f5dc;
-  border-radius: 20px;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  align-items: flex-start;
   position: relative;
-  overflow: hidden;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
-.showtime-card::before,
-.showtime-card::after {
-  content: '';
+/* Vertical divider between days (desktop) */
+.week-day:not(:last-child)::after {
+  content: "";
   position: absolute;
-  width: 40px;
-  height: 40px;
-  background: #012401;
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.showtime-card::before {
-  left: -20px;
-}
-
-.showtime-card::after {
-  right: -20px;
-}
-
-.showtime-poster {
-  flex: 0 0 110px;
-  position: relative;
+  top: 0.5rem;
+  right: 0;
+  width: 1px;
+  height: calc(100% - 1rem);
+  background: rgba(255,255,255,0.08);
   z-index: 1;
 }
 
-.showtime-poster img {
-  width: 100%;
-  height: 140px;
-  border-radius: 8px;
-  object-fit: cover;
+/* (Duplicate, kept for mobile override) */
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.showtime-info {
-  flex: 1;
-  position: relative;
-  z-index: 1;
-}
-
-.showtime-time {
-  font-size: 1.3rem;
+/* Day label (e.g. "måndag") */
+.week-day-label {
+  font-size: 1.1rem;
   font-weight: bold;
-  color: #012401;
+  color: #B8860B;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+/* Green showtime box */
+.showtime-box {
+  background: #144122;  /* box color */
+  color: #fefefd;  /* text color  */
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(44, 204, 64, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-size: 1rem;
+  font-weight: 500;
+}
+/* Hover effect for showtime box */
+.showtime-box:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(44, 204, 64, 0.25);
+  background: #477a5c;  /* box color after hovering */
+}
+
+/* Salong name in showtime box */
+.showtime-box .salong {
+  font-weight: bold;
+  font-size: 1.1rem;
   margin-bottom: 0.2rem;
 }
-
-.showtime-location {
-  font-size: 0.9rem;
-  color: #333;
-  margin-bottom: 0.6rem;
-}
-
-.showtime-meta {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.meta-tag {
-  display: inline-block;
-  padding: 0.3rem 0.6rem;
-  background: #0a3d0a;
-  color: #90ee90;
-  border-radius: 4px;
-  font-size: 0.75rem;
+/* Time in showtime box */
+.showtime-box .tid {
+  font-size: 1.4rem;
   font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+/* Extra info in showtime box */
+.showtime-box .info {
+  font-size: 0.95rem;
+  opacity: 0.9;
 }
 
-.showtime-card .book-btn {
-  flex: 0 0 auto;
-  padding: 0.8rem 1.8rem;
-  background: #1b7552;
-  border-color: #092b1e;
-  color: #cda31b;
-  font-weight: bold;
-  position: relative;
-  z-index: 1;
-  border-radius: 4px;
-}
 
-.showtime-card .book-btn::after {
-  content: ' ◆';
-  margin-left: 0.5rem;
-}
 
-.showtime-card .book-btn:hover {
-  background: #0c4a32;
-  border-color: #0c4a32;
-  color: #faf8f8;
-}
-
-/* MAIN WRAPPER */
+/* Main wrapper for the whole movie page */
 .movie-detail {
   margin: 2rem;
   padding: 2rem;
@@ -330,7 +328,7 @@
   border-radius: 12px;
 }
 
-/* HERO SECTION (Poster + Trailer) */
+/* Top section: poster and trailer side by side */
 .movie-hero {
   display: flex;
   gap: 2.5rem;
@@ -338,11 +336,12 @@
   margin-bottom: 3rem;
 }
 
-/* POSTER */
+/* Movie poster container */
 .movie-poster {
   flex: 0 0 400px;
 }
 
+/* Movie poster image */
 .movie-poster img {
   width: 100%;
   height: 100%;
@@ -352,13 +351,14 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
 }
 
-/* TRAILER */
+/* Movie trailer container */
 .movie-trailer {
   flex: 1;
   position: relative;
   aspect-ratio: 16/9;
 }
 
+/* Embedded trailer video */
 .movie-trailer iframe {
   width: 100%;
   height: 100%;
@@ -367,18 +367,19 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
 }
 
-/* CONTENT UNDER HERO */
+/* Content under hero: info and showtimes */
 .movie-content {
   display: flex;
   gap: 3rem;
   align-items: flex-start;
 }
 
-/* INFO + SHOWTIMES layout */
+/* Info section (left on desktop) */
 .movie-info {
   flex: 2;
 }
 
+/* Tablet layout adjustments */
 @media (max-width: 1024px) {
 
   .movie-hero {
@@ -401,7 +402,18 @@
 
 }
 
+/* Mobile layout adjustments */
 @media (max-width: 768px) {
+  .week-day {
+    border-right: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  .week-day:last-child {
+    border-right: none;
+  }
+  .week-day:not(:last-child)::after {
+    display: none;
+  }
 
   .movie-detail {
     margin: 1rem;
@@ -425,48 +437,39 @@
     gap: 1.5rem;
   }
 
-  /* Showtime card mobil */
-  .showtime-card {
-    flex-direction: row;
-    align-items: center;
+  /* Veckovy mobilanpassning */
+  .week-view {
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    padding: 1rem;
   }
 
-  .showtime-poster {
-    flex: 0 0 70px;
+  .week-day-label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
   }
 
-  .showtime-poster img {
-    width: 70px;
-    height: 100px;
-    object-fit: cover;
+  .showtime-box {
+    font-size: 0.95rem;
+    padding: 0.7rem 0.8rem;
+    margin-bottom: 0.7rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(44, 204, 64, 0.12);
   }
 
-  .showtime-info {
-    flex: 1;
+  .showtime-box .salong {
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
   }
-  
-  .showtime-time {
-    font-size: 1.1rem;
+  .showtime-box .tid {
+    font-size: 1.2rem;
+    margin-bottom: 0.1rem;
   }
-  
-  .showtime-location {
-    font-size: 0.8rem;
-  }
-  
-  .showtime-meta {
-    display: none;
-      /* Tar bort taggar för bättre luft */
-  }
-  
-  .showtime-card .book-btn {
-    flex: 0 0 auto;
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
-    white-space: nowrap;
+  .showtime-box .info {
+    font-size: 0.9rem;
   }
 
 }
+
 
 
