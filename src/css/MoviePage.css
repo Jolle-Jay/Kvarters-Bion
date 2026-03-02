@@ -366,46 +366,36 @@
     gap: 1.5rem;
   }
 
-  /* Showtime card mobil */
-  .showtime-card {
-    flex-direction: row;
-    align-items: center;
+  /* Veckovy mobilanpassning */
+  .week-view {
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    padding: 1rem;
   }
 
-  .showtime-poster {
-    flex: 0 0 70px;
+  .week-day-label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
   }
 
-  .showtime-poster img {
-    width: 70px;
-    height: 100px;
-    object-fit: cover;
+  .showtime-box {
+    font-size: 0.95rem;
+    padding: 0.7rem 0.8rem;
+    margin-bottom: 0.7rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(44, 204, 64, 0.12);
   }
 
-  .showtime-info {
-    flex: 1;
+  .showtime-box .salong {
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
   }
-  
-  .showtime-time {
-    font-size: 1.1rem;
+  .showtime-box .tid {
+    font-size: 1.2rem;
+    margin-bottom: 0.1rem;
   }
-  
-  .showtime-location {
-    font-size: 0.8rem;
-  }
-  
-  .showtime-meta {
-    display: none;
-      /* Tar bort taggar för bättre luft */
-  }
-  
-  .showtime-card .book-btn {
-    flex: 0 0 auto;
-    padding: 0.6rem 1rem;
-    font-size: 0.8rem;
-    white-space: nowrap;
+  .showtime-box .info {
+    font-size: 0.9rem;
   }
 
 }
