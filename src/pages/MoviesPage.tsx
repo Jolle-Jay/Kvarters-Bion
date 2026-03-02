@@ -142,51 +142,51 @@ export default function MoviePage() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Veckovy för visningstider */}
-        <div className="movie-times">
-          <h3>Veckovy</h3>
-          {viewings.length === 0 ? (
-            <p>Inga visningstider tillgängliga</p>
-          ) : (
-            <div className="week-view">
-              {[...Array(7)].map((_, i) => {
-                // Skapa datum för varje veckodag (mån-sön)
-                const today = new Date();
-                const dayDate = new Date(today);
-                dayDate.setDate(today.getDate() - today.getDay() + i + 1); // Måndag = 1
-                const dayKey = dayDate.toDateString();
-                const dayLabel = dayDate.toLocaleDateString('sv-SE', { weekday: 'long' });
-                // Filtrera visningstider för denna dag
-                const dayViewings = viewings.filter(v => {
-                  const vDate = new Date(v.start_time);
-                  return vDate.toDateString() === dayKey;
-                });
-                return (
-                  <div key={dayKey} className="week-day">
-                    <div className="week-day-label">{dayLabel}</div>
-                    {dayViewings.length === 0 ? (
-                      <div className="showtime-box info">Inga tider</div>
-                    ) : (
-                      dayViewings.map(viewing => (
-                        <div
-                          key={viewing.id}
-                          className="showtime-box"
-                          onClick={() => window.location.href = `/booking/${movie.id}?showtime=${viewing.id}`}
-                          title={`Boka ${formatDateTime(viewing.start_time)} (${viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'})`}
-                        >
-                          <div className="salong">{viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}</div>
-                          <div className="tid">{formatDateTime(viewing.start_time)}</div>
-                          <div className="info">{movie.Title} ({movie.Runtime})</div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+      {/* Veckovy för visningstider */}
+      <div className="movie-times">
+        <h3>Veckovy</h3>
+        {viewings.length === 0 ? (
+          <p>Inga visningstider tillgängliga</p>
+        ) : (
+          <div className="week-view">
+            {[...Array(7)].map((_, i) => {
+              // Skapa datum för varje veckodag (mån-sön)
+              const today = new Date();
+              const dayDate = new Date(today);
+              dayDate.setDate(today.getDate() - today.getDay() + i + 1); // Måndag = 1
+              const dayKey = dayDate.toDateString();
+              const dayLabel = dayDate.toLocaleDateString('sv-SE', { weekday: 'long' });
+              // Filtrera visningstider för denna dag
+              const dayViewings = viewings.filter(v => {
+                const vDate = new Date(v.start_time);
+                return vDate.toDateString() === dayKey;
+              });
+              return (
+                <div key={dayKey} className="week-day">
+                  <div className="week-day-label">{dayLabel}</div>
+                  {dayViewings.length === 0 ? (
+                    <div className="showtime-box info">Inga tider</div>
+                  ) : (
+                    dayViewings.map(viewing => (
+                      <div
+                        key={viewing.id}
+                        className="showtime-box"
+                        onClick={() => window.location.href = `/booking/${movie.id}?showtime=${viewing.id}`}
+                        title={`Boka ${formatDateTime(viewing.start_time)} (${viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'})`}
+                      >
+                        <div className="salong">{viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}</div>
+                        <div className="tid">{formatDateTime(viewing.start_time)}</div>
+                        <div className="info">{movie.Title} ({movie.Runtime})</div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

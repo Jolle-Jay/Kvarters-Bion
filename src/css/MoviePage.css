@@ -213,6 +213,27 @@
   margin-top: 2rem;
 }
 
+  .week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* Vertikal linje mellan dagar */
+.week-day:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  right: 0;
+  width: 1px;
+  height: calc(100% - 1rem);
+  background: rgba(255,255,255,0.08);
+  z-index: 1;
+}
+
 .week-day {
   display: flex;
   flex-direction: column;
@@ -343,6 +364,16 @@
 }
 
 @media (max-width: 768px) {
+  .week-day {
+    border-right: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  .week-day:last-child {
+    border-right: none;
+  }
+  .week-day:not(:last-child)::after {
+    display: none;
+  }
 
   .movie-detail {
     margin: 1rem;
