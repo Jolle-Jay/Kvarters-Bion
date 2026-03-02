@@ -221,3 +221,4 @@ ConfirmationPage.route = {
 export default ConfirmationPage;
 
 
+// Lägga till en knapp för avbryta bokningen 
