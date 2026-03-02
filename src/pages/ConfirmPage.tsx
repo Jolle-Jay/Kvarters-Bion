@@ -31,6 +31,8 @@ function ConfirmationPage() {
   // Ref för att förhindra dubbla anrop i React.StrictMode
   const effectRan = useRef(false);
 
+
+  const hasBooked = useRef(false);
   // hämtar värdet från localstorage och kollar om strängen är TRUE FALSE/TRUE sparas i loggedIN och sen uppdateras setIsLoggedin
   useEffect(() => {
     // I utvecklingsläge med StrictMode körs denna useEffect två gånger.
@@ -64,7 +66,10 @@ function ConfirmationPage() {
         alert('Email saknas, logga in igen');
         return;
       }
-      createBooking(data, email);
+      if (!hasBooked.current) {
+        hasBooked.current = true;
+        createBooking(data, email);
+      }
     }
 
     // Cleanup-funktion som körs när komponenten "unmounts".
