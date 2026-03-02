@@ -236,22 +236,32 @@
 /* Weekly grid for showtimes (desktop) */
 .week-view {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(7, 1fr);  /*
+  Weekly grid container for showtimes (Veckovy).
+  Uses CSS grid to create 7 equal columns for each weekday.
+*/
+  gap: 2rem;  /* gap: space between columns. */
+  margin-top: 2rem;  /* margin-top: spacing above the grid. */
 }
 
-/* One day column in the week grid */
+
+/*
+  One day column in the week grid. */
 .week-day {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  /* Stack day label and showtime boxes vertically */
   align-items: flex-start;
-  position: relative;
-  padding-left: 0.5rem;
+  position: relative;  /* position: relative for vertical divider. */
+  padding-left: 0.5rem;  /* Adds horizontal padding for space between divider and boxes. */
   padding-right: 0.5rem;
 }
 
-/* Vertical divider between days (desktop) */
+
+/*
+  Vertical divider line between each day column (except last).
+  Thin, subtle white line for visual separation.
+  Absolutely positioned to the right edge of each .week-day.
+*/
 .week-day:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -263,58 +273,68 @@
   z-index: 1;
 }
 
-/* (Duplicate, kept for mobile override) */
+
+/*
+  (Duplicate for mobile override, see media queries below).
+  Ensures .week-day stays flex on mobile.
+*/
 .week-day {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-/* Day label (e.g. "måndag") */
+
+/* Day label at the top of each column (e.g. 'måndag'). */
 .week-day-label {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #B8860B;
+  color: #B8860B;  
   margin-bottom: 1rem;
   text-align: left;
 }
 
-/* Green showtime box */
+/* Green showtime box for each time or 'Inga tider'.
+  Contains salong, tid, och info.. */
 .showtime-box {
   background: #144122;  /* box color */
   color: #fefefd;  /* text color  */
-  border-radius: 12px;
+  border-radius: 12px;  /* Rounded corners, shadow, clickable. */
   padding: 1rem 1.2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1rem;  /* margin-bottom: space between boxes if multiple per day. */
   box-shadow: 0 2px 8px rgba(44, 204, 64, 0.15);
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform 0.15s, box-shadow 0.15s;  /* transition: smooth hover effect. */
   font-size: 1rem;
   font-weight: 500;
 }
+
 /* Hover effect for showtime box */
 .showtime-box:hover {
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 6px 16px rgba(44, 204, 64, 0.25);
+  transform: translateY(-2px) scale(1.04);  /* Moves box up slightly */
+  box-shadow: 0 6px 16px rgba(44, 204, 64, 0.25);  /* Increases shadow */
   background: #477a5c;  /* box color after hovering */
 }
 
-/* Salong name in showtime box */
+
+/* Salong name (e.g. 'Stora Salongen') inside showtime box. */
 .showtime-box .salong {
-  font-weight: bold;
+  font-weight: bold;  /* Bold and slightly larger for emphasis */
   font-size: 1.1rem;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.2rem;  /* margin-bottom: space below name */
 }
-/* Time in showtime box */
+
+/* Showtime time (e.g. '19:00') inside showtime box. */
 .showtime-box .tid {
   font-size: 1.4rem;
-  font-weight: bold;
-  margin-bottom: 0.2rem;
+  font-weight: bold;  /*Large and bold for visibility */
+  margin-bottom: 0.2rem;  /*margin-bottom: space below time */
 }
-/* Extra info in showtime box */
+
+/* Extra info (e.g. movie title, runtime) inside showtime box. */
 .showtime-box .info {
   font-size: 0.95rem;
-  opacity: 0.9;
+  opacity: 0.9;  /* Slightly smaller, muted with opacity */
 }
 
 
