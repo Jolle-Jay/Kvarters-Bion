@@ -13,9 +13,9 @@ public static class Server
         FileServer.Start();
         LoginRoutes.Start();
         AiChatRoutes.Start();
+        vadDuVill.Start();
         RestApi.Start();
         Session.Start();
-        vadDuVill.Start();
         // Start the server on port 3001
         var runUrl = "http://localhost:" + Globals.port;
         Log("Server running on:", runUrl);

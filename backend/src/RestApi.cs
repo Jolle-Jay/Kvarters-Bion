@@ -12,30 +12,32 @@ public static class RestApi
 
 
 
+        {
+            System.Console.WriteLine($"=== RestApi POST table: '{table}' ===");
+
+            if (table == "customBooking")
             {
-                if (table == "customBooking")
-                {
-                    return vadDuVill.HandleCustomBooking(context, bodyJson);
-                }
-                var body = JSON.Parse(bodyJson.ToString());
-                body.Delete("id");
-                var parsed = ReqBodyParse(table, body);
-                var columns = parsed.insertColumns;
-                var values = parsed.insertValues;
-                var sql = $"INSERT INTO {table}({columns}) VALUES({values})";
-                var result = SQLQueryOne(sql, parsed.body, context);
-                if (!result.HasKey("error"))
-                {
-                    // Get the insert id and add to our result
-                    result.insertId = SQLQueryOne(
-                        @$"SELECT id AS __insertId 
+                return vadDuVill.HandleCustomBooking(context, bodyJson);
+            }
+            var body = JSON.Parse(bodyJson.ToString());
+            body.Delete("id");
+            var parsed = ReqBodyParse(table, body);
+            var columns = parsed.insertColumns;
+            var values = parsed.insertValues;
+            var sql = $"INSERT INTO {table}({columns}) VALUES({values})";
+            var result = SQLQueryOne(sql, parsed.body, context);
+            if (!result.HasKey("error"))
+            {
+                // Get the insert id and add to our result
+                result.insertId = SQLQueryOne(
+                    @$"SELECT id AS __insertId 
                        FROM {table} ORDER BY id DESC LIMIT 1"
-                    ).__insertId;
-                }
-                return RestResult.Parse(context, result);
+                ).__insertId;
+            }
+            return RestResult.Parse(context, result);
 
 
-            });
+        });
 
 
 
