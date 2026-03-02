@@ -3,8 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  min-height: 60vh;
+  padding-bottom: 4%;
 }
 
 /* Success message box */
@@ -23,7 +22,7 @@
   margin: 1.2rem auto;
 
   width: auto;
-  max-width: 95vw;
+  max-width: 75vw;
   text-align: center;
   
 }
@@ -38,6 +37,10 @@
       0 0 4px #B8860B,
       0 0 6px #B8860B,
       0 0 10px rgba(184, 134, 11, 0.4),
+}
+
+.bookingMsg p {
+  padding-top: 3%;
 }
 
 .booking-id {

@@ -4,53 +4,53 @@ namespace WebApp;
 
 public static class DbQuery
 {
-    // Setup the database connection from config
-    private static string connectionString;
+  // Setup the database connection from config
+  private static string connectionString;
 
-    // JSON columns for _CONTAINS_ validation
-    public static Arr JsonColumns = Arr(new[] { "Genre" });
+  // JSON columns for _CONTAINS_ validation
+  public static Arr JsonColumns = Arr(new[] { "Genre" });
 
-    public static bool IsJsonColumn(string column) => JsonColumns.Includes(column);
+  public static bool IsJsonColumn(string column) => JsonColumns.Includes(column);
 
-    static DbQuery()
+  static DbQuery()
+  {
+    var configPath = Path.Combine(
+        AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
+    );
+    var configJson = File.ReadAllText(configPath);
+    var config = JSON.Parse(configJson);
+
+    connectionString =
+        $"Server={config.host};Port={config.port};Database={config.database};" +
+        $"User={config.username};Password={config.password};";
+
+    var db = new MySqlConnection(connectionString);
+    db.Open();
+
+    // Reset database if requested
+    //if (config.resetDb == true)
+    //{
+    //    DropTables(db);
+    //}
+
+    // Create tables if they don't exist
+    if (config.createTablesIfNotExist == true)
     {
-        var configPath = Path.Combine(
-            AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
-        );
-        var configJson = File.ReadAllText(configPath);
-        var config = JSON.Parse(configJson);
-
-        connectionString =
-            $"Server={config.host};Port={config.port};Database={config.database};" +
-            $"User={config.username};Password={config.password};";
-
-        var db = new MySqlConnection(connectionString);
-        db.Open();
-
-        // Reset database if requested
-        //if (config.resetDb == true)
-        //{
-        //    DropTables(db);
-        //}
-
-        // Create tables if they don't exist
-        if (config.createTablesIfNotExist == true)
-        {
-            CreateTablesIfNotExist(db);
-        }
-
-        // Seed data if tables are empty
-        if (config.seedDataIfEmpty == true)
-        {
-            SeedDataIfEmpty(db);
-        }
-
-        db.Close();
+      CreateTablesIfNotExist(db);
     }
 
-    private static void DropTables(MySqlConnection db)
+    // Seed data if tables are empty
+    if (config.seedDataIfEmpty == true)
     {
-        var dropTablesSql = @"
+      SeedDataIfEmpty(db);
+    }
+
+    db.Close();
+  }
+
+  private static void DropTables(MySqlConnection db)
+  {
+    var dropTablesSql = @"
             DROP TABLE IF EXISTS bookingSeats;
             DROP TABLE IF EXISTS bookings;
             DROP TABLE IF EXISTS seats;
@@ -63,21 +63,21 @@ public static class DbQuery
             DROP TABLE IF EXISTS sessions;
         ";
 
-        foreach (var sql in dropTablesSql.Split(';'))
-        {
-            var trimmed = sql.Trim();
-            if (!string.IsNullOrEmpty(trimmed))
-            {
-                var command = db.CreateCommand();
-                command.CommandText = trimmed;
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-    private static void CreateTablesIfNotExist(MySqlConnection db)
+    foreach (var sql in dropTablesSql.Split(';'))
     {
-        var createTablesSql = @"
+      var trimmed = sql.Trim();
+      if (!string.IsNullOrEmpty(trimmed))
+      {
+        var command = db.CreateCommand();
+        command.CommandText = trimmed;
+        command.ExecuteNonQuery();
+      }
+    }
+  }
+
+  private static void CreateTablesIfNotExist(MySqlConnection db)
+  {
+    var createTablesSql = @"
             CREATE TABLE IF NOT EXISTS sessions (
                 id VARCHAR(255) PRIMARY KEY NOT NULL,
                 created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -183,29 +183,29 @@ public static class DbQuery
                 ON UPDATE NO ACTION ON DELETE NO ACTION;
         ";
 
-        // Execute each statement separately
-        foreach (var sql in createTablesSql.Split(';'))
-        {
-            var trimmed = sql.Trim();
-            if (!string.IsNullOrEmpty(trimmed))
-            {
-                var command = db.CreateCommand();
-                command.CommandText = trimmed;
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-    private static void SeedDataIfEmpty(MySqlConnection db)
+    // Execute each statement separately
+    foreach (var sql in createTablesSql.Split(';'))
     {
-        // Check if tables are empty and seed if needed
+      var trimmed = sql.Trim();
+      if (!string.IsNullOrEmpty(trimmed))
+      {
         var command = db.CreateCommand();
+        command.CommandText = trimmed;
+        command.ExecuteNonQuery();
+      }
+    }
+  }
 
-        // Seed ACL rules
-        command.CommandText = "SELECT COUNT(*) FROM acl";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var aclData = @"
+  private static void SeedDataIfEmpty(MySqlConnection db)
+  {
+    // Check if tables are empty and seed if needed
+    var command = db.CreateCommand();
+
+    // Seed ACL rules
+    command.CommandText = "SELECT COUNT(*) FROM acl";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var aclData = @"
                 INSERT INTO acl (userRoles, method, allow, route, `match`, comment) VALUES
                 ('visitor, user', 'GET', 'disallow', '/secret.html', 'true', 'No access to /secret.html for visitors and normal users'),
                 ('visitor, user, admin', 'GET', 'allow', '/api', 'false', 'Allow access to all routes not starting with /api'),
@@ -221,92 +221,92 @@ public static class DbQuery
 
                 ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
             ";
-            command.CommandText = aclData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = aclData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // Seed users
-        command.CommandText = "SELECT COUNT(*) FROM users";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var usersData = @"
+    // Seed users
+    command.CommandText = "SELECT COUNT(*) FROM users";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var usersData = @"
                 INSERT INTO users (created, email, firstName, lastName, role, password) VALUES
                 ('2024-04-02', 'thomas@nodehill.com', 'Thomas', 'Frank', 'admin', '$2a$13$IahRVtN2pxc1Ne1NzJUPpOQO5JCtDZvXpSF.IF8uW85S6VoZKCwZq'),
                 ('2024-04-02', 'olle@nodehill.com', 'Olle', 'Olofsson', 'user', '$2a$13$O2Gs3FME3oA1DAzwE0FkOuMAOOAgRyuvNQq937.cl7D.xq0IjgzN.'),
                 ('2024-04-02', 'maria@nodehill.com', 'Maria', 'MÃ¥rtensson', 'user', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS'),
                 ('2026-02-17', 'davidpuscas@live.se', 'David', 'Puscas', 'user', '$2a$13$IimwlKfAZFbDq8ELStMuN.4vnocpMUTLMLSp3PIdOC9f6OMwfrHwS');
             ";
-            command.CommandText = usersData;
-            command.ExecuteNonQuery();
+      command.CommandText = usersData;
+      command.ExecuteNonQuery();
+    }
+
+
+    // Seed movies
+    command.CommandText = "SELECT COUNT(*) FROM movies";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var movieDir = Path.Combine(
+          AppContext.BaseDirectory, "..", "..", "..", "..", "public", "movies"
+      );
+
+      if (!Directory.Exists(movieDir))
+        throw new Exception("Movie directory not found: " + movieDir);
+
+      var files = Directory.GetFiles(movieDir, "*.json");
+      if (files.Length == 0)
+      {
+        throw new Exception("No movie JSON files found in: " + movieDir);
+      }
+
+      using var db2 = new MySqlConnection(connectionString);
+      db2.Open();
+
+      foreach (var file in files)
+      {
+        var json = File.ReadAllText(file);
+
+        try
+        {
+          // Validera JSON innan insert
+          JSON.Parse(json);
+        }
+        catch (Exception ex)
+        {
+          Console.WriteLine($"JSON validation failed for file {file}: {ex.Message}");
+          continue; // hoppa Ã¶ver ogiltiga JSON-filer
         }
 
+        using var cmd = db2.CreateCommand();
+        cmd.CommandText = "INSERT INTO movies (movies_raw) VALUES (@json)";
+        cmd.Parameters.AddWithValue("@json", json);
+        cmd.ExecuteNonQuery();
 
-        // Seed movies
-        command.CommandText = "SELECT COUNT(*) FROM movies";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var movieDir = Path.Combine(
-                AppContext.BaseDirectory, "..", "..", "..", "..", "public", "movies"
-            );
-
-            if (!Directory.Exists(movieDir))
-                throw new Exception("Movie directory not found: " + movieDir);
-
-            var files = Directory.GetFiles(movieDir, "*.json");
-            if (files.Length == 0)
-            {
-                throw new Exception("No movie JSON files found in: " + movieDir);
-            }
-
-            using var db2 = new MySqlConnection(connectionString);
-            db2.Open();
-
-            foreach (var file in files)
-            {
-                var json = File.ReadAllText(file);
-
-                try
-                {
-                    // Validera JSON innan insert
-                    JSON.Parse(json);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"JSON validation failed for file {file}: {ex.Message}");
-                    continue; // hoppa Ã¶ver ogiltiga JSON-filer
-                }
-
-                using var cmd = db2.CreateCommand();
-                cmd.CommandText = "INSERT INTO movies (movies_raw) VALUES (@json)";
-                cmd.Parameters.AddWithValue("@json", json);
-                cmd.ExecuteNonQuery();
-
-                Console.WriteLine($"Inserted movie from file: {Path.GetFileName(file)}");
-            }
-            db2.Close();
-        }
+        Console.WriteLine($"Inserted movie from file: {Path.GetFileName(file)}");
+      }
+      db2.Close();
+    }
 
 
-        // seed Lounge
-        command.CommandText = "SELECT COUNT(*) FROM lounges";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var loungesData = @"
+    // seed Lounge
+    command.CommandText = "SELECT COUNT(*) FROM lounges";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var loungesData = @"
                 INSERT INTO lounges (name) VALUES
                 ('Stora salongen'),
                 ('Lilla salongen');
             ";
-            command.CommandText = loungesData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = loungesData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed viewings
-        command.CommandText = "SELECT COUNT(*) FROM viewings";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var viewingsData = @"
+    // seed viewings
+    command.CommandText = "SELECT COUNT(*) FROM viewings";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var viewingsData = @"
                 INSERT INTO viewings (movie, lounge, start_time) VALUES
 
                 (1, 1, '2026-03-01 20:00:00'),
@@ -609,16 +609,16 @@ public static class DbQuery
                 (1, 1, '2026-04-30 22:00:00'),
                 (2, 2, '2026-04-30 23:00:00');
             ";
-            command.CommandText = viewingsData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = viewingsData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed seats
-        command.CommandText = "SELECT COUNT(*) FROM seats";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var seatsData = @"
+    // seed seats
+    command.CommandText = "SELECT COUNT(*) FROM seats";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var seatsData = @"
                 INSERT INTO seats (lounge, seatRow, number) VALUES
                 (1, '1', 1),
                 (1, '1', 2),
@@ -770,44 +770,44 @@ public static class DbQuery
                 (2, '6', 11),
                 (2, '6', 12);
             ";
-            command.CommandText = seatsData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = seatsData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed ticketTypes
-        command.CommandText = "SELECT COUNT(*) FROM ticketTypes";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var ticketTypesData = @"
+    // seed ticketTypes
+    command.CommandText = "SELECT COUNT(*) FROM ticketTypes";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var ticketTypesData = @"
                 INSERT INTO ticketTypes (name, price) VALUES
                 ('Standard', 140),
                 ('Senior', 120),
                 ('Child', 80);
             ";
-            command.CommandText = ticketTypesData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = ticketTypesData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed bookings
-        command.CommandText = "SELECT COUNT(*) FROM bookings";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var bookingsData = @"
+    // seed bookings
+    command.CommandText = "SELECT COUNT(*) FROM bookings";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var bookingsData = @"
                 INSERT INTO bookings (BookingReference, user, email, viewing, status) VALUES
                 ('ABC123', 1, 'admin@cinema.se', 1, 'confirmed');
             ";
-            command.CommandText = bookingsData;
-            command.ExecuteNonQuery();
-        }
+      command.CommandText = bookingsData;
+      command.ExecuteNonQuery();
+    }
 
 
-        // seed bookingSeats 
-        command.CommandText = "SELECT COUNT(*) FROM bookingSeats";
-        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
-        {
-            var bookingSeatsData = @"
+    // seed bookingSeats 
+    command.CommandText = "SELECT COUNT(*) FROM bookingSeats";
+    if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+    {
+      var bookingSeatsData = @"
                 INSERT INTO bookingSeats (booking, seat, ticketType) VALUES
                 (1, 1, 1),
                 (1, 2, 1),
@@ -820,117 +820,125 @@ public static class DbQuery
                 (1, 9, 1),
                 (1, 10, 1);
             ";
-            command.CommandText = bookingSeatsData;
-            command.ExecuteNonQuery();
-        }
-
+      command.CommandText = bookingSeatsData;
+      command.ExecuteNonQuery();
     }
 
-    // Helper to create an object from the DataReader
-    private static dynamic ObjFromReader(MySqlDataReader reader)
+  }
+
+  // Helper to create an object from the DataReader
+  private static dynamic ObjFromReader(MySqlDataReader reader)
+  {
+    var obj = Obj();
+    for (var i = 0; i < reader.FieldCount; i++)
     {
-        var obj = Obj();
-        for (var i = 0; i < reader.FieldCount; i++)
+      var key = reader.GetName(i);
+      var value = reader.GetValue(i);
+
+      // Handle NULL values
+      if (value == DBNull.Value)
+      {
+        obj[key] = null;
+      }
+      // Handle DateTime - convert to ISO string
+      else if (value is DateTime dt)
+      {
+        obj[key] = dt.ToString("yyyy-MM-ddTHH:mm:ss");
+      }
+      // Handle boolean (MySQL returns sbyte for TINYINT(1))
+      else if (value is sbyte sb)
+      {
+        obj[key] = sb != 0;
+      }
+      else if (value is bool b)
+      {
+        obj[key] = b;
+      }
+      // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
+      else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
+      {
+
+        if (key == "data")
         {
-            var key = reader.GetName(i);
-            var value = reader.GetValue(i);
-
-            // Handle NULL values
-            if (value == DBNull.Value)
-            {
-                obj[key] = null;
-            }
-            // Handle DateTime - convert to ISO string
-            else if (value is DateTime dt)
-            {
-                obj[key] = dt.ToString("yyyy-MM-ddTHH:mm:ss");
-            }
-            // Handle boolean (MySQL returns sbyte for TINYINT(1))
-            else if (value is sbyte sb)
-            {
-                obj[key] = sb != 0;
-            }
-            else if (value is bool b)
-            {
-                obj[key] = b;
-            }
-            // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
-            else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
-            {
-                try
-                {
-                    obj[key] = JSON.Parse(strValue);
-                }
-                catch
-                {
-                    // If parsing fails, keep the original value and try to convert to number
-                    obj[key] = strValue.TryToNum();
-                }
-            }
-            else
-            {
-                // Normal handling - convert to string and try to parse as number
-                obj[key] = value.ToString().TryToNum();
-            }
+          obj[key] = strValue;
         }
-        return obj;
+        else
+        {
+          try
+          {
+            obj[key] = JSON.Parse(strValue);
+          }
+          catch
+          {
+            // If parsing fails, keep the original value and try to convert to number
+            obj[key] = strValue.TryToNum();
+          }
+        }
+      }
+      else
+      {
+        // Normal handling - convert to string and try to parse as number
+        obj[key] = value.ToString().TryToNum();
+      }
     }
+    return obj;
+  }
 
-    // Run a query - rows are returned as an array of objects
-    public static Arr SQLQuery(
-        string sql, object parameters = null, HttpContext context = null
-    )
+  // Run a query - rows are returned as an array of objects
+  public static Arr SQLQuery(
+      string sql, object parameters = null, HttpContext context = null
+  )
+  {
+    var paras = parameters == null ? Obj() : Obj(parameters);
+    using var db = new MySqlConnection(connectionString);
+    db.Open();
+    var command = db.CreateCommand();
+    command.CommandText = @sql;
+    var entries = (Arr)paras.GetEntries();
+    entries.ForEach(x => command.Parameters.AddWithValue("@" + x[0], x[1]));
+    if (context != null)
     {
-        var paras = parameters == null ? Obj() : Obj(parameters);
-        using var db = new MySqlConnection(connectionString);
-        db.Open();
-        var command = db.CreateCommand();
-        command.CommandText = @sql;
-        var entries = (Arr)paras.GetEntries();
-        entries.ForEach(x => command.Parameters.AddWithValue("@" + x[0], x[1]));
-        if (context != null)
-        {
-            DebugLog.Add(context, new
-            {
-                sqlQuery = sql.Regplace(@"\s+", " "),
-                sqlParams = paras
-            });
-        }
-        var rows = Arr();
-        try
-        {
-            if (sql.StartsWith("SELECT ", true, null))
-            {
-                var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    rows.Push(ObjFromReader(reader));
-                }
-                reader.Close();
-            }
-            else
-            {
-                rows.Push(new
-                {
-                    command = sql.Split(" ")[0].ToUpper(),
-                    rowsAffected = command.ExecuteNonQuery()
-                });
-            }
-        }
-        catch (Exception err)
-        {
-            rows.Push(new { error = err.Message });
-        }
-        return rows;
+      DebugLog.Add(context, new
+      {
+        sqlQuery = sql.Regplace(@"\s+", " "),
+        sqlParams = paras
+      });
     }
-
-    // Run a query - only return the first row, as an object
-    public static dynamic SQLQueryOne(
-        string sql, object parameters = null, HttpContext context = null
-    )
+    var rows = Arr();
+    try
     {
-        return SQLQuery(sql, parameters, context)[0];
+      if (sql.StartsWith("SELECT ", true, null))
+      {
+        var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+          rows.Push(ObjFromReader(reader));
+        }
+        reader.Close();
+      }
+      else
+      {
+        rows.Push(new
+        {
+          command = sql.Split(" ")[0].ToUpper(),
+          rowsAffected = command.ExecuteNonQuery()
+        });
+      }
     }
+    catch (Exception err)
+    {
+      rows.Push(new { error = err.Message });
+    }
+    return rows;
+  }
+
+  // Run a query - only return the first row, as an object
+  public static dynamic SQLQueryOne(
+      string sql, object parameters = null, HttpContext context = null
+  )
+  {
+    return SQLQuery(sql, parameters, context)[0];
+  }
 }
 
 // kör samma queries i samma transaktion 
