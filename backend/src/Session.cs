@@ -49,7 +49,7 @@ public static partial class Session
         var session = GetRawSession(context);
         // data is already parsed as JSON by ObjFromReader
         // data is now a string (not parsed by ObjFromReader anymore)
-        string dataStr = session.data is string s ? s : JSON.Stringify(session.data);
+        string dataStr = session.data;
 
         if (string.IsNullOrEmpty(dataStr) || dataStr == "{}")
         {
