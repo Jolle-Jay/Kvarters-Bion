@@ -28,10 +28,10 @@ public static class DbQuery
         db.Open();
 
         // Reset database if requested
-        // if (config.resetDb == true)
-        // {
-        //     DropTables(db);
-        // }
+        //if (config.resetDb == true)
+        //{
+        //    DropTables(db);
+        //}
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
@@ -857,14 +857,22 @@ public static class DbQuery
             // Handle JSON columns (MySQL returns JSON as string starting with [ or {)
             else if (value is string strValue && (strValue.StartsWith("[") || strValue.StartsWith("{")))
             {
-                try
+
+                if (key == "data")
                 {
-                    obj[key] = JSON.Parse(strValue);
+                    obj[key] = strValue;
                 }
-                catch
+                else
                 {
-                    // If parsing fails, keep the original value and try to convert to number
-                    obj[key] = strValue.TryToNum();
+                    try
+                    {
+                        obj[key] = JSON.Parse(strValue);
+                    }
+                    catch
+                    {
+                        // If parsing fails, keep the original value and try to convert to number
+                        obj[key] = strValue.TryToNum();
+                    }
                 }
             }
             else
@@ -934,4 +942,3 @@ public static class DbQuery
 }
 
 // kör samma queries i samma transaktion 
-
