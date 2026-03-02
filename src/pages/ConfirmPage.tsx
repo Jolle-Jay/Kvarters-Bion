@@ -187,7 +187,9 @@ function ConfirmationPage() {
   return (
     <main className="confirm-container">
       <div className="bookingMsg">
-        <h1>Bokning Klar!</h1>
+        <h1 className="booking-title">Tack för din bokning!</h1>
+        <p>Din bokning är nu bekräftad. Ta med ditt boknings-Id till kassan minst 15 minuter innan bion börjar för betalning och köp av snacks.</p>
+        <p>Vi ses på kvartersbion. Njut av filmen!</p>
         <p className="booking-id">Bokningsnummer: {bookingId}</p>
       </div>
 
@@ -197,9 +199,11 @@ function ConfirmationPage() {
         const [row, col] = seat.split('-');
         return (
           <div key={seat} className="ticket">
-            <h1 className="ticketTextTitle"><u>{bookingData.film}</u></h1>
-            <p className="ticketTextSeat">{bookingData.lounges}, Rad {row}, Plats {col}</p>
-            <p className="ticketTextTime">{bookingData.viewing}</p>
+            <div className="ticketTextArea">
+              <h1 className="ticketTextTitle"><u>{bookingData.film}</u></h1>
+              <p className="ticketTextSeat">{bookingData.lounges}, Rad {row}, Plats {col}</p>
+              <p className="ticketTextTime">{bookingData.viewing}</p>
+            </div>
           </div>
         );
       })}
