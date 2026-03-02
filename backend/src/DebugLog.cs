@@ -1,4 +1,5 @@
 namespace WebApp;
+
 public static class DebugLog
 {
     private static readonly Obj memory = new();
@@ -45,31 +46,30 @@ public static class DebugLog
     // is flagged as done (or after 5000 ms so that memory always clears)
     public static async void Write()
     {
-        if (!Globals.debugOn) { return; }
-        while (true)
+        // EFTER - ta en snapshot av keys först:
+        var keys = memory.GetKeys().ToArray();  // ← snapshot innan loop
+        foreach (var key in keys)
         {
-            memory.GetKeys().ForEach(key =>
+            var item = memory[key];
+            if (item == null) continue;  // ← skydda mot redan borttagna keys
+            if (
+                item.RESPONSE_DONE != null ||
+                item.timestamp + 5000 < Now
+            )
             {
-                var item = memory[key];
-                if (
-                    item.RESPONSE_DONE != null ||
-                    item.timestamp + 5000 < Now
-                )
+                if (item.RESPONSE_DONE != null)
                 {
-                    if (item.RESPONSE_DONE != null)
-                    {
-                        item.timeTakenMs =
-                            item.RESPONSE_DONE - item.timestamp;
-                        item.Delete("RESPONSE_DONE");
-                    }
-                    else
-                    {
-                        item.Delete("timeTaken");
-                    }
-                    Log(item);
-                    memory.Delete(key);
+                    item.timeTakenMs = item.RESPONSE_DONE - item.timestamp;
+                    item.Delete("RESPONSE_DONE");
                 }
-            });
+                else
+                {
+                    item.Delete("timeTaken");
+                }
+                Log(item);
+                memory.Delete(key);
+            }
+
             await Task.Delay(500);
         }
     }

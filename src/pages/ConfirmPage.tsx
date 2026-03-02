@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/confirmStyles.css';
 
@@ -60,8 +60,8 @@ function ConfirmationPage() {
       }
       if (!hasBooked.current) {
         hasBooked.current = true;
+        createBooking(data, email);
       }
-      createBooking(data, email);
     }
   }, []);
 
