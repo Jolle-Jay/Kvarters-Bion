@@ -36,42 +36,7 @@ public static class DbQuery
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
         {
-<<<<<<< HEAD
             CreateTablesIfNotExist(db);
-=======
-        var configPath = Path.Combine(
-            AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
-        );
-        var configJson = File.ReadAllText(configPath);
-        var config = JSON.Parse(configJson);
-
-        connectionString =
-            $"Server={config.host};Port={config.port};Database={config.database};" +
-            $"User={config.username};Password={config.password};";
-
-        var db = new MySqlConnection(connectionString);
-        db.Open();
-
-        // Reset database if requested
-        //if (config.resetDb == true)
-        //{
-        //    DropTables(db);
-        //}
-
-        // Create tables if they don't exist
-        if (config.createTablesIfNotExist == true)
-        {
-            CreateTablesIfNotExist(db);
-        }
-
-        // Seed data if tables are empty
-        if (config.seedDataIfEmpty == true)
-        {
-            SeedDataIfEmpty(db);
-        }
-
-        db.Close();
->>>>>>> Email2
         }
 
         // Seed data if tables are empty
