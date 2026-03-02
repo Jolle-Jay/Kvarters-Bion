@@ -146,7 +146,7 @@ export default function MoviePage() {
 
       {/* Veckovy för visningstider */}
       <div className="movie-times">
-        <h3>Veckovy</h3>
+        <h3>Visningstider</h3>
         {viewings.length === 0 ? (
           <p>Inga visningstider tillgängliga</p>
         ) : (
