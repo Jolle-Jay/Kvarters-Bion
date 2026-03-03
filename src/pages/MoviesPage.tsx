@@ -217,7 +217,7 @@ export default function MoviePage() {
                         <span className="meta-tag">{movie.Runtime}</span>
                       </div>
                     </div>
-
+                    {/* state send the selected viewing data over to booking page via the link */}
                     <Link to={`/booking/${movie.id}`} state={{viewing}} className="book-btn">
                       Boka biljett
                     </Link>
