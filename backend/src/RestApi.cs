@@ -85,7 +85,66 @@ public static class RestApi
             var data = SQLQuery(sql, null, context);
             return RestResult.Parse(context, data);
         });
+
+
+        // Get users booking history with movie details
+        App.MapGet("/api/bookings/user", (HttpContext context) =>
+        {
+        var user = context.Request.Query["email"].ToString().Trim();
+
+        if (string.IsNullOrEmpty(user))
+        {
+            return RestResult.Parse(context, new { error = "No email provided" });
+        }
+
+            var userEmail = (string)user;
+
+            // Query bookings with movie and viewing details
+            var sql = "SELECT b.id, b.BookingReference, b.email, b.status, v.start_time as date, GROUP_CONCAT(DISTINCT CONCAT(s.seatRow, s.number) SEPARATOR ', ') as seats, m.movies_raw as movieData FROM bookings b INNER JOIN viewings v ON b.viewing = v.id INNER JOIN movies m ON v.movie = m.id LEFT JOIN bookingSeats bs ON b.id = bs.booking LEFT JOIN seats s ON bs.seat = s.id WHERE b.email = @email GROUP BY b.id ORDER BY v.start_time DESC";
+
+            var data = SQLQuery(sql, new { email = userEmail }, context);
+
+            if (data is Arr)
+            {
+                var arr = (Arr)data;
+                if (arr.Length > 0 && arr[0].error == null)
+                {
+                    var results = Arr();
+
+                    foreach (var booking in arr)
+                    {
+                        var movieTitle = "Okänd film";
+
+                        if (booking.movieData != null && !string.IsNullOrWhiteSpace(booking.movieData.ToString()))
+                        {
+                            try
+                            {
+                                var movieJson = booking.movieData.ToString();
+                                var movieObj = JSON.Parse(movieJson);
+                                movieTitle = movieObj.Title ?? movieObj.title ?? "Okänd film";
+                            }
+                            catch { movieTitle = "Okänd film"; }
+                        }
+
+                        var result = Obj(new
+                        {
+                            id = booking.id,
+                            BookingReference = booking.BookingReference,
+                            email = booking.email,
+                            status = booking.status,
+                            date = booking.date,
+                            seats = booking.seats,
+                            movieTitle = movieTitle
+                        });
+
+                        results.Push(result);
+                    }
+
+                    return RestResult.Parse(context, results);
+                }
+            }
+
+            return RestResult.Parse(context, Arr());
+        });
     }
-
-
 }

@@ -24,28 +24,29 @@ public static class DbQuery
         $"Server={config.host};Port={config.port};Database={config.database};" +
         $"User={config.username};Password={config.password};";
 
-    var db = new MySqlConnection(connectionString);
-    db.Open();
+    using var conn = new MySqlConnection(connectionString);
+conn.Open();
+// kör query med using MySqlCommand etc
 
     // Reset database if requested
     //if (config.resetDb == true)
     //{
-    //    DropTables(db);
+    //    DropTables(conn);
     //}
 
     // Create tables if they don't exist
     if (config.createTablesIfNotExist == true)
     {
-      CreateTablesIfNotExist(db);
+      CreateTablesIfNotExist(conn);
     }
 
     // Seed data if tables are empty
     if (config.seedDataIfEmpty == true)
     {
-      SeedDataIfEmpty(db);
+      SeedDataIfEmpty(conn);
     }
 
-    db.Close();
+    conn.Close();
   }
 
   private static void DropTables(MySqlConnection db)
@@ -218,7 +219,7 @@ public static class DbQuery
                 ('visitor, user, admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/viewings', 'false', 'Allow all to access /api/viewings'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/booked-seats', 'false', 'Allow all to access /api/booked-seats'),
-
+                ('user, admin', 'GET', 'allow', '/api/bookings/user', 'false', 'Allow all to access /api/bookings/user'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
             ";
       command.CommandText = aclData;

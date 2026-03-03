@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../CSS/profile.css';
+import '../CSS/Profile.css';
+import '../CSS/Login.css';
+import type { Booking } from '../interfaces/History';
 import type { JSX } from 'react';
+
+
 
 
 function ProfilePage() {
@@ -16,6 +20,10 @@ function ProfilePage() {
     email: 'user@example.com',
   });
 
+  const [bookings, setBookings] = useState<Booking[]>([]); // State för historik
+  const [loadingBookings, setLoadingBookings] = useState(false); // State för loading-status
+  const [bookingError, setBookingError] = useState<string | null>(null); // State för fel vid hämtning
+
   // activeDropdowns = Håller koll på vilka dropdowns som är öppna/stängda
   // setActiveDropdowns = Funktion för att öppna/stänga dropdowns
   const [activeDropdowns, setActiveDropdowns] = useState({
@@ -23,28 +31,69 @@ function ProfilePage() {
     cancellations: false,
   });
 
+  // Fetch bookings when history dropdown is opened
+   const fetchBookings = async () => {
+    if (bookings.length > 0) return;
+
+    const userEmail = localStorage.getItem('userEmail');
+
+    if (!userEmail) {
+      setBookingError("Ingen användare hittades");
+      return;
+    }
+
+    setLoadingBookings(true);
+    setBookingError(null);
+
+    try {
+      const url = `api/bookings/user?email=${userEmail}`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!response.ok) {
+        setBookingError('Misslyckades att hämta bokningshistorik');
+        setBookings([]);
+        return;
+      }
+
+      if (data?.error) {
+        setBookingError(data.error);
+        setBookings([]);
+      } else if (Array.isArray(data)) {
+        setBookings(data);
+      } else {
+        setBookings([]);
+      }
+
+    } catch (err) {
+      setBookingError("Fel vid hämtning");
+      setBookings([]);
+    } finally {
+      setLoadingBookings(false);
+    }
+  };
+
   useEffect(() => {
+    const init = async () => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const userName = localStorage.getItem('userName') || 'användare';
-    const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
-    // localStorage sparar ALLT som text
+    const userEmail = localStorage.getItem('userEmail') || '';
 
-
-    // Uppdatera state: Sätt inloggningsstatus till det vi hittade i localStorage
     setIsLoggedIn(loggedIn);
-    // Uppdatera state: Sätt användardata till det vi hittade i localStorage
-    // Skapar ett nytt objekt med name och email
     setUserData({ name: userName, email: userEmail });
-
-
-
     setIsLoading(false);
+  };
+
+  init();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    // Ta bort isLoggedIn, userName, userEmail, etc.
 
+  const handleLogout = () => {
+    // Använd removeItem istället för clear() för att behålla bokningshistoriken ("databasen")
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    
     navigate('/');
   };
 
@@ -53,6 +102,10 @@ function ProfilePage() {
     //prev = cad actideDrop var INNAN KLICK
     //...prev = kopiera ALLT från prev
     // key  = computed property, använd värdet key som history tex.
+    if (key === 'history' && !activeDropdowns.history) {
+      // Fetch bookings when opening history dropdown
+      fetchBookings();
+    }
     setActiveDropdowns(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
@@ -83,8 +136,48 @@ function ProfilePage() {
       <p><strong>Namn:</strong> {userData.name}</p>
       <p><strong>E-post:</strong> {userData.email}</p>
 
-      <div onClick={() => toggleDropdown('history')}>
-        <strong>Historik</strong>
+      <div className="dropdown-section">
+        <div onClick={() => toggleDropdown('history')} style={{ cursor: 'pointer', marginBottom: '10px' }}>
+          <strong>Historik {activeDropdowns.history ? '▲' : '▼'}</strong>
+        </div>
+        
+        {activeDropdowns.history && (
+          <div className="history-list" style={{ paddingLeft: '1rem', marginBottom: '1rem' }}>
+            {loadingBookings ? (
+              <p>Laddar bokningshistorik...</p>
+            ) : bookingError ? (
+              <p style={{ color: 'red' }}>{bookingError}</p>
+            ) : bookings.length > 0 ? (
+              bookings.map((booking) => (
+                <div key={booking.id} style={{ borderBottom: '1px solid #ccc', padding: '10px 0' }}>
+                  <p style={{ margin: 0, fontWeight: 'bold' }}>{booking.movieTitle}</p>
+                  <p style={{ margin: 0, fontSize: '0.9em', color: '#666' }}>
+                    {new Date(booking.date).toLocaleDateString('sv-SE', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                  <p style={{ margin: 0, fontSize: '0.9em', color: '#666' }}>
+                    Bokningsreferens: {booking.BookingReference}
+                  </p>
+                  {booking.seats && (
+                    <p style={{ margin: 0, fontSize: '0.9em', color: '#666' }}>
+                      Platser: {booking.seats}
+                    </p>
+                  )}
+                  <p style={{ margin: 0, fontSize: '0.85em', color: '#999' }}>
+                    Status: {booking.status}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>Inga tidigare bokningar hittades.</p>
+            )}
+          </div>
+        )}
       </div>
 
       <div onClick={() => toggleDropdown('cancellations')}>
