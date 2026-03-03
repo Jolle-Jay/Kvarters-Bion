@@ -88,7 +88,11 @@ function ProfilePage() {
       const res = await fetch(`/api/bookings/${bookingReference}`, { method: 'DELETE' });
       const result = await res.json();
       if (result.success) {
-        setBookings(prev => prev.filter(b => b.bookingReference !== bookingReference));
+        setBookings(prev => prev.map(b => // loopar igenom alla boknigar i listan
+          b.bookingReference === bookingReference //kollar om denna bokning är den vi avbokade
+            ? { ...b, status: 'Cancelled' }//om ja, kopiera allt från bokningen och byt status till cancelled
+            : b // om nej returnera bokning oförändrad
+        ));
       } else {
         alert(result.error || 'Kunde inte avboka bokning');
       }

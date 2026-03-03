@@ -361,6 +361,7 @@ public static class vadDuVill
     App.MapGet("/api/bookings", (HttpContext context) =>
     {
       var email = context.Request.Query["where"].ToString().Replace("email=", "");
+      System.Console.WriteLine($"=== GET /api/bookings, email: '{email}' ==="); // ← lägg till
 
       if (string.IsNullOrEmpty(email))
       {
@@ -368,13 +369,11 @@ public static class vadDuVill
       }
 
       //Hämtar bokningar med film titel och visningstid via Join
-      var bookings = SQLQuery(@"
-      SELECT
-          b.BookingReference,
+      var bookings = SQLQuery(@"SELECT b.BookingReference,
           b.status,
           b.email,
           v.start_time,
-          JSON_EXTRACT(m.movies_raw, '$.Title') AS film,
+          JSON_UNQUOTE(JSON_EXTRACT(m.movies_raw, '$.Title')) AS film,
           GROUP_CONCAT(CONCAT(s.seatRow, '-', s.number) ORDER BY s.seatRow, s.number) AS seats
           FROM bookings b
           INNER JOIN viewings v ON b.viewing = v.id
@@ -383,8 +382,11 @@ public static class vadDuVill
           LEFT JOIN seats s ON bs.seat = s.id
           WHERE b.email = @email
           GROUP BY b.id",
-          new { email }
+          new { email }, context
           );
+      System.Console.WriteLine($"=== Bookings count: {bookings.Length} ==="); // ← lägg till
+      System.Console.WriteLine($"=== Bookings data: {JSON.Stringify(bookings)} ===");
+
       return RestResult.Parse(context, bookings);
     });
   }
