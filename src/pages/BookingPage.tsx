@@ -82,9 +82,11 @@ function BookingPage() {
     child: 0
   });
   
+  // location stores the viewing data passed over when the link for the selected viewing is clicked 
+  // via "state=viewing"
   const location = useLocation();
-  const { viewing } = location.state || {};
-
+  console.log("State: ", location.state.viewing);
+  const viewing = location.state.viewing || {};
   console.log("Viewing State: ", viewing)
   
   // ([]) = startvärdet är en tom array
