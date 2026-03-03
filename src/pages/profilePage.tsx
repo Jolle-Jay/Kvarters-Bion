@@ -4,6 +4,19 @@ import '../CSS/profile.css';
 import type { JSX } from 'react';
 
 
+// Typ för bokningsobjektet
+interface Booking {
+  bookingReference?: string;
+  bookingId?: string;
+  film?: string;
+  movieTitle?: string;
+  viewingTime?: string;
+  start_time?: string;
+  seats?: string[] | string;
+  status?: string;
+  [key: string]: any; // tillåter extra fält
+}
+
 function ProfilePage() {
   const navigate = useNavigate();
 
@@ -15,6 +28,9 @@ function ProfilePage() {
     name: 'Användare',
     email: 'user@example.com',
   });
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [isBookingsLoading, setIsBookingsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // activeDropdowns = Håller koll på vilka dropdowns som är öppna/stängda
   // setActiveDropdowns = Funktion för att öppna/stänga dropdowns
@@ -41,6 +57,24 @@ function ProfilePage() {
     setIsLoading(false);
   }, []);
 
+  useEffect(() => {
+    if (!isLoggedIn || !userData.email) return;
+    setIsBookingsLoading(true);
+    fetch(`/api/bookings?where=email=${userData.email}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Kunde inte hämta bokningar');
+        return res.json();
+      })
+      .then(data => {
+        setBookings(data);
+        setIsBookingsLoading(false);
+      })
+      .catch(err => {
+        setError('Kunde inte hämta bokningar');
+        setIsBookingsLoading(false);
+      });
+  }, [isLoggedIn, userData.email]);
+
   const handleLogout = () => {
     localStorage.clear();
     // Ta bort isLoggedIn, userName, userEmail, etc.
@@ -54,6 +88,21 @@ function ProfilePage() {
     //...prev = kopiera ALLT från prev
     // key  = computed property, använd värdet key som history tex.
     setActiveDropdowns(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleCancelBooking = async (bookingReference: string | undefined) => {
+    if (!bookingReference || !window.confirm('Vill du verkligen avboka denna bokning?')) return;
+    try {
+      const res = await fetch(`/api/bookings/${bookingReference}`, { method: 'DELETE' });
+      const result = await res.json();
+      if (result.success) {
+        setBookings(prev => prev.filter(b => b.bookingReference !== bookingReference));
+      } else {
+        alert(result.error || 'Kunde inte avboka bokning');
+      }
+    } catch {
+      alert('Kunde inte avboka bokning');
+    }
   };
 
   if (isLoading) {
@@ -79,7 +128,6 @@ function ProfilePage() {
   return (
     <main className="profile-container">
       <h2>Min Profil</h2>
-
       <p><strong>Namn:</strong> {userData.name}</p>
       <p><strong>E-post:</strong> {userData.email}</p>
 
@@ -92,6 +140,36 @@ function ProfilePage() {
       </div>
 
       <button onClick={handleLogout}>Logga ut</button>
+
+      <section className="bookings-section">
+        <h3>Mina bokningar</h3>
+        {isBookingsLoading ? (
+          <p>Laddar bokningar...</p>
+        ) : error ? (
+          <p style={{ color: 'red' }}>{error}</p>
+        ) : bookings.length === 0 ? (
+          <p>Du har inga bokningar.</p>
+        ) : (
+          <ul className="bookings-list">
+            {bookings.map((booking) => (
+              <li key={booking.bookingReference || booking.bookingId} className="booking-item">
+                <div>
+                  <b>Bokningsnummer:</b> {booking.bookingReference || booking.bookingId}<br />
+                  <b>Film:</b> {booking.film || booking.movieTitle}<br />
+                  <b>Tid:</b> {booking.viewingTime || booking.start_time}<br />
+                  <b>Platser:</b> {Array.isArray(booking.seats) ? booking.seats.join(', ') : booking.seats}<br />
+                  <b>Status:</b> {booking.status}
+                </div>
+                {booking.status === 'Confirmed' && (
+                  <button onClick={() => handleCancelBooking(booking.bookingReference || booking.bookingId)}>
+                    Avboka
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }
