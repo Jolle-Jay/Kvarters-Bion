@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 
 // pris per kategori för biljetter
@@ -75,6 +75,9 @@ function BookingPage() {
   // gör att våran showtime är viewing
   const [showtime, setShowtime] = useState('viewing');
 
+  const [searchParams] = useSearchParams();
+  const viewingId = searchParams.get("showtime")
+
   // hämtar definitionen ticket counts ovanför och ger dem alla värdet 0 till att börja med 
   const [counts, setCounts] = useState<TicketCounts>({
     adult: 0,
@@ -127,9 +130,12 @@ function BookingPage() {
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
           setavailableViewigs(viewingsData);
-          setselectedViewing(viewingsData[0]);
+          setselectedViewing(viewingId);
           setShowtime(viewingsData[0].start_time);
         }
+
+        console.log("Selected Viewing: ", viewingId);
+
       } catch (error) {
         console.error('Failed to fetch movie:', error);
         alert('Kunde inte ladda filmen');
