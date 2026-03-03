@@ -12,45 +12,45 @@ public static class DbQuery
 
     public static bool IsJsonColumn(string column) => JsonColumns.Includes(column);
 
-    static DbQuery()
+  static DbQuery()
+  {
+    var configPath = Path.Combine(
+        AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
+    );
+    var configJson = File.ReadAllText(configPath);
+    var config = JSON.Parse(configJson);
+
+    connectionString =
+        $"Server={config.host};Port={config.port};Database={config.database};" +
+        $"User={config.username};Password={config.password};";
+
+    using var conn = new MySqlConnection(connectionString);
+conn.Open();
+// kör query med using MySqlCommand etc
+
+    // Reset database if requested
+    //if (config.resetDb == true)
+    //{
+    //    DropTables(conn);
+    //}
+
+    // Create tables if they don't exist
+    if (config.createTablesIfNotExist == true)
     {
-        var configPath = Path.Combine(
-            AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
-        );
-        var configJson = File.ReadAllText(configPath);
-        var config = JSON.Parse(configJson);
-
-        connectionString =
-            $"Server={config.host};Port={config.port};Database={config.database};" +
-            $"User={config.username};Password={config.password};";
-
-        var db = new MySqlConnection(connectionString);
-        db.Open();
-
-        // Reset database if requested
-        //if (config.resetDb == true)
-        //{
-        //    DropTables(db);
-        //}
-
-        // Create tables if they don't exist
-        if (config.createTablesIfNotExist == true)
-        {
-            CreateTablesIfNotExist(db);
-        }
-
-        // Seed data if tables are empty
-        if (config.seedDataIfEmpty == true)
-        {
-            SeedDataIfEmpty(db);
-        }
-
-        db.Close();
+      CreateTablesIfNotExist(conn);
     }
 
     private static void DropTables(MySqlConnection db)
     {
-        var dropTablesSql = @"
+      SeedDataIfEmpty(conn);
+    }
+
+    conn.Close();
+  }
+
+  private static void DropTables(MySqlConnection db)
+  {
+    var dropTablesSql = @"
             DROP TABLE IF EXISTS bookingSeats;
             DROP TABLE IF EXISTS bookings;
             DROP TABLE IF EXISTS seats;
@@ -218,7 +218,7 @@ public static class DbQuery
                 ('visitor, user, admin', 'GET', 'allow', '/api/movies', 'true', 'Allow all user roles to read movies'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/viewings', 'false', 'Allow all to access /api/viewings'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/booked-seats', 'false', 'Allow all to access /api/booked-seats'),
-
+                ('user, admin', 'GET', 'allow', '/api/bookings/user', 'false', 'Allow all to access /api/bookings/user'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
             ";
             command.CommandText = aclData;
