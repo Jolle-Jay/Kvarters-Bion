@@ -20,9 +20,11 @@ public static class DbQuery
         var configJson = File.ReadAllText(configPath);
         var config = JSON.Parse(configJson);
 
+        // disable pooling for development so closed connections don't hang open
         connectionString =
             $"Server={config.host};Port={config.port};Database={config.database};" +
-            $"User={config.username};Password={config.password};";
+            $"User={config.username};Password={config.password};" +
+            "Pooling=false;";
 
         var db = new MySqlConnection(connectionString);
         db.Open();
@@ -890,46 +892,55 @@ public static class DbQuery
     )
     {
         var paras = parameters == null ? Obj() : Obj(parameters);
-        using var db = new MySqlConnection(connectionString);
-        db.Open();
-        var command = db.CreateCommand();
-        command.CommandText = @sql;
-        var entries = (Arr)paras.GetEntries();
-        entries.ForEach(x => command.Parameters.AddWithValue("@" + x[0], x[1]));
-        if (context != null)
-        {
-            DebugLog.Add(context, new
-            {
-                sqlQuery = sql.Regplace(@"\s+", " "),
-                sqlParams = paras
-            });
-        }
-        var rows = Arr();
         try
         {
-            if (sql.StartsWith("SELECT ", true, null))
+            using var db = new MySqlConnection(connectionString);
+            db.Open();
+            var command = db.CreateCommand();
+
+            command.CommandText = @sql;
+            var entries = (Arr)paras.GetEntries();
+            entries.ForEach(x => command.Parameters.AddWithValue("@" + x[0], x[1]));
+            if (context != null)
             {
-                var reader = command.ExecuteReader();
-                while (reader.Read())
+                DebugLog.Add(context, new
                 {
-                    rows.Push(ObjFromReader(reader));
-                }
-                reader.Close();
-            }
-            else
-            {
-                rows.Push(new
-                {
-                    command = sql.Split(" ")[0].ToUpper(),
-                    rowsAffected = command.ExecuteNonQuery()
+                    sqlQuery = sql.Regplace(@"\s+", " "),
+                    sqlParams = paras
                 });
             }
+            var rows = Arr();
+            try
+            {
+                if (sql.StartsWith("SELECT ", true, null))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        rows.Push(ObjFromReader(reader));
+                    }
+                    reader.Close();
+                }
+                else
+                {
+                    rows.Push(new
+                    {
+                        command = sql.Split(" ")[0].ToUpper(),
+                        rowsAffected = command.ExecuteNonQuery()
+                    });
+                }
+            }
+            catch (Exception err)
+            {
+                rows.Push(new { error = err.Message });
+            }
+            return rows;
         }
         catch (Exception err)
         {
-            rows.Push(new { error = err.Message });
+            // could be connection error (too many connections, etc.)
+            return Arr(new { error = err.Message });
         }
-        return rows;
     }
 
     // Run a query - only return the first row, as an object

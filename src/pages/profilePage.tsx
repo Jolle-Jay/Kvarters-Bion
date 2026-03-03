@@ -75,25 +75,60 @@ function ProfilePage() {
 
   useEffect(() => {
     const init = async () => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const userName = localStorage.getItem('userName') || 'användare';
-    const userEmail = localStorage.getItem('userEmail') || '';
+      // verify backend session as well as localStorage in case of stale state
+      try {
+        const resp = await fetch('/api/login');
+        const data = await resp.json();
+        if (resp.ok && !data.error) {
+          setIsLoggedIn(true);
+          setUserData({
+            name: data.name || localStorage.getItem('userName') || 'användare',
+            email: data.email || localStorage.getItem('userEmail') || '',
+          });
+          // keep localStorage in sync
+          localStorage.setItem('isLoggedIn', 'true');
+          if (data.email) localStorage.setItem('userEmail', data.email);
+          if (data.name) localStorage.setItem('userName', data.name);
+        } else {
+          // no user on server session, fall back to local storage or mark logged out
+          const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+          const userName = localStorage.getItem('userName') || 'användare';
+          const userEmail = localStorage.getItem('userEmail') || '';
 
-    setIsLoggedIn(loggedIn);
-    setUserData({ name: userName, email: userEmail });
-    setIsLoading(false);
-  };
+          setIsLoggedIn(loggedIn);
+          setUserData({ name: userName, email: userEmail });
+        }
+      } catch {
+        // network error, just use whatever we have locally
+        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const userName = localStorage.getItem('userName') || 'användare';
+        const userEmail = localStorage.getItem('userEmail') || '';
 
-  init();
+        setIsLoggedIn(loggedIn);
+        setUserData({ name: userName, email: userEmail });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    init();
   }, []);
 
 
-  const handleLogout = () => {
-    // Använd removeItem istället för clear() för att behålla bokningshistoriken ("databasen")
+  const handleLogout = async () => {
+    // call backend to clear session
+    try {
+      await fetch('/api/login', { method: 'DELETE' });
+    } catch {
+      // ignore network errors, we'll clear local state anyway
+    }
+
+    // clear frontend state & localStorage
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
-    
+    setIsLoggedIn(false);
+
     navigate('/');
   };
 
