@@ -150,10 +150,6 @@ public static partial class Session
        );
     }
 
-    /// <summary>
-    /// Remove a key from the session data. If the session becomes empty the
-    /// database row is deleted and the cookie cleared.
-    /// </summary>
     public static void Remove(HttpContext context, string key)
     {
         var session = GetRawSession(context);
@@ -168,7 +164,6 @@ public static partial class Session
         {
             // no data left: delete row and clear cookie
             SQLQuery("DELETE FROM sessions WHERE id = @id", new { session.id });
-            context.Response.Cookies.Delete("session");
             context.Items.Remove("session");
         }
         else
@@ -188,15 +183,10 @@ public static partial class Session
         }
     }
 
-    /// <summary>
-    /// Completely clear the current session, removing its database row and
-    /// deleting the cookie. This is useful for a full logout.
-    /// </summary>
     public static void Clear(HttpContext context)
     {
         var session = GetRawSession(context);
         SQLQuery("DELETE FROM sessions WHERE id = @id", new { id = session.id });
-        context.Response.Cookies.Delete("session");
         context.Items.Remove("session");
     }
 }
