@@ -128,11 +128,11 @@ function ProfilePage() {
       <p><strong>E-post:</strong> {userData.email}</p>
 
 
-      <button onClick={handleLogout}>Logga ut</button>
+      <button className="logout-btn" onClick={handleLogout}>Logga ut</button>
 
       <section className="bookings-section">
         <div onClick={() => setShowBookings(prev => !prev)} style={{ cursor: 'pointer' }}>
-          <h3>Mina bokningar</h3>
+          <h3 className="section-title">Mina bokningar</h3>
         </div>
         {showBookings && (
           isBookingsLoading ? (
@@ -169,7 +169,7 @@ function ProfilePage() {
                     <b>Status:</b> {booking.status}
                   </div>
                   {booking.status === 'Confirmed' && (
-                    <button onClick={() => handleCancelBooking(booking.BookingReference)}>
+                    <button className="cancel-btn" onClick={() => handleCancelBooking(booking.BookingReference)}>
                       Avboka
                     </button>
                   )}
