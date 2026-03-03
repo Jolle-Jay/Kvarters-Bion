@@ -345,12 +345,14 @@ public static class vadDuVill
 
     App.MapGet("/api/bookingSeats/{viewingId}", (HttpContext context, string viewingId) =>
     {
+      // --- API för att hämta bokade platser för en visning ---
+      // Loggar vilken visning som efterfrågas
       System.Console.WriteLine("Hämtar bokade platser för viewing: " + viewingId);
-      
+      // Konverterar viewingId från sträng till int
       int vId = int.Parse(viewingId);
       System.Console.WriteLine("Hämtar bokade platser för viewing: " + vId);
-      // Grabs the Row and Seat from the seats table and joins them with the bookingSeats and bookings table
-      // to fetch all seats that are currently linked with an active booking
+
+      // Hämtar alla platser (rad och nummer) som är bokade för denna visning och har status 'Confirmed'
       var bookedSeats = SQLQuery(
         @"SELECT s.seatRow, s.number
         FROM bookingSeats bs
@@ -361,11 +363,11 @@ public static class vadDuVill
         new { viewingId = vId }
       );
 
+      // Skapar en lista för att formatera platserna till frontend-format (t.ex. "1-1")
       var formattedSeats = new List<string>();
       System.Console.Write("Seats: ");
 
-      // Goes through formattedSeats list and formats all the rows and seats to the format used in 
-      // frontend to identify seats (1-1, 1-2, 1-3... ETC.)
+      // Loopar igenom alla bokade platser och formaterar dem till "rad-nummer"
       foreach (var seat in bookedSeats)
       {
         string seatString = $"{seat["seatRow"]}-{seat["number"]}";
@@ -373,11 +375,37 @@ public static class vadDuVill
         formattedSeats.Add(seatString);
       }
 
+      // Loggar antal bokade platser
       System.Console.WriteLine("");
       System.Console.WriteLine($"Hittade {formattedSeats.Count} bokade plater för viewing: {vId}");
-      // Returns formattedSeats as seats which becomes a Json object when parsed so it returns data 
-      // in the form of: {"seats": ["1-1", "1-2", "1-3"]}
+
+      // Returnerar platserna som JSON till frontend: { seats: ["1-1", "1-2", ...] }
       return RestResult.Parse(context, new { seats = formattedSeats });
+    });
+
+    // API endpoint for cancelling a booking
+    App.MapDelete("/api/bookings/{reference}", (HttpContext context, string reference) =>
+    {
+      // --- API för att avboka en bokning ---
+      try
+      {
+        // Kollar om bokningen med angivet referensnummer finns
+        var booking = SQLQueryOne("SELECT * FROM bookings WHERE BookingReference = @reference", new { reference });
+        if (booking == null)
+        {
+          // Om bokningen inte hittas, returnera felmeddelande
+          return RestResult.Parse(context, new { error = "Bokningen hittades inte." });
+        }
+        // Avboka bokningen genom att uppdatera status till 'Cancelled'
+        BookingQueries.CancelBooking(reference);
+        // Returnerar lyckat svar till frontend
+        return RestResult.Parse(context, new { success = true, message = "Bokningen är nu avbokad" });
+      }
+      catch (Exception ex)
+      {
+        // Om något går fel, returnera felmeddelande
+        return RestResult.Parse(context, new { error = ex.Message });
+      }
     });
   }  
 }

@@ -106,9 +106,13 @@ public static class BookingQueries
 
     }
 
+// for canceling booking
 
-
-
-
-
+    public static void CancelBooking(string bookingReference)
+    {
+        SQLQuery(
+            @"UPDATE bookings SET status = 'Cancelled' WHERE BookingReference = @bookingReference",
+            new { bookingReference }
+        );
+    }
 }
