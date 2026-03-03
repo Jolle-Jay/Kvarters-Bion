@@ -147,16 +147,16 @@ function ProfilePage() {
           ) : (
             <ul className="bookings-list">
               {bookings.map((booking) => (
-                <li key={booking.bookingReference || booking.bookingId} className="booking-item">
+                <li key={booking.BookingReference} className="booking-item">
                   <div>
-                    <b>Bokningsnummer:</b> {booking.bookingReference || booking.bookingId}<br />
+                    <b>Bokningsnummer:</b> {booking.BookingReference}<br />
                     <b>Film:</b> {booking.film}<br />
                     <b>Tid:</b> {booking.start_time}<br />
                     <b>Platser:</b> {booking.seats}<br />
                     <b>Status:</b> {booking.status}
                   </div>
                   {booking.status === 'Confirmed' && (
-                    <button onClick={() => handleCancelBooking(booking.bookingReference || booking.bookingId)}>
+                    <button onClick={() => handleCancelBooking(booking.BookingReference)}>
                       Avboka
                     </button>
                   )}
