@@ -1,161 +1,4 @@
-// namespace WebApp;
-
-// public static class vadDuVill
-// {
-//   private static Obj GetUser(HttpContext context)
-//   {
-//     return Session.Get(context, "user");
-//   }
-
-
-
-//   public static object HandleCustomBooking(HttpContext context, JsonElement bodyJson)
-//   {
-//     try
-//     {
-//       System.Console.WriteLine("=== STEP 1: Entered HandleCustomBooking ===");
-//        user = Sessvarion.Get(context, "user");
-//       var body = JSON.Parse(bodyJson.ToString());
-
-//       System.Console.WriteLine("=== STEP 2: Body received ===");
-//       System.Console.WriteLine(body);
-
-//       System.Console.WriteLine("=== Checking body properties ===");
-//       System.Console.WriteLine("body is null? " + (body == null));
-//       if (body != null)
-//       {
-//         System.Console.WriteLine("body.movie exists? " + (body.movie != null));
-//         System.Console.WriteLine("body.viewing exists? " + (body.viewing != null));
-//         System.Console.WriteLine("body.lounges exists? " + (body.lounges != null));
-//       }
-
-//       string email;
-//       int? userID = null;
-
-//       if (user != null)
-//       {
-//         email = (string)user["email"];
-//         userID = (int)user["id"];
-//         System.Console.WriteLine("=== STEP 3: Logged in user: " + email + " ===");
-//       }
-//       else
-//       {
-//         System.Console.WriteLine("=== STEP 3: Guest user ===");
-//         if (body.email == null)
-//         {
-//           System.Console.WriteLine("=== ERROR: No email provided ===");
-//           return RestResult.Parse(context, new { error = "Email is required." });
-//         }
-//         email = (string)body.email;
-//       }
-
-//       // STEP 4: Find movie ID
-//       System.Console.WriteLine("=== STEP 4: Finding movie ID ===");
-//       var movie = SQLQueryOne(
-//           "SELECT id FROM movies WHERE JSON_EXTRACT(movies_raw, '$.title') = @filmTitle",
-//           new { filmTitle = (string)body.film }
-//       );
-//       if (movie == null)
-//       {
-//         return RestResult.Parse(context, new { error = "Movie not found" });
-//       }
-//       int movieId = (int)movie["id"];
-
-//       // STEP 5: Find lounge ID
-//       System.Console.WriteLine("=== STEP 5: Finding lounge ID ===");
-//       var lounge = SQLQueryOne(
-//           "SELECT id FROM lounges WHERE name = @loungeName",
-//           new { loungeName = (string)body.lounges }
-//       );
-//       if (lounge == null)
-//       {
-//         return RestResult.Parse(context, new { error = "Lounge not found" });
-//       }
-//       int loungeId = (int)lounge["id"];
-
-//       // STEP 6: Find or create viewing
-//       System.Console.WriteLine("=== STEP 6: Finding/creating viewing ===");
-//       var viewing = SQLQueryOne(
-//           @"SELECT * FROM viewings 
-//               WHERE movie = @movieId 
-//               AND lounge = @loungeId 
-//               AND start_time = @startTime",
-//           new { movieId, loungeId, startTime = (string)body.viewing }
-//       );
-
-//       int viewingId;
-//       if (viewing == null)
-//       {
-//         System.Console.WriteLine("=== Creating new viewing ===");
-//         SQLQueryOne(
-//             @"INSERT INTO viewings (movie, lounge, start_time) 
-//                   VALUES (@movieId, @loungeId, @startTime)",
-//             new { movieId, loungeId, startTime = (string)body.viewing }
-//         );
-
-//         viewing = SQLQueryOne(
-//             @"SELECT * FROM viewings 
-//                   WHERE movie = @movieId 
-//                   AND lounge = @loungeId 
-//                   AND start_time = @startTime",
-//             new { movieId, loungeId, startTime = (string)body.viewing }
-//         );
-//       }
-
-//       viewingId = (int)viewing["id"];
-//       System.Console.WriteLine("=== Using viewing ID: " + viewingId + " ===");
-
-//       // STEP 7: Create booking
-//       System.Console.WriteLine("=== STEP 7: Creating booking ===");
-//       var booking = BookingQueries.CreateBooking(
-//           (string)body.bookingId,
-//           userID,
-//           email,
-//           viewingId
-//       );
-
-//       System.Console.WriteLine("=== STEP 8: Getting booking ID ===");
-//       int bookingId = (int)booking["id"];
-
-//       // STEP 9: Create booking seats
-//       System.Console.WriteLine("=== STEP 9: Creating booking seats ===");
-//       var seatsList = new List<string>();
-//       foreach (var seat in body.seats)
-//       {
-//         seatsList.Add((string)seat);
-//       }
-
-//       BookingQueries.CreateBookingSeats(bookingId, seatsList, (string)body.lounges, (dynamic)body.counts);
-
-//       System.Console.WriteLine("=== STEP 10: Success! ===");
-//       return RestResult.Parse(context, new
-//       {
-//         success = true,
-//         bookingReference = (string)body.bookingId,
-//         email = email  // ← Changed this
-//       });
-//     }
-//     catch (Exception ex)
-//     {
-//       System.Console.WriteLine("=== ERROR: " + ex.Message + " ===");
-//       System.Console.WriteLine("=== STACK TRACE: " + ex.StackTrace + " ===");
-//       return RestResult.Parse(context, new { error = "Booking failed: " + ex.Message });
-//     }
-//   }
-
-
-
-
-//   public static void Start()
-//   {
-//     App.MapPost("/api/customBooking", (HttpContext context, JsonElement bodyJson) =>
-// {
-//   System.Console.WriteLine("Vi är inne i customBooking");
-//   return vadDuVill.HandleCustomBooking(context, bodyJson);  // ← Call the actual function!
-// });
-
-//   }
-// }
+using Microsoft.VisualBasic;
 
 namespace WebApp;
 
@@ -300,14 +143,117 @@ public static class vadDuVill
       // skapar en bookning med sätena i logiken från createbookingseats
       BookingQueries.CreateBookingSeats(bookingId, seatsList, loungeName, counts);
 
+      System.Console.WriteLine("=== STEP 9.5 Få biljett priser");
+      var ticketPrices = SQLQuery("SELECT name, price FROM ticketTypes");
+
+      //gör om till dictionary för enkel lookup
+      // den kommer kunna innehålla priser och namnen
+      var priceMap = new Dictionary<string, int>();
+      //hämtar ticketrpices från databasen
+      foreach (var ticket in ticketPrices)
+      {// kastar om värdet till sträng och int
+        priceMap[(string)ticket["name"]] = (int)ticket["price"];
+      }
+
+      //räkna ut totalpris
+      int totalPrice =
+      (counts.adult * priceMap["Standard"]) +
+      (counts.senior * priceMap["Senior"]) +
+      (counts.child * priceMap["Child"]);
+
+      System.Console.WriteLine($"Total price: {totalPrice} SEK");
+
+      //skapar en Dictionary där nyckeln är en sträng (radnummer)
+      // row = nyckeln
+      // llista med säten = värdet (intehåller i lådan)
+      var seatsByRow = new Dictionary<string, List<string>>();
+      foreach (var seat in seatsList)
+      {
+        // splittrar strängen seat vid - så det går att skilja mellan row & seat
+        var parts = seat.Split('-');
+        string row = parts[0];
+        string number = parts[1];
+
+        if (!seatsByRow.ContainsKey(row))
+        {
+          //skapar en tom lista för den raden
+          // första gången vi ser "rad 1" måste vi skapa en lista för den raden
+          //sen kan vi börja lägga till i den nya raden
+          seatsByRow[row] = new List<string>();
+        }
+        seatsByRow[row].Add(number);
+      }
+
+      //bygg en ny sträng
+      // kvp = key, value pair
+      var seatInfo = "";
+      foreach (var kvp in seatsByRow)
+      {
+        // slår samman alla element i listan till EN sträng med , mellan varje element
+        // += === lägg till på slutet 
+        seatInfo += $"<li>Rad {kvp.Key}: Säte {string.Join(", ", kvp.Value)}</li>";
+      }
+
+
       // det är detta vi får i meddelandet till användaren efter vi har slutfört bokningen skickas till frontend
       System.Console.WriteLine("=== STEP 10: Success! ===");
-      return RestResult.Parse(context, new
+
+      System.Console.WriteLine("=== STEP 10: Success! ===");
+
+      var response = new
       {
         success = true,
         bookingReference,
         email
+      };
+
+      //returnera till frontend INNAN email skickas
+      var result = RestResult.Parse(context, response);
+
+      //skicka EMAIL EFTER response (async i bakgrunden)
+      Task.Run(() =>
+      {
+        try
+        {
+          EmailService.SendEmail(
+            email,
+            "Bokningsbekräftelse - Kvarterbion",
+            $@"<h1>Tack för din bokning!</h1>
+               <p>Hej {email}!</p>
+               <p>Din bokning till {filmTitle} är bekräftad!.</p>
+
+               <p>Bokingsinformation.</p>
+               <p><strong>Bokningsnummer:</strong> {bookingReference}</p>
+
+               <p><strong>Antal platser:</strong></p>
+               <ul>
+               {seatInfo}
+               </ul>
+
+                <h3>Biljetter:</h3>
+       <ul>
+         {(counts.adult > 0 ? $"<li>Vuxen: {counts.adult} x {priceMap["Standard"]} SEK = {counts.adult * priceMap["Standard"]} SEK</li>" : "")}
+         {(counts.senior > 0 ? $"<li>Pensionär: {counts.senior} x {priceMap["Senior"]} SEK = {counts.senior * priceMap["Senior"]} SEK</li>" : "")}
+         {(counts.child > 0 ? $"<li>Barn: {counts.child} x {priceMap["Child"]} SEK = {counts.child * priceMap["Child"]} SEK</li>" : "")}
+       </ul>
+
+       <p><strong>Totalpris: {totalPrice} SEK</strong></p>
+       <p>Vi ses på biografen!</p>"
+
+        );
+          System.Console.WriteLine("=== Bokningsmail skickat! ===");
+        }
+        catch (Exception ex)
+
+        {
+          System.Console.WriteLine($"=== Mail misslyckades: {ex.Message} ===");
+
+        }
+
       });
+
+      return result;
+
     }
     catch (Exception ex)
     {
@@ -315,6 +261,11 @@ public static class vadDuVill
       return RestResult.Parse(context, new { error = "Booking failed: " + ex.Message });
     }
   }
+
+
+
+
+
 
   // registrar API route custombooking och skickar vidare anropet till handlecustombooking när någon postar till API/custombooking
   public static void Start()
@@ -348,7 +299,6 @@ public static class vadDuVill
       // --- API för att hämta bokade platser för en visning ---
       // Loggar vilken visning som efterfrågas
       System.Console.WriteLine("Hämtar bokade platser för viewing: " + viewingId);
-      // Konverterar viewingId från sträng till int
       int vId = int.Parse(viewingId);
       System.Console.WriteLine("Hämtar bokade platser för viewing: " + vId);
 
@@ -407,5 +357,37 @@ public static class vadDuVill
         return RestResult.Parse(context, new { error = ex.Message });
       }
     });
-  }  
+
+    App.MapGet("/api/bookings", (HttpContext context) =>
+    {
+      var email = context.Request.Query["where"].ToString().Replace("email=", "");
+      System.Console.WriteLine($"=== GET /api/bookings, email: '{email}' ==="); // ← lägg till
+
+      if (string.IsNullOrEmpty(email))
+      {
+        return RestResult.Parse(context, new { error = "Email krävs." });
+      }
+
+      //Hämtar bokningar med film titel och visningstid via Join
+      var bookings = SQLQuery(@"SELECT b.BookingReference,
+          b.status,
+          b.email,
+          v.start_time,
+          JSON_UNQUOTE(JSON_EXTRACT(m.movies_raw, '$.Title')) AS film,
+          GROUP_CONCAT(CONCAT(s.seatRow, '-', s.number) ORDER BY s.seatRow, s.number) AS seats
+          FROM bookings b
+          INNER JOIN viewings v ON b.viewing = v.id
+          INNER JOIN movies m ON v.movie = m.id
+          LEFT JOIN bookingSeats bs ON bs.booking = b.id
+          LEFT JOIN seats s ON bs.seat = s.id
+          WHERE b.email = @email
+          GROUP BY b.id",
+          new { email }, context
+          );
+      System.Console.WriteLine($"=== Bookings count: {bookings.Length} ==="); // ← lägg till
+      System.Console.WriteLine($"=== Bookings data: {JSON.Stringify(bookings)} ===");
+
+      return RestResult.Parse(context, bookings);
+    });
+  }
 }

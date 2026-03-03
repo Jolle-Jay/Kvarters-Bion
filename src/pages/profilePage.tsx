@@ -34,10 +34,7 @@ function ProfilePage() {
 
   // activeDropdowns = Håller koll på vilka dropdowns som är öppna/stängda
   // setActiveDropdowns = Funktion för att öppna/stänga dropdowns
-  const [activeDropdowns, setActiveDropdowns] = useState({
-    history: false,
-    cancellations: false,
-  });
+  const [showBookings, setShowBookings] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -82,12 +79,26 @@ function ProfilePage() {
     navigate('/');
   };
 
-  // key = vilken dropdown som klickas på
-  const toggleDropdown = (key: 'history' | 'cancellations') => {
-    //prev = cad actideDrop var INNAN KLICK
-    //...prev = kopiera ALLT från prev
-    // key  = computed property, använd värdet key som history tex.
-    setActiveDropdowns(prev => ({ ...prev, [key]: !prev[key] }));
+
+
+
+  const handleCancelBooking = async (bookingReference: string | undefined) => {
+    if (!bookingReference || !window.confirm('Vill du verkligen avboka denna bokning?')) return;
+    try {
+      const res = await fetch(`/api/bookings/${bookingReference}`, { method: 'DELETE' });
+      const result = await res.json();
+      if (result.success) {
+        setBookings(prev => prev.map(b => // loopar igenom alla boknigar i listan
+          b.bookingReference === bookingReference //kollar om denna bokning är den vi avbokade
+            ? { ...b, status: 'Cancelled' }//om ja, kopiera allt från bokningen och byt status till cancelled
+            : b // om nej returnera bokning oförändrad
+        ));
+      } else {
+        alert(result.error || 'Kunde inte avboka bokning');
+      }
+    } catch {
+      alert('Kunde inte avboka bokning');
+    }
   };
 
   const handleCancelBooking = async (bookingReference: string | undefined) => {
@@ -131,43 +142,43 @@ function ProfilePage() {
       <p><strong>Namn:</strong> {userData.name}</p>
       <p><strong>E-post:</strong> {userData.email}</p>
 
-      <div onClick={() => toggleDropdown('history')}>
-        <strong>Historik</strong>
-      </div>
 
-      <div onClick={() => toggleDropdown('cancellations')}>
-        <strong>Avbokningar</strong>
-      </div>
+
+
 
       <button onClick={handleLogout}>Logga ut</button>
 
       <section className="bookings-section">
-        <h3>Mina bokningar</h3>
-        {isBookingsLoading ? (
-          <p>Laddar bokningar...</p>
-        ) : error ? (
-          <p style={{ color: 'red' }}>{error}</p>
-        ) : bookings.length === 0 ? (
-          <p>Du har inga bokningar.</p>
-        ) : (
-          <ul className="bookings-list">
-            {bookings.map((booking) => (
-              <li key={booking.bookingReference || booking.bookingId} className="booking-item">
-                <div>
-                  <b>Bokningsnummer:</b> {booking.bookingReference || booking.bookingId}<br />
-                  <b>Film:</b> {booking.film || booking.movieTitle}<br />
-                  <b>Tid:</b> {booking.viewingTime || booking.start_time}<br />
-                  <b>Platser:</b> {Array.isArray(booking.seats) ? booking.seats.join(', ') : booking.seats}<br />
-                  <b>Status:</b> {booking.status}
-                </div>
-                {booking.status === 'Confirmed' && (
-                  <button onClick={() => handleCancelBooking(booking.bookingReference || booking.bookingId)}>
-                    Avboka
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
+        <div onClick={() => setShowBookings(prev => !prev)} style={{ cursor: 'pointer' }}>
+          <h3>Mina bokningar</h3>
+        </div>
+        {showBookings && (
+          isBookingsLoading ? (
+            <p>Laddar bokningar...</p>
+          ) : error ? (
+            <p style={{ color: 'red' }}>{error}</p>
+          ) : bookings.length === 0 ? (
+            <p>Du har inga bokningar.</p>
+          ) : (
+            <ul className="bookings-list">
+              {bookings.map((booking) => (
+                <li key={booking.BookingReference} className="booking-item">
+                  <div>
+                    <b>Bokningsnummer:</b> {booking.BookingReference}<br />
+                    <b>Film:</b> {booking.film}<br />
+                    <b>Tid:</b> {booking.start_time}<br />
+                    <b>Platser:</b> {booking.seats}<br />
+                    <b>Status:</b> {booking.status}
+                  </div>
+                  {booking.status === 'Confirmed' && (
+                    <button onClick={() => handleCancelBooking(booking.BookingReference)}>
+                      Avboka
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )
         )}
       </section>
     </main>

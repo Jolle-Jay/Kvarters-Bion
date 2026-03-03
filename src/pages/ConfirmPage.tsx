@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/confirmStyles.css';
 
@@ -28,10 +28,16 @@ function ConfirmationPage() {
   const [guestEmail, setGuestEmail] = useState('');
   const [showGuestForm, setShowGuestForm] = useState(false);
 
+  // Ref för att förhindra dubbla anrop i React.StrictMode
+  const effectRan = useRef(false);
+
+
+  const hasBooked = useRef(false);
   // hämtar värdet från localstorage och kollar om strängen är TRUE FALSE/TRUE sparas i loggedIN och sen uppdateras setIsLoggedin
   useEffect(() => {
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
+    // I utvecklingsläge med StrictMode körs denna useEffect två gånger.
+    // Denna ref-kontroll säkerställer att bokningen bara skapas en gång.
+    if (effectRan.current === true) return;
 
     //bookingData och session storage är dem sparade valen av användaren i bookingPage
     //det sparas sen i storedData
@@ -41,6 +47,9 @@ function ConfirmationPage() {
       navigate('/booking');
       return;
     }
+
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
 
     //konverterar JSON text till JS objekt och sparar resultet i variabeln data
     const data: BookingData = JSON.parse(storedData);
@@ -57,8 +66,16 @@ function ConfirmationPage() {
         alert('Email saknas, logga in igen');
         return;
       }
-      createBooking(data, email);
+      if (!hasBooked.current) {
+        hasBooked.current = true;
+        createBooking(data, email);
+      }
     }
+
+    // Cleanup-funktion som körs när komponenten "unmounts".
+    // I StrictMode betyder det att ref:en sätts till true efter första körningen.
+    return () => { effectRan.current = true; };
+
   }, []);
 
   //generera unikt booking ID
@@ -219,6 +236,3 @@ ConfirmationPage.route = {
 };
 
 export default ConfirmationPage;
-
-
-// Lägga till en knapp för avbryta bokningen 

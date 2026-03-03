@@ -28,10 +28,10 @@ public static class DbQuery
         db.Open();
 
         // Reset database if requested
-        //if (config.resetDb == true)
-        //{
-        //    DropTables(db);
-        //}
+        // if (config.resetDb == true)
+        // {
+        //     DropTables(db);
+        // }
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
@@ -219,7 +219,10 @@ public static class DbQuery
                 ('visitor, user, admin', 'GET', 'allow', '/api/viewings', 'false', 'Allow all to access /api/viewings'),
                 ('visitor, user, admin', 'GET', 'allow', '/api/booked-seats', 'false', 'Allow all to access /api/booked-seats'),
 
-                ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all');
+                ('visitor, user, admin', 'GET', 'allow', '/api/viewings/all', 'true', 'Allowing all to visit the /api/viewings/all'),
+                
+                ('user, admin', 'GET', 'allow', '/api/bookings', 'true', 'Allow users to see their bookings'),
+                ('user, admin', 'DELETE', 'allow', '/api/bookings', 'false', 'Allow users to cancel bookings')
             ";
             command.CommandText = aclData;
             command.ExecuteNonQuery();
@@ -942,4 +945,3 @@ public static class DbQuery
 }
 
 // kör samma queries i samma transaktion 
-

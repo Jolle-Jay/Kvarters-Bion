@@ -10,13 +10,7 @@ public static class RestApi
             HttpContext context, string table, JsonElement bodyJson
         ) =>
 
-
-
             {
-                if (table == "customBooking")
-                {
-                    return vadDuVill.HandleCustomBooking(context, bodyJson);
-                }
                 var body = JSON.Parse(bodyJson.ToString());
                 body.Delete("id");
                 var parsed = ReqBodyParse(table, body);
@@ -36,6 +30,7 @@ public static class RestApi
 
 
             });
+
 
 
 
