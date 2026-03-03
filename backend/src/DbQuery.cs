@@ -945,4 +945,3 @@ public static class DbQuery
 }
 
 // kör samma queries i samma transaktion 
-
