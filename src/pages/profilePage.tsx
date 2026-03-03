@@ -101,21 +101,6 @@ function ProfilePage() {
     }
   };
 
-  const handleCancelBooking = async (bookingReference: string | undefined) => {
-    if (!bookingReference || !window.confirm('Vill du verkligen avboka denna bokning?')) return;
-    try {
-      const res = await fetch(`/api/bookings/${bookingReference}`, { method: 'DELETE' });
-      const result = await res.json();
-      if (result.success) {
-        setBookings(prev => prev.filter(b => b.bookingReference !== bookingReference));
-      } else {
-        alert(result.error || 'Kunde inte avboka bokning');
-      }
-    } catch {
-      alert('Kunde inte avboka bokning');
-    }
-  };
-
   if (isLoading) {
     return <main className="profile-container">Laddar profil...</main>;
   }
@@ -143,9 +128,6 @@ function ProfilePage() {
       <p><strong>E-post:</strong> {userData.email}</p>
 
 
-
-
-
       <button onClick={handleLogout}>Logga ut</button>
 
       <section className="bookings-section">
@@ -166,8 +148,24 @@ function ProfilePage() {
                   <div>
                     <b>Bokningsnummer:</b> {booking.BookingReference}<br />
                     <b>Film:</b> {booking.film}<br />
-                    <b>Tid:</b> {booking.start_time}<br />
-                    <b>Platser:</b> {booking.seats}<br />
+                    <b>Datum:</b> {booking.start_time?.split('T')[0]}<br />
+                    <b>Tid:</b> {booking.start_time?.split('T')[1]}<br />
+                    {/* Visa platser som Rad: X Sittplats: Y */}
+                    {(() => {
+                      let row = '', seat = '';
+                      if (typeof booking.seats === 'string' && booking.seats.includes('-')) {
+                        [row, seat] = booking.seats.split('-');
+                        } else if (Array.isArray(booking.seats) && booking.seats.length >= 2) {
+                          [row, seat] = booking.seats;
+                        } else if (typeof booking.seats === 'string') {
+                          row = booking.seats;
+                        } 
+                        return (
+                          <>
+                          <b>Rad:</b> {row} <b>Sittplats:</b> {seat}<br/> 
+                          </>
+                          );
+                    })()}
                     <b>Status:</b> {booking.status}
                   </div>
                   {booking.status === 'Confirmed' && (
