@@ -81,6 +81,12 @@ function BookingPage() {
     senior: 0,
     child: 0
   });
+  
+  const location = useLocation();
+  const { viewing } = location.state || {};
+
+  console.log("Viewing State: ", viewing)
+  
   // ([]) = startvärdet är en tom array
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   //  set som inehåller stärnger new set () = en Set datastruktur, liknar array fast med egna värden.
@@ -107,8 +113,6 @@ function BookingPage() {
     return `${value.toFixed(2).replace('.', ',')} kr`;
   };
 
-
-
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -129,8 +133,8 @@ function BookingPage() {
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
           setavailableViewigs(viewingsData);
-          setselectedViewing(viewingsData[0]);
-          setShowtime(viewingsData[0].start_time);
+          setselectedViewing(viewing);
+          setShowtime(viewing.start_time);
         }
       } catch (error) {
         console.error('Failed to fetch movie:', error);
