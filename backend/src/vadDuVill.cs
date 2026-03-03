@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 namespace WebApp;
 
 public static class vadDuVill
@@ -247,6 +249,36 @@ public static class vadDuVill
         // Om något går fel, returnera felmeddelande
         return RestResult.Parse(context, new { error = ex.Message });
       }
+    });
+
+    App.MapGet("/api/bookings", (HttpContext context) =>
+    {
+      var email = context.Request.Query["where"].ToString().Replace("email=", "");
+
+      if (string.IsNullOrEmpty(email))
+      {
+        return RestResult.Parse(context, new { error = "Email krävs." });
+      }
+
+      //Hämtar bokningar med film titel och visningstid via Join
+      var bookings = SQLQuery(@"
+      SELECT
+          b.BookingReference,
+          b.status,
+          b.email,
+          v.start_time,
+          JSON_EXTRACT(m.movies_raw, '$.Title') AS film,
+          GROUP_CONCAT(CONCAT(s.seatRow, '-', s.number) ORDER BY s.seatRow, s.number) AS seats
+          FROM bookings b
+          INNER JOIN viewings v ON b.viewing = v.id
+          INNER JOIN movies m ON v.movie = m.id
+          LEFT JOIN bookingSeats bs ON bs.booking = b.id
+          LEFT JOIN seats s ON bs.seat = s.id
+          WHERE b.email = @email
+          GROUP BY b.id",
+          new { email }
+          );
+      return RestResult.Parse(context, bookings);
     });
   }
 }
