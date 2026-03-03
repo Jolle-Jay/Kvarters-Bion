@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
+import { useParams, useNavigate, useLocation } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 
 // pris per kategori för biljetter
@@ -89,6 +89,8 @@ function BookingPage() {
   const [selectedViewing, setselectedViewing] = useState<any>(null);
   const [CurrentLounge, setCurrentLounge] = useState<any>(null);
 
+  console.log("Selected viewing: ", selectedViewing);
+
   const getCurrentSalongLayout = () => {
     if (!selectedViewing) {
       return SALONG_LAYOUT['Stora Salongen']; // Default
@@ -153,7 +155,7 @@ function BookingPage() {
       setCurrentLounge(selectedViewing.lounge);
 
       try {
-        const bookedResponse = await fetch(`/api/booked-seats/${selectedViewing.id}`);
+        const bookedResponse = await fetch(`/api/bookingSeats/${selectedViewing.id}`);
 
         if (bookedResponse.ok) {
           const bookedData = await bookedResponse.json();

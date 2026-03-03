@@ -184,7 +184,8 @@ export default function MoviePage() {
           {viewings.length === 0 ? (
             <p>Inga visningstider tillgängliga</p>
           ) : (
-            Object.entries(groupedViewings).map(([date, dateViewings]: [string, any]) => (
+              Object.entries(groupedViewings).map(([date, dateViewings]: [string, any]) => (
+              
               <div key={date} className="showtime-date">
 
                 <h4
@@ -217,7 +218,7 @@ export default function MoviePage() {
                       </div>
                     </div>
 
-                    <Link to={`/booking/${movie.id}`} className="book-btn">
+                    <Link to={`/booking/${movie.id}`} state={{viewing}} className="book-btn">
                       Boka biljett
                     </Link>
                   </div>
