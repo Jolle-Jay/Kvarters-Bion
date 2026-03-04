@@ -78,12 +78,13 @@
 
 .profile-container {
   max-width: 600px;
-  margin: 120px auto 40px;
+  margin: 30px auto 40px;
   padding: 2rem;
   background: #0a1c0a;
   border: 2px solid #B8860B;
   border-radius: 10px;
-  color: #ffffff;
+  color: #fcfafa;
+  position: relative;
 }
 
 .profile-container h2 {
@@ -92,18 +93,33 @@
   text-align: center;
 }
 
+/* En linje mellan namn och e-post */
+.profile-divider {
+  border: none;
+  border-top: 2px solid #B8860B;
+  margin: 16px auto;
+  width: 60%;
+}
+
+.container-name {
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+  text-align: center;
+}
+
 .logout-btn {
   background: #B8860B;
   color: rgb(250, 251, 251);
   border: none;
-  border-radius: 5px;
-  padding: 4px 15px;
+  border-radius: 6px;
+  padding: 8px 24px;
   font-weight: bold;
-  margin-bottom: 15px;
-  margin-top: 15px;
+  margin: 20px 0 24px auto;
   cursor: pointer;
   transition: background 0.2s;
   display: block;
+  position: static;
+  z-index: 1;
 }
 
 .logout-btn:hover {
@@ -122,20 +138,49 @@
 }
 
 .booking-item {
-  background: #0b2b03ab;
+  background: #0b2e02;
   border: 1px solid #031406;
   border-radius: 10px;
   margin-bottom: 18px;
   padding: 14px 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  position: relative;
+  min-height: 220px;
 }
 
 .booking-item b {
   color: #B8860B;
+}
+
+.booking-item.confirmed {
+  background: #092a09;
+  box-shadow: 0 4px 10px 0 rgba(80, 255, 80, 0.15), 0 1.5px 6px 0 rgba(0,0,0,0.18);
+  border: 2px solid #123312;
+}
+
+/* för den vita texten att kunna ligga på rad och få avstånd 
+men vet ej om det ser snyggt ut och speciellt på
+mobilvyn */
+.booking-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  line-height: 1.7rem;
+}
+.booking-label {
+  color: #B8860B;
+  min-width: 110px;
+  font-weight: bold;
+}
+.booking-value {
+  color: #fff;
+  text-align: left;
+  flex: 1;
+  margin-left: 12px;
 }
 
 .cancel-btn {
@@ -147,13 +192,20 @@
   font-size: 0.95rem;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 20px;
+  align-self: center;
   transition: background 0.2s;
 }
 
 .cancel-btn:hover {
   background: #5e0c0c;
   color: #ffffff;
+}
+
+.booking-item.cancelled {
+  background: #343a34;
+  opacity: 0.6;
+  filter: grayscale(0.2);
 }
 
 .not-logged-in {
@@ -178,6 +230,14 @@
     font-size: 1.5rem;
   }
 
+  .logout-btn {
+    padding: 6px 14px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    margin: 16px auto 20px auto;
+    display: block;
+  }
+
   .profile-info {
     margin: 1rem 0;
     padding: 0.75rem;
@@ -188,8 +248,26 @@
     gap: 0.75rem;
   }
 
-  .btn {
-    width: 100%;
+ .booking-row {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .booking-label {
+    min-width: 0;
+    margin-bottom: 0;
+  }
+  .booking-value {
+    margin-left: 0;
+    margin-top: 0;
+    font-size: 1rem;
+  }
+
+  .cancel-btn {
+    display: block;
+    margin: 15px auto 0 auto;
+    background: #700808;
+    color: rgb(250, 251, 251);
     text-align: center;
     padding: 0.65rem 1rem;
     font-size: 0.95rem;
