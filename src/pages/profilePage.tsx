@@ -124,11 +124,10 @@ function ProfilePage() {
   return (
     <main className="profile-container">
       <h2>Min Profil</h2>
-      <p><strong>Namn:</strong> {userData.name}</p>
-      <p><strong>E-post:</strong> {userData.email}</p>
-
-
       <button className="logout-btn" onClick={handleLogout}>Logga ut</button>
+      <p className="container-name"><strong>Namn:</strong> {userData.name}</p>
+      <p className="container-name"><strong>E-post:</strong> {userData.email}</p>
+
 
       <section className="bookings-section">
         <div onClick={() => setShowBookings(prev => !prev)} style={{ cursor: 'pointer' }}>
