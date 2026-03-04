@@ -1,147 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../CSS/Profile.css';
-import '../CSS/Login.css';
-import type { Booking } from '../interfaces/History';
-import type { JSX } from 'react';
+import '../CSS/profile.css';
 
-
-
+interface Booking {
+  BookingReference: string;
+  status: string;
+  email: string;
+  start_time: string;
+  film: string;
+  seats: string;
+}
 
 function ProfilePage() {
   const navigate = useNavigate();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // är någon inloggad?
-  const [isLoading, setIsLoading] = useState(true); //laddar vi data?
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState({
-    // Startvärden = Standardvärden som visas innan vi laddat riktiga värden från localStorage
-
     name: 'Användare',
     email: 'user@example.com',
   });
-
-  const [bookings, setBookings] = useState<Booking[]>([]); // State för historik
-  const [loadingBookings, setLoadingBookings] = useState(false); // State för loading-status
-  const [bookingError, setBookingError] = useState<string | null>(null); // State för fel vid hämtning
-
-  // activeDropdowns = Håller koll på vilka dropdowns som är öppna/stängda
-  // setActiveDropdowns = Funktion för att öppna/stänga dropdowns
-  const [activeDropdowns, setActiveDropdowns] = useState({
-    history: false,
-    cancellations: false,
-  });
-
-  // Fetch bookings when history dropdown is opened
-   const fetchBookings = async () => {
-    if (bookings.length > 0) return;
-
-    const userEmail = localStorage.getItem('userEmail');
-
-    if (!userEmail) {
-      setBookingError("Ingen användare hittades");
-      return;
-    }
-
-    setLoadingBookings(true);
-    setBookingError(null);
-
-    try {
-      const url = `api/bookings/user?email=${userEmail}`;
-      const response = await fetch(url);
-      const data = await response.json();
-
-      if (!response.ok) {
-        setBookingError('Misslyckades att hämta bokningshistorik');
-        setBookings([]);
-        return;
-      }
-
-      if (data?.error) {
-        setBookingError(data.error);
-        setBookings([]);
-      } else if (Array.isArray(data)) {
-        setBookings(data);
-      } else {
-        setBookings([]);
-      }
-
-    } catch (err) {
-      setBookingError("Fel vid hämtning");
-      setBookings([]);
-    } finally {
-      setLoadingBookings(false);
-    }
-  };
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [isBookingsLoading, setIsBookingsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showBookings, setShowBookings] = useState(false);
 
   useEffect(() => {
-    const init = async () => {
-      // verify backend session as well as localStorage in case of stale state
-      try {
-        const resp = await fetch('/api/login');
-        const data = await resp.json();
-        if (resp.ok && !data.error) {
-          setIsLoggedIn(true);
-          setUserData({
-            name: data.name || localStorage.getItem('userName') || 'användare',
-            email: data.email || localStorage.getItem('userEmail') || '',
-          });
-          // keep localStorage in sync
-          localStorage.setItem('isLoggedIn', 'true');
-          if (data.email) localStorage.setItem('userEmail', data.email);
-          if (data.name) localStorage.setItem('userName', data.name);
-        } else {
-          // no user on server session, fall back to local storage or mark logged out
-          const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-          const userName = localStorage.getItem('userName') || 'användare';
-          const userEmail = localStorage.getItem('userEmail') || '';
-
-          setIsLoggedIn(loggedIn);
-          setUserData({ name: userName, email: userEmail });
-        }
-      } catch {
-        // network error, just use whatever we have locally
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        const userName = localStorage.getItem('userName') || 'användare';
-        const userEmail = localStorage.getItem('userEmail') || '';
-
-        setIsLoggedIn(loggedIn);
-        setUserData({ name: userName, email: userEmail });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    init();
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userName = localStorage.getItem('userName') || 'användare';
+    const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+    setIsLoggedIn(loggedIn);
+    setUserData({ name: userName, email: userEmail });
+    setIsLoading(false);
   }, []);
 
+  useEffect(() => {
+    if (!isLoggedIn || !userData.email) return;
+    setIsBookingsLoading(true);
+    fetch(`/api/bookings?where=email=${userData.email}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Kunde inte hämta bokningar');
+        return res.json();
+      })
+      .then(data => {
+        setBookings(data);
+        setIsBookingsLoading(false);
+      })
+      .catch(() => {
+        setError('Kunde inte hämta bokningar');
+        setIsBookingsLoading(false);
+      });
+  }, [isLoggedIn, userData.email]);
 
-  const handleLogout = async () => {
-    // call backend to clear session
-    try {
-      await fetch('/api/login', { method: 'DELETE' });
-    } catch {
-      // ignore network errors, we'll clear local state anyway
-    }
-
-    // clear frontend state & localStorage
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail');
-    setIsLoggedIn(false);
-
+  const handleLogout = () => {
+    localStorage.clear();
     navigate('/');
   };
 
-  // key = vilken dropdown som klickas på
-  const toggleDropdown = (key: 'history' | 'cancellations') => {
-    //prev = cad actideDrop var INNAN KLICK
-    //...prev = kopiera ALLT från prev
-    // key  = computed property, använd värdet key som history tex.
-    if (key === 'history' && !activeDropdowns.history) {
-      // Fetch bookings when opening history dropdown
-      fetchBookings();
+  const handleCancelBooking = async (bookingReference: string | undefined) => {
+    if (!bookingReference || !window.confirm('Vill du verkligen avboka denna bokning?')) return;
+    try {
+      const res = await fetch(`/api/bookings/${bookingReference}`, { method: 'DELETE' });
+      const result = await res.json();
+      if (result.success) {
+        setBookings(prev => prev.map(b =>
+          b.BookingReference === bookingReference
+            ? { ...b, status: 'Cancelled' }
+            : b
+        ));
+      } else {
+        alert(result.error || 'Kunde inte avboka bokning');
+      }
+    } catch {
+      alert('Kunde inte avboka bokning');
     }
-    setActiveDropdowns(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   if (isLoading) {
@@ -167,59 +98,48 @@ function ProfilePage() {
   return (
     <main className="profile-container">
       <h2>Min Profil</h2>
-
       <p><strong>Namn:</strong> {userData.name}</p>
       <p><strong>E-post:</strong> {userData.email}</p>
 
-      <div className="dropdown-section">
-        <div onClick={() => toggleDropdown('history')} style={{ cursor: 'pointer', marginBottom: '10px' }}>
-          <strong>Historik {activeDropdowns.history ? '▲' : '▼'}</strong>
-        </div>
-        
-        {activeDropdowns.history && (
-          <div className="history-list" style={{ paddingLeft: '1rem', marginBottom: '1rem' }}>
-            {loadingBookings ? (
-              <p>Laddar bokningshistorik...</p>
-            ) : bookingError ? (
-              <p style={{ color: 'red' }}>{bookingError}</p>
-            ) : bookings.length > 0 ? (
-              bookings.map((booking) => (
-                <div key={booking.id} style={{ borderBottom: '1px solid #ccc', padding: '10px 0' }}>
-                  <p style={{ margin: 0, fontWeight: 'bold' }}>{booking.movieTitle}</p>
-                  <p style={{ margin: 0, fontSize: '0.9em', color: '#666' }}>
-                    {new Date(booking.date).toLocaleDateString('sv-SE', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </p>
-                  <p style={{ margin: 0, fontSize: '0.9em', color: '#666' }}>
-                    Bokningsreferens: {booking.BookingReference}
-                  </p>
-                  {booking.seats && (
-                    <p style={{ margin: 0, fontSize: '0.9em', color: '#666' }}>
-                      Platser: {booking.seats}
-                    </p>
-                  )}
-                  <p style={{ margin: 0, fontSize: '0.85em', color: '#999' }}>
-                    Status: {booking.status}
-                  </p>
-                </div>
-              ))
-            ) : (
-              <p>Inga tidigare bokningar hittades.</p>
-            )}
-          </div>
-        )}
-      </div>
-
-      <div onClick={() => toggleDropdown('cancellations')}>
-        <strong>Avbokningar</strong>
-      </div>
-
       <button onClick={handleLogout}>Logga ut</button>
+
+      <section className="bookings-section">
+        <div onClick={() => setShowBookings(prev => !prev)} style={{ cursor: 'pointer' }}>
+          <h3>Mina bokningar {showBookings ? '▲' : '▼'}</h3>
+        </div>
+        {showBookings && (
+          isBookingsLoading ? (
+            <p>Laddar bokningar...</p>
+          ) : error ? (
+            <p style={{ color: 'red' }}>{error}</p>
+          ) : bookings.length === 0 ? (
+            <p>Du har inga bokningar.</p>
+          ) : (
+            <ul className="bookings-list">
+              {bookings.map((booking) => (
+                <li key={booking.BookingReference} className="booking-item">
+                  <div>
+                    <b>Bokningsnummer:</b> {booking.BookingReference}<br />
+                    <b>Film:</b> {booking.film}<br />
+                    <b>Datum:</b> {booking.start_time?.split('T')[0]}<br />
+                    <b>Tid:</b> {booking.start_time?.split('T')[1]}<br />
+                    <b>Platser:</b> {(booking.seats as string)?.split(',').map((seat: string) => {
+                      const [row, number] = seat.trim().split('-');
+                      return `Rad ${row} Säte ${number}`;
+                    }).join(', ')}<br />
+                    <b>Status:</b> {booking.status}
+                  </div>
+                  {booking.status === 'Confirmed' && (
+                    <button onClick={() => handleCancelBooking(booking.BookingReference)}>
+                      Avboka
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )
+        )}
+      </section>
     </main>
   );
 }

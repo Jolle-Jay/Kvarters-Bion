@@ -92,96 +92,68 @@
   text-align: center;
 }
 
-.profile-info {
-  margin: 1.5rem 0;
-  padding: 1rem;
-  background: #012401;
-  border-left: 4px solid #B8860B;
+.logout-btn {
+  background: #B8860B;
+  color: rgb(250, 251, 251);
+  border: none;
   border-radius: 5px;
-}
-
-.profile-info-drop {
-  margin: 1.5rem 0;
-  padding: 1rem;
-  background: #012401;
-  border-left: 4px solid #B8860B;
-  border-radius: 5px;
+  padding: 4px 15px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  margin-top: 15px;
   cursor: pointer;
-}
-
-.profile-info-drop p {
-  display: none;
-  margin: 0;
-  color: #ffffff;
-}
-
-.profile-info-drop.active p {
+  transition: background 0.2s;
   display: block;
 }
 
-.profile-info strong {
-  color: #FFD700;
-  display: block;
-  margin-bottom: 0.5rem;
+.logout-btn:hover {
+  background: #675914;
 }
 
-.profile-info-drop strong {
-  color: #FFD700;
-  display: block;
-  margin-bottom: 0.5rem;
+.section-title {
+  color: #B8860B;
+  font-size: 1.5rem;
+  margin-top: 24px;
+  margin-bottom: 15px;
 }
 
-.profile-info p {
-  margin: 0;
-  color: #ffffff;
+.bookings-list {
+  padding-left: 5px;
 }
 
-.profile-actions {
+.booking-item {
+  background: #0b2b03ab;
+  border: 1px solid #031406;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.btn {
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #B8860B;
-  border-radius: 5px;
+.booking-item b {
+  color: #B8860B;
+}
+
+.cancel-btn {
+  background: #700808;
+  color: rgb(250, 251, 251);
+  border: none;
+  border-radius: 3px;
+  padding: 6px 16px;
+  font-size: 0.95rem;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
+  margin-top: 15px;
+  transition: background 0.2s;
 }
 
-.btn-primary {
-  background: #B8860B;
-  color: #012401;
-}
-
-.btn-primary:hover {
-  background: #FFD700;
-}
-
-.btn-secondary {
-  background: transparent;
-  color: #FFD700;
-}
-
-.btn-secondary:hover {
-  background: #B8860B;
-  color: #012401;
-}
-
-.btn-logout {
-  background: #8B0000;
+.cancel-btn:hover {
+  background: #5e0c0c;
   color: #ffffff;
-  border-color: #8B0000;
-}
-
-.btn-logout:hover {
-  background: #CC0000;
-  border-color: #CC0000;
 }
 
 .not-logged-in {

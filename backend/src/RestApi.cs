@@ -33,6 +33,7 @@ public static class RestApi
 
 
 
+
         App.MapGet("/api/{table}", (
             HttpContext context, string table
         ) =>
