@@ -87,9 +87,8 @@ function LoginPage() {
       localStorage.setItem('isLoggedIn', 'true');
       // använd data.email från backend om det saknas använd formData (det som user skrev)
       localStorage.setItem('userEmail', data.email || formData.email);
-      if (data.name) {
-        localStorage.setItem('userName', data.name);
-      }
+      localStorage.setItem('userName', data.firstName + ' ' + data.lastName);
+
 
       setSuccessMessage('Inloggningen lyckades! Omdirigerar...');
       setTimeout(() => navigate('/profile'), 1500);
