@@ -145,13 +145,21 @@
   padding: 14px 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  position: relative;
+  min-height: 220px;
 }
 
 .booking-item b {
   color: #B8860B;
+}
+
+.booking-item.confirmed {
+  background: #092a09;
+  box-shadow: 0 4px 10px 0 rgba(80, 255, 80, 0.15), 0 1.5px 6px 0 rgba(0,0,0,0.18);
+  border: 2px solid #123312;
 }
 
 /* för den vita texten att kunna ligga på rad och få avstånd 
@@ -161,7 +169,7 @@ mobilvyn */
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 2px;
+  line-height: 1.7rem;
 }
 .booking-label {
   color: #B8860B;
@@ -184,7 +192,8 @@ mobilvyn */
   font-size: 0.95rem;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 20px;
+  align-self: center;
   transition: background 0.2s;
 }
 
@@ -194,7 +203,7 @@ mobilvyn */
 }
 
 .booking-item.cancelled {
-  background: #343c34;
+  background: #343a34;
   opacity: 0.6;
   filter: grayscale(0.2);
 }

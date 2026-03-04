@@ -144,7 +144,7 @@ function ProfilePage() {
           ) : (
             <ul className="bookings-list">
               {bookings.map((booking) => (
-                <li key={booking.BookingReference} className={`booking-item${booking.status === 'Cancelled' ? ' cancelled' : ''}`}>
+                <li key={booking.BookingReference} className={`booking-item${booking.status === 'Cancelled' ? ' cancelled' : ''}${booking.status === 'Confirmed' ? ' confirmed' : ''}`}>
                   <div>
                     <div className="booking-row">
                       <span className="booking-label">Bokningsnummer:</span>
