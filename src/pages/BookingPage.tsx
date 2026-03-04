@@ -76,7 +76,7 @@ function BookingPage() {
   const [showtime, setShowtime] = useState('viewing');
 
   const [searchParams] = useSearchParams();
-  const viewingId = searchParams.get("showtime")
+  const viewingId = searchParams.get("showtime");
 
   // hämtar definitionen ticket counts ovanför och ger dem alla värdet 0 till att börja med 
   const [counts, setCounts] = useState<TicketCounts>({
@@ -121,7 +121,7 @@ function BookingPage() {
         setMovie(data);
 
         // samma process som ovan
-        const viewingREsponse = await fetch(`/api/viewings?movieId=${id}`);
+        const viewingREsponse = await fetch(`/api/viewing?viewingId=${viewingId}`);
         const viewingsData = await viewingREsponse.json();
 
         console.log("Visnings Tider: ", viewingsData);
@@ -129,12 +129,13 @@ function BookingPage() {
         // data vi har fått från fetchen om den är mer än 0
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
-          setavailableViewigs(viewingsData);
-          setselectedViewing(viewingId);
+          setavailableViewigs(viewingsData[0]);
+          setselectedViewing(viewingsData[0].id);
           setShowtime(viewingsData[0].start_time);
         }
 
-        console.log("Selected Viewing: ", viewingId);
+        console.log("Selected Viewing: ", viewingsData[0].id);
+        console.log("Selected ShowTime: ", viewingsData[0].start_time);
 
       } catch (error) {
         console.error('Failed to fetch movie:', error);
