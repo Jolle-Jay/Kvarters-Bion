@@ -144,12 +144,33 @@ function ProfilePage() {
           ) : (
             <ul className="bookings-list">
               {bookings.map((booking) => (
-                <li key={booking.BookingReference} className="booking-item">
+                <li key={booking.BookingReference} className={`booking-item${booking.status === 'Cancelled' ? ' cancelled' : ''}`}>
                   <div>
-                    <div className="booking-row"><span className="booking-label">Bokningsnummer:</span><span className="booking-value">{booking.BookingReference}</span></div>
-                    <div className="booking-row"><span className="booking-label">Film:</span><span className="booking-value">{booking.film}</span></div>
-                    <div className="booking-row"><span className="booking-label">Datum:</span><span className="booking-value">{booking.start_time?.split('T')[0]}</span></div>
-                    <div className="booking-row"><span className="booking-label">Tid:</span><span className="booking-value">{booking.start_time?.split('T')[1]}</span></div>
+                    <div className="booking-row">
+                      <span className="booking-label">Bokningsnummer:</span>
+                      <span className="booking-value">
+                        {booking.BookingReference}
+                      </span>
+                    </div>
+                    <div className="booking-row">
+                      <span className="booking-label">Film:</span>
+                      <span className="booking-value">
+                        {booking.film}
+                      </span>
+                    </div>
+                    <div className="booking-row">
+                      <span className="booking-label">Datum:</span>
+                      <span className="booking-value">
+                        {booking.start_time?.split('T')[0]}
+                      </span>
+                    </div>
+                    <div className="booking-row">
+                      <span className="booking-label">Tid:</span>
+                      <span className="booking-value">
+                        {booking.start_time?.split('T')[1]}
+                      </span>
+                    </div>
+                    
                     {/* Visa platser som Rad: X Sittplats: Y */}
                     {(() => {
                       let row = '', seat = '';
