@@ -124,6 +124,7 @@ function ProfilePage() {
   return (
     <main className="profile-container">
       <h2>Min Profil</h2>
+      <hr className="profile-divider" />
       <button className="logout-btn" onClick={handleLogout}>Logga ut</button>
       <p className="container-name"><strong>Namn:</strong> {userData.name}</p>
       <p className="container-name"><strong>E-post:</strong> {userData.email}</p>
@@ -145,27 +146,39 @@ function ProfilePage() {
               {bookings.map((booking) => (
                 <li key={booking.BookingReference} className="booking-item">
                   <div>
-                    <b>Bokningsnummer:</b> {booking.BookingReference}<br />
-                    <b>Film:</b> {booking.film}<br />
-                    <b>Datum:</b> {booking.start_time?.split('T')[0]}<br />
-                    <b>Tid:</b> {booking.start_time?.split('T')[1]}<br />
+                    <div className="booking-row"><span className="booking-label">Bokningsnummer:</span><span className="booking-value">{booking.BookingReference}</span></div>
+                    <div className="booking-row"><span className="booking-label">Film:</span><span className="booking-value">{booking.film}</span></div>
+                    <div className="booking-row"><span className="booking-label">Datum:</span><span className="booking-value">{booking.start_time?.split('T')[0]}</span></div>
+                    <div className="booking-row"><span className="booking-label">Tid:</span><span className="booking-value">{booking.start_time?.split('T')[1]}</span></div>
                     {/* Visa platser som Rad: X Sittplats: Y */}
                     {(() => {
                       let row = '', seat = '';
                       if (typeof booking.seats === 'string' && booking.seats.includes('-')) {
                         [row, seat] = booking.seats.split('-');
-                        } else if (Array.isArray(booking.seats) && booking.seats.length >= 2) {
-                          [row, seat] = booking.seats;
-                        } else if (typeof booking.seats === 'string') {
-                          row = booking.seats;
-                        } 
-                        return (
-                          <>
-                          <b>Rad:</b> {row} <b>Sittplats:</b> {seat}<br/> 
-                          </>
-                          );
+                      } else if (Array.isArray(booking.seats) && booking.seats.length >= 2) {
+                        [row, seat] = booking.seats;
+                      } else if (typeof booking.seats === 'string') {
+                        row = booking.seats;
+                      }
+                      return (
+                        <>
+                          <div className="booking-row"><span className="booking-label">Rad:</span>
+                          <span className="booking-value">{row}</span></div>
+                          <div className="booking-row"><span className="booking-label">Sittplats:</span>
+                          <span className="booking-value">{seat}</span></div>
+                        </>
+                      );
                     })()}
-                    <b>Status:</b> {booking.status}
+                    <div className="booking-row">
+                      <span className="booking-label">Status:</span>
+                      <span className="booking-value">
+                        {booking.status === "Confirmed"
+                        ? "Bekräftad"
+                        : booking.status === "Cancelled"
+                        ? "Avbokad"
+                        : booking.status}
+                      </span>
+                    </div>
                   </div>
                   {booking.status === 'Confirmed' && (
                     <button className="cancel-btn" onClick={() => handleCancelBooking(booking.BookingReference)}>

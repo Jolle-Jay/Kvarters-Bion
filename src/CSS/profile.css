@@ -93,6 +93,14 @@
   text-align: center;
 }
 
+/* En linje mellan namn och e-post */
+.profile-divider {
+  border: none;
+  border-top: 2px solid #B8860B;
+  margin: 16px auto;
+  width: 60%;
+}
+
 .container-name {
   font-size: 1.1rem;
   margin-bottom: 0.7rem;
@@ -144,6 +152,27 @@
 
 .booking-item b {
   color: #B8860B;
+}
+
+/* för den vita texten att kunna ligga på rad och få avstånd 
+men vet ej om det ser snyggt ut och speciellt på
+mobilvyn */
+.booking-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2px;
+}
+.booking-label {
+  color: #B8860B;
+  min-width: 110px;
+  font-weight: bold;
+}
+.booking-value {
+  color: #fff;
+  text-align: left;
+  flex: 1;
+  margin-left: 12px;
 }
 
 .cancel-btn {
@@ -203,11 +232,27 @@
     flex-direction: column;
     gap: 0.75rem;
   }
-    .cancel-btn {
-      display: block;
-      margin: 15px auto 0 auto;
-      background: #700808;
-      color: rgb(250, 251, 251);
+
+ .booking-row {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .booking-label {
+    min-width: 0;
+    margin-bottom: 0;
+  }
+  .booking-value {
+    margin-left: 0;
+    margin-top: 0;
+    font-size: 1rem;
+  }
+
+  .cancel-btn {
+    display: block;
+    margin: 15px auto 0 auto;
+    background: #700808;
+    color: rgb(250, 251, 251);
     text-align: center;
     padding: 0.65rem 1rem;
     font-size: 0.95rem;
