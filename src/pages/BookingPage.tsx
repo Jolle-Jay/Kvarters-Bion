@@ -102,6 +102,7 @@ function BookingPage() {
       : SALONG_LAYOUT['Lilla Salongen'];
   };
 
+
   // tar emot ett nummer, returnerar en sträng
   // tofixed 2 lägger till 2 decimaler och gör om . till ,
   const formatPrice = (value: number): string => {
@@ -130,7 +131,7 @@ function BookingPage() {
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
           setavailableViewigs(viewingsData[0]);
-          setselectedViewing(viewingsData[0].id);
+          setselectedViewing(viewingsData[0]);
           setShowtime(viewingsData[0].start_time);
         }
 
@@ -147,7 +148,6 @@ function BookingPage() {
       fetchMovie();
     }
   }, [id]);
-
   
   useEffect(() => {
     const fetchBookedSeats = async () => {
