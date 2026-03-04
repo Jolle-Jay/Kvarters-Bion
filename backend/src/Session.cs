@@ -101,6 +101,13 @@ public static partial class Session
 
     public static void Set(HttpContext context, string key, object value)
     {
+        if (value == null)
+        {
+            // special case: remove the key entirely (and delete session if emptied)
+            Remove(context, key);
+            return;
+        }
+
         var session = GetRawSession(context);
         // Read existing data as JSON string
         string existingDataJson = session.data is string s ? s : "{}";
@@ -112,7 +119,7 @@ public static partial class Session
 
         // Convert value to plain object if it's an Obj (to avoid circular refs)
         object valueToSave = value;
-        if (value != null && value.GetType().FullName == "Dyndata.Obj")
+        if (value.GetType().FullName == "Dyndata.Obj")
         {
             // Convert Obj to Dictionary by serializing and deserializing
             var tempJson = JSON.Stringify(value);
@@ -141,5 +148,45 @@ public static partial class Session
                 data = jsonString
             }
        );
+    }
+
+    public static void Remove(HttpContext context, string key)
+    {
+        var session = GetRawSession(context);
+        string existingDataJson = session.data is string s ? s : "{}";
+        var dict = string.IsNullOrEmpty(existingDataJson) || existingDataJson == "{}"
+            ? new Dictionary<string, object>()
+            : System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(existingDataJson);
+
+        if (!dict.Remove(key)) return;
+
+        if (dict.Count == 0)
+        {
+            // no data left: delete row and clear cookie
+            SQLQuery("DELETE FROM sessions WHERE id = @id", new { session.id });
+            context.Items.Remove("session");
+        }
+        else
+        {
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
+            };
+            var jsonString = System.Text.Json.JsonSerializer.Serialize(dict, options);
+            session.data = jsonString;
+            SQLQuery(
+                @"UPDATE sessions
+                  SET modified = NOW(), data = @data
+                  WHERE id = @id",
+                new { session.id, data = jsonString }
+           );
+        }
+    }
+
+    public static void Clear(HttpContext context)
+    {
+        var session = GetRawSession(context);
+        SQLQuery("DELETE FROM sessions WHERE id = @id", new { id = session.id });
+        context.Items.Remove("session");
     }
 }

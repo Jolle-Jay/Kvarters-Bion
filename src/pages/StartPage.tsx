@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import "../css/MovieCards.css";
 import "../css/Carousel.css";
+import { mapToSwedishAge } from '../utils/ageLimit';
 
 export default function StartPage() {
 
@@ -45,29 +46,7 @@ export default function StartPage() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
-  const mapToSwedishAge = (rating: string) => {
-    switch (rating) {
-      case "G":
-      case "Approved":
-        return "Barntillåten";
-
-      case "TV-Y7":
-      case "PG":
-        return "7+";
-
-      case "PG-13":
-        return "11+";
-
-      case "R":
-        return "15+";
-
-      case "N/A":
-        return "Ingen åldersgräns";
-
-      default:
-        return "Ingen åldersgräns";
-    }
-  };
+  
 
   // Genre filtering only
   const filteredMovies = movies

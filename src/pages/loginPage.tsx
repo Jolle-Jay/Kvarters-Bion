@@ -36,6 +36,21 @@ function LoginPage() {
 
   // async väntar på API anrop
   // event har typen FormEvent som triggas när formulär skickas in (submit) /enter
+  // If user already has a session on the server, redirect immediately
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const resp = await fetch('/api/login');
+        const data = await resp.json();
+        if (resp.ok && !data.error) {
+          navigate('/profile');
+        }
+      } catch {
+        // ignore network
+      }
+    })();
+  }, [navigate]);
+
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     // utan preventdefault formulär skickas, sidan laddar om, all data försvinner
     event.preventDefault();
@@ -69,11 +84,11 @@ function LoginPage() {
       //Väntar och läser in JSON som backend skickar och sparar det i data
       const data = await response.json();
       //eftersom response var ok, då sätter vi inloggad till true
-      //local storage inbyggt objeklt i alla moderna webbläsare lagara data till cache rensad
-      //setItem inbyggs metod på local storage, sparar data som nyckel värde par
       localStorage.setItem('isLoggedIn', 'true');
       // använd data.email från backend om det saknas använd formData (det som user skrev)
       localStorage.setItem('userEmail', data.email || formData.email);
+      localStorage.setItem('userName', data.firstName + ' ' + data.lastName);
+
 
       setSuccessMessage('Inloggningen lyckades! Omdirigerar...');
       setTimeout(() => navigate('/profile'), 1500);
