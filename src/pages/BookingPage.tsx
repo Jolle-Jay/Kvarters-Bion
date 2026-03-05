@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
+import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
-import { Prev } from 'react-bootstrap/esm/PageItem';
-import { defaultAllowedOrigins } from 'vite';
 
 // pris per kategori för biljetter
 const PRICES = {
@@ -77,9 +75,6 @@ function BookingPage() {
   // gör att våran showtime är viewing
   const [showtime, setShowtime] = useState('viewing');
 
-  const [searchParams] = useSearchParams();
-  const viewingId = searchParams.get("showtime");
-
   // hämtar definitionen ticket counts ovanför och ger dem alla värdet 0 till att börja med 
   const [counts, setCounts] = useState<TicketCounts>({
     adult: 0,
@@ -104,7 +99,6 @@ function BookingPage() {
       : SALONG_LAYOUT['Lilla Salongen'];
   };
 
-
   // tar emot ett nummer, returnerar en sträng
   // tofixed 2 lägger till 2 decimaler och gör om . till ,
   const formatPrice = (value: number): string => {
@@ -124,7 +118,7 @@ function BookingPage() {
         setMovie(data);
 
         // samma process som ovan
-        const viewingREsponse = await fetch(`/api/viewing?viewingId=${viewingId}`);
+        const viewingREsponse = await fetch(`/api/viewings?movieId=${id}`);
         const viewingsData = await viewingREsponse.json();
 
         console.log("Visnings Tider: ", viewingsData);
@@ -132,14 +126,10 @@ function BookingPage() {
         // data vi har fått från fetchen om den är mer än 0
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
-          setavailableViewigs(viewingsData[0]);
+          setavailableViewigs(viewingsData);
           setselectedViewing(viewingsData[0]);
           setShowtime(viewingsData[0].start_time);
         }
-
-        console.log("Selected Viewing: ", viewingsData[0].id);
-        console.log("Selected ShowTime: ", viewingsData[0].start_time);
-
       } catch (error) {
         console.error('Failed to fetch movie:', error);
         alert('Kunde inte ladda filmen');
@@ -150,6 +140,7 @@ function BookingPage() {
       fetchMovie();
     }
   }, [id]);
+
   
   useEffect(() => {
     const fetchBookedSeats = async () => {
@@ -206,21 +197,15 @@ function BookingPage() {
     return counts.adult + counts.senior + counts.child;
   };
 
-
-  // type = vilken biljettkategori som ska ändras (t.ex. "adult", "child").
-  // delta = hur mycket värdet ska ändras (t.ex. +1 eller -1).
-  // keyof TicketCounts = betyder att (type) måste vara en giltig nyckel i objektet (TicketCounts).
- const updateCount = (type: keyof TicketCounts, delta: number) => {
-  setCounts(prev => {   // Uppdaterar counts state genom att ta det tidigare värdet (prev) och ändra 
-  // den specifika typen med delta.
-  // Gör även så att det undviker race  conditions när flera uppdateringar sker snabbt.
-    const newCounts = { ...prev, [type]: Math.max(0, prev[type] + delta ) };   // skapar ett nytt objekt baserat på det gamla ( ...prev).
-    // Uppdaterar bara den kategori som skickades in via type.
-    // prev[type] + delta räknar ut det nya värdet.
-    // Math.max(0, ...) ser till att värdet aldrig blir negativt.
-    return newCounts;
-  });
- };
+  // funktionen tar emot vilken biljetttyp
+  const updateCount = (type: keyof TicketCounts, delta: number) => {
+    //setcounts uppdaterar värdet, prev är det tidigare värdet
+    setCounts(prev => ({
+      ...prev,
+      [type]: Math.max(0, prev[type] + delta)
+      // uppdaterar endast valda värdet type = nyckeln , mathmax ser till att den aldrig går under 0
+    }));
+  };
 
   // om jag tar bort antal personer när jag har säten valda så försvinner valda säten med 
   useEffect(() => {
@@ -230,64 +215,24 @@ function BookingPage() {
     }
   }, [counts]);
 
-  // Visar rekommenderade säten
+  // bestämmer vilket säte som blir valt
   const selectSeat = (row: number, col: number) => {
     const seatId = `${row}-${col}`;
-    if (getTotalTickets() === 0) {
+    const totalTickets = getTotalTickets();
+
+    if (totalTickets === 0) {
       alert('Välj antal biljetter först.');
       return;
     }
+
     if (selectedSeats.includes(seatId)) {
       setSelectedSeats(prev => prev.filter(s => s !== seatId));
+    } else if (selectedSeats.length < totalTickets) {
+      setSelectedSeats(prev => [...prev, seatId]);
     } else {
-      setSelectedSeats(prev => [...prev.slice(1), seatId]);
+      alert('Du har redan valt max antal platser.');
     }
   };
-
-// Funktionen tar emot count = hur många platser som ska väljas.
-// Returnerar en lista av seat‑ID (t.ex. "5-7").
-  const getBestSeats = (count: number): string[] => {
-    const layout = getCurrentSalongLayout();    // Hämtar aktuell salongs‑layout (antal rader och antal stolar per rad).
-    const totalRows = layout.seatsPerRow.length;    // Räknar hur många rader salongen har.
-    const middleRow = Math.ceil(totalRows / 2);     // Hittar mittenraden (den bästa raden att sitta på).
-    const candidates: string[] = [];     // Skapar en tom lista där alla potentiella bra platser ska läggas in.
-
-
-// rowOffset styr hur långt från mitten vi ska leta.
-// Först offset 0 = mittenraden.
-// Sedan offset 1 = en rad ovanför och en rad under.
-// Fortsätter tills alla rader är testade.
-    for (let rowOffset = 0; rowOffset < totalRows; rowOffset++) {
-      const rowsToCheck = rowOffset === 0   // Om offset = 0 = bara mittenraden.
-      ? [middleRow]      // Annars = en rad ovanför och en rad under mittenraden, så vi kollar båda samtidigt.
-      : [middleRow - rowOffset, middleRow + rowOffset].filter    // Filtrerar bort rader som inte finns (t.ex. rad 0 eller rad 11 i en salong med 10 rader).
-      (r => r >= 1 && r <= totalRows);
-
-      // Går igenom varje rad som ska kontrolleras.
-      for (const row of rowsToCheck) {
-        const numSeats = layout.seatsPerRow[row - 1];   // Hämtar antal stolar i den aktuella raden.
-        const middleCol = Math.ceil(numSeats / 2);      // Hittar mittenkolumnen i den raden (den bästa platsen i raden).
-
-        // colOffset styr hur långt från mitten i raden vi ska leta.
-        for (let colOffset = 0; colOffset < numSeats; colOffset++) {
-          const colsToCheck = colOffset === 0   // Om colOffset = 0 = bara mittenplatsen i raden.
-          ? [middleCol]
-          : [middleCol - colOffset, middleCol + colOffset].filter(c => c >= 1 && c <= numSeats);   // Annars = en plats till vänster och en plats till höger om mittenplatsen, så vi kollar båda samtidigt.
-
-          // Skapar ett seat‑ID i formatet "rad-kolumn".
-          for (const col of colsToCheck) {
-            const seatId = `${row}-${col}`;
-            if (!bookedSeats.has(seatId) && !candidates.includes(seatId)) {
-              candidates.push(seatId);   // Lägger till stolen om den inte är bokad eller den inte redan finns i listan.
-            }
-          }
-        }
-      }   // Om vi redan har hittat tillräckligt många platser, bryt ut ur loopen tidigt för att inte lägga till onödiga platser.
-      if (candidates.length >= count) break;
-    }   // Returnerar de bästa platserna upp till det antal som efterfrågats.
-    return candidates.slice(0, count);
-  } 
-
 
   const confirmBooking = () => {
     // lägger in totala antalet biljetter vi har valt in i totaltickers
@@ -534,7 +479,13 @@ function BookingPage() {
                   {Array.from({ length: numSeats }, (_, i) => {
                     const col = i + 1;
                     const seatId = `${row}-${col}`;
-                    let seatType: 'available'| 'unavailable' = 'available';
+                    let seatType: 'available' | 'vip' | 'elder' | 'unavailable' = 'available';
+
+                    if (row === 5 && col >= 4 && col <= 7) {
+                      seatType = 'vip';
+                    } else if (row === 3 && col >= 1 && col <= 3) {
+                      seatType = 'elder';
+                    }
 
                     return (
                       <Seat
