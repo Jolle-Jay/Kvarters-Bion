@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 import { Prev } from 'react-bootstrap/esm/PageItem';
+import { defaultAllowedOrigins } from 'vite';
 
 // pris per kategori för biljetter
 const PRICES = {
@@ -205,15 +206,21 @@ function BookingPage() {
     return counts.adult + counts.senior + counts.child;
   };
 
-  // funktionen tar emot vilken biljetttyp
-  const updateCount = (type: keyof TicketCounts, delta: number) => {
-    //setcounts uppdaterar värdet, prev är det tidigare värdet
-    setCounts(prev => ({
-      ...prev,
-      [type]: Math.max(0, prev[type] + delta)
-      // uppdaterar endast valda värdet type = nyckeln , mathmax ser till att den aldrig går under 0
-    }));
-  };
+
+  // type = vilken biljettkategori som ska ändras (t.ex. "adult", "child").
+  // delta = hur mycket värdet ska ändras (t.ex. +1 eller -1).
+  // keyof TicketCounts = betyder att (type) måste vara en giltig nyckel i objektet (TicketCounts).
+ const updateCount = (type: keyof TicketCounts, delta: number) => {
+  setCounts(prev => {   // Uppdaterar counts state genom att ta det tidigare värdet (prev) och ändra 
+  // den specifika typen med delta.
+  // Gör även så att det undviker race  conditions när flera uppdateringar sker snabbt.
+    const newCounts = { ...prev, [type]: Math.max(0, prev[type] + delta ) };   // skapar ett nytt objekt baserat på det gamla ( ...prev).
+    // Uppdaterar bara den kategori som skickades in via type.
+    // prev[type] + delta räknar ut det nya värdet.
+    // Math.max(0, ...) ser till att värdet aldrig blir negativt.
+    return newCounts;
+  });
+ };
 
   // om jag tar bort antal personer när jag har säten valda så försvinner valda säten med 
   useEffect(() => {
@@ -279,7 +286,7 @@ function BookingPage() {
       if (candidates.length >= count) break;
     }   // Returnerar de bästa platserna upp till det antal som efterfrågats.
     return candidates.slice(0, count);
-  }
+  } 
 
 
   const confirmBooking = () => {
