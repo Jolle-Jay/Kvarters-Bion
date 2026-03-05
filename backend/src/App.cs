@@ -7,7 +7,7 @@ Globals = Obj(new
     isSpa = false,  // ← Changed to false (was true)
     port = args.Length > 0 ? args[0] : "5000",  // ← Added default value
     serverName = "Minimal API Backend",
-    frontendPath = args.Length > 1 ? args[1] : "../frontend/dist",  // ← Added default value
+    frontendPath = args.Length > 1 ? args[1] : "../dist",
     sessionLifeTimeHours = 2
 });
 

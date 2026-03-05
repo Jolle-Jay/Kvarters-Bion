@@ -4,7 +4,6 @@ namespace WebApp;
 
 public static class Server
 {
-    public static WebApplication App;
     private static List<WebSocket> connectedSockets = new List<WebSocket>();
 
     public static void Start()
@@ -24,13 +23,10 @@ public static class Server
         Session.Start();
         vadDuVill.Start();
 
-        // listen on all available interfaces so that other machines can reach us
-        // during development you can also override this with ASPNETCORE_URLS env var
-        var runUrl = "http://0.0.0.0:" + Globals.port;
+        var runUrl = "http://localhost:" + Globals.port;
         Log("Server running on:", runUrl);
         Log("With these settings:", Globals);
 
-        // Kestrel will bind to the wildcard address and accept remote connections
         App.Run(runUrl);
     }
 
