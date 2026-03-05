@@ -1,12 +1,19 @@
+using System.Net.WebSockets;
+
 namespace WebApp;
 
 public static class Server
 {
+    public static WebApplication App;
+    private static List<WebSocket> connectedSockets = new List<WebSocket>();
+
     public static void Start()
     {
         var builder = WebApplication.CreateBuilder();
         App = builder.Build();
+
         Middleware();
+
         DebugLog.Start();
         Acl.Start();
         ErrorHandler.Start();
@@ -16,50 +23,58 @@ public static class Server
         RestApi.Start();
         Session.Start();
         vadDuVill.Start();
-        // Start the server on port 3001
+
         var runUrl = "http://localhost:" + Globals.port;
         Log("Server running on:", runUrl);
         Log("With these settings:", Globals);
+
         App.Run(runUrl);
     }
 
-    // Middleware that changes the server response header,
-    // initiates the debug logging for the request,
-    // keep sessions alive, stops the route if not acl approved
-    // and adds some info for debugging
     public static void Middleware()
     {
-        App.Use(async (context, next) =>
+        App.UseWebSockets();
+
+        App.Map("/ws", async context =>
         {
-            context.Response.Headers.Append("Server", (string)Globals.serverName);
-            DebugLog.Register(context);
-            Session.Touch(context);
-            if (!Acl.Allow(context))
+            if (!context.WebSockets.IsWebSocketRequest)
             {
-                // Acl says the route is not allowed
-                context.Response.StatusCode = 405;
-                var error = new { error = "Not allowed." };
-                DebugLog.Add(context, error);
-                await context.Response.WriteAsJsonAsync(error);
+                context.Response.StatusCode = 400;
+                return;
             }
-            else { await next(context); }
-            // Add some extra info for debugging
-            var res = context.Response;
-            var contentLength = res.ContentLength;
-            contentLength = contentLength == null ? 0 : contentLength;
-            var info = Obj(new
+
+            var socket = await context.WebSockets.AcceptWebSocketAsync();
+            Console.WriteLine("WebSocket connected!");
+            connectedSockets.Add(socket);
+
+            try
             {
-                statusCode = res.StatusCode,
-                contentType = res.ContentType,
-                contentLengthKB =
-                    Math.Round((double)contentLength / 10.24) / 100,
-                RESPONSE_DONE = Now
-            });
-            if (info.contentLengthKB == null || info.contentLengthKB == 0)
-            {
-                info.Delete("contentLengthKB");
+                var buffer = new byte[1024 * 4];
+                var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+
+                while (!result.CloseStatus.HasValue)
+                {
+                    var msg = new ArraySegment<byte>(buffer, 0, result.Count);
+
+                    foreach (var s in connectedSockets.ToList())
+                    {
+                        if (s.State == WebSocketState.Open)
+                            await s.SendAsync(msg, result.MessageType, result.EndOfMessage, CancellationToken.None);
+                    }
+
+                    result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                }
             }
-            DebugLog.Add(context, info);
+            catch (Exception ex)
+            {
+                Console.WriteLine("WebSocket error: " + ex.Message);
+            }
+            finally
+            {
+                connectedSockets.Remove(socket);
+                if (socket.State == WebSocketState.Open)
+                    await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+            }
         });
     }
 }

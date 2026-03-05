@@ -1,83 +1,39 @@
-import WebSocket, { WebSocketServer } from "ws";
-import { SALONG_LAYOUT } from "../pages/BookingPage";
-
-interface SeatUpdate {
-    seatId: number;
-    occupied: boolean;
-}
+import { useEffect, useState, useRef } from "react";
 
 interface ServerMessage {
     type: "init" | "update";
-    seats?: Record<number, boolean>;
-    seatId?: number;
+    seats?: Record<string, boolean>;
+    seatId?: string;
     occupied?: boolean;
 }
 
-interface Seat {
-    id: number;
-}
+export function useSeatWebSocket(url: string) {
+    const [seats, setSeats] = useState<Record<string, boolean>>({});
+    const wsRef = useRef<WebSocket | null>(null);
 
-export function webSocket(port: number) {
+    useEffect(() => {
+        const ws = new WebSocket(url);
+        wsRef.current = ws;
 
-    const wss = new WebSocketServer({ port });
-    const clients = new Set<WebSocket>();
-    const seats: Record<string, boolean> = {};
+        ws.onopen = () => console.log("WS connected");
+        ws.onclose = () => console.log("WS disconnected");
 
-    Object.values(SALONG_LAYOUT).forEach(salon => {
-        salon.seatsPerRow.forEach((seatsInRow, rowIndex) => {
-            for (let seat = 1; seat <= seatsInRow; seat++) {
-                const seatId = rowIndex * 100 + seat;
-                seats[seatId] = false;
-            }
-        });
-    });
+        ws.onmessage = (event) => {
+            const data: ServerMessage = JSON.parse(event.data);
 
-    // broadcast function
-    const broadcast = (message: ServerMessage) => {
-        const msg = JSON.stringify(message);
+            if (data.type === "init" && data.seats) setSeats(data.seats);
+            if (data.type === "update")
+                setSeats((prev) => ({ ...prev, [data.seatId!]: data.occupied! }));
+        };
 
-        clients.forEach(ws => {
-            if (ws.readyState === WebSocket.OPEN) {
-                ws.send(msg);
-            }
-        });
+        return () => ws.close();
+    }, [url]);
+
+    const sendUpdate = (seatId: string, occupied: boolean) => {
+        if (wsRef.current?.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({ seatId, occupied }));
+        }
     };
 
-    // client connecting
-    wss.on("connection", (ws) => {
-
-        clients.add(ws);
-
-        ws.send(JSON.stringify({ type: "init", seats }));
-
-        ws.on("message", (message) => {
-
-            const data: SeatUpdate = JSON.parse(message.toString());
-
-            seats[data.seatId] = data.occupied;
-
-            broadcast({
-                type: "update",
-                seatId: data.seatId,
-                occupied: data.occupied
-            });
-        });
-
-        ws.on("close", () => clients.delete(ws));
-    });
-
-    return {
-        updateSeat: (seatId: number, occupied: boolean) => {
-            seats[seatId] = occupied;
-
-            broadcast({
-                type: "update",
-                seatId,
-                occupied
-            });
-        },
-
-        getActiveClients: () =>
-            Array.from(clients).filter(c => c.readyState === WebSocket.OPEN)
-    };
+    return { seats, sendUpdate };
 }
