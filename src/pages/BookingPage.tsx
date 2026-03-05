@@ -551,3 +551,5 @@ BookingPage.route = {
   menuLabel: 'booking',
   index: 8,
 };
+
+export default BookingPage;
