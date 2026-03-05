@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
+import { Prev } from 'react-bootstrap/esm/PageItem';
 
 // pris per kategori för biljetter
 const PRICES = {
@@ -222,22 +223,17 @@ function BookingPage() {
     }
   }, [counts]);
 
-  // bestämmer vilket säte som blir valt
+  // Visar rekommenderade säten
   const selectSeat = (row: number, col: number) => {
     const seatId = `${row}-${col}`;
-    const totalTickets = getTotalTickets();
-
-    if (totalTickets === 0) {
+    if (getTotalTickets() === 0) {
       alert('Välj antal biljetter först.');
       return;
     }
-
     if (selectedSeats.includes(seatId)) {
       setSelectedSeats(prev => prev.filter(s => s !== seatId));
-    } else if (selectedSeats.length < totalTickets) {
-      setSelectedSeats(prev => [...prev, seatId]);
     } else {
-      alert('Du har redan valt max antal platser.');
+      setSelectedSeats(prev => [...prev.slice(1), seatId]);
     }
   };
 
