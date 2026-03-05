@@ -9,8 +9,9 @@ const PRICES = {
   child: 80
 };
 
+
 // Stora Salongen layout
-const SALONG_LAYOUT = {
+export const SALONG_LAYOUT = {
   'Stora Salongen': {
     name: "Stora Salongen",
     loungeId: 1,
@@ -109,6 +110,53 @@ function BookingPage() {
     return `${value.toFixed(2).replace('.', ',')} kr`;
   };
 
+  //websocket
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:8080");
+
+    ws.onopen = () => {
+      console.log("WebSocket connected");
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === "init") {
+        const booked = new Set<string>();
+
+        Object.entries(data.seats).forEach(([seatId, occupied]) => {
+          if (occupied) booked.add(seatId);
+        });
+
+        setBookedSeats(booked);
+      }
+
+      if (data.type === "update") {
+        const seatId = `${data.seatId}`;
+
+        setBookedSeats(prev => {
+          const updated = new Set(prev);
+
+          if (data.occupied) {
+            updated.add(seatId);
+          } else {
+            updated.delete(seatId);
+          }
+
+          return updated;
+        });
+      }
+    };
+
+    setSocket(ws);
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
 
 
   useEffect(() => {
@@ -148,7 +196,7 @@ function BookingPage() {
       fetchMovie();
     }
   }, [id]);
-  
+
   useEffect(() => {
     const fetchBookedSeats = async () => {
       if (!selectedViewing || !selectedViewing.id) {
@@ -228,16 +276,30 @@ function BookingPage() {
     const totalTickets = getTotalTickets();
 
     if (totalTickets === 0) {
-      alert('Välj antal biljetter först.');
+      alert("Välj antal biljetter först.");
       return;
     }
 
     if (selectedSeats.includes(seatId)) {
+
       setSelectedSeats(prev => prev.filter(s => s !== seatId));
+
+      socket?.send(JSON.stringify({
+        seatId,
+        occupied: false
+      }));
+
     } else if (selectedSeats.length < totalTickets) {
+
       setSelectedSeats(prev => [...prev, seatId]);
+
+      socket?.send(JSON.stringify({
+        seatId,
+        occupied: true
+      }));
+
     } else {
-      alert('Du har redan valt max antal platser.');
+      alert("Du har redan valt max antal platser.");
     }
   };
 
@@ -344,13 +406,13 @@ function BookingPage() {
         <h2>Boka biljetter för: <span id="filmTitle">{movie?.movies_raw.Title || movie?.Title}</span></h2>
         <p className="p-tagg">Välj antal biljetter och platser</p>
         <div className="ticket-wrapper">
-        <div className="ticket-layout">
-          
-          {/* Panel: Select number of tickets */}
-          <div className="ticket-panel">
-            <h3>Välj antal biljetter</h3>
+          <div className="ticket-layout">
 
-          
+            {/* Panel: Select number of tickets */}
+            <div className="ticket-panel">
+              <h3>Välj antal biljetter</h3>
+
+
 
               <div className="ticket-row">
                 <div className="ticket-label">
@@ -445,7 +507,7 @@ function BookingPage() {
 
           </div>
         </div>
-    </section>
+      </section>
 
       {/* Seat map */}
       <section className="cinema">
@@ -511,7 +573,7 @@ function BookingPage() {
               </div>
             );
           })}
-          </div>
+        </div>
         <button className="confirm-button" onClick={confirmBooking}>
           Bekräfta bokning
         </button>
