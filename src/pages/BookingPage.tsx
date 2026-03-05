@@ -114,7 +114,15 @@ function BookingPage() {
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080");
+    // bygg en adress utifrån den värd som sidan laddats från
+    const host = window.location.hostname; 
+    // porten där backend lyssnar, måste matcha Globals.port
+    const port = 8080;
+    // sätt ihop en WebSocket‑URL som pekar på samma host + port, och lägg till
+    // ws‑vägen eftersom servern mappar WebSocket‑anslutningen där
+    const wsUrl = `ws://${host}:${port}/ws`;
+    // öppna själva WebSocket‑anslutningen
+    const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
       console.log("WebSocket connected");
