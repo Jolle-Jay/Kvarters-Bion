@@ -262,7 +262,7 @@ const getBestSeats = (count: number): string[] => {
     }
   }, [counts]);
 
-  // bestämmer vilket säte som blir valt
+  // Välj eller byt ut plats, men tillåt inte avmarkering genom att klicka på redan vald plats
   const selectSeat = (row: number, col: number) => {
     const seatId = `${row}-${col}`;
     const totalTickets = getTotalTickets();
@@ -272,12 +272,13 @@ const getBestSeats = (count: number): string[] => {
       return;
     }
 
-    if (selectedSeats.includes(seatId)) {
-      setSelectedSeats(prev => prev.filter(s => s !== seatId));
-    } else if (selectedSeats.length < totalTickets) {
-      setSelectedSeats(prev => [...prev, seatId]);
-    } else {
-      alert('Du har redan valt max antal platser.');
+    if (!selectedSeats.includes(seatId)) {
+      if (selectedSeats.length < totalTickets) {
+        setSelectedSeats(prev => [...prev, seatId]);
+      } else {
+        // Byt ut det äldsta valda sätet mot det nya
+        setSelectedSeats(prev => [...prev.slice(1), seatId]);
+      }
     }
   };
 
