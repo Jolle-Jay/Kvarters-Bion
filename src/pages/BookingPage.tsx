@@ -32,7 +32,7 @@ interface TicketCounts {
 interface SeatProps {
   row: number;
   col: number;
-  type: 'available' | 'vip' | 'elder';
+  type: 'available';
   isSelected: boolean;
   isBooked: boolean;
   onClick: () => void;
@@ -450,14 +450,6 @@ function BookingPage() {
               <span className="legend-text">Lediga platser</span>
             </div>
             <div className="legend-item">
-              <span className="legend-color elder"></span>
-              <span className="legend-text">Äldre platser</span>
-            </div>
-            <div className="legend-item">
-              <span className="legend-color vip"></span>
-              <span className="legend-text">VIP platser</span>
-            </div>
-            <div className="legend-item">
               <span className="legend-color unavailable"></span>
               <span className="legend-text">Ej tillgängliga</span>
             </div>
@@ -479,13 +471,7 @@ function BookingPage() {
                   {Array.from({ length: numSeats }, (_, i) => {
                     const col = i + 1;
                     const seatId = `${row}-${col}`;
-                    let seatType: 'available' | 'vip' | 'elder' | 'unavailable' = 'available';
-
-                    if (row === 5 && col >= 4 && col <= 7) {
-                      seatType = 'vip';
-                    } else if (row === 3 && col >= 1 && col <= 3) {
-                      seatType = 'elder';
-                    }
+                    let seatType: 'available' | 'unavailable' = 'available';
 
                     return (
                       <Seat
