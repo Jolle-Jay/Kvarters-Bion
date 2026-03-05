@@ -486,13 +486,7 @@ function BookingPage() {
                   {Array.from({ length: numSeats }, (_, i) => {
                     const col = i + 1;
                     const seatId = `${row}-${col}`;
-                    let seatType: 'available' | 'vip' | 'elder' | 'unavailable' = 'available';
-
-                    if (row === 5 && col >= 4 && col <= 7) {
-                      seatType = 'vip';
-                    } else if (row === 3 && col >= 1 && col <= 3) {
-                      seatType = 'elder';
-                    }
+                    let seatType: 'available'| 'unavailable' = 'available';
 
                     return (
                       <Seat
