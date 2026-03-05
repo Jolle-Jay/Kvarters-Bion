@@ -237,6 +237,51 @@ function BookingPage() {
     }
   };
 
+// Funktionen tar emot count = hur många platser som ska väljas.
+// Returnerar en lista av seat‑ID (t.ex. "5-7").
+  const getBestSeats = (count: number): string[] => {
+    const layout = getCurrentSalongLayout();    // Hämtar aktuell salongs‑layout (antal rader och antal stolar per rad).
+    const totalRows = layout.seatsPerRow.length;    // Räknar hur många rader salongen har.
+    const middleRow = Math.ceil(totalRows / 2);     // Hittar mittenraden (den bästa raden att sitta på).
+    const candidates: string[] = [];     // Skapar en tom lista där alla potentiella bra platser ska läggas in.
+
+
+// rowOffset styr hur långt från mitten vi ska leta.
+// Först offset 0 = mittenraden.
+// Sedan offset 1 = en rad ovanför och en rad under.
+// Fortsätter tills alla rader är testade.
+    for (let rowOffset = 0; rowOffset < totalRows; rowOffset++) {
+      const rowsToCheck = rowOffset === 0   // Om offset = 0 = bara mittenraden.
+      ? [middleRow]      // Annars = en rad ovanför och en rad under mittenraden, så vi kollar båda samtidigt.
+      : [middleRow - rowOffset, middleRow + rowOffset].filter    // Filtrerar bort rader som inte finns (t.ex. rad 0 eller rad 11 i en salong med 10 rader).
+      (r => r >= 1 && r <= totalRows);
+
+      // Går igenom varje rad som ska kontrolleras.
+      for (const row of rowsToCheck) {
+        const numSeats = layout.seatsPerRow[row - 1];   // Hämtar antal stolar i den aktuella raden.
+        const middleCol = Math.ceil(numSeats / 2);      // Hittar mittenkolumnen i den raden (den bästa platsen i raden).
+
+        // colOffset styr hur långt från mitten i raden vi ska leta.
+        for (let colOffset = 0; colOffset < numSeats; colOffset++) {
+          const colsToCheck = colOffset === 0   // Om colOffset = 0 = bara mittenplatsen i raden.
+          ? [middleCol]
+          : [middleCol - colOffset, middleCol + colOffset].filter(c => c >= 1 && c <= numSeats);   // Annars = en plats till vänster och en plats till höger om mittenplatsen, så vi kollar båda samtidigt.
+
+          // Skapar ett seat‑ID i formatet "rad-kolumn".
+          for (const col of colsToCheck) {
+            const seatId = `${row}-${col}`;
+            if (!bookedSeats.has(seatId) && !candidates.includes(seatId)) {
+              candidates.push(seatId);   // Lägger till stolen om den inte är bokad eller den inte redan finns i listan.
+            }
+          }
+        }
+      }   // Om vi redan har hittat tillräckligt många platser, bryt ut ur loopen tidigt för att inte lägga till onödiga platser.
+      if (candidates.length >= count) break;
+    }   // Returnerar de bästa platserna upp till det antal som efterfrågats.
+    return candidates.slice(0, count);
+  }
+
+
   const confirmBooking = () => {
     // lägger in totala antalet biljetter vi har valt in i totaltickers
     const totalTickets = getTotalTickets();
