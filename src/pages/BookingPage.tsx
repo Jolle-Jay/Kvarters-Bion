@@ -197,6 +197,14 @@ function BookingPage() {
     };
 
     fetchBookedSeats();
+
+
+    const interval = setInterval(() => {
+      fetchBookedSeats();
+    }, 3000);
+
+    return () => clearInterval(interval);
+
   }, [selectedViewing]);
 
   // lägger antalet biljetter i totaltickets
