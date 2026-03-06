@@ -1,4 +1,5 @@
 namespace WebApp;
+
 public static class DebugLog
 {
     private static readonly Obj memory = new();
@@ -19,17 +20,18 @@ public static class DebugLog
     public static void Register(HttpContext context)
     {
         if (!Globals.debugOn) { return; }
-        // Mark the request/context with a unique id
         var id = Guid.NewGuid().ToString();
         context.Items["id"] = id;
-        // Add it to memory
-        memory[id] = new
+        lock (memory)
         {
-            time = DateTime.Now.ToString("yyyy-MM-dd HH\\:mm\\:ss"),
-            timestamp = Now,
-            timeTakenMs = 0,
-            route = context.Request.Method + " " + context.Request.Path.Value
-        };
+            memory[id] = new
+            {
+                time = DateTime.Now.ToString("yyyy-MM-dd HH\\:mm\\:ss"),
+                timestamp = Now,
+                timeTakenMs = 0,
+                route = context.Request.Method + " " + context.Request.Path.Value
+            };
+        }
     }
 
     // Allow other classes/middleware to add more info
@@ -45,32 +47,28 @@ public static class DebugLog
     // is flagged as done (or after 5000 ms so that memory always clears)
     public static async void Write()
     {
-        if (!Globals.debugOn) { return; }
-        while (true)
+        var keys = memory.GetKeys().ToArray();
+        foreach (var key in keys)
         {
-            memory.GetKeys().ForEach(key =>
+            var item = memory[key];
+            if (item == null) continue;
+            if (
+                item.RESPONSE_DONE != null ||
+                item.timestamp + 5000 < Now
+            )
             {
-                var item = memory[key];
-                if (
-                    item.RESPONSE_DONE != null ||
-                    item.timestamp + 5000 < Now
-                )
+                if (item.RESPONSE_DONE != null)
                 {
-                    if (item.RESPONSE_DONE != null)
-                    {
-                        item.timeTakenMs =
-                            item.RESPONSE_DONE - item.timestamp;
-                        item.Delete("RESPONSE_DONE");
-                    }
-                    else
-                    {
-                        item.Delete("timeTaken");
-                    }
-                    Log(item);
-                    memory.Delete(key);
+                    item.timeTakenMs = item.RESPONSE_DONE - item.timestamp;
+                    item.Delete("RESPONSE_DONE");
                 }
-            });
-            await Task.Delay(500);
+                else
+                {
+                    item.Delete("timeTaken");
+                }
+                Log(item);
+                memory.Delete(key);
+            }
         }
     }
 }
