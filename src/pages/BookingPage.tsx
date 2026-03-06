@@ -90,36 +90,36 @@ function BookingPage() {
   const [CurrentLounge, setCurrentLounge] = useState<any>(null);
 
 
-  // REKOMMENDERADE SÄTEN: Välj bästa platser automatiskt 
-  const getBestSeats = (count: number): string[] => {
-    const layout = getCurrentSalongLayout();
-    const totalRows = layout.seatsPerRow.length;
-    const middleRow = Math.ceil(totalRows / 2);
-    const candidates: string[] = [];
+// REKOMMENDERADE SÄTEN: Välj bästa platser automatiskt 
+const getBestSeats = (count: number): string[] => {
+  const layout = getCurrentSalongLayout();
+  const totalRows = layout.seatsPerRow.length;
+  const middleRow = Math.ceil(totalRows / 2);
+  const candidates: string[] = [];
 
-    for (let rowOffset = 0; rowOffset < totalRows; rowOffset++) {
-      const rowsToCheck = rowOffset === 0
-        ? [middleRow]
-        : [middleRow - rowOffset, middleRow + rowOffset].filter(r => r >= 1 && r <= totalRows);
-      for (const row of rowsToCheck) {
-        const numSeats = layout.seatsPerRow[row - 1];
-        const middleCol = Math.ceil(numSeats / 2);
-        for (let colOffset = 0; colOffset < numSeats; colOffset++) {
-          const colsToCheck = colOffset === 0
-            ? [middleCol]
-            : [middleCol - colOffset, middleCol + colOffset].filter(c => c >= 1 && c <= numSeats);
-          for (const col of colsToCheck) {
-            const seatId = `${row}-${col}`;
-            if (!bookedSeats.has(seatId) && !candidates.includes(seatId)) {
-              candidates.push(seatId);
-            }
+  for (let rowOffset = 0; rowOffset < totalRows; rowOffset++) {
+    const rowsToCheck = rowOffset === 0
+      ? [middleRow]
+      : [middleRow - rowOffset, middleRow + rowOffset].filter(r => r >= 1 && r <= totalRows);
+    for (const row of rowsToCheck) {
+      const numSeats = layout.seatsPerRow[row - 1];
+      const middleCol = Math.ceil(numSeats / 2);
+      for (let colOffset = 0; colOffset < numSeats; colOffset++) {
+        const colsToCheck = colOffset === 0
+          ? [middleCol]
+          : [middleCol - colOffset, middleCol + colOffset].filter(c => c >= 1 && c <= numSeats);
+        for (const col of colsToCheck) {
+          const seatId = `${row}-${col}`;
+          if (!bookedSeats.has(seatId) && !candidates.includes(seatId)) {
+            candidates.push(seatId);
           }
         }
       }
-      if (candidates.length >= count) break;
     }
-    return candidates.slice(0, count);
-  };
+    if (candidates.length >= count) break;
+  }
+  return candidates.slice(0, count);
+};
 
 
 
@@ -175,7 +175,7 @@ function BookingPage() {
     }
   }, [id]);
 
-
+  
   useEffect(() => {
     const fetchBookedSeats = async () => {
       if (!selectedViewing || !selectedViewing.id) {
@@ -227,7 +227,7 @@ function BookingPage() {
   }, [selectedViewing]);
 
 
-  // Uppdatera rekommenderade platser automatiskt när biljettantal eller bokade platser ändras
+// Uppdatera rekommenderade platser automatiskt när biljettantal eller bokade platser ändras
   useEffect(() => {
     const totalTickets = counts.adult + counts.senior + counts.child;
     if (totalTickets > 0) {
@@ -254,7 +254,13 @@ function BookingPage() {
     }));
   };
 
-
+  // om jag tar bort antal personer när jag har säten valda så försvinner valda säten med 
+  useEffect(() => {
+    const totalTickets = getTotalTickets();
+    if (selectedSeats.length > totalTickets) {
+      setSelectedSeats(prev => prev.slice(0, totalTickets));
+    }
+  }, [counts]);
 
   // Välj eller byt ut plats, men tillåt inte avmarkering genom att klicka på redan vald plats
   const selectSeat = (row: number, col: number) => {
@@ -379,13 +385,13 @@ function BookingPage() {
         <h2>Boka biljetter för: <span id="filmTitle">{movie?.movies_raw.Title || movie?.Title}</span></h2>
         <p className="p-tagg">Välj antal biljetter och platser</p>
         <div className="ticket-wrapper">
-          <div className="ticket-layout">
+        <div className="ticket-layout">
+          
+          {/* Panel: Select number of tickets */}
+          <div className="ticket-panel">
+            <h3>Välj antal biljetter</h3>
 
-            {/* Panel: Select number of tickets */}
-            <div className="ticket-panel">
-              <h3>Välj antal biljetter</h3>
-
-
+          
 
               <div className="ticket-row">
                 <div className="ticket-label">
@@ -480,7 +486,7 @@ function BookingPage() {
 
           </div>
         </div>
-      </section>
+    </section>
 
       {/* Seat map */}
       <section className="cinema">
@@ -532,7 +538,7 @@ function BookingPage() {
               </div>
             );
           })}
-        </div>
+          </div>
         <button className="confirm-button" onClick={confirmBooking}>
           Bekräfta bokning
         </button>
