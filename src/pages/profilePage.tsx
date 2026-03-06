@@ -202,7 +202,7 @@ function ProfilePage() {
                     </div>
                   </div>
                   {booking.status === 'Confirmed' && booking.start_time && new Date(booking.start_time) > new Date() && (
-                    <button onClick={() => handleCancelBooking(booking.BookingReference)}>
+                    <button className="cancel-btn" onClick={() => handleCancelBooking(booking.BookingReference)}>
                       Avboka
                     </button>
                   )}
