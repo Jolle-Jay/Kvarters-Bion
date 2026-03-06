@@ -550,7 +550,7 @@ const getBestSeats = (count: number): string[] => {
                 <div className="row-label">{row}</div>
                 <div className="seat-row-inner" style={{ gridTemplateColumns: `repeat(${numSeats}, minmax(0, 100px))` }}>
                   {Array.from({ length: numSeats }, (_, i) => {
-                    const col = i + 1;
+                    const col = numSeats -i;
                     const seatId = `${row}-${col}`;
                     let seatType: 'available' | 'unavailable' = 'available';
 
