@@ -170,7 +170,7 @@ function ProfilePage() {
                         {booking.start_time?.split('T')[1]}
                       </span>
                     </div>
-                    
+
                     {/* Visa platser som Rad: X Sittplats: Y */}
                     {(() => {
                       let row = '', seat = '';
@@ -184,9 +184,9 @@ function ProfilePage() {
                       return (
                         <>
                           <div className="booking-row"><span className="booking-label">Rad:</span>
-                          <span className="booking-value">{row}</span></div>
+                            <span className="booking-value">{row}</span></div>
                           <div className="booking-row"><span className="booking-label">Sittplats:</span>
-                          <span className="booking-value">{seat}</span></div>
+                            <span className="booking-value">{seat}</span></div>
                         </>
                       );
                     })()}
@@ -194,15 +194,15 @@ function ProfilePage() {
                       <span className="booking-label">Status:</span>
                       <span className="booking-value">
                         {booking.status === "Confirmed"
-                        ? "Bekräftad"
-                        : booking.status === "Cancelled"
-                        ? "Avbokad"
-                        : booking.status}
+                          ? "Bekräftad"
+                          : booking.status === "Cancelled"
+                            ? "Avbokad"
+                            : booking.status}
                       </span>
                     </div>
                   </div>
-                  {booking.status === 'Confirmed' && (
-                    <button className="cancel-btn" onClick={() => handleCancelBooking(booking.BookingReference)}>
+                  {booking.status === 'Confirmed' && booking.start_time && new Date(booking.start_time) > new Date() && (
+                    <button onClick={() => handleCancelBooking(booking.BookingReference)}>
                       Avboka
                     </button>
                   )}
