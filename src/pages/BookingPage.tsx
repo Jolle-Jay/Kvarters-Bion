@@ -207,6 +207,13 @@ function BookingPage() {
 
   }, [selectedViewing]);
 
+  //ifall någon har valt och hinner boka sätet jag väljer
+  useEffect(() => {
+  setSelectedSeats(prev =>
+    prev.filter(seat => !bookedSeats.has(seat))
+  );
+}, [bookedSeats]);
+
   // lägger antalet biljetter i totaltickets
   const getTotalTickets = (): number => {
     return counts.adult + counts.senior + counts.child;
