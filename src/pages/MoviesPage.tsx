@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { Movie } from "../interfaces/Movie";
 import { mapMovieArray } from "../interfaces/Movie";
 import "../css/MoviePage.css";
+import { mapToSwedishAge } from "../utils/ageLimit";
 
 export default function MoviePage() {
   const { id } = useParams(); // hämtar id från URL
@@ -59,16 +60,6 @@ export default function MoviePage() {
     return time;
   };
 
-// ...existing code...
-
-// ...existing code...
-
-// ...existing code...
-
-
-
-
-
   return (
     <section className="movie-detail">
 
@@ -96,7 +87,7 @@ export default function MoviePage() {
             <p><strong>Genre:</strong> {movie.Genre}</p>
             <p><strong>Längd:</strong> {movie.Runtime}</p>
             <p><strong>Årtal:</strong> {movie.Year}</p>
-            <p><strong>Åldersgräns:</strong> {movie.Rated}</p>
+            <p><strong>Åldersgräns:</strong> {mapToSwedishAge(movie.Rated)}</p>
           </div>
 
           <div className="movie-description">

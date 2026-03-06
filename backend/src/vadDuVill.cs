@@ -294,6 +294,24 @@ public static class vadDuVill
       return RestResult.Parse(context, viewings);
     });
 
+    App.MapGet("/api/viewing", (HttpContext context) =>
+      {
+        var viewingIdParam = context.Request.Query["viewingId"].ToString();
+        if (string.IsNullOrEmpty(viewingIdParam))
+        {
+          var allViewings = SQLQuery("SELECT * FROM viewings ORDER BY start_time");
+          return RestResult.Parse(context, allViewings);
+        }
+
+        int viewingId = int.Parse(viewingIdParam);
+        var viewing = SQLQuery(
+          "SELECT * FROM viewings WHERE id = @viewingId ORDER BY start_time",
+          new { viewingId }
+        );
+
+        return RestResult.Parse(context, viewing);
+      });
+
     App.MapGet("/api/bookingSeats/{viewingId}", (HttpContext context, string viewingId) =>
     {
       // --- API för att hämta bokade platser för en visning ---
