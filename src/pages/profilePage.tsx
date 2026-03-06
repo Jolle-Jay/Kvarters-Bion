@@ -1,35 +1,56 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../CSS/profile.css';
+import type { JSX } from 'react';
 
+
+// Typ för bokningsobjektet
 interface Booking {
-  BookingReference: string;
-  status: string;
-  email: string;
-  start_time: string;
-  film: string;
-  seats: string;
+  bookingReference?: string;
+  bookingId?: string;
+  film?: string;
+  movieTitle?: string;
+  viewingTime?: string;
+  start_time?: string;
+  seats?: string[] | string;
+  status?: string;
+  [key: string]: any; // tillåter extra fält
 }
 
 function ProfilePage() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // är någon inloggad?
+  const [isLoading, setIsLoading] = useState(true); //laddar vi data?
   const [userData, setUserData] = useState({
+    // Startvärden = Standardvärden som visas innan vi laddat riktiga värden från localStorage
+
     name: 'Användare',
     email: 'user@example.com',
   });
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isBookingsLoading, setIsBookingsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // activeDropdowns = Håller koll på vilka dropdowns som är öppna/stängda
+  // setActiveDropdowns = Funktion för att öppna/stänga dropdowns
   const [showBookings, setShowBookings] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const userName = localStorage.getItem('userName') || 'användare';
     const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+    // localStorage sparar ALLT som text
+
+
+    // Uppdatera state: Sätt inloggningsstatus till det vi hittade i localStorage
     setIsLoggedIn(loggedIn);
+    // Uppdatera state: Sätt användardata till det vi hittade i localStorage
+    // Skapar ett nytt objekt med name och email
     setUserData({ name: userName, email: userEmail });
+
+
+
     setIsLoading(false);
   }, []);
 
@@ -45,7 +66,7 @@ function ProfilePage() {
         setBookings(data);
         setIsBookingsLoading(false);
       })
-      .catch(() => {
+      .catch(err => {
         setError('Kunde inte hämta bokningar');
         setIsBookingsLoading(false);
       });
@@ -53,8 +74,13 @@ function ProfilePage() {
 
   const handleLogout = () => {
     localStorage.clear();
+    // Ta bort isLoggedIn, userName, userEmail, etc.
+
     navigate('/');
   };
+
+
+
 
   const handleCancelBooking = async (bookingReference: string | undefined) => {
     if (!bookingReference || !window.confirm('Vill du verkligen avboka denna bokning?')) return;
@@ -62,10 +88,10 @@ function ProfilePage() {
       const res = await fetch(`/api/bookings/${bookingReference}`, { method: 'DELETE' });
       const result = await res.json();
       if (result.success) {
-        setBookings(prev => prev.map(b =>
-          b.BookingReference === bookingReference
-            ? { ...b, status: 'Cancelled' }
-            : b
+        setBookings(prev => prev.map(b => // loopar igenom alla boknigar i listan
+          b.bookingReference === bookingReference //kollar om denna bokning är den vi avbokade
+            ? { ...b, status: 'Cancelled' }//om ja, kopiera allt från bokningen och byt status till cancelled
+            : b // om nej returnera bokning oförändrad
         ));
       } else {
         alert(result.error || 'Kunde inte avboka bokning');
@@ -106,7 +132,7 @@ function ProfilePage() {
 
       <section className="bookings-section">
         <div onClick={() => setShowBookings(prev => !prev)} style={{ cursor: 'pointer' }}>
-          <h3>Mina bokningar {showBookings ? '▲' : '▼'}</h3>
+          <h3 className="section-title">Mina bokningar</h3>
         </div>
         {showBookings && (
           isBookingsLoading ? (
@@ -147,22 +173,24 @@ function ProfilePage() {
 
                     {/* Visa platser som Rad: X Sittplats: Y */}
                     {(() => {
-                      let row = '', seat = '';
-                      if (typeof booking.seats === 'string' && booking.seats.includes('-')) {
-                        [row, seat] = booking.seats.split('-');
-                      } else if (Array.isArray(booking.seats) && booking.seats.length >= 2) {
-                        [row, seat] = booking.seats;
-                      } else if (typeof booking.seats === 'string') {
-                        row = booking.seats;
-                      }
-                      return (
+                      const seatsByRow: Record<string, string[]> = {};
+                      (booking.seats as string)?.split(',').forEach((seat: string) => {
+                        const [row, number] = seat.trim().split('-');
+                        if (!seatsByRow[row]) seatsByRow[row] = [];
+                        seatsByRow[row].push(number);
+                      });
+                      return Object.entries(seatsByRow).map(([row, numbers]) => (
                         <>
-                          <div className="booking-row"><span className="booking-label">Rad:</span>
-                            <span className="booking-value">{row}</span></div>
-                          <div className="booking-row"><span className="booking-label">Sittplats:</span>
-                            <span className="booking-value">{seat}</span></div>
+                          <div className="booking-row">
+                            <span className="booking-label">Rad:</span>
+                            <span className="booking-value">{row}</span>
+                          </div>
+                          <div className="booking-row">
+                            <span className="booking-label">Sittplats:</span>
+                            <span className="booking-value">{numbers.join(', ')}</span>
+                          </div>
                         </>
-                      );
+                      ));
                     })()}
                     <div className="booking-row">
                       <span className="booking-label">Status:</span>
@@ -176,7 +204,7 @@ function ProfilePage() {
                     </div>
                   </div>
                   {booking.status === 'Confirmed' && (
-                    <button onClick={() => handleCancelBooking(booking.BookingReference)}>
+                    <button className="cancel-btn" onClick={() => handleCancelBooking(booking.BookingReference)}>
                       Avboka
                     </button>
                   )}
