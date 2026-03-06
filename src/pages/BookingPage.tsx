@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
+import { useParams, useNavigate, useLocation } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 
 // pris per kategori för biljetter
@@ -68,6 +68,7 @@ const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
 function BookingPage() {
   const navigate = useNavigate(); // use navigate to can navigate to the bookingpage URL
   const { id } = useParams(); // routen letar efter vilket id som är efter /booking
+  const location = useLocation();
 
   // gör att vi kan ändra till vilken film vi vill ha, sätter den till null i början
   // any gör att den kan hålla vilken datatyp som helst för vi vet inte hur filmen datatyp ser ut ännu
@@ -161,8 +162,18 @@ const getBestSeats = (count: number): string[] => {
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
           setavailableViewigs(viewingsData);
-          setselectedViewing(viewingsData[0]);
-          setShowtime(viewingsData[0].start_time);
+
+          const searchParams = new URLSearchParams(location.search);
+          const showtimeId = searchParams.get('showtime');
+          
+          let initialViewing = viewingsData[0];
+          if (showtimeId) {
+            const found = viewingsData.find((v: any) => v.id == showtimeId);
+            if (found) initialViewing = found;
+          }
+
+          setselectedViewing(initialViewing);
+          setShowtime(initialViewing.start_time);
         }
       } catch (error) {
         console.error('Failed to fetch movie:', error);
@@ -389,6 +400,28 @@ const getBestSeats = (count: number): string[] => {
           
           {/* Panel: Select number of tickets */}
           <div className="ticket-panel">
+            <h3>Välj visning</h3>
+            <select 
+              className="form-select mb-3"
+              style={{ width: '100%', padding: '8px', marginBottom: '15px', borderRadius: '4px', border: '1px solid #ccc' }}
+              value={selectedViewing?.id || ''}
+              onChange={(e) => {
+                const vId = Number(e.target.value);
+                const v = availableViewigs.find(x => x.id === vId);
+                if (v) {
+                  setselectedViewing(v);
+                  setShowtime(v.start_time);
+                  setSelectedSeats([]); // Rensa valda platser vid byte av visning
+                }
+              }}
+            >
+              {availableViewigs.map(v => (
+                <option key={v.id} value={v.id}>
+                  {new Date(v.start_time).toLocaleString('sv-SE', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })} - {v.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}
+                </option>
+              ))}
+            </select>
+
             <h3>Välj antal biljetter</h3>
 
           
