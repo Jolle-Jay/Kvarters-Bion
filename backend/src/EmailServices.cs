@@ -25,6 +25,12 @@ static class EmailService
         string emailUsername = config.emailUsername;
         string emailPassword = config.emailPassword;
 
+        if (string.IsNullOrEmpty(emailUsername))
+        {
+            // Kasta ett mer specifikt undantag om avsändaradressen saknas i konfigurationen
+            throw new Exception("Avsändarens e-post ('emailUsername') är inte konfigurerad i db-config.json.");
+        }
+
         // Sätter ihop ett meddelande med rätt stuktur genom att använda MimeMessage, rekommenderas av MailKit att använda detta.  
         var message = new MimeMessage()
         {

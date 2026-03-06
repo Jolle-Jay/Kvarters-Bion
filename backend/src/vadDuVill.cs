@@ -213,41 +213,49 @@ public static class vadDuVill
       //skicka EMAIL EFTER response (async i bakgrunden)
       Task.Run(() =>
       {
-        try
+        // Kontrollera att e-postadressen finns innan vi försöker skicka
+        if (string.IsNullOrEmpty(email))
         {
-          EmailService.SendEmail(
-            email,
-            "Bokningsbekräftelse - Kvarterbion",
-            $@"<h1>Tack för din bokning!</h1>
-               <p>Hej {email}!</p>
-               <p>Din bokning till {filmTitle} är bekräftad!.</p>
-
-               <p>Bokingsinformation.</p>
-               <p><strong>Bokningsnummer:</strong> {bookingReference}</p>
-
-               <p><strong>Antal platser:</strong></p>
-               <ul>
-               {seatInfo}
-               </ul>
-
-                <h3>Biljetter:</h3>
-       <ul>
-         {(counts.adult > 0 ? $"<li>Vuxen: {counts.adult} x {priceMap["Standard"]} SEK = {counts.adult * priceMap["Standard"]} SEK</li>" : "")}
-         {(counts.senior > 0 ? $"<li>Pensionär: {counts.senior} x {priceMap["Senior"]} SEK = {counts.senior * priceMap["Senior"]} SEK</li>" : "")}
-         {(counts.child > 0 ? $"<li>Barn: {counts.child} x {priceMap["Child"]} SEK = {counts.child * priceMap["Child"]} SEK</li>" : "")}
-       </ul>
-
-       <p><strong>Totalpris: {totalPrice} SEK</strong></p>
-       <p>Vi ses på biografen!</p>"
-
-        );
-          System.Console.WriteLine("=== Bokningsmail skickat! ===");
+          System.Console.WriteLine("=== Mail misslyckades: E-postadress saknas för bokningen. Inget mail skickas. ===");
         }
-        catch (Exception ex)
-
+        else
         {
-          System.Console.WriteLine($"=== Mail misslyckades: {ex.Message} ===");
-
+            try
+            {
+              EmailService.SendEmail(
+                email,
+                "Bokningsbekräftelse - Kvarterbion",
+                $@"<h1>Tack för din bokning!</h1>
+                   <p>Hej!</p>
+                   <p>Din bokning till {filmTitle} är bekräftad.</p>
+    
+                   <h2>Bokningsinformation</h2>
+                   <p><strong>Bokningsnummer:</strong> {bookingReference}</p>
+    
+                   <h3>Platser:</h3>
+                   <ul>
+                   {seatInfo}
+                   </ul>
+    
+                    <h3>Biljetter:</h3>
+           <ul>
+             {(counts.adult > 0 ? $"<li>Vuxen: {counts.adult} x {priceMap["Standard"]} kr = {counts.adult * priceMap["Standard"]} kr</li>" : "")}
+             {(counts.senior > 0 ? $"<li>Pensionär: {counts.senior} x {priceMap["Senior"]} kr = {counts.senior * priceMap["Senior"]} kr</li>" : "")}
+             {(counts.child > 0 ? $"<li>Barn: {counts.child} x {priceMap["Child"]} kr = {counts.child * priceMap["Child"]} kr</li>" : "")}
+           </ul>
+    
+           <p><strong>Totalpris: {totalPrice} kr</strong></p>
+           <p>Vi ses på biografen!</p>"
+    
+            );
+              System.Console.WriteLine("=== Bokningsmail skickat! ===");
+            }
+            catch (Exception ex)
+    
+            {
+              System.Console.WriteLine($"=== Mail misslyckades: {ex.Message} ===");
+    
+            }
         }
 
       });
@@ -379,7 +387,7 @@ public static class vadDuVill
     App.MapGet("/api/bookings", (HttpContext context) =>
     {
       var email = context.Request.Query["where"].ToString().Replace("email=", "");
-      System.Console.WriteLine($"=== GET /api/bookings, email: '{email}' ==="); // ← lägg till
+      System.Console.WriteLine($"=== GET /api/bookings, email: '{email}' ==="); 
 
       if (string.IsNullOrEmpty(email))
       {
@@ -402,7 +410,7 @@ public static class vadDuVill
           GROUP BY b.id",
           new { email }, context
           );
-      System.Console.WriteLine($"=== Bookings count: {bookings.Length} ==="); // ← lägg till
+      System.Console.WriteLine($"=== Bookings count: {bookings.Length} ==="); 
       System.Console.WriteLine($"=== Bookings data: {JSON.Stringify(bookings)} ===");
 
       return RestResult.Parse(context, bookings);
