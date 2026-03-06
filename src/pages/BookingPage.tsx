@@ -92,6 +92,40 @@ function BookingPage() {
   const [selectedViewing, setselectedViewing] = useState<any>(null);
   const [CurrentLounge, setCurrentLounge] = useState<any>(null);
 
+
+  // REKOMMENDERADE SÄTEN: Välj bästa platser automatiskt 
+  const getBestSeats = (count: number): string[] => {
+    const layout = getCurrentSalongLayout();
+    const totalRows = layout.seatsPerRow.length;
+    const middleRow = Math.ceil(totalRows / 2);
+    const candidates: string[] = [];
+
+    for (let rowOffset = 0; rowOffset < totalRows; rowOffset++) {
+      const rowsToCheck = rowOffset === 0
+        ? [middleRow]
+        : [middleRow - rowOffset, middleRow + rowOffset].filter(r => r >= 1 && r <= totalRows);
+      for (const row of rowsToCheck) {
+        const numSeats = layout.seatsPerRow[row - 1];
+        const middleCol = Math.ceil(numSeats / 2);
+        for (let colOffset = 0; colOffset < numSeats; colOffset++) {
+          const colsToCheck = colOffset === 0
+            ? [middleCol]
+            : [middleCol - colOffset, middleCol + colOffset].filter(c => c >= 1 && c <= numSeats);
+          for (const col of colsToCheck) {
+            const seatId = `${row}-${col}`;
+            if (!bookedSeats.has(seatId) && !candidates.includes(seatId)) {
+              candidates.push(seatId);
+            }
+          }
+        }
+      }
+      if (candidates.length >= count) break;
+    }
+    return candidates.slice(0, count);
+  };
+
+
+
   const getCurrentSalongLayout = () => {
     if (!selectedViewing) {
       return SALONG_LAYOUT['Stora Salongen']; // Default
@@ -199,6 +233,19 @@ function BookingPage() {
     fetchBookedSeats();
   }, [selectedViewing]);
 
+
+  // Uppdatera rekommenderade platser automatiskt när biljettantal eller bokade platser ändras
+  useEffect(() => {
+    const totalTickets = counts.adult + counts.senior + counts.child;
+    if (totalTickets > 0) {
+      setSelectedSeats(getBestSeats(totalTickets));
+    } else {
+      setSelectedSeats([]);
+    }
+  }, [counts, bookedSeats]);
+
+
+
   // lägger antalet biljetter i totaltickets
   const getTotalTickets = (): number => {
     return counts.adult + counts.senior + counts.child;
@@ -215,13 +262,7 @@ function BookingPage() {
     });
   };
 
-  // om jag tar bort antal personer när jag har säten valda så försvinner valda säten med 
-  useEffect(() => {
-    const totalTickets = getTotalTickets();
-    if (selectedSeats.length > totalTickets) {
-      setSelectedSeats(prev => prev.slice(0, totalTickets));
-    }
-  }, [counts]);
+
 
   // bestämmer vilket säte som blir valt
   const selectSeat = (row: number, col: number) => {
@@ -242,38 +283,6 @@ function BookingPage() {
     }
   };
 
-  const getBestSeats = (count: number): string[] => {
-    const layout = getCurrentSalongLayout();
-    const totalRows = layout.seatsPerRow.length;
-    const middleRow = Math.ceil(totalRows / 2);
-    const candidates: string[] = [];
-
-    for (let rowOffset = 0; rowOffset < totalRows; rowOffset++) {
-      const rowsToCheck = rowOffset === 0
-        ? [middleRow]
-        : [middleRow - rowOffset, middleRow + rowOffset].filter(r => r >= 1 && r <= totalRows);
-
-      for (const row of rowsToCheck) {
-        const numSeats = layout.seatsPerRow[row - 1];
-        const middleCol = Math.ceil(numSeats / 2);
-
-        for (let colOffSet = 0; colOffSet < numSeats; colOffSet++) {
-          const colsToCheck = colOffSet === 0
-            ? [middleCol]
-            : [middleCol - colOffSet, middleCol + colOffSet].filter(c => c >= 1 && c <= numSeats);
-
-          for (const col of colsToCheck) {
-            const seatId = `${row}-${col}`;
-            if (!bookedSeats.has(seatId) && !candidates.includes(seatId)) {
-              candidates.push(seatId);
-            }
-          }
-        }
-      }
-      if (candidates.length >= count) break;
-    }
-    return candidates.slice(0, count);
-  };
 
   const confirmBooking = () => {
     // lägger in totala antalet biljetter vi har valt in i totaltickers
