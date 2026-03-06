@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 
@@ -89,9 +89,7 @@ function BookingPage() {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   //  set som inehåller stärnger new set () = en Set datastruktur, liknar array fast med egna värden.
   const [bookedSeats, setBookedSeats] = useState<Set<string>>(new Set());
-  const [availableViewigs, setavailableViewigs] = useState<any[]>([]);
   const [selectedViewing, setselectedViewing] = useState<any>(null);
-  const [CurrentLounge, setCurrentLounge] = useState<any>(null);
 
   const getCurrentSalongLayout = () => {
     if (!selectedViewing) {
@@ -115,13 +113,11 @@ function BookingPage() {
 
   useEffect(() => {
     // bygg en adress utifrån den värd som sidan laddats från
-    const host = window.location.hostname; 
-    // porten där backend lyssnar, måste matcha Globals.port
-    const port = 8080;
-    // sätt ihop en WebSocket‑URL som pekar på samma host + port, och lägg till
-    // ws‑vägen eftersom servern mappar WebSocket‑anslutningen där
-    const wsUrl = `ws://${host}:${port}/ws`;
-    // öppna själva WebSocket‑anslutningen
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = window.location.host; // ex: localhost:5173 eller 192.168.1.10:5173
+    // Anslut till samma host/port som sidan laddades från.
+    // Vite's proxy kommer att skicka vidare anropet till backend.
+    const wsUrl = `${protocol}//${host}/ws`;
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
@@ -186,7 +182,6 @@ function BookingPage() {
         // data vi har fått från fetchen om den är mer än 0
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
-          setavailableViewigs(viewingsData[0]);
           setselectedViewing(viewingsData[0]);
           setShowtime(viewingsData[0].start_time);
         }
@@ -212,8 +207,6 @@ function BookingPage() {
       }
 
       console.log('Hämtar bokade platser för viewing:', selectedViewing.id);
-
-      setCurrentLounge(selectedViewing.lounge);
 
       try {
         const bookedResponse = await fetch(`/api/bookingSeats/${selectedViewing.id}`);

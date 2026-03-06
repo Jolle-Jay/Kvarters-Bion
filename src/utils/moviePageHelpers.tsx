@@ -1,4 +1,4 @@
-import type movie from '../interfaces/Movie.ts';
+import type { Movie as movie } from '../interfaces/Movie.ts';
 
 export interface SortOption {
   Genre: string;

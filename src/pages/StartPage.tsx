@@ -1,4 +1,4 @@
-import type { Movie } from '../interfaces/Movie';
+import type { Movie as movie } from '../interfaces/Movie.ts';
 import { mapMovieArray } from '../interfaces/Movie';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -8,13 +8,8 @@ import { mapToSwedishAge } from '../utils/ageLimit';
 
 export default function StartPage() {
 
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0'); // månader börjar på 0
-  const dd = String(today.getDate()).padStart(2, '0');
-
   const [selectedDate, setSelectedDate] = useState('');
-  const [movies, setMovies] = useState<Movie[] | null>(null);
+  const [movies, setMovies] = useState<movie[] | null>(null);
   const [selectedGenre, setSelectedGenre] = useState<string>('alla');
   const [selectedAge, setSelectedAge] = useState<string>('alla');
   const [viewings, setViewings] = useState<{ movie: number; start_time: string; }[] | null>(null);

@@ -24,7 +24,6 @@ function ConfirmationPage() {
   // gör att bookingdata är generic bookingdata eller null, börjas med att vara null
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [guestEmail, setGuestEmail] = useState('');
   const [showGuestForm, setShowGuestForm] = useState(false);
 
@@ -49,7 +48,6 @@ function ConfirmationPage() {
     }
 
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
 
     //konverterar JSON text till JS objekt och sparar resultet i variabeln data
     const data: BookingData = JSON.parse(storedData);
@@ -108,7 +106,7 @@ function ConfirmationPage() {
     // await väntar på svar från backend om det är 200 eller tex 500 error
     // 500 kan tex bero på att film inte hittades i databas eller annat
     //gör om body till JSON format med all data 
-    const response = await fetch('/api/customBooking', {
+    await fetch('/api/customBooking', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -122,7 +120,7 @@ function ConfirmationPage() {
         lounges: data.lounges
       })
     });
-
+    
     //användes för debugging
     console.log('Bokning skapad:', {
       bookingId: id,
@@ -212,7 +210,7 @@ function ConfirmationPage() {
 
 
 
-      {bookingData.seats.map((seat, index) => {
+      {bookingData.seats.map((seat) => {
         const [row, col] = seat.split('-');
         return (
           <div key={seat} className="ticket">

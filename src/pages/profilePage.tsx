@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../CSS/Profile.css';
 import '../CSS/Login.css';
 import type { Booking } from '../interfaces/History';
-import type { JSX } from 'react';
 
 
 

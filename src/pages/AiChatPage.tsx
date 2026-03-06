@@ -34,7 +34,6 @@ export default function AiChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [lounges, setLounges] = useState<Lounge[]>([]);
   const [viewings, setViewings] = useState<Viewing[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -64,7 +63,6 @@ export default function AiChatPage() {
         }, {});
 
         setMovies(mapMovieArray(moviesData));
-        setLounges(loungesData);
         setViewings(viewingsData.map((v: Viewing) => ({
           ...v,
           loungeName: loungeMap[v.lounge] || 'Okänd salong'

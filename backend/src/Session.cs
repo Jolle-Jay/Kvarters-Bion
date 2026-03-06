@@ -30,7 +30,7 @@ public static partial class Session
                 "INSERT INTO sessions(id, data) VALUES(@id, @data)",
                 new { id = cookieValue, data = "{}" }
             );
-            session = Obj(new { id = cookieValue, data = Obj() });
+            session = Obj(new { id = cookieValue, data = "{}" });
         }
 
         // Cache the session in context.Items

@@ -1,16 +1,15 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 // ...existing code...
-import type { Movie } from "../interfaces/Movie";
+import type { Movie as movie } from '../interfaces/Movie.ts';
 import { mapMovieArray } from "../interfaces/Movie";
 import "../css/MoviePage.css";
 import { mapToSwedishAge } from "../utils/ageLimit";
 
 export default function MoviePage() {
   const { id } = useParams(); // hämtar id från URL
-  const [movie, setMovie] = useState<Movie | null>(null);
+  const [movie, setMovie] = useState<movie | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [openDates, setOpenDates] = useState<Set<string>>(new Set());
   const [viewings, setViewings] = useState<any[]>([]);
 
   useEffect(() => {
