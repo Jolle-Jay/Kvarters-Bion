@@ -203,7 +203,7 @@ function BookingPage() {
   const getTotalTickets = (): number => {
     return counts.adult + counts.senior + counts.child;
   };
-  dasfd;
+
   // funktionen tar emot vilken biljetttyp
   const updateCount = (type: keyof TicketCounts, delta: number) => {
     //setcounts uppdaterar värdet, prev är det tidigare värdet
@@ -226,19 +226,14 @@ function BookingPage() {
   // bestämmer vilket säte som blir valt
   const selectSeat = (row: number, col: number) => {
     const seatId = `${row}-${col}`;
-    const totalTickets = getTotalTickets();
-
-    if (totalTickets === 0) {
+    if (getTotalTickets() === 0) {
       alert('Välj antal biljetter först.');
       return;
     }
-
     if (selectedSeats.includes(seatId)) {
       setSelectedSeats(prev => prev.filter(s => s !== seatId));
-    } else if (selectedSeats.length < totalTickets) {
-      setSelectedSeats(prev => [...prev, seatId]);
     } else {
-      alert('Du har redan valt max antal platser.');
+      setSelectedSeats(prev => [...prev.slice(1), seatId]);
     }
   };
 
