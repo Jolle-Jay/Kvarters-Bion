@@ -91,12 +91,12 @@ public static class RestApi
         // Get users booking history with movie details
         App.MapGet("/api/bookings/user", (HttpContext context) =>
         {
-        var user = context.Request.Query["email"].ToString().Trim();
+            var user = context.Request.Query["email"].ToString().Trim();
 
-        if (string.IsNullOrEmpty(user))
-        {
-            return RestResult.Parse(context, new { error = "No email provided" });
-        }
+            if (string.IsNullOrEmpty(user))
+            {
+                return RestResult.Parse(context, new { error = "No email provided" });
+            }
 
             var userEmail = (string)user;
 

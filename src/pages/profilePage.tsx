@@ -63,7 +63,12 @@ function ProfilePage() {
         return res.json();
       })
       .then(data => {
-        setBookings(data);
+        const sortedBookings = data.sort(
+          (a: Booking, b: Booking) =>
+            new Date(b.start_time ?? '').getTime() - new Date(a.start_time ?? '').getTime()
+        );
+
+        setBookings(sortedBookings);
         setIsBookingsLoading(false);
       })
       .catch(err => {
@@ -146,8 +151,8 @@ function ProfilePage() {
         >
           <div className="bookings-toggle-row">
           <h3 className="section-title">Mina bokningar</h3>
-          
-           <svg
+
+          <svg
             className={`toggle-icon ${showBookings ? "open" : ""}`}
             viewBox="0 0 24 24"
             fill="none"
@@ -169,71 +174,73 @@ function ProfilePage() {
             <p>Du har inga bokningar.</p>
           ) : (
             <ul className="bookings-list">
-              {bookings.map((booking) => (
-                <li key={booking.BookingReference} className={`booking-item${booking.status === 'Cancelled' ? ' cancelled' : ''}${booking.status === 'Confirmed' ? ' confirmed' : ''}`}>
-                  <div>
-                    <div className="booking-row">
-                      <span className="booking-label">Bokningsnummer:</span>
-                      <span className="booking-number">
-                        {booking.BookingReference}
-                      </span>
-                    </div>
-                    <div className="booking-row">
-                      <span className="booking-label">Film:</span>
-                      <span className="booking-value">
-                        {booking.film}
-                      </span>
-                    </div>
-                    <div className="booking-row">
-                      <span className="booking-label">Datum:</span>
-                      <span className="booking-value">
-                        {booking.start_time?.split('T')[0]}
-                      </span>
-                    </div>
-                    <div className="booking-row">
-                      <span className="booking-label">Tid:</span>
-                      <span className="booking-value">
-                        {booking.start_time?.split('T')[1]}
-                      </span>
-                    </div>
+              {[...bookings]
+                .sort((a, b) => new Date(b.start_time ?? '').getTime() - new Date(a.start_time ?? '').getTime())
+                .map((booking) => (
+                  <li key={booking.BookingReference} className={`booking-item${booking.status === 'Cancelled' ? ' cancelled' : ''}${booking.status === 'Confirmed' ? ' confirmed' : ''}`}>
+                    <div>
+                      <div className="booking-row">
+                        <span className="booking-label">Bokningsnummer:</span>
+                        <span className="booking-number">
+                          {booking.BookingReference}
+                        </span>
+                      </div>
+                      <div className="booking-row">
+                        <span className="booking-label">Film:</span>
+                        <span className="booking-value">
+                          {booking.film}
+                        </span>
+                      </div>
+                      <div className="booking-row">
+                        <span className="booking-label">Datum:</span>
+                        <span className="booking-value">
+                          {booking.start_time?.split('T')[0]}
+                        </span>
+                      </div>
+                      <div className="booking-row">
+                        <span className="booking-label">Tid:</span>
+                        <span className="booking-value">
+                          {booking.start_time?.split('T')[1]}
+                        </span>
+                      </div>
 
-                    {/* Visa platser som Rad: X Sittplats: Y */}
-                    {(() => {
-                      let row = '', seat = '';
-                      if (typeof booking.seats === 'string' && booking.seats.includes('-')) {
-                        [row, seat] = booking.seats.split('-');
-                      } else if (Array.isArray(booking.seats) && booking.seats.length >= 2) {
-                        [row, seat] = booking.seats;
-                      } else if (typeof booking.seats === 'string') {
-                        row = booking.seats;
-                      }
-                      return (
-                        <>
-                          <div className="booking-row"><span className="booking-label">Rad:</span>
-                            <span className="booking-value">{row}</span></div>
-                          <div className="booking-row"><span className="booking-label">Sittplats:</span>
-                            <span className="booking-value">{seat}</span></div>
-                        </>
-                      );
-                    })()}
-                    <div className="booking-row">
-                      <span className="booking-label">Status:</span>
-                      <span className="booking-value">
-                        {booking.status === "Confirmed"
-                          ? "Bekräftad"
-                          : booking.status === "Cancelled"
-                            ? "Avbokad"
-                            : booking.status}
-                      </span>
+                      {/* Visa platser som Rad: X Sittplats: Y */}
+                      {(() => {
+                        let row = '', seat = '';
+                        if (typeof booking.seats === 'string' && booking.seats.includes('-')) {
+                          [row, seat] = booking.seats.split('-');
+                        } else if (Array.isArray(booking.seats) && booking.seats.length >= 2) {
+                          [row, seat] = booking.seats;
+                        } else if (typeof booking.seats === 'string') {
+                          row = booking.seats;
+                        }
+                        return (
+                          <>
+                            <div className="booking-row"><span className="booking-label">Rad:</span>
+                              <span className="booking-value">{row}</span></div>
+                            <div className="booking-row"><span className="booking-label">Sittplats:</span>
+                              <span className="booking-value">{seat}</span></div>
+                          </>
+                        );
+                      })()}
+                      <div className="booking-row">
+                        <span className="booking-label">Status:</span>
+                        <span className="booking-value">
+                          {booking.status === "Confirmed"
+                            ? "Bekräftad"
+                            : booking.status === "Cancelled"
+                              ? "Avbokad"
+                              : booking.status}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  {booking.status === 'Confirmed' && booking.start_time && new Date(booking.start_time) > new Date() && (
-                    <button className="cancel-btn" onClick={() => handleCancelBooking(booking.BookingReference)}>
-                      Avboka
-                    </button>
-                  )}
-                </li>
-              ))}
+                    {booking.status === 'Confirmed' && booking.start_time && new Date(booking.start_time) > new Date() && (
+                      <button className="cancel-btn" onClick={() => handleCancelBooking(booking.BookingReference)}>
+                        Avboka
+                      </button>
+                    )}
+                  </li>
+                ))}
             </ul>
           )
         )}
