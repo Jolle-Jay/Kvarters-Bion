@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
+import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 
 // pris per kategori för biljetter
@@ -32,7 +32,7 @@ interface TicketCounts {
 interface SeatProps {
   row: number;
   col: number;
-  type: 'available' | 'vip' | 'elder';
+  type: 'available';
   isSelected: boolean;
   isBooked: boolean;
   onClick: () => void;
@@ -74,9 +74,6 @@ function BookingPage() {
   const [movie, setMovie] = useState<any>(null);
   // gör att våran showtime är viewing
   const [showtime, setShowtime] = useState('viewing');
-
-  const [searchParams] = useSearchParams();
-  const viewingId = searchParams.get("showtime");
 
   // hämtar definitionen ticket counts ovanför och ger dem alla värdet 0 till att börja med 
   const [counts, setCounts] = useState<TicketCounts>({
@@ -136,7 +133,6 @@ function BookingPage() {
       : SALONG_LAYOUT['Lilla Salongen'];
   };
 
-
   // tar emot ett nummer, returnerar en sträng
   // tofixed 2 lägger till 2 decimaler och gör om . till ,
   const formatPrice = (value: number): string => {
@@ -156,7 +152,7 @@ function BookingPage() {
         setMovie(data);
 
         // samma process som ovan
-        const viewingREsponse = await fetch(`/api/viewing?viewingId=${viewingId}`);
+        const viewingREsponse = await fetch(`/api/viewings?movieId=${id}`);
         const viewingsData = await viewingREsponse.json();
 
         console.log("Visnings Tider: ", viewingsData);
@@ -164,14 +160,10 @@ function BookingPage() {
         // data vi har fått från fetchen om den är mer än 0
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
-          setavailableViewigs(viewingsData[0]);
+          setavailableViewigs(viewingsData);
           setselectedViewing(viewingsData[0]);
           setShowtime(viewingsData[0].start_time);
         }
-
-        console.log("Selected Viewing: ", viewingsData[0].id);
-        console.log("Selected ShowTime: ", viewingsData[0].start_time);
-
       } catch (error) {
         console.error('Failed to fetch movie:', error);
         alert('Kunde inte ladda filmen');
@@ -182,6 +174,7 @@ function BookingPage() {
       fetchMovie();
     }
   }, [id]);
+
 
   useEffect(() => {
     const fetchBookedSeats = async () => {
@@ -254,17 +247,16 @@ function BookingPage() {
   // funktionen tar emot vilken biljetttyp
   const updateCount = (type: keyof TicketCounts, delta: number) => {
     //setcounts uppdaterar värdet, prev är det tidigare värdet
-    setCounts(prev => {
-      const newCounts = { ...prev, [type]: Math.max(0, prev[type] + delta) };
-      const total = newCounts.adult + newCounts.senior + newCounts.child;
-      setSelectedSeats(getBestSeats(total));
-      return newCounts;
-    });
+    setCounts(prev => ({
+      ...prev,
+      [type]: Math.max(0, prev[type] + delta)
+      // uppdaterar endast valda värdet type = nyckeln , mathmax ser till att den aldrig går under 0
+    }));
   };
 
 
 
-  // bestämmer vilket säte som blir valt
+  // Välj eller byt ut plats, men tillåt inte avmarkering genom att klicka på redan vald plats
   const selectSeat = (row: number, col: number) => {
     const seatId = `${row}-${col}`;
     const totalTickets = getTotalTickets();
@@ -274,15 +266,15 @@ function BookingPage() {
       return;
     }
 
-    if (selectedSeats.includes(seatId)) {
-      setSelectedSeats(prev => prev.filter(s => s !== seatId));
-    } else if (selectedSeats.length < totalTickets) {
-      setSelectedSeats(prev => [...prev, seatId]);
-    } else {
-      alert('Du har redan valt max antal platser.');
+    if (!selectedSeats.includes(seatId)) {
+      if (selectedSeats.length < totalTickets) {
+        setSelectedSeats(prev => [...prev, seatId]);
+      } else {
+        // Byt ut det äldsta valda sätet mot det nya
+        setSelectedSeats(prev => [...prev.slice(1), seatId]);
+      }
     }
   };
-
 
   const confirmBooking = () => {
     // lägger in totala antalet biljetter vi har valt in i totaltickers
@@ -337,7 +329,35 @@ function BookingPage() {
     sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
     navigate('/confirm');
   };
+  // const confirmBooking = () => {
+  //   const totalTickets = getTotalTickets();
+  //   if (totalTickets === 0) {
+  //     alert('Välj antal biljetter först.');
+  //     return;
+  //   }
+  //   if (selectedSeats.length !== totalTickets) {
+  //     alert(`Välj ${totalTickets} platser innan du bekräftar.`);
+  //     return;
+  //   }
 
+  //   const totalPrice = (counts.adult * PRICES.adult) +
+  //     (counts.senior * PRICES.senior) +
+  //     (counts.child * PRICES.child);
+
+  //   const bookingData = {
+  //     film: movie?.Title || 'okänd film',
+  //     viewing: showtime,
+  //     seats: selectedSeats,
+  //     counts,
+  //     totalPrice,
+  //     lounges: SALONG_LAYOUT.name
+  //   };
+  //   //sparar användarens data av bokningen
+  //   sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
+
+  //   navigate('/confirm');
+
+  // }; 
 
   if (!movie) {
     return (
@@ -471,14 +491,6 @@ function BookingPage() {
               <span className="legend-color available"></span>
               <span className="legend-text">Lediga platser</span>
             </div>
-            {/* <div className="legend-item">
-              <span className="legend-color elder"></span>
-              <span className="legend-text">Äldre platser</span>
-            </div>
-            <div className="legend-item">
-              <span className="legend-color vip"></span>
-              <span className="legend-text">VIP platser</span>
-            </div> */}
             <div className="legend-item">
               <span className="legend-color unavailable"></span>
               <span className="legend-text">Ej tillgängliga</span>
@@ -499,7 +511,7 @@ function BookingPage() {
                 <div className="row-label">{row}</div>
                 <div className="seat-row-inner" style={{ gridTemplateColumns: `repeat(${numSeats}, minmax(0, 100px))` }}>
                   {Array.from({ length: numSeats }, (_, i) => {
-                    const col = numSeats - 1;
+                    const col = i + 1;
                     const seatId = `${row}-${col}`;
                     let seatType: 'available' | 'unavailable' = 'available';
 
