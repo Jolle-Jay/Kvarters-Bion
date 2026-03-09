@@ -144,6 +144,7 @@ function ProfilePage() {
         <div onClick={() => setShowBookings(prev => !prev)}
           className="bookings-toggle-row"
         >
+          <div className="bookings-toggle-row">
           <h3 className="section-title">Mina bokningar</h3>
           
            <svg
@@ -157,6 +158,7 @@ function ProfilePage() {
             >
               <path d="M6 9l6 6 6-6" />
             </svg>
+            </div>
         </div>
         {showBookings && (
           isBookingsLoading ? (
@@ -172,7 +174,7 @@ function ProfilePage() {
                   <div>
                     <div className="booking-row">
                       <span className="booking-label">Bokningsnummer:</span>
-                      <span className="booking-value">
+                      <span className="booking-number">
                         {booking.BookingReference}
                       </span>
                     </div>

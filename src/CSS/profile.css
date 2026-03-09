@@ -181,11 +181,15 @@ mobilvyn */
   font-weight: bold;
 }
 
+.booking-number {
+  margin-left: 12px;
+}
+
 .booking-value {
   color: #fff;
   text-align: left;
   flex: 1;
-  margin-left: 12px;
+  margin-left: 43px;
 }
 
 .cancel-btn {
