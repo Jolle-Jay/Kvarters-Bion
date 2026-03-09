@@ -4,7 +4,6 @@ import { createElement } from 'react';
 import StartPage from './pages/StartPage.tsx';
 import AiChatPage from './pages/AiChatPage.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
-import MovieDetailsPage from './pages/MovieDetailsPage.tsx';
 import MoviesPage from './pages/MoviesPage.tsx';
 import Bistro from './pages/Bistro.tsx';
 import LoginPage from './pages/loginPage.tsx';
@@ -28,7 +27,6 @@ export default [
   StartPage,
   AiChatPage,
   NotFoundPage,
-  MovieDetailsPage,
   MoviesPage,
   LillaSalongen,
   StoraSalongen,

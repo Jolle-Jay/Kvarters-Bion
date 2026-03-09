@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // får film ID och URL från bokingen
+import { useParams, useNavigate, useLocation } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../CSS/booking-styles.css';
 
 // pris per kategori för biljetter
@@ -68,6 +68,7 @@ const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
 function BookingPage() {
   const navigate = useNavigate(); // use navigate to can navigate to the bookingpage URL
   const { id } = useParams(); // routen letar efter vilket id som är efter /booking
+  const location = useLocation();
 
   // gör att vi kan ändra till vilken film vi vill ha, sätter den till null i början
   // any gör att den kan hålla vilken datatyp som helst för vi vet inte hur filmen datatyp ser ut ännu
@@ -90,36 +91,36 @@ function BookingPage() {
   const [CurrentLounge, setCurrentLounge] = useState<any>(null);
 
 
-  // REKOMMENDERADE SÄTEN: Välj bästa platser automatiskt 
-  const getBestSeats = (count: number): string[] => {
-    const layout = getCurrentSalongLayout();
-    const totalRows = layout.seatsPerRow.length;
-    const middleRow = Math.ceil(totalRows / 2);
-    const candidates: string[] = [];
+// REKOMMENDERADE SÄTEN: Välj bästa platser automatiskt 
+const getBestSeats = (count: number): string[] => {
+  const layout = getCurrentSalongLayout();
+  const totalRows = layout.seatsPerRow.length;
+  const middleRow = Math.ceil(totalRows / 2);
+  const candidates: string[] = [];
 
-    for (let rowOffset = 0; rowOffset < totalRows; rowOffset++) {
-      const rowsToCheck = rowOffset === 0
-        ? [middleRow]
-        : [middleRow - rowOffset, middleRow + rowOffset].filter(r => r >= 1 && r <= totalRows);
-      for (const row of rowsToCheck) {
-        const numSeats = layout.seatsPerRow[row - 1];
-        const middleCol = Math.ceil(numSeats / 2);
-        for (let colOffset = 0; colOffset < numSeats; colOffset++) {
-          const colsToCheck = colOffset === 0
-            ? [middleCol]
-            : [middleCol - colOffset, middleCol + colOffset].filter(c => c >= 1 && c <= numSeats);
-          for (const col of colsToCheck) {
-            const seatId = `${row}-${col}`;
-            if (!bookedSeats.has(seatId) && !candidates.includes(seatId)) {
-              candidates.push(seatId);
-            }
+  for (let rowOffset = 0; rowOffset < totalRows; rowOffset++) {
+    const rowsToCheck = rowOffset === 0
+      ? [middleRow]
+      : [middleRow - rowOffset, middleRow + rowOffset].filter(r => r >= 1 && r <= totalRows);
+    for (const row of rowsToCheck) {
+      const numSeats = layout.seatsPerRow[row - 1];
+      const middleCol = Math.ceil(numSeats / 2);
+      for (let colOffset = 0; colOffset < numSeats; colOffset++) {
+        const colsToCheck = colOffset === 0
+          ? [middleCol]
+          : [middleCol - colOffset, middleCol + colOffset].filter(c => c >= 1 && c <= numSeats);
+        for (const col of colsToCheck) {
+          const seatId = `${row}-${col}`;
+          if (!bookedSeats.has(seatId) && !candidates.includes(seatId)) {
+            candidates.push(seatId);
           }
         }
       }
-      if (candidates.length >= count) break;
     }
-    return candidates.slice(0, count);
-  };
+    if (candidates.length >= count) break;
+  }
+  return candidates.slice(0, count);
+};
 
 
 
@@ -138,7 +139,6 @@ function BookingPage() {
   const formatPrice = (value: number): string => {
     return `${value.toFixed(2).replace('.', ',')} kr`;
   };
-
 
 
   useEffect(() => {
@@ -161,8 +161,18 @@ function BookingPage() {
         // sätter showtime till första visningens starttid
         if (viewingsData.length > 0) {
           setavailableViewigs(viewingsData);
-          setselectedViewing(viewingsData[0]);
-          setShowtime(viewingsData[0].start_time);
+
+          const searchParams = new URLSearchParams(location.search);
+          const showtimeId = searchParams.get('showtime');
+          
+          let initialViewing = viewingsData[0];
+          if (showtimeId) {
+            const found = viewingsData.find((v: any) => v.id == showtimeId);
+            if (found) initialViewing = found;
+          }
+
+          setselectedViewing(initialViewing);
+          setShowtime(initialViewing.start_time);
         }
       } catch (error) {
         console.error('Failed to fetch movie:', error);
@@ -175,7 +185,7 @@ function BookingPage() {
     }
   }, [id]);
 
-
+  
   useEffect(() => {
     const fetchBookedSeats = async () => {
       if (!selectedViewing || !selectedViewing.id) {
@@ -191,14 +201,6 @@ function BookingPage() {
 
         if (bookedResponse.ok) {
           const bookedData = await bookedResponse.json();
-
-          // Made unnessecary after adding the .seat object to bookedRespone when returning
-          // values from SQL query.
-          /*if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
-            if ('data' in bookedData && Array.isArray(bookedData.data)) {
-              bookedData = bookedData.data;
-            }
-          } */
 
           // Takes the Json object seats what we return with our fetch and checks if it's an
           // array and then assigns it to bookedSeatsArray.
@@ -227,7 +229,7 @@ function BookingPage() {
   }, [selectedViewing]);
 
 
-  // Uppdatera rekommenderade platser automatiskt när biljettantal eller bokade platser ändras
+// Uppdatera rekommenderade platser automatiskt när biljettantal eller bokade platser ändras
   useEffect(() => {
     const totalTickets = counts.adult + counts.senior + counts.child;
     if (totalTickets > 0) {
@@ -254,7 +256,13 @@ function BookingPage() {
     }));
   };
 
-
+  // om jag tar bort antal personer när jag har säten valda så försvinner valda säten med 
+  useEffect(() => {
+    const totalTickets = getTotalTickets();
+    if (selectedSeats.length > totalTickets) {
+      setSelectedSeats(prev => prev.slice(0, totalTickets));
+    }
+  }, [counts]);
 
   // Välj eller byt ut plats, men tillåt inte avmarkering genom att klicka på redan vald plats
   const selectSeat = (row: number, col: number) => {
@@ -329,36 +337,7 @@ function BookingPage() {
     sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
     navigate('/confirm');
   };
-  // const confirmBooking = () => {
-  //   const totalTickets = getTotalTickets();
-  //   if (totalTickets === 0) {
-  //     alert('Välj antal biljetter först.');
-  //     return;
-  //   }
-  //   if (selectedSeats.length !== totalTickets) {
-  //     alert(`Välj ${totalTickets} platser innan du bekräftar.`);
-  //     return;
-  //   }
-
-  //   const totalPrice = (counts.adult * PRICES.adult) +
-  //     (counts.senior * PRICES.senior) +
-  //     (counts.child * PRICES.child);
-
-  //   const bookingData = {
-  //     film: movie?.Title || 'okänd film',
-  //     viewing: showtime,
-  //     seats: selectedSeats,
-  //     counts,
-  //     totalPrice,
-  //     lounges: SALONG_LAYOUT.name
-  //   };
-  //   //sparar användarens data av bokningen
-  //   sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
-
-  //   navigate('/confirm');
-
-  // }; 
-
+  
   if (!movie) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
@@ -379,13 +358,32 @@ function BookingPage() {
         <h2>Boka biljetter för: <span id="filmTitle">{movie?.movies_raw.Title || movie?.Title}</span></h2>
         <p className="p-tagg">Välj antal biljetter och platser</p>
         <div className="ticket-wrapper">
-          <div className="ticket-layout">
+        <div className="ticket-layout">
+          
+          {/* Panel: Select number of tickets */}
+          <div className="ticket-panel">
+            <h3>Välj visning</h3>
+            <select 
+              className="form-select-viewing"
+              value={selectedViewing?.id || ''}
+              onChange={(e) => {
+                const vId = Number(e.target.value);
+                const v = availableViewigs.find(x => x.id === vId);
+                if (v) {
+                  setselectedViewing(v);
+                  setShowtime(v.start_time);
+                  setSelectedSeats([]); // Rensa valda platser vid byte av visning
+                }
+              }}
+            >
+              {availableViewigs.map(v => (
+                <option key={v.id} value={v.id}>
+                  {new Date(v.start_time).toLocaleString('sv-SE', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })} - {v.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}
+                </option>
+              ))}
+            </select>
 
-            {/* Panel: Select number of tickets */}
-            <div className="ticket-panel">
-              <h3>Välj antal biljetter</h3>
-
-
+            <h3>Välj antal biljetter</h3>
 
               <div className="ticket-row">
                 <div className="ticket-label">
@@ -398,7 +396,7 @@ function BookingPage() {
                     onClick={() => updateCount('adult', -1)}
                     disabled={counts.adult === 0}
                   >
-                    −
+                    -
                   </button>
                   <span className="ticket-count">{counts.adult}</span>
                   <button
@@ -480,7 +478,7 @@ function BookingPage() {
 
           </div>
         </div>
-      </section>
+    </section>
 
       {/* Seat map */}
       <section className="cinema">
@@ -511,7 +509,7 @@ function BookingPage() {
                 <div className="row-label">{row}</div>
                 <div className="seat-row-inner" style={{ gridTemplateColumns: `repeat(${numSeats}, minmax(0, 100px))` }}>
                   {Array.from({ length: numSeats }, (_, i) => {
-                    const col = i + 1;
+                    const col = numSeats -i;
                     const seatId = `${row}-${col}`;
                     let seatType: 'available' | 'unavailable' = 'available';
 
@@ -532,7 +530,7 @@ function BookingPage() {
               </div>
             );
           })}
-        </div>
+          </div>
         <button className="confirm-button" onClick={confirmBooking}>
           Bekräfta bokning
         </button>

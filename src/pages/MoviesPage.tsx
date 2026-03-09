@@ -143,10 +143,12 @@ export default function MoviePage() {
         ) : (
           <div className="week-view">
             {[...Array(7)].map((_, i) => {
-              // Skapa datum för varje veckodag (mån-sön)
+              // Skapa datum för varje veckodag 7 dagar från dagens dag)
               const today = new Date();
+              // undvika buggar runt tidszoner nollställer vi tiden
+              today.setHours(0, 0, 0, 0);
               const dayDate = new Date(today);
-              dayDate.setDate(today.getDate() - today.getDay() + i + 1); // Måndag = 1
+              dayDate.setDate(today.getDate() + i); 
               const dayKey = dayDate.toDateString();
               const dayLabel = dayDate.toLocaleDateString('sv-SE', { weekday: 'long' });
               // Filtrera visningstider för denna dag

@@ -72,9 +72,19 @@ function ProfilePage() {
       });
   }, [isLoggedIn, userData.email]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    // Ta bort isLoggedIn, userName, userEmail, etc.
+  const handleLogout = async () => {
+    // call backend to clear session
+    try {
+      await fetch('/api/login', { method: 'DELETE' });
+    } catch {
+      // ignore network errors, we'll clear local state anyway
+    }
+
+    // clear frontend state & localStorage
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    setIsLoggedIn(false);
 
     navigate('/');
   };
