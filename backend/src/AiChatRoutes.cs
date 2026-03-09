@@ -35,28 +35,32 @@ public static class AiChatRoutes
                 // Querry for Date
                 var dateFilter = SQLQuery(@"SELECT 
                 JSON_UNQUOTE(JSON_EXTRACT(m.movies_raw, '$.Title')) AS Film,
-                v.start_time AS VisningsTid,
+                v.start_time AS StartTid,
                 l.name AS Salong
                 FROM viewings v
                 JOIN movies m ON v.movie = m.id
                 JOIN lounges l ON v.lounge = l.id
                 ORDER BY v.start_time;");
-                
+
                 var fullMessages = new Arr();
-                if (!string.IsNullOrWhiteSpace(systemPrompt)) {
-                    fullMessages.Push(Obj(new {
+                if (!string.IsNullOrWhiteSpace(systemPrompt))
+                {
+                    fullMessages.Push(Obj(new
+                    {
                         role = "system",
                         content = systemPrompt
                     }));
                 }
                 //answer for movies
-                fullMessages.Push(Obj(new {
+                fullMessages.Push(Obj(new
+                {
                     role = "system",
                     content = "Här är aktuella filmer och visningstider: " + JSON.Stringify(movies)
                 }));
 
                 //answer for date
-                fullMessages.Push(Obj(new {
+                fullMessages.Push(Obj(new
+                {
                     role = "system",
                     content = "" + JSON.Stringify(dateFilter)
                 }));
