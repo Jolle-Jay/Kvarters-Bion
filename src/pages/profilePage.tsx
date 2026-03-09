@@ -141,8 +141,22 @@ function ProfilePage() {
 
 
       <section className="bookings-section">
-        <div onClick={() => setShowBookings(prev => !prev)}>
+        <div onClick={() => setShowBookings(prev => !prev)}
+          className="bookings-toggle-row"
+        >
           <h3 className="section-title">Mina bokningar</h3>
+          
+           <svg
+            className={`toggle-icon ${showBookings ? "open" : ""}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            >
+              <path d="M6 9l6 6 6-6" />
+            </svg>
         </div>
         {showBookings && (
           isBookingsLoading ? (

@@ -12,6 +12,7 @@
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
+
 .login-input:focus {
   border-color: #FFD700;
   box-shadow: 0 0 8px #FFD700;
@@ -104,7 +105,6 @@
 .container-name {
   font-size: 1.1rem;
   margin-bottom: 0.7rem;
-  text-align: center;
 }
 
 .logout-btn {
@@ -114,7 +114,8 @@
   border-radius: 6px;
   padding: 8px 24px;
   font-weight: bold;
-  margin: 20px 0 24px auto;
+  margin: 20px auto 24px auto;
+  /* centrera knappen horisontellt */
   cursor: pointer;
   transition: background 0.2s;
   display: block;
@@ -131,6 +132,8 @@
   font-size: 1.5rem;
   margin-top: 24px;
   margin-bottom: 15px;
+  text-align: left;
+  /* vänsterställ på desktop */
 }
 
 .bookings-list {
@@ -158,7 +161,7 @@
 
 .booking-item.confirmed {
   background: #092a09;
-  box-shadow: 0 4px 10px 0 rgba(80, 255, 80, 0.15), 0 1.5px 6px 0 rgba(0,0,0,0.18);
+  box-shadow: 0 4px 10px 0 rgba(80, 255, 80, 0.15), 0 1.5px 6px 0 rgba(0, 0, 0, 0.18);
   border: 2px solid #123312;
 }
 
@@ -171,11 +174,13 @@ mobilvyn */
   align-items: flex-start;
   line-height: 1.7rem;
 }
+
 .booking-label {
   color: #B8860B;
   min-width: 110px;
   font-weight: bold;
 }
+
 .booking-value {
   color: #fff;
   text-align: left;
@@ -218,6 +223,29 @@ mobilvyn */
   color: #B8860B;
 }
 
+.bookings-toggle-row {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.bookings-toggle-row svg {
+  cursor: pointer;
+}
+
+.toggle-icon {
+  width: 18px;
+  height: 18px;
+  margin-left: 0.7rem;
+  stroke-width: 4;
+  color: #B8860B;
+  transition: transform 0.2s ease;
+}
+
+.toggle-icon.open {
+  transform: rotate(90deg);
+}
 
 /* Mobile responsive styles */
 @media (max-width: 481px) {
@@ -228,6 +256,19 @@ mobilvyn */
 
   .profile-container h2 {
     font-size: 1.5rem;
+    text-align: center;
+    /* centrera rubriken */
+  }
+
+  .container-name {
+    text-align: center;
+    /* centrera namn och e-post */
+  }
+
+  .section-title {
+    text-align: center;
+    /* centrera på mobil */
+    width: 100%;
   }
 
   .logout-btn {
@@ -248,15 +289,17 @@ mobilvyn */
     gap: 0.75rem;
   }
 
- .booking-row {
+  .booking-row {
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 10px;
   }
+
   .booking-label {
     min-width: 0;
     margin-bottom: 0;
   }
+
   .booking-value {
     margin-left: 0;
     margin-top: 0;
@@ -295,5 +338,9 @@ mobilvyn */
 
   .not-logged-in p {
     font-size: 0.95rem;
+  }
+
+  .bookings-toggle-row {
+    justify-content: center;
   }
 }
