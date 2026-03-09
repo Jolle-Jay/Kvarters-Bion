@@ -226,8 +226,17 @@ const getBestSeats = (count: number): string[] => {
     };
 
     fetchBookedSeats();
+
+
+    const interval = setInterval(() => {
+      fetchBookedSeats();
+    }, 3000);
+
+    return () => clearInterval(interval);
+
   }, [selectedViewing]);
 
+<<<<<<< HEAD
 
 // Uppdatera rekommenderade platser automatiskt när biljettantal eller bokade platser ändras
   useEffect(() => {
@@ -240,6 +249,14 @@ const getBestSeats = (count: number): string[] => {
   }, [counts, bookedSeats]);
 
 
+=======
+  //ifall någon har valt och hinner boka sätet jag väljer
+  useEffect(() => {
+  setSelectedSeats(prev =>
+    prev.filter(seat => !bookedSeats.has(seat))
+  );
+}, [bookedSeats]);
+>>>>>>> origin/polling
 
   // lägger antalet biljetter i totaltickets
   const getTotalTickets = (): number => {
