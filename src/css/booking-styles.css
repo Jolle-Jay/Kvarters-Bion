@@ -55,6 +55,18 @@
   width: 100%;
 }
 
+.form-select-viewing {
+  width: 100%; 
+  padding: 8px; 
+  margin-Bottom: 15px;
+  border-Radius: 4px;
+  background: #0a3d0a;
+  color: #B8860B;
+  border: 2px solid #B8860B;
+  cursor: pointer;
+}
+
+
 .ticket-panel h3 {
   color: #B8860B;
   font-size: 1rem;
@@ -127,7 +139,7 @@
 }
 
 .ticket-count {
-    color: #FFD700;
+    color: #B8860B;
     font-size: 1.3rem;
     font-weight: bold;
     min-width: 30px;

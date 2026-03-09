@@ -141,7 +141,6 @@ const getBestSeats = (count: number): string[] => {
   };
 
 
-
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -202,14 +201,6 @@ const getBestSeats = (count: number): string[] => {
 
         if (bookedResponse.ok) {
           const bookedData = await bookedResponse.json();
-
-          // Made unnessecary after adding the .seat object to bookedRespone when returning
-          // values from SQL query.
-          /*if (bookedData && typeof bookedData === `object` && !Array.isArray(bookedData)) {
-            if ('data' in bookedData && Array.isArray(bookedData.data)) {
-              bookedData = bookedData.data;
-            }
-          } */
 
           // Takes the Json object seats what we return with our fetch and checks if it's an
           // array and then assigns it to bookedSeatsArray.
@@ -346,36 +337,7 @@ const getBestSeats = (count: number): string[] => {
     sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
     navigate('/confirm');
   };
-  // const confirmBooking = () => {
-  //   const totalTickets = getTotalTickets();
-  //   if (totalTickets === 0) {
-  //     alert('Välj antal biljetter först.');
-  //     return;
-  //   }
-  //   if (selectedSeats.length !== totalTickets) {
-  //     alert(`Välj ${totalTickets} platser innan du bekräftar.`);
-  //     return;
-  //   }
-
-  //   const totalPrice = (counts.adult * PRICES.adult) +
-  //     (counts.senior * PRICES.senior) +
-  //     (counts.child * PRICES.child);
-
-  //   const bookingData = {
-  //     film: movie?.Title || 'okänd film',
-  //     viewing: showtime,
-  //     seats: selectedSeats,
-  //     counts,
-  //     totalPrice,
-  //     lounges: SALONG_LAYOUT.name
-  //   };
-  //   //sparar användarens data av bokningen
-  //   sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
-
-  //   navigate('/confirm');
-
-  // }; 
-
+  
   if (!movie) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
@@ -402,8 +364,7 @@ const getBestSeats = (count: number): string[] => {
           <div className="ticket-panel">
             <h3>Välj visning</h3>
             <select 
-              className="form-select mb-3"
-              style={{ width: '100%', padding: '8px', marginBottom: '15px', borderRadius: '4px', border: '1px solid #ccc' }}
+              className="form-select-viewing"
               value={selectedViewing?.id || ''}
               onChange={(e) => {
                 const vId = Number(e.target.value);
@@ -424,8 +385,6 @@ const getBestSeats = (count: number): string[] => {
 
             <h3>Välj antal biljetter</h3>
 
-          
-
               <div className="ticket-row">
                 <div className="ticket-label">
                   <strong>Ordinarie</strong>
@@ -437,7 +396,7 @@ const getBestSeats = (count: number): string[] => {
                     onClick={() => updateCount('adult', -1)}
                     disabled={counts.adult === 0}
                   >
-                    −
+                    -
                   </button>
                   <span className="ticket-count">{counts.adult}</span>
                   <button
