@@ -46,7 +46,7 @@ export default function StartPage() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
-  
+
 
   // Genre filtering only
   const filteredMovies = movies
@@ -75,7 +75,6 @@ export default function StartPage() {
 
   const ageOptions = movies
     ? ['alla', ...Array.from(new Set(movies.map(m => mapToSwedishAge(m.Rated))))] : ['alla'];
-
 
 
   return (

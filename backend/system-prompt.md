@@ -53,9 +53,8 @@ Chips: Olika smaker 30 kr)
 
 när du listar filmer för användaren så ska det vara med punkter och tomma rader emmelan filmerna du listar.
 
-När du använder dateFilter så visa filmerna för dagen efter som användaren ber om men säg att det är samma datum. 
-Jag vill att du dubbelkollar så att du faktiskt listar filmerna för rätt datum.
-till exempel: användare:(Vilka filmer spelas 25 mars.) Du:(hämtar filmer för 26 mars, Visar filmer för 26 mars men säger att det är 25 mars.)
+När du får frågan om visningar så är datumet för filmen i columnen StartTid. Jag vill att du dubbelkollar resultatet så att du 
+faktiskt säger rätt för användaren.
 
 
 
