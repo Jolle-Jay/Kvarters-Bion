@@ -34,23 +34,6 @@ function LoginPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // async väntar på API anrop
-  // event har typen FormEvent som triggas när formulär skickas in (submit) /enter
-  // If user already has a session on the server, redirect immediately
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const resp = await fetch('/api/login');
-        const data = await resp.json();
-        if (resp.ok && !data.error) {
-          navigate('/profile');
-        }
-      } catch {
-        // ignore network
-      }
-    })();
-  }, [navigate]);
-
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     // utan preventdefault formulär skickas, sidan laddar om, all data försvinner
     event.preventDefault();
