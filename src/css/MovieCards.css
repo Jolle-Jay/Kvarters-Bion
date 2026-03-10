@@ -39,7 +39,7 @@
 .carousel-track {
   display: flex;
   width: max-content;
-  animation: scroll 30s linear infinite;
+  animation: scroll 20s linear infinite;
 }
 
 .group {
@@ -53,7 +53,6 @@
 
 .carousel img {
   height: 380px;
-  /* Viktig! */
   width: auto;
   border-radius: 4px;
   display: block;
@@ -165,7 +164,6 @@
   background: #061906;
   border: 2px solid #5e460f;
   border-radius: 10px;
-  margin: 1rem 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

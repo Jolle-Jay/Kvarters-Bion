@@ -79,7 +79,7 @@
 
 .profile-container {
   max-width: 600px;
-  margin: 30px auto 40px;
+  margin: 2rem auto 3rem;
   padding: 2rem;
   background: #0a1c0a;
   border: 2px solid #B8860B;
@@ -255,6 +255,7 @@ mobilvyn */
 @media (max-width: 481px) {
   .profile-container {
     max-width: 95vw;
+    margin: 2rem 1rem 3rem;
     padding: 1rem;
   }
 
@@ -346,5 +347,9 @@ mobilvyn */
 
   .bookings-toggle-row {
     justify-content: center;
+  }
+
+  .booking-number {
+    margin-left: 0;
   }
 }

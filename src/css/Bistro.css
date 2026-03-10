@@ -157,7 +157,7 @@ body.bistro-theme {
 }
 
 /* Mobil: staplar menyer och minskar marginaler. */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .menu-senior {
         width: 100%;
     }
@@ -169,4 +169,4 @@ body.bistro-theme {
     .menu {
         margin: 1rem;
     }
-}
+} */

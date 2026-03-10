@@ -1,6 +1,6 @@
 .login-container {
   max-width: 500px;
-  margin: 120px auto 40px;
+  margin: 2rem auto 3rem;
   padding: 2rem;
   background: #0a1c0a;
   border: 2px solid #B8860B;
@@ -47,22 +47,6 @@
   font-size: 1rem;
   box-sizing: border-box;
 }
-
-/* .navbar a.back-link {
-  position: fixed;
-  left: 12px;
-  top: 12px;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  line-height: 1;
-  z-index: 1001;
-} */
 
 .form-group input:focus {
   outline: none;
@@ -151,7 +135,7 @@
 @media (max-width: 768px) {
   .login-container {
     max-width: 100%;
-    margin: 100px 1rem 2rem;
+    margin: 2rem 1rem 3rem;
     padding: 1.5rem;
   }
 
