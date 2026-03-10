@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import '../css/Footer.css';
 
@@ -19,13 +18,12 @@ export default function Footer() {
           <h4>Kontakt</h4>
           <p>📍 Storgatan 12, 123 45 kvartersbion</p>
           <p>📞 +467-0123456</p>
-          <p>✉️ info@kvartersbion.se</p>
+          <p>✉️ joanthanlopez850@gmail.com</p>
         </div>
 
         <div className="footer-section">
           <h4>Öppettider</h4>
-          <p>Mån–Fre: 16:00 – 23:00</p>
-          <p>Lör–Sön: 13:00 – 00:00</p>
+          <p>Mån–Sön: 19:00 – 00:00</p>
         </div>
 
         <div className="footer-section">
