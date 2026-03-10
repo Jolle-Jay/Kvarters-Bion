@@ -507,6 +507,7 @@ function BookingPage() {
             </div>
           </div>
         </div>
+
         <div className='screen-wrapper'>
           <div className="screen">Bio Skärm</div>
         </div>
