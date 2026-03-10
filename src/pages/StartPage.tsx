@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import "../css/MovieCards.css";
 import "../css/Carousel.css";
-import { mapToSwedishAge } from '../utils/ageLimit';
+import { mapToSwedishAge, mapToSwedishGenre } from '../utils/mapToSwedish';
 
 export default function StartPage() {
 
@@ -46,17 +46,15 @@ export default function StartPage() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
-
-
   // Genre filtering only
   const filteredMovies = movies
     ? movies.filter(movie => {
-      // Dela upp genrerna i en array: "Horror, Sci-Fi" -> ["horror", "sci-fi"]
-      const genres = movie.Genre.split(',').map(g => g.trim().toLowerCase());
 
       const matchGenre =
         selectedGenre === 'alla' ||
-        genres.includes(selectedGenre.toLowerCase());
+        mapToSwedishGenre(movie.Genre)
+          .split(", ")
+          .includes(selectedGenre);
 
       const matchAge =
         selectedAge === "alla" ||
@@ -75,6 +73,19 @@ export default function StartPage() {
 
   const ageOptions = movies
     ? ['alla', ...Array.from(new Set(movies.map(m => mapToSwedishAge(m.Rated))))] : ['alla'];
+  
+  const genreOptions = movies
+  ? [
+      'alla',
+      ...Array.from(
+        new Set(
+          movies.flatMap(movie =>
+            mapToSwedishGenre(movie.Genre).split(", ")
+          )
+        )
+      )
+    ]
+  : ['alla'];
 
 
   return (
@@ -107,27 +118,23 @@ export default function StartPage() {
 
         {/* Genre */}
         <div className="filter-item">
-          <h3>Filtrera genre</h3>
+          <h3>Genre</h3>
           <select
             className={`filter-dropdown ${selectedGenre !== 'alla' ? 'active' : ''}`}
             value={selectedGenre}
             onChange={(e) => setSelectedGenre(e.target.value)}
           >
-
-            <option value="alla">Alla</option>
-            <option value="Sci-Fi">Sci-Fi</option>
-            <option value="Drama">Drama</option>
-            <option value="Animation">Animation</option>
-            <option value="Thriller">Thriller</option>
-            <option value="Action">Action</option>
-            <option value="Romance">Romance</option>
-            <option value="Adventure">Adventure</option>
+            {genreOptions.map(genre => (
+              <option key={genre} value={genre}>
+                {genre === 'alla' ? 'Alla genrer' : genre}
+              </option>
+            ))}
           </select>
         </div>
 
         {/* Datum */}
         <div className="filter-item">
-          <h3>Välj datum</h3>
+          <h3>Datum</h3>
           <input
             type="date"
             className={`filter-date ${selectedDate ? 'active' : ''}`}
@@ -170,7 +177,7 @@ export default function StartPage() {
             </div>
 
             <h3>{movie.Title}</h3>
-            <p>{movie.Genre}</p>
+            <p>{mapToSwedishGenre(movie.Genre)}</p>
           </Link>
         ))}
       </div>
