@@ -1,7 +1,7 @@
 import React, { useState, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import type { LoginFormData } from '../types/auth.types';
-import '../CSS/Login.css';
+import '../css/Login.css';
 
 
 function LoginPage() {
