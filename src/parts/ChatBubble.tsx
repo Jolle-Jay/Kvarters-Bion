@@ -1,7 +1,7 @@
 // ChatBubble: Visar en chattbubbla längst till höger på skärmen
 import { useState } from "react";
 import AiChatPage from "../pages/AiChatPage";
-import '../CSS/AIChat.css';
+import '../css/AIChat.css';
 
 export default function ChatBubble() {
   const [open, setOpen] = useState(false);

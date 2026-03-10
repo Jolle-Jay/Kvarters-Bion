@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../CSS/profile.css';
+import '../css/profile.css';
 import type { JSX } from 'react';
 
 
