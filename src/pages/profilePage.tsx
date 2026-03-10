@@ -104,7 +104,7 @@ function ProfilePage() {
       const result = await res.json();
       if (result.success) {
         setBookings(prev => prev.map(b => // loopar igenom alla boknigar i listan
-          b.bookingReference === bookingReference //kollar om denna bokning är den vi avbokade
+          b.BookingReference === bookingReference //kollar om denna bokning är den vi avbokade
             ? { ...b, status: 'Cancelled' }//om ja, kopiera allt från bokningen och byt status till cancelled
             : b // om nej returnera bokning oförändrad
         ));
@@ -150,20 +150,20 @@ function ProfilePage() {
           className="bookings-toggle-row"
         >
           <div className="bookings-toggle-row">
-          <h3 className="section-title">Mina bokningar</h3>
+            <h3 className="section-title">Mina bokningar</h3>
 
-          <svg
-            className={`toggle-icon ${showBookings ? "open" : ""}`}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            <svg
+              className={`toggle-icon ${showBookings ? "open" : ""}`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M6 9l6 6 6-6" />
             </svg>
-            </div>
+          </div>
         </div>
         {showBookings && (
           isBookingsLoading ? (

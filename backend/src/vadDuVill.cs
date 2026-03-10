@@ -220,17 +220,22 @@ public static class vadDuVill
         }
         else
         {
-            try
-            {
-              EmailService.SendEmail(
-                email,
-                "Bokningsbekräftelse - Kvarterbion",
-                $@"<h1>Tack för din bokning!</h1>
+          try
+          {
+            EmailService.SendEmail(
+              email,
+              "Bokningsbekräftelse - Kvarterbion",
+              $@"<h1>Tack för din bokning!</h1>
                    <p>Hej!</p>
                    <p>Din bokning till {filmTitle} är bekräftad.</p>
     
                    <h2>Bokningsinformation</h2>
                    <p><strong>Bokningsnummer:</strong> {bookingReference}</p>
+                  
+                  <h3> Vi ses den {viewingTime}!<h3>
+
+                   <p> Vänligen kom 15 minuter innan visningen börjar för /n
+                   betalning och köp av snacks.
     
                    <h3>Platser:</h3>
                    <ul>
@@ -246,16 +251,16 @@ public static class vadDuVill
     
            <p><strong>Totalpris: {totalPrice} kr</strong></p>
            <p>Vi ses på biografen!</p>"
-    
-            );
-              System.Console.WriteLine("=== Bokningsmail skickat! ===");
-            }
-            catch (Exception ex)
-    
-            {
-              System.Console.WriteLine($"=== Mail misslyckades: {ex.Message} ===");
-    
-            }
+
+          );
+            System.Console.WriteLine("=== Bokningsmail skickat! ===");
+          }
+          catch (Exception ex)
+
+          {
+            System.Console.WriteLine($"=== Mail misslyckades: {ex.Message} ===");
+
+          }
         }
 
       });
@@ -387,7 +392,7 @@ public static class vadDuVill
     App.MapGet("/api/bookings", (HttpContext context) =>
     {
       var email = context.Request.Query["where"].ToString().Replace("email=", "");
-      System.Console.WriteLine($"=== GET /api/bookings, email: '{email}' ==="); 
+      System.Console.WriteLine($"=== GET /api/bookings, email: '{email}' ===");
 
       if (string.IsNullOrEmpty(email))
       {
@@ -410,7 +415,7 @@ public static class vadDuVill
           GROUP BY b.id",
           new { email }, context
           );
-      System.Console.WriteLine($"=== Bookings count: {bookings.Length} ==="); 
+      System.Console.WriteLine($"=== Bookings count: {bookings.Length} ===");
       System.Console.WriteLine($"=== Bookings data: {JSON.Stringify(bookings)} ===");
 
       return RestResult.Parse(context, bookings);

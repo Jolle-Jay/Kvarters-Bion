@@ -47,8 +47,8 @@ static class EmailService
 
         using (var client = new SmtpClient())
         {
-            // Öppnar en uppkoppling till email-providerns server, i vårat fall gmail.
-            client.Connect(smtpServer, smtpPort, false);
+            // Öppnar en uppkoppling till email-providerns server, i vårat fall outlook, dem kräcver SecureSocketOptions, StartTls.
+            client.Connect(smtpServer, smtpPort, SecureSocketOptions.StartTls);
             // Skickar in verifiering för att kontrollera att vi har en giltig email med stöd för SMTP.
             client.Authenticate(emailUsername, emailPassword);
             // Skickar meddelandet
