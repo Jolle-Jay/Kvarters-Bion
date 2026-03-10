@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../CSS/confirmStyles.css';
+import '../css/confirmStyles.css';
 
 // bestämma hur bookingData ska se ut så att TS kan kolla om rätt upgifter skickas med 
 interface BookingData {
