@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'; // får film ID och URL från bokingen
-import '../CSS/booking-styles.css';
+import '../css/booking-styles.css';
 
 // pris per kategori för biljetter
 const PRICES = {
@@ -497,6 +497,12 @@ function BookingPage() {
         <div className="cinema-header">
           <h3>Salong - Skärm</h3>
           <div className="seat-legend">
+            <div className="pointer-tooltip">
+              <div className="pointer-tooltip-arrows">
+                <span>↑</span> <span>↓</span> <span>←</span> <span>→</span>
+              </div>
+            </div>
+
             <div className="legend-item">
               <span className="legend-color available"></span>
               <span className="legend-text">Lediga platser</span>
@@ -507,7 +513,6 @@ function BookingPage() {
             </div>
           </div>
         </div>
-
         <div className='screen-wrapper'>
           <div className="screen">Bio Skärm</div>
         </div>
