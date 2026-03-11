@@ -169,11 +169,9 @@
 men vet ej om det ser snyggt ut och speciellt på
 mobilvyn */
 .booking-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 150px 1fr;
   gap: 6px 10px;
-  line-height: 1.7rem;
 }
 
 .booking-label {
@@ -186,8 +184,6 @@ mobilvyn */
 .booking-value {
   color: #fff;
   flex: 1 1 200px;
-  /* eventuellt använda sig av denna margin-left men fixa till flex */
-  /* margin-left: 30px; */
 }
 
 .cancel-btn {

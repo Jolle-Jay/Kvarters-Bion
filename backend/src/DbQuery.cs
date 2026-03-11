@@ -29,11 +29,11 @@ public static class DbQuery
         var db = new MySqlConnection(connectionString);
         db.Open();
 
-        // Reset database if requested
-        // if (config.resetDb == true)
-        // {
-        //     DropTables(db);
-        // }
+         //Reset database if requested
+         //if (config.resetDb == true)
+         //{
+         //    DropTables(db);
+         //}
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
@@ -240,6 +240,9 @@ public static class DbQuery
                 ('2024-04-02', 'thomas@nodehill.com', 'Thomas', 'Frank', 'admin', '$2a$13$IahRVtN2pxc1Ne1NzJUPpOQO5JCtDZvXpSF.IF8uW85S6VoZKCwZq'),
                 ('2024-04-02', 'olle@nodehill.com', 'Olle', 'Olofsson', 'user', '$2a$13$O2Gs3FME3oA1DAzwE0FkOuMAOOAgRyuvNQq937.cl7D.xq0IjgzN.'),
                 ('2024-04-02', 'maria@nodehill.com', 'Maria', 'MÃ¥rtensson', 'user', '$2a$13$p4sqCN3V3C1wQXspq4eN0eYwK51ypw7NPL6b6O4lMAOyATJtKqjHS'),
+                ('2024-04-02', 'hallergren.lina@gmail.com', 'Lina', 'Hallergren', 'user', '$2a$13$TRUIcnBS2apj/t/343VGn.mTJlYu7J5d6R2HjHvIRnR/eHBkYC7/u'),
+                ('2024-04-02', 'jenjira.h04@gmail.com', 'Jenjira', 'Phayakhruea', 'user', '$2a$13$SNyhxOH7d0pQjox/YD/gpOCPXopMOZ83ETmysJZzU8L/fs9M/0iWe'),
+                ('2024-04-02', 'j.lopezzz@hotmail.com', 'Jonathan', 'Lopezz', 'user', '$2a$13$qePh/YUsFFHw8Ya4NPnbk.SKqQotkSBHC2Ju6DH.8pUJHd10qME/y'),
                 ('2026-02-17', 'davidpuscas@live.se', 'David', 'Puscas', 'user', '$2a$13$IimwlKfAZFbDq8ELStMuN.4vnocpMUTLMLSp3PIdOC9f6OMwfrHwS');
             ";
             command.CommandText = usersData;
