@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../css/booking-styles.css';
-import { count } from 'console';
 
 // pris per kategori för biljetter
 const PRICES = {
