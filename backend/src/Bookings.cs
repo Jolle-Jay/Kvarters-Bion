@@ -2,7 +2,7 @@ using Microsoft.VisualBasic;
 
 namespace WebApp;
 
-public static class vadDuVill
+public static class Bookings
 {
   private static Obj GetUser(HttpContext context)
   {
@@ -13,7 +13,6 @@ public static class vadDuVill
   {
     try
     {
-      System.Console.WriteLine("=== STEP 1: Entered HandleCustomBooking ===");
       var user = Session.Get(context, "user");
 
       // hämtar värdena individuellt som strängar och sen för in dem i variablerna
@@ -44,7 +43,6 @@ public static class vadDuVill
         child = countsObj.GetProperty("child").GetInt32()
       };
 
-      System.Console.WriteLine($"=== STEP 2: Booking {bookingReference}, {seatsList.Count} seats ===");
 
       string email;
       int? userID = null;
@@ -54,22 +52,18 @@ public static class vadDuVill
       {
         email = (string)user["email"];
         userID = (int)user["id"];
-        System.Console.WriteLine("=== STEP 3: Logged in user: " + email + " ===");
       }
       else
       // kollar om string emailfrom body är null om den inte är null hämtar den email från body
       {
-        System.Console.WriteLine("=== STEP 3: Guest user ===");
         if (string.IsNullOrEmpty(emailFromBody))
         {
-          System.Console.WriteLine("=== ERROR: No email provided ===");
           return RestResult.Parse(context, new { error = "Email is required." });
         }
         email = emailFromBody;
       }
 
       // letar efter en film i databasen som titeln matchar filmTitle och hämtar tillbaka id
-      System.Console.WriteLine("=== STEP 4: Finding movie ID ===");
       var movie = SQLQueryOne(
           "SELECT id FROM movies WHERE JSON_EXTRACT(movies_raw, '$.Title') = @filmTitle",
           new { filmTitle }
@@ -82,7 +76,6 @@ public static class vadDuVill
       int movieId = (int)movie["id"];
 
       // letar efter en lounge i databasen och om det matchar så har vi ett loungeId
-      System.Console.WriteLine("=== STEP 5: Finding lounge ID ===");
       var lounge = SQLQueryOne(
           "SELECT id FROM lounges WHERE name = @loungeName",
           new { loungeName }
@@ -94,7 +87,6 @@ public static class vadDuVill
       int loungeId = (int)lounge["id"];
 
       // vi har en viewing, och om detta stämmer så hänmtar vi en ny visning längre ner
-      System.Console.WriteLine("=== STEP 6: Finding/creating viewing ===");
       var viewing = SQLQueryOne(
           @"SELECT * FROM viewings 
             WHERE movie = @movieId 
@@ -127,7 +119,6 @@ public static class vadDuVill
 
       // när vi har kollat att allting stämmer med databasen då kan vi göra en bokning
       // då gör vi en bokning med bookingqueries och createbooking från bookingqueries filen
-      System.Console.WriteLine("=== STEP 7: Creating booking ===");
       var booking = BookingQueries.CreateBooking(
           bookingReference,
           userID,
@@ -135,15 +126,12 @@ public static class vadDuVill
           viewingId
       );
 
-      System.Console.WriteLine("=== STEP 8: Getting booking ID ===");
       int bookingId = (int)booking["id"];
 
       // STEP 9: Create booking seats
-      System.Console.WriteLine("=== STEP 9: Creating booking seats ===");
       // skapar en bookning med sätena i logiken från createbookingseats
       BookingQueries.CreateBookingSeats(bookingId, seatsList, loungeName, counts);
 
-      System.Console.WriteLine("=== STEP 9.5 Få biljett priser");
       var ticketPrices = SQLQuery("SELECT name, price FROM ticketTypes");
 
       //gör om till dictionary för enkel lookup
@@ -161,7 +149,6 @@ public static class vadDuVill
       (counts.senior * priceMap["Senior"]) +
       (counts.child * priceMap["Child"]);
 
-      System.Console.WriteLine($"Total price: {totalPrice} SEK");
 
       //skapar en Dictionary där nyckeln är en sträng (radnummer)
       // row = nyckeln
@@ -196,9 +183,7 @@ public static class vadDuVill
 
 
       // det är detta vi får i meddelandet till användaren efter vi har slutfört bokningen skickas till frontend
-      System.Console.WriteLine("=== STEP 10: Success! ===");
 
-      System.Console.WriteLine("=== STEP 10: Success! ===");
 
       var response = new
       {
@@ -216,7 +201,6 @@ public static class vadDuVill
         // Kontrollera att e-postadressen finns innan vi försöker skicka
         if (string.IsNullOrEmpty(email))
         {
-          System.Console.WriteLine("=== Mail misslyckades: E-postadress saknas för bokningen. Inget mail skickas. ===");
         }
         else
         {
@@ -252,12 +236,10 @@ public static class vadDuVill
            <p>Vi ses på biografen!</p>"
 
           );
-            System.Console.WriteLine("=== Bokningsmail skickat! ===");
           }
           catch (Exception ex)
 
           {
-            System.Console.WriteLine($"=== Mail misslyckades: {ex.Message} ===");
 
           }
         }
@@ -269,7 +251,6 @@ public static class vadDuVill
     }
     catch (Exception ex)
     {
-      System.Console.WriteLine("=== ERROR: " + ex.Message + " ===");
       return RestResult.Parse(context, new { error = "Booking failed: " + ex.Message });
     }
   }
@@ -284,8 +265,7 @@ public static class vadDuVill
   {
     App.MapPost("/api/customBooking", (HttpContext context, JsonElement bodyJson) =>
     {
-      System.Console.WriteLine("Vi är inne i customBooking");
-      return vadDuVill.HandleCustomBooking(context, bodyJson);
+      return Bookings.HandleCustomBooking(context, bodyJson);
     });
 
     App.MapGet("/api/viewings", (HttpContext context) =>
@@ -328,9 +308,7 @@ public static class vadDuVill
     {
       // --- API för att hämta bokade platser för en visning ---
       // Loggar vilken visning som efterfrågas
-      System.Console.WriteLine("Hämtar bokade platser för viewing: " + viewingId);
       int vId = int.Parse(viewingId);
-      System.Console.WriteLine("Hämtar bokade platser för viewing: " + vId);
 
       // Hämtar alla platser (rad och nummer) som är bokade för denna visning och har status 'Confirmed'
       var bookedSeats = SQLQuery(
@@ -345,19 +323,15 @@ public static class vadDuVill
 
       // Skapar en lista för att formatera platserna till frontend-format (t.ex. "1-1")
       var formattedSeats = new List<string>();
-      System.Console.Write("Seats: ");
 
       // Loopar igenom alla bokade platser och formaterar dem till "rad-nummer"
       foreach (var seat in bookedSeats)
       {
         string seatString = $"{seat["seatRow"]}-{seat["number"]}";
-        System.Console.Write(seatString + ", ");
         formattedSeats.Add(seatString);
       }
 
       // Loggar antal bokade platser
-      System.Console.WriteLine("");
-      System.Console.WriteLine($"Hittade {formattedSeats.Count} bokade plater för viewing: {vId}");
 
       // Returnerar platserna som JSON till frontend: { seats: ["1-1", "1-2", ...] }
       return RestResult.Parse(context, new { seats = formattedSeats });
@@ -391,7 +365,6 @@ public static class vadDuVill
     App.MapGet("/api/bookings", (HttpContext context) =>
     {
       var email = context.Request.Query["where"].ToString().Replace("email=", "");
-      System.Console.WriteLine($"=== GET /api/bookings, email: '{email}' ===");
 
       if (string.IsNullOrEmpty(email))
       {
@@ -414,8 +387,6 @@ public static class vadDuVill
           GROUP BY b.id",
           new { email }, context
           );
-      System.Console.WriteLine($"=== Bookings count: {bookings.Length} ===");
-      System.Console.WriteLine($"=== Bookings data: {JSON.Stringify(bookings)} ===");
 
       return RestResult.Parse(context, bookings);
     });
