@@ -183,13 +183,11 @@ mobilvyn */
   flex-shrink: 0;
 }
 
-.booking-number {
-  margin-left: 12px;
-}
-
 .booking-value {
   color: #fff;
   flex: 1 1 200px;
+  /* eventuellt använda sig av denna margin-left men fixa till flex */
+  /* margin-left: 30px; */
 }
 
 .cancel-btn {
