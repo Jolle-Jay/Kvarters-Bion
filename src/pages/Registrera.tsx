@@ -1,7 +1,7 @@
 import React, { useState, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import type { RegisterFormData } from '../interfaces/Register';
-import '../CSS/Login.css';
+import '../css/login.css';
 
 
 function RegistreraPage() {

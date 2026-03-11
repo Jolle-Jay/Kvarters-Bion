@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import '../CSS/AIChat.css';
+import '../css/AIChat.css';
 import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
 
