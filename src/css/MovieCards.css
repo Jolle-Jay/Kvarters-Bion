@@ -39,7 +39,7 @@
 .carousel-track {
   display: flex;
   width: max-content;
-  animation: scroll 30s linear infinite;
+  animation: scroll 20s linear infinite;
 }
 
 .group {
@@ -53,7 +53,6 @@
 
 .carousel img {
   height: 380px;
-  /* Viktig! */
   width: auto;
   border-radius: 4px;
   display: block;
@@ -165,7 +164,6 @@
   background: #061906;
   border: 2px solid #5e460f;
   border-radius: 10px;
-  margin: 1rem 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -175,7 +173,7 @@
 
 .filter h3 {
   margin: 0;
-  color: #a98732;
+  color: #B8860B;
   white-space: nowrap;
   flex-shrink: 0;
   margin-right: 0.8rem;
@@ -197,7 +195,7 @@
   padding: 0.5rem 1rem;
   background: #0a3d0a;
   color: white;
-  border: 2px solid #785b11;
+  border: 2px solid #B8860B;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
@@ -228,10 +226,19 @@
   border-color: #FFD700;
 }
 
-.filter-dropdown:focus,
-.filter-date:focus {
+
+.filter-dropdown:focus {
   outline: none;
   border-color: #FFD700;
+}
+
+.filter-date:hover::-webkit-datetime-edit-year-field,
+.filter-date:hover::-webkit-datetime-edit-month-field,
+.filter-date:hover::-webkit-datetime-edit-day-field,
+.filter-date:focus::-webkit-datetime-edit-year-field,
+.filter-date:focus::-webkit-datetime-edit-month-field,
+.filter-date:focus::-webkit-datetime-edit-day-field {
+  color: #FFD700;
 }
 
 /* Dropdown options */

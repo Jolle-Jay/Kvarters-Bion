@@ -1,7 +1,7 @@
 import React, { useState, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import type { LoginFormData } from '../types/auth.types';
-import '../CSS/Login.css';
+import '../css/login.css';
 
 
 function LoginPage() {
@@ -88,8 +88,8 @@ function LoginPage() {
       {succesMessage && <div className="success-message">{succesMessage}</div>}
 
       <form onSubmit={handleLogin}>
-        <input name="email" value={formData.email} onChange={handleInputChange} className="login-input" />
-        <input name="password" type="password" value={formData.password} onChange={handleInputChange} className="login-input" />
+        <input name="email" value={formData.email} onChange={handleInputChange} placeholder='E-post@hotmail.com' className="login-input" />
+        <input name="password" type="password" value={formData.password} onChange={handleInputChange} placeholder='Lösenord' className="login-input" />
         <button type="submit" className="btn-primary">Logga in</button>
         <Link to="/registration" className="btn-primary">Registrera</Link>
       </form>
