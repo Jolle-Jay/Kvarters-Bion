@@ -35,7 +35,7 @@ static class EmailService
         var message = new MimeMessage()
         {
             // From = Avsändarens email, ska vara vår email.
-            From = { MailboxAddress.Parse(emailUsername) },
+            From = { MailboxAddress.Parse("Kvartesbion@outlook.com") },
             // To = Motagarens email, den vi ska skicka mail till.
             To = { MailboxAddress.Parse(to) },
             // Subject = Rubriken på mailet 
@@ -47,8 +47,11 @@ static class EmailService
 
         using (var client = new SmtpClient())
         {
+            client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+
             // Öppnar en uppkoppling till email-providerns server, i vårat fall outlook, dem kräcver SecureSocketOptions, StartTls.
             client.Connect(smtpServer, smtpPort, SecureSocketOptions.StartTls);
+            client.CheckCertificateRevocation = false;
             // Skickar in verifiering för att kontrollera att vi har en giltig email med stöd för SMTP.
             client.Authenticate(emailUsername, emailPassword);
             // Skickar meddelandet
