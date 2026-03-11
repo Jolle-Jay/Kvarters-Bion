@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../css/booking-styles.css';
+import { count } from 'console';
 
 // pris per kategori för biljetter
 const PRICES = {
@@ -303,6 +304,15 @@ function BookingPage() {
       alert('Välj antal biljetter först.');
       return;
     }
+
+    const isHorror = movie?.movies_raw?.Rated?.includes('R');
+    const adultTicket = counts.adult + counts.senior;
+
+    if (isHorror && counts.child > 0 && adultTicket == 0){
+      alert("Barnbiljetter kräver minst en vuxen för denna filmen.")
+      return;
+    }
+
     if (selectedSeats.length !== totalTickets) {
       alert(`Välj ${totalTickets} platser innan du bekräftar.`);
       return;
