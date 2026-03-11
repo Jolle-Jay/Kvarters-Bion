@@ -1,3 +1,22 @@
+.seat-pointer-wrapper-rel {
+  position: relative;
+  display: inline-block;
+}
+.seat-pointer-absolute {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  z-index: 30;
+  pointer-events: none;
+}
+.seat-pointer-under {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 2px;
+}
 /* Hero section: Innehåller biljettväljare och sammanfattning */
 
 .booking-hero {
@@ -189,34 +208,34 @@
 
 /* Biosalong: layout och behållare för säteskarta. */
 .cinema {
-    margin: 2rem auto;
-      padding: 1rem;
-      background: #061906;
-      border: 2px solid #5e460f;
-      border-radius: 10px;
-      max-width: 100%;
-      width: 100%;
-      box-sizing: border-box;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #061906;
+  border: 2px solid #5e460f;
+  border-radius: 10px;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cinema h3 {
-    text-align: center;
-    color: #B8860B;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+  text-align: center;
+  color: #B8860B;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
 }
 
 /* Header för salongen (rubrik + legend). */
 .cinema-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .cinema-header h3 {
-    margin: 0;
-    text-align: center;
+  margin: 0;
+  text-align: center;
 }
 
 .seat-legend {
@@ -260,11 +279,11 @@
 }
 
 .legend-color.available {
-    background: #0a3d0a;
+  background: #0a3d0a;
 }
 
 .legend-color.unavailable {
-    background: #b11f1f;
+  background: #b11f1f;
 }
 
 /* Skärm: visuell markör för scen/skärm. */
@@ -363,37 +382,6 @@
   cursor: not-allowed;
 }
 
-/*pointer for seats*/
-.pointer-tooltip {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  background: #222;
-  color: #fff;
-  border-radius: 12px;
-  padding: 12px 18px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  z-index: 1000;
-  font-size: 1.3rem;
-  display: none;
-}
-
-.pointer-tooltip__arrows {
-  display: flex;
-  gap: 6px;
-  justify-content: center;
-  font-size: 1.5em;
-}
-
-.pointer-tooltip__checks {
-  display: flex;
-  gap: 4px;
-  justify-content: center;
-  margin-top: 4px;
-  font-size: 1.2em;
-}
-/*END FOR POINTER FOR SEATS*/
-
 
 /* CONFIRM BUTTON */
 .confirm-button {
@@ -415,19 +403,66 @@
 }
 
 .seat:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow:
-        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
-        2px 5px 10px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+  box-shadow: inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+  2px 5px 10px rgba(0, 0, 0, 0.4);
 }
 
-.seat.vip:hover:not(:disabled) {
-    background: #FFC700;
+
+/* PIL-TOOLTIP FÖR MOBIL SÄTESVAL */
+.seat-pointer-wrapper {
+  position: relative;
+  display: inline-block;
 }
 
-.seat.elder:hover:not(:disabled) {
-    background: #ff99cc;
+
+/* Nytt: Box runt pilen */
+.pointer-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 50px;
+  background: #115e14;
+  border: 3px solid #cbb06c;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  padding: 0;
+  z-index: 10;
 }
+
+.arrow-up,
+.arrow-down {
+  font-size: 0.70rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pointer-arrows-middle-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.arrow-left,
+.arrow-right {
+  font-size: 0.70rem;
+  line-height: 1;
+  margin: 0 0.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*END FOR POINTER FOR SEATS*/
+
+
 
 /* DESKTOP: 1024px+ */
 @media (min-width: 1024px) {
@@ -540,3 +575,11 @@
     font-size: clamp(0.85rem, 3vw, 1rem);
   }
 }
+
+
+@media (min-width: 721px) {
+  .seat-pointer-absolute {
+    display: none;
+  }
+}
+

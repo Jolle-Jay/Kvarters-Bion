@@ -32,7 +32,7 @@ interface TicketCounts {
 interface SeatProps {
   row: number;
   col: number;
-  type: 'available';
+  type: 'available' | 'unavailable';
   isSelected: boolean;
   isBooked: boolean;
   onClick: () => void;
@@ -64,6 +64,7 @@ const Seat = ({ row, col, type, isSelected, isBooked, onClick }: SeatProps) => {
     </button>
   );
 };
+
 
 function BookingPage() {
   const navigate = useNavigate(); // use navigate to can navigate to the bookingpage URL
@@ -497,12 +498,6 @@ function BookingPage() {
         <div className="cinema-header">
           <h3>Salong - Skärm</h3>
           <div className="seat-legend">
-            <div className="pointer-tooltip">
-              <div className="pointer-tooltip-arrows">
-                <span>↑</span> <span>↓</span> <span>←</span> <span>→</span>
-              </div>
-            </div>
-
             <div className="legend-item">
               <span className="legend-color available"></span>
               <span className="legend-text">Lediga platser</span>
@@ -519,9 +514,10 @@ function BookingPage() {
         <div
           id="seats"
           className="seats-grid"
+          style={{ position: 'relative' }}
         >
-          {getCurrentSalongLayout().seatsPerRow.map((numSeats, index) => {
-            const row = index + 1;
+          {getCurrentSalongLayout().seatsPerRow.map((numSeats, rowIndex) => {
+            const row = rowIndex + 1;
             return (
               <div key={`row-${row}`} className="seat-row">
                 <div className="row-label">{row}</div>
@@ -530,17 +526,43 @@ function BookingPage() {
                     const col = numSeats - i;
                     const seatId = `${row}-${col}`;
                     let seatType: 'available' | 'unavailable' = 'available';
+                    // Om sätet är bokat, markera det som unavailable
+                    if (bookedSeats.has(seatId)) seatType = 'unavailable';
 
+
+                    // Tooltip-komponent för pilen
+                    // Nu med fyra <span> med pilar istället för SVG-polyline
+                    const SeatPointer = () => (
+                    <div className="seat-pointer-tooltip pointer-box">
+                      <span className="arrow-up">↑</span>
+                      <div className="pointer-arrows-middle-row">
+                        <span className="arrow-left">←</span>
+                        <span className="arrow-right">→</span>
+                      </div>
+                         <span className="arrow-down">↓</span>
+                      </div>
+                      );
+
+                    // Kolla om detta säte är valt (ska pilen visas här?)
+                    const isPointer = selectedSeats.includes(seatId);
                     return (
-                      <Seat
-                        key={seatId}
-                        row={row}
-                        col={col}
-                        type={seatType}
-                        isSelected={selectedSeats.includes(seatId)}
-                        isBooked={bookedSeats.has(seatId)}
-                        onClick={() => selectSeat(row, col)}
-                      />
+                      <span key={seatId} className="seat-pointer-wrapper-rel">
+                        {/* Säte (knapp) */}
+                        <Seat
+                          row={row}
+                          col={col}
+                          type={seatType}
+                          isSelected={selectedSeats.includes(seatId)}
+                          isBooked={bookedSeats.has(seatId)}
+                          onClick={() => selectSeat(row, col)}
+                        />
+                        {/* Absolut positionerad pointerbox under sätet */}
+                        {isPointer && (
+                          <div className="seat-pointer-absolute">
+                            <SeatPointer />
+                          </div>
+                        )}
+                      </span>
                     );
                   })}
                 </div>
@@ -555,7 +577,7 @@ function BookingPage() {
       </section>
     </>
   );
-};
+}
 
 BookingPage.route = {
   path: '/booking/:id',
