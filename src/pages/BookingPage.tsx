@@ -312,6 +312,15 @@ function BookingPage() {
       alert('Välj antal biljetter först.');
       return;
     }
+
+    // åldersgräns check för 15+ filmer så att inte barn kan boka själv 
+    const isHorror = movie?.movies_raw?.Rated?.includes('R');
+    const adultTicket = counts.adult + counts.senior;
+
+    if (isHorror && counts.child > 0 && adultTicket == 0){
+      alert("Barnbiljetter kräver minst en vuxen för denna filmen.")
+      return;
+    }
     if (selectedSeats.length !== totalTickets) {
       alert(`Välj ${totalTickets} platser innan du bekräftar.`);
       return;
