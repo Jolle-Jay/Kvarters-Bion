@@ -1,6 +1,6 @@
 /* Container for the weekly showtimes grid */
 .movie-times {
-  margin-top: 2rem;
+  margin-top: 1rem;
   flex: 1;
 }
 
@@ -341,16 +341,19 @@
 
 /* Main wrapper for the whole movie page */
 .movie-detail {
-  margin: 2rem;
+  margin: auto;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
   padding: 2rem;
   background: rgba(10, 25, 10, 0.7);
   border: 2px solid #B8860B;
   border-radius: 12px;
+  max-width: 2048px;
 }
 
 /* Top section: poster and trailer side by side */
 .movie-hero {
-  display: flex;
+  display:flex;
   gap: 2.5rem;
   align-items: stretch;
   margin-bottom: 3rem;
@@ -358,7 +361,7 @@
 
 /* Movie poster container */
 .movie-poster {
-  flex: 0 0 400px;
+  flex: 0 0 550px;
 }
 
 /* Movie poster image */
@@ -419,14 +422,40 @@
   .movie-times {
     margin-top: 2rem;
   }
+  .week-day {
+    max-width: 15rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    margin-bottom: 1rem;
+    border-style: hidden;
+    border-bottom-style: solid;
+    border-color: #B8860B;
+    border-width: 1px;
+    border-radius: 1rem;
+  }
+  .week-view {
+  display: block;
+  gap: 4rem;  
+  margin: 2rem;  
+}
+.week-day:not(:last-child)::after {
+  display: none;
+}
 
 }
 
 /* Mobile layout adjustments */
 @media (max-width: 768px) {
   .week-day {
+    max-width: 15rem;
     border-right: 1px solid rgba(255,255,255,0.08);
     position: relative;
+    margin-bottom: 1rem;
+    border-style: hidden;
+    border-bottom-style: solid;
+    border-color: #B8860B;
+    border-width: 1px;
+    border-radius: 1rem;
   }
   .week-day:last-child {
     border-right: none;
@@ -454,13 +483,13 @@
   }
 
   .movie-hero {
-    gap: 1.5rem;
+    gap: 1,5rem;
   }
 
   /* Veckovy mobilanpassning */
   .week-view {
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
   }
 
   .week-day-label {
