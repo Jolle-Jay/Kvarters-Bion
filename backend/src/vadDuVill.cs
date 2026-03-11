@@ -224,7 +224,7 @@ public static class vadDuVill
           {
             EmailService.SendEmail(
               email,
-              "Bokningsbekräftelse - Kvarterbion",
+              "Bokningsbekräftelse - Kvartersbion",
               $@"<h1>Tack för din bokning!</h1>
                    <p>Hej!</p>
                    <p>Din bokning till {filmTitle} är bekräftad.</p>
@@ -232,10 +232,9 @@ public static class vadDuVill
                    <h2>Bokningsinformation</h2>
                    <p><strong>Bokningsnummer:</strong> {bookingReference}</p>
                   
-                  <h3> Vi ses den {viewingTime}!<h3>
+                  <h3> Vi ses den {viewingTime.Replace("T", " ")}!<h3>
 
-                   <p> Vänligen kom 15 minuter innan visningen börjar för /n
-                   betalning och köp av snacks.
+                   <p> Vänligen kom 15 minuter innan visningen börjar för betalning och köp av snacks.
     
                    <h3>Platser:</h3>
                    <ul>
