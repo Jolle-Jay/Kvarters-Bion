@@ -35,8 +35,7 @@ static class EmailService
         var message = new MimeMessage()
         {
             // From = Avsändarens email, ska vara vår email.
-            From = { MailboxAddress.Parse(emailUsername) },
-            // To = Motagarens email, den vi ska skicka mail till.
+            From = { new MailboxAddress("KvartersBion", "noreply@kvartersbion.se") },            // To = Motagarens email, den vi ska skicka mail till.
             To = { MailboxAddress.Parse(to) },
             // Subject = Rubriken på mailet 
             Subject = subject,

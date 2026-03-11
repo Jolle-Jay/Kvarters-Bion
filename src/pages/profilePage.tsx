@@ -150,20 +150,20 @@ function ProfilePage() {
           className="bookings-toggle-row"
         >
           <div className="bookings-toggle-row">
-          <h3 className="section-title">Mina bokningar</h3>
+            <h3 className="section-title">Mina bokningar</h3>
 
-          <svg
-            className={`toggle-icon ${showBookings ? "open" : ""}`}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            <svg
+              className={`toggle-icon ${showBookings ? "open" : ""}`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M6 9l6 6 6-6" />
             </svg>
-            </div>
+          </div>
         </div>
         {showBookings && (
           isBookingsLoading ? (
@@ -206,22 +206,24 @@ function ProfilePage() {
 
                       {/* Visa platser som Rad: X Sittplats: Y */}
                       {(() => {
-                        let row = '', seat = '';
-                        if (typeof booking.seats === 'string' && booking.seats.includes('-')) {
-                          [row, seat] = booking.seats.split('-');
-                        } else if (Array.isArray(booking.seats) && booking.seats.length >= 2) {
-                          [row, seat] = booking.seats;
-                        } else if (typeof booking.seats === 'string') {
-                          row = booking.seats;
-                        }
-                        return (
-                          <>
-                            <div className="booking-row"><span className="booking-label">Rad:</span>
-                              <span className="booking-value">{row}</span></div>
-                            <div className="booking-row"><span className="booking-label">Sittplats:</span>
-                              <span className="booking-value">{seat}</span></div>
-                          </>
-                        );
+                        const seatsByRow: Record<string, string[]> = {};
+                        (booking.seats as string)?.split(',').forEach((seat: string) => {
+                          const [row, number] = seat.trim().split('-');
+                          if (!seatsByRow[row]) seatsByRow[row] = [];
+                          seatsByRow[row].push(number);
+                        });
+                        return Object.entries(seatsByRow).map(([row, numbers], index) => (
+                          <React.Fragment key={index}>
+                            <div className="booking-row">
+                              <span className="booking-label">Rad:</span>
+                              <span className="booking-value">{row}</span>
+                            </div>
+                            <div className="booking-row">
+                              <span className="booking-label">Sittplats:</span>
+                              <span className="booking-value">{numbers.join(', ')}</span>
+                            </div>
+                          </React.Fragment>
+                        ));
                       })()}
                       <div className="booking-row">
                         <span className="booking-label">Status:</span>
