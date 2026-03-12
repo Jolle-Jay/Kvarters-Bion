@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import '../css/AIChat.css';
 import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
+import Markdown from "marked-react";
 
 
 AiChatPage.route = {
@@ -27,7 +28,6 @@ interface Viewing {
 interface Message {
   role: 'user' | 'bot';
   content: string;
-  isHtml?: boolean;
 }
 
 export default function AiChatPage() {
@@ -105,7 +105,7 @@ export default function AiChatPage() {
           return "Du har inga tidigare bokningar.";
         }
 
-        let reply = "Här är dina senaste bokningar:<div><ul>";
+        let reply = "###Här är dina senaste bokningar:\n\n";
         for (const booking of userBookings) {
           const viewingInfo = viewings.find(v => v.id === booking.viewing);
           if (!viewingInfo) continue;
@@ -116,9 +116,9 @@ export default function AiChatPage() {
           const seats = Array.isArray(booking.seats) ? booking.seats.join(', ') : (typeof booking.seats === 'string' ? booking.seats.replace(/[\[\]"]+/g, '') : 'Okänt');
           const viewingTime = new Date(viewingInfo.start_time).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' });
 
-          reply += `<li><b>${movieInfo.Title}</b> (${viewingTime}) - Bokn.nr: ${booking.bookingId}. Platser: ${seats}.</li>`;
+          reply += `-**${movieInfo.Title}** (${viewingTime}) - Bokn.nr: ${booking.bookingId}. Platser: ${seats}\n`;
         }
-        reply += "</ul></div>";
+        reply += "";
         return reply;
       } catch (error) {
         console.error("Kunde inte hämta bokningshistorik:", error);
@@ -162,7 +162,7 @@ export default function AiChatPage() {
     setMessages(prev => [...prev, { role: "user", content: text }]);
     setInput("");
     const reply = await getBotReply(text);
-    setMessages(prev => [...prev, { role: "bot", content: reply, isHtml: reply.includes('<div>') }]);
+    setMessages(prev => [...prev, { role: "bot", content: reply}]);
   };
 
   return (
@@ -181,8 +181,8 @@ export default function AiChatPage() {
               {messages.map((msg, i) => (
                 <div key={i} className={`aichat-message ${msg.role}`}>
                   <b>{msg.role === 'bot' ? 'BioBot' : 'Du'}:</b>{' '}
-                  {msg.isHtml
-                    ? <span dangerouslySetInnerHTML={{ __html: msg.content }} />
+                  {msg.role === 'bot'
+                    ? <Markdown value={msg.content}/>
                     : msg.content}
                 </div>
               ))}
