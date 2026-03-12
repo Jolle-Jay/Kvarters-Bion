@@ -108,7 +108,7 @@
     3px 3px 6px rgba(0, 0, 0, 0.8),
     0 0 15px rgba(184, 134, 11, 0.4);
   line-height: 1.1;
-    /* håller den kompakt på mobil */
+  /* håller den kompakt på mobil */
 }
 
 .startpage-hero p {
@@ -155,6 +155,7 @@
     letter-spacing: 1.5px;
   }
 }
+
 /* =========================
    FILTER – grundlayout desktop
 ========================= */
@@ -215,6 +216,8 @@
   -moz-appearance: none;
   appearance: none;
   background-image: none;
+  position: relative;
+  cursor: pointer;
 }
 
 /* Hover & focus */
@@ -261,6 +264,12 @@
 .filter-date::-webkit-calendar-picker-indicator {
   filter: invert(1) brightness(1.2);
   cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 
 .filter-date::-webkit-datetime-edit-fields-wrapper {
@@ -326,6 +335,7 @@
     max-width: 100%;
   }
 }
+
 /* =========================
    MOVIES
 ========================= */
@@ -369,15 +379,19 @@
   align-items: center;
   margin-bottom: 1rem;
   border: 2px solid #B8860B;
-  background: transparent; /* Ta bort svart bakgrund */
+  background: transparent;
+  /* Ta bort svart bakgrund */
 }
 
 /* POSTER IMAGE */
 .poster img {
-  width: 100%;         /* fyll bredden på kortet */
-  height: auto;        /* proportioner hålls */
+  width: 100%;
+  /* fyll bredden på kortet */
+  height: auto;
+  /* proportioner hålls */
   display: block;
-  object-fit: contain;  /* hela bilden syns */
+  object-fit: contain;
+  /* hela bilden syns */
   border-radius: 6px;
 }
 
@@ -410,14 +424,11 @@
 
   .movie-card {
     padding: 0.75rem;
-     
+
   }
 
   .poster img {
-       height: 200px;
-       
+    height: 200px;
+
   }
 }
-
- 
-
