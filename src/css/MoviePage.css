@@ -348,14 +348,14 @@
   background: rgba(10, 25, 10, 0.7);
   border: 2px solid #B8860B;
   border-radius: 12px;
-  max-width: 2048px;
+  max-width: 1700px;
 }
 
 /* Top section: poster and trailer side by side */
 .movie-hero {
   display:flex;
   gap: 2.5rem;
-  align-items: stretch;
+  align-items: center;
   margin-bottom: 3rem;
 }
 
@@ -379,7 +379,6 @@
   flex: 1;
   flex-shrink: 0;
   position: relative;
-  aspect-ratio: 16/9;
 }
 
 /* Embedded trailer video */
@@ -389,6 +388,7 @@
   border: 3px solid #B8860B;
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  aspect-ratio: 16/9;
 }
 
 /* Content under hero: info and showtimes */
@@ -403,10 +403,12 @@
   flex: 2;
 }
 
-@media (max-width: 1726px) {
+@media (max-width: 1675px) {
 
   .movie-hero {
     flex-direction: column;
+  align-items: stretch;
+
   }
 
   .movie-poster {
