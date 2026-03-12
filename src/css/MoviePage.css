@@ -403,7 +403,7 @@
   flex: 2;
 }
 
-@media (max-width: 2048px) {
+@media (max-width: 1726px) {
 
   .movie-hero {
     flex-direction: column;
