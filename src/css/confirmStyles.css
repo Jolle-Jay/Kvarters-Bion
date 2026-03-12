@@ -132,6 +132,7 @@
   color: #ccc;
   text-align: center;
   margin-bottom: 2rem;
+  color: #B8860B;
 }
 
 /* Booking summary in guest form */
@@ -151,7 +152,7 @@
 }
 
 .booking-summary p {
-  color: #ccc;
+  color: #B8860B;
   text-align: left;
   margin: 0.5rem 0;
   font-size: 1rem;
