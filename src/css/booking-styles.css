@@ -348,6 +348,10 @@
   gap: 0;
 }
 
+.seats-grid {
+  touch-action: none;
+}
+
 /* SEATS */
 .seat {
   width: clamp(18px, 2.2vw, 32px);

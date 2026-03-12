@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../css/booking-styles.css';
 
-// state för pointer
-const [pointerSeat, setPointerSeat] = useState<string | null>(null);
-
 // pris per kategori för biljetter
 const PRICES = {
   adult: 140,
@@ -93,6 +90,10 @@ function BookingPage() {
   const [availableViewigs, setavailableViewigs] = useState<any[]>([]);
   const [selectedViewing, setselectedViewing] = useState<any>(null);
   const [CurrentLounge, setCurrentLounge] = useState<any>(null);
+
+  // state för pointer
+  const [pointerSeat, setPointerSeat] = useState<string | null>(null);
+  const [isDraggingPointer, setIsDraggingPointer] = useState(false);
 
 
   // REKOMMENDERADE SÄTEN: Välj bästa platser automatiskt 
@@ -305,12 +306,18 @@ function BookingPage() {
   if (totalTickets === 0) return;
 
   const layout = getCurrentSalongLayout();
+  const rowSeats = layout.seatsPerRow[row - 1];
+
   const seats: string[] = [];
 
+  const startCol = col - Math.floor(totalTickets / 2);
+
   for (let i = 0; i < totalTickets; i++) {
-    const seatCol = col - i;
-    if (seatCol > 0) {
+    const seatCol = startCol + i;
+
+    if (seatCol > 0 && seatCol <= rowSeats) {
       const seatId = `${row}-${seatCol}`;
+
       if (!bookedSeats.has(seatId)) {
         seats.push(seatId);
       }
@@ -540,6 +547,33 @@ function BookingPage() {
           id="seats"
           className="seats-grid"
           style={{ position: 'relative' }}
+          onPointerDown={(e) => {
+          const seat = (e.target as HTMLElement).closest('.seat');
+          if (!seat) return;
+
+          const row = Number(seat.getAttribute('data-row'));
+          const col = Number(seat.getAttribute('data-col'));
+
+          setIsDraggingPointer(true);
+          movePointer(row, col);
+        }}
+
+          onPointerMove={(e) => {
+          if (!isDraggingPointer) return;
+
+          const element = document.elementFromPoint(e.clientX, e.clientY);
+          const seat = element?.closest('.seat');
+
+          if (!seat) return;
+
+          const row = Number(seat.getAttribute('data-row'));
+          const col = Number(seat.getAttribute('data-col'));
+
+          movePointer(row, col);
+        }}
+
+        onPointerUp={() => setIsDraggingPointer(false)}
+        onPointerLeave={() => setIsDraggingPointer(false)}
         >
           {getCurrentSalongLayout().seatsPerRow.map((numSeats, rowIndex) => {
             const row = rowIndex + 1;
@@ -582,24 +616,15 @@ function BookingPage() {
                           onClick={() => movePointer(row, col)}
                         />
                         {/* Absolut positionerad pointerbox under sätet */}
-                        {isPointer && (
-                          <div
-                            className="seat-pointer-absolute"
-                            draggable
-                            onDragEnd={(e) => {
-                              const element = document.elementFromPoint(e.clientX, e.clientY);
-                              const seat = element?.closest('.seat');
-
-                              if (seat) {
-                                const row = Number(seat.getAttribute('data-row'));
-                                const col = Number(seat.getAttribute('data-col'));
-                                movePointer(row, col);
-                              }
-                            }}
-                          >
-                            <SeatPointer />
-                         </div>
-                        )}
+                       {isPointer && (
+                        <div
+                          className="seat-pointer-absolute"
+                          onPointerDown={() => setIsDraggingPointer(true)}
+                          onPointerUp={() => setIsDraggingPointer(false)}
+                        >
+                          <SeatPointer />
+                        </div>
+                      )}
                       </span>
                     );
                   })}
