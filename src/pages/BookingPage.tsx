@@ -91,10 +91,17 @@ function BookingPage() {
   const [CurrentLounge, setCurrentLounge] = useState<any>(null);
 
 
-  // REKOMMENDERADE SÄTEN: Välj bästa platser automatiskt 
+  //  count: number - parametern som säger hur många säten vi ska hitta
+  // layout = defaultvärde på layout parametern om ingen layout skickas använda aktuall salgon auto
+  // :string [] funktionen returnerar en array av strängar (seat id "4-5")
   const getBestSeats = (count: number, layout = getCurrentSalongLayout()): string[] => {
+    // NOTATION - gå in i objektet layout och hämta detta
+    // layout innehåller getCurrenTSal, hämtar SPR i den och. length hur många rader har salongen? 
     const totalRows = layout.seatsPerRow.length;
-    const middleRow = Math.ceil(totalRows / 2);
+    // Math.ceil rundar alltid uppåt till närmsta heltak
+    //dela totalrows på 2 för att komma i mitten.
+    const middleRow = Math.ceil(totalRows / 2) + 1;
+    // en string array som börjar tom
     const candidates: string[] = [];
 
     for (let rowOffset = 0; rowOffset < totalRows; rowOffset++) {
@@ -104,14 +111,16 @@ function BookingPage() {
       for (const row of rowsToCheck) {
         const numSeats = layout.seatsPerRow[row - 1];
         const middleCol = Math.ceil(numSeats / 2);
+        console.log('numSeats:', numSeats, 'middleCol:', middleCol); // HÄR
         for (let colOffset = 0; colOffset < numSeats; colOffset++) {
           const colsToCheck = colOffset === 0
             ? [middleCol]
-            : [middleCol - colOffset, middleCol + colOffset].filter(c => c >= 1 && c <= numSeats);
+            : [middleCol + colOffset, middleCol - colOffset].filter(c => c >= 1 && c <= numSeats);
           for (const col of colsToCheck) {
             const seatId = `${row}-${col}`;
             if (!bookedSeats.has(seatId) && !candidates.includes(seatId)) {
               candidates.push(seatId);
+              console.log('lade till:', seatId);
             }
           }
         }

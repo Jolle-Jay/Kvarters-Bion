@@ -38,7 +38,7 @@
   /* Gul ram */
   border-radius: 8px;
   /* Rundade hörn */
-  padding: 1.5rem 2.5rem;
+  padding: 0;
   /* Inre avstånd i boxen */
   display: flex;
   /* Centrerar innehållet i boxen */
@@ -50,6 +50,7 @@
   /* Minsta bredd på boxen */
   transition: box-shadow 0.2s;
   /* Mjuk övergång för skugga vid hover */
+
 }
 
 .login-register-box:hover {
@@ -70,6 +71,11 @@
   /* Lite extra bokstavsavstånd */
   transition: color 0.2s;
   /* Mjuk färgövergång vid hover */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1.5rem 2.5rem;
 }
 
 .login-register-box a:hover {
@@ -288,7 +294,7 @@ mobilvyn */
     gap: 0.75rem;
   }
 
-  .booking-row{
+  .booking-row {
     gap: 0rem;
     line-height: 1.4rem;
   }
@@ -344,7 +350,7 @@ mobilvyn */
     word-break: break-all;
   }
 
-  .booking-label{
+  .booking-label {
     font-size: medium;
     margin-bottom: 0;
   }

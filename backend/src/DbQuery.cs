@@ -29,11 +29,11 @@ public static class DbQuery
         var db = new MySqlConnection(connectionString);
         db.Open();
 
-         //Reset database if requested
-         //if (config.resetDb == true)
-         //{
-         //    DropTables(db);
-         //}
+        //Reset database if requested
+        if (config.resetDb == true)
+        {
+            DropTables(db);
+        }
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
