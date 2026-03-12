@@ -18,7 +18,7 @@ export default function Footer() {
           <h4>Kontakt</h4>
           <p>📍 Storgatan 12, 123 45 kvartersbion</p>
           <p>📞 +467-0123456</p>
-          <p>✉️ joanthanlopez850@gmail.com</p>
+          <p>✉️ KvartersbionMalmo@outlook.com</p>
         </div>
 
         <div className="footer-section">
