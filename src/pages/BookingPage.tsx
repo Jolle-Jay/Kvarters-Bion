@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'; // får film ID och URL från bokingen
 import '../css/booking-styles.css';
 
+// state för pointer
+const [pointerSeat, setPointerSeat] = useState<string | null>(null);
+
 // pris per kategori för biljetter
 const PRICES = {
   adult: 140,
@@ -297,6 +300,28 @@ function BookingPage() {
     }
   };
 
+  const movePointer = (row: number, col: number) => {
+  const totalTickets = getTotalTickets();
+  if (totalTickets === 0) return;
+
+  const layout = getCurrentSalongLayout();
+  const seats: string[] = [];
+
+  for (let i = 0; i < totalTickets; i++) {
+    const seatCol = col - i;
+    if (seatCol > 0) {
+      const seatId = `${row}-${seatCol}`;
+      if (!bookedSeats.has(seatId)) {
+        seats.push(seatId);
+      }
+    }
+  }
+
+  setPointerSeat(`${row}-${col}`);
+  setSelectedSeats(seats);
+};
+
+
   const confirmBooking = () => {
     // lägger in totala antalet biljetter vi har valt in i totaltickers
     const totalTickets = getTotalTickets();
@@ -544,7 +569,7 @@ function BookingPage() {
                       );
 
                     // Kolla om detta säte är valt (ska pilen visas här?)
-                    const isPointer = selectedSeats.includes(seatId);
+                    const isPointer = pointerSeat === seatId;
                     return (
                       <span key={seatId} className="seat-pointer-wrapper-rel">
                         {/* Säte (knapp) */}
@@ -554,13 +579,26 @@ function BookingPage() {
                           type={seatType}
                           isSelected={selectedSeats.includes(seatId)}
                           isBooked={bookedSeats.has(seatId)}
-                          onClick={() => selectSeat(row, col)}
+                          onClick={() => movePointer(row, col)}
                         />
                         {/* Absolut positionerad pointerbox under sätet */}
                         {isPointer && (
-                          <div className="seat-pointer-absolute">
+                          <div
+                            className="seat-pointer-absolute"
+                            draggable
+                            onDragEnd={(e) => {
+                              const element = document.elementFromPoint(e.clientX, e.clientY);
+                              const seat = element?.closest('.seat');
+
+                              if (seat) {
+                                const row = Number(seat.getAttribute('data-row'));
+                                const col = Number(seat.getAttribute('data-col'));
+                                movePointer(row, col);
+                              }
+                            }}
+                          >
                             <SeatPointer />
-                          </div>
+                         </div>
                         )}
                       </span>
                     );
