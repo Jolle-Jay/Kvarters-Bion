@@ -22,6 +22,8 @@ public static class AiChatRoutes
             {
                 var body = JSON.Parse(bodyJson.ToString());
                 var messages = (Arr)body.messages;
+                var today = DateTime.Now.ToString("yyyy-MM-dd");
+
 
                 if (messages == null)
                 {
@@ -63,6 +65,13 @@ public static class AiChatRoutes
                 {
                     role = "system",
                     content = "" + JSON.Stringify(dateFilter)
+                }));
+                
+                //giving date
+                fullMessages.Push(Obj(new
+                {
+                    role = "system",
+                    content = "Dagens datum är: " + today
                 }));
 
                 messages.ForEach(msg => fullMessages.Push(msg));
