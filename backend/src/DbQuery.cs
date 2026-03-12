@@ -30,7 +30,7 @@ public static class DbQuery
         db.Open();
 
         //Reset database if requested
-        if (config.resetDb == true)
+        if (config.resetDb == false)
         {
             DropTables(db);
         }
