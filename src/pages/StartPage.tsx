@@ -166,7 +166,7 @@ export default function StartPage() {
         {filteredMovies.map(movie => (
           <Link
             key={movie.id}
-            to={`/movie/${movie.id}`}
+            to={`/movie/${movie.id}?date=${selectedDate}`}
             className="movie-card"
           >
             <div className="poster">

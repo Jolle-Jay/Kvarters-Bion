@@ -247,6 +247,10 @@
   max-width: 100%;
 }
 
+.week-day-label::first-letter {
+  text-transform: uppercase;
+}
+
 
 /*
   One day column in the week grid. */
