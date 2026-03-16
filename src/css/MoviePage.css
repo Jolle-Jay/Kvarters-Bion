@@ -348,6 +348,11 @@
   opacity: 0.9; 
 }
 
+.showtime-box.highlighted {
+  border: 2px solid #FFD700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
 
 
 /* Main wrapper for the whole movie page */
