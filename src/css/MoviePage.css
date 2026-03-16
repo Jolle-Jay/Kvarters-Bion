@@ -362,9 +362,9 @@
 .movie-hero {
   display: grid;
   grid-template-columns: minmax(150px, 1fr) minmax(250px, 2fr); 
-    gap: clamp(1.5rem, 3vw, 3rem);
-    align-items: stretch;
-    margin-bottom: 3rem;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: stretch;
+  margin-bottom: 3rem;
 }
 
 /* Movie poster container */
@@ -467,19 +467,6 @@
   .movie-meta {
     grid-template-columns: 1fr;
   }
-
-  /* .week-view {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .week-day:not(:last-child)::after {
-    display: none;
-  }
-
-  .showtime-box {
-    padding: 0.7rem 0.8rem;
-  } */
 
 }
 
