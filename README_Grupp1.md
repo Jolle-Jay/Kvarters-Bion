@@ -10,7 +10,6 @@ Jonathan Lopez -- Jolle-Jay
 Systemet Kvartesbion biografbokningssystem byggt med React och TS i frontend, C# i backend, kopplat till en MySQL databas.
 Användaren kan navigera och kolla på olika filmer som visas, kolla trailer, läsa information om filmen, boka bioplatser, skapa inloggning, logga in och vid inloggning se bokningshistorik samt avboka bokade filmer.
 
-Kommer att klistra in db.settings.json här ;
 {
   "host": "",
   "port": ,
@@ -36,7 +35,7 @@ Thomas admin konto finns fortfarande sedan starten.
 
 
 Teknisk skuld:
-Vi har inte använt oss av dry. vi har på många plattser i css komponenterna där vi använt oss av kod som gör samma sak.
+Vi har inte använt oss av dry. Vi har på många platser i css komponenterna där vi använt oss av kod som gör samma sak.
 Kan strukturera upp kod bättre och kanske även bryta ut mer i komponenter med allt vi har gjort.
 
 
@@ -51,46 +50,49 @@ Backend: C# (.NET)
 
 Databas: MySQL (molnbaserad)
 
-Komponenter
-Frontend
-Frontend-applikationen är byggd med React och Vite samt använder TypeScript för typkontroll.
-Den ansvarar för:
-Rendering av användargränssnittet
-Hantering av användarinteraktioner
-Kommunikation med backend via API-anrop
-Backend
+Komponenter 
+Frontend 
+Frontend-applikationen är byggd med React och Vite samt använder TypeScript för typkontroll. 
+
+Den ansvarar för: 
+Rendering av användargränssnittet 
+Hantering av användarinteraktioner 
+Kommunikation med backend via API-anrop 
+Backend 
+
 Backend är utvecklad i C# med .NET och ansvarar för:
-Affärslogik
-API-endpoints
-Validering av inkommande data
-Kommunikation med databasen
-Databas
-En molnbaserad MySQL-databas används för lagring av:
-Filmer
-Visningstider
-Bokningar
-Användardata
-Dataflöde
-Användaren öppnar webbapplikationen i webbläsaren
-Frontend skickar HTTP-förfrågningar till backend
-Backend bearbetar förfrågan
-Backend hämtar eller sparar data i databasen
-Ett svar skickas tillbaka till frontend
-Frontend uppdaterar användargränssnittet
-Arkitekturval
-Separation mellan frontend och backend förbättrar skalbarhet och underhållbarhet
-TypeScript minskar risken för typrelaterade buggar
-.NET valdes för stabilitet och prestanda
-Molnbaserad databas möjliggör hög tillgänglighet
-Begränsningar
-Begränsad säkerhet (t.ex. ingen fullständig autentisering)
-Ingen caching implementerad
-Begränsad felhantering i vissa delar av systemet
-Framtida förbättringar
-Implementera autentisering och auktorisering
-Förbättra felhantering och loggning
-Införa caching för bättre prestanda
-Optimera databasfrågor
+Affärslogik 
+API-endpoints 
+Validering av inkommande data 
+Kommunikation med databasen 
+Databas 
+
+En molnbaserad MySQL-databas används för lagring av: 
+Filmer 
+Visningstider 
+Bokningar 
+Användardata 
+Dataflöde 
+Användaren öppnar webbapplikationen i webbläsaren 
+Frontend skickar HTTP-förfrågningar till backend 
+Backend bearbetar förfrågan 
+Backend hämtar eller sparar data i databasen 
+Ett svar skickas tillbaka till frontend 
+Frontend uppdaterar användargränssnittet 
+Arkitekturval 
+Separation mellan frontend och backend förbättrar skalbarhet och underhållbarhet 
+TypeScript minskar risken för typrelaterade buggar 
+.NET valdes för stabilitet och prestanda 
+Molnbaserad databas möjliggör hög tillgänglighet 
+Begränsningar 
+Begränsad säkerhet (t.ex. ingen fullständig autentisering) 
+Ingen caching implementerad 
+Begränsad felhantering i vissa delar av systemet 
+Framtida förbättringar 
+Implementera autentisering och auktorisering 
+Förbättra felhantering och loggning 
+Införa caching för bättre prestanda 
+Optimera databasfrågor 
 
 
 Planerat men ej genomfört arbete:
