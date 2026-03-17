@@ -35,7 +35,7 @@ Thomas admin konto finns fortfarande sedan starten.
 
 
 Teknisk skuld:
-Vi har försökt använda oss av dry men det har inte hållt sig överallt. Vi har på många platser i css komponenterna där vi använt oss av kod som gör samma sak.
+Vi har försökt använda oss av dry men det har inte hållt sig överallt. Vi har på många platser i css komponenterna använt oss av kod som gör samma sak.
 Kan strukturera upp kod bättre och kanske även bryta ut mer i komponenter med allt vi har gjort.
 
 
