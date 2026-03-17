@@ -6,16 +6,13 @@ export default interface Route {
   loader?: Function;
   menuLabel?: string;
   index?: number;
-  parent?: string; // behövs inte då vi inte har en under-meny
+  parent?: string; // Dont need it because we dont have a sub-menu
 }
 
-// för interface
-// för man ska kunna visa homepage 
-// sätter in komponenten som visar hemsidan
-// URL adress till sidan
-// funktion som hämtar data innan den laddas
-// text som står för navigationsmenyn
-// vilken ordning som ska läggas i menyn
-
-
-// Bestämmer var man är på hemsidan
+// for interface
+// for showing homepage 
+// Putting in compontentes that shows homepage 
+// URL adress for page
+// Functions that collects data before it loads
+// Text that is in navmenu
+// What order for the menu

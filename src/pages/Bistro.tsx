@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "../css/Bistro.css";
 
-// Routing-egenskap för Bistro-sidan
+// Routing for Bistro-site
 export const route = {
   path: '/bistro',
   parent: '/',
@@ -12,10 +12,10 @@ Bistro.route = route;
 
 export default function Bistro() {
   useEffect(() => {
-    // Lägg till temat på body
+    // Add theme for body
     document.body.classList.add("bistro-theme");
     return () => {
-      // Ta bort temat när vi lämnar sidan
+      // Remove theme when leving site
       document.body.classList.remove("bistro-theme");
     };
   }, []);

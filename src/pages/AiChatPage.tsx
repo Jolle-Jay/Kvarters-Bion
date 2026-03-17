@@ -84,13 +84,13 @@ export default function AiChatPage() {
     }
   }, []);
 
-  // Skrolla till botten när nya meddelanden kommer
+  // Scroll to bottom when message reseved
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
 
   const getBotReply = async (text: string): Promise<string> => {
-    const lower = text.toLowerCase();
+  const lower = text.toLowerCase();
 
     if (lower.includes("historik") || lower.includes("mina bokningar") || (lower.includes("bokningar") && !lower.includes("avbokning"))) {
       if (!isLoggedIn || !userEmail) {
@@ -126,29 +126,30 @@ export default function AiChatPage() {
       }
     }
 
-    // Om det inte är en fråga om historik, skicka till AI-backend
+    // If this is not a question about history, send to AI-backend
     try {
-      // Förbered meddelandelistan för API:et
-      // Vi mappar om 'bot' till 'assistant' som är standard för AI-API:er
+      // Prepare messagelist for API
+      // Mappign if 'bot' to 'assistant' for api format
       const apiMessages = messages.map(msg => ({
         role: msg.role === 'bot' ? 'assistant' : 'user',
         content: msg.content
       }));
 
-      // Lägg till det nya meddelandet
+      // Add the new message
       apiMessages.push({ role: 'user', content: text });
 
+      //Send full converstion to backend 
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: apiMessages })
       });
 
+      //Error message 
       if (!response.ok) throw new Error('Kunde inte nå AI-servern');
 
       const data = await response.json();
 
-      // Antar att svaret följer OpenAI-formatet som backend verkar använda
       return data.choices?.[0]?.message?.content || "Jag fick tyvärr inget svar från AI:n.";
     } catch (error) {
       console.error("AI Chat Error:", error);
@@ -156,7 +157,7 @@ export default function AiChatPage() {
     }
   };
 
-  const sendMessage = async () => {
+    const sendMessage = async () => {
     const text = input.trim();
     if (!text) return;
     setMessages(prev => [...prev, { role: "user", content: text }]);
