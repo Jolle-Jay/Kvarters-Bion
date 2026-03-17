@@ -2,121 +2,104 @@ namespace WebApp;
 
 public static class BookingQueries
 {
-
-
-
-    public static Obj CreateBooking(string BookingReference, int? userId, string email, int viewingId)
-    {
-        SQLQueryOne(
-            @"INSERT INTO bookings (BookingReference, user, email, viewing, status)
+  public static Obj CreateBooking(string BookingReference, int? userId, string email, int viewingId)
+  {
+    SQLQueryOne(
+        @"INSERT INTO bookings (BookingReference, user, email, viewing, status)
           VALUES (@BookingReference, @userId, @email, @viewingId, 'Confirmed')",
-            //@ är för att skydda mot SQL injection och hämtar värdena från new istället för att skriva dem direkt i values
-            new { BookingReference, userId, email, viewingId }
-        );
+        //@ is to protect against SQL injection and fetch the values from new instead of writing them into values directly
+        new { BookingReference, userId, email, viewingId }
+    );
 
-        return SQLQueryOne(
-            "SELECT * FROM bookings WHERE BookingReference = @BookingReference",
-            new { BookingReference }
-        );
-    }
+    return SQLQueryOne(
+        "SELECT * FROM bookings WHERE BookingReference = @BookingReference",
+        new { BookingReference }
+    );
+  }
 
-    public static void CreateBookingSeats(int bookingId, List<string> seats, string lounge, dynamic counts)
+  public static void CreateBookingSeats(int bookingId, List<string> seats, string lounge, dynamic counts)
+  {
+    var ticketTypes = new List<int>();
+
+    // builds a list for different tickets, adult first
+    for (int i = 0; i < (int)counts.adult; i++)
+      ticketTypes.Add(1);
+    for (int i = 0; i < (int)counts.senior; i++)
+      ticketTypes.Add(2);
+    for (int i = 0; i < (int)counts.child; i++)
+      ticketTypes.Add(3);
+
+    int loungeNumber = lounge == "Stora Salongen" ? 1 : 2;
+
+    // it fetches viewing från bookings in order to know whom the viewing belongs to and checks if the seat is unavailable for the specific viewing. 
+    var currentBooking = SQLQueryOne(
+        "SELECT viewing FROM bookings WHERE id = @bookingId",
+        new { bookingId }
+    );
+    int viewingId = (int)currentBooking["viewing"];
+
+
+    for (int i = 0; i < seats.Count; i++)
     {
-        var ticketTypes = new List<int>();
+      var parts = seats[i].Split('-');
+      int seatRow = int.Parse(parts[0]);
+      int seatNum = int.Parse(parts[1]);
+      int ticketType = ticketTypes[i];
 
-        // bygger en lista för olika biljetter vuxen först.
-        for (int i = 0; i < (int)counts.adult; i++)
-            ticketTypes.Add(1);
-        for (int i = 0; i < (int)counts.senior; i++)
-            ticketTypes.Add(2);
-        for (int i = 0; i < (int)counts.child; i++)
-            ticketTypes.Add(3);
-
-        int loungeNumber = lounge == "Stora Salongen" ? 1 : 2;
-
-        // den hämtar viewing från bookings för att veta vem visningen tillhör och kolla om ett säte är upptaget för den visningen
-        var currentBooking = SQLQueryOne(
-            "SELECT viewing FROM bookings WHERE id = @bookingId",
-            new { bookingId }
-        );
-        int viewingId = (int)currentBooking["viewing"];
-
-
-
-        for (int i = 0; i < seats.Count; i++)
-        {
-            var parts = seats[i].Split('-');
-            int seatRow = int.Parse(parts[0]);
-            int seatNum = int.Parse(parts[1]);
-            int ticketType = ticketTypes[i];
-
-            System.Console.WriteLine($"Looking for: lounge={loungeNumber}, row={seatRow}, number={seatNum}");
-            //skriva ut i kojnsolen för debuggiong
-
-            // kollar om sätena finns i seats och väljer dem istället för att försöka sätta in som vi gjorde i början
-            var existingSeat = SQLQueryOne(
-                 @"SELECT * FROM seats
+      // kollar om sätena finns i seats och väljer dem istället för att försöka sätta in som vi gjorde i början
+      var existingSeat = SQLQueryOne(
+           @"SELECT * FROM seats
                 WHERE lounge = @loungeNumber
                 AND seatRow = @seatRow
                 AND number = @seatNum",
-                 new { loungeNumber, seatRow, seatNum }
-             );
+           new { loungeNumber, seatRow, seatNum }
+       );
 
-            if (existingSeat == null)
-            {
-                System.Console.WriteLine($"Seat not found: lounge {loungeNumber}, row {seatRow}, number {seatNum}");
-                continue;
-            }
+      if (existingSeat == null)
+      {
+        continue;
+      }
 
-            // (INT) = tar värdet och lagrar det som en siffta 
-            // tar värder ID från exstingSeat och lagrar den som en siffra i seatID
-            int seatId = (int)existingSeat["id"];
-            System.Console.WriteLine($"Found seat ID: {seatId}");
+      // (int) = takes the ID values and parse to an int
+      int seatId = (int)existingSeat["id"];
 
-
-            // using var transaction = connection.BeginTransaction();
-            // // SELECT + INSERT här inne
-            // transaction.Commit();
-            // kolla om sätet redan är bokat för visningen, bokar sätet genom att lägga in rad i bookingseats
-            var alreadyBooked = SQLQueryOne(
-                @"SELECT * FROM bookingSeats bs
+      // checks if the seat already is booked for the specific viewing
+      var alreadyBooked = SQLQueryOne(
+          @"SELECT * FROM bookingSeats bs
                 INNER JOIN bookings b ON bs.booking = b.id
                 WHERE bs.seat = @seatId
                 AND b.viewing = @viewingId
                 AND b.status = 'Confirmed'",
 
-                new { seatId, viewingId }
-            );
+          new { seatId, viewingId }
+      );
 
-            if (alreadyBooked != null)
-            {
-                System.Console.WriteLine($"Seat {seatId} is already booked for this viewing.");
-                continue;
-            }
+      if (alreadyBooked != null)
+      {
+        continue;
+      }
 
-            // här bokas sätet genom att lägga in raden i bookingSeats
-            SQLQuery(
-                @"INSERT INTO bookingSeats (booking, seat, ticketType)
+      //  adds a row in bookingSeats in order to book the seat 
+      SQLQuery(
+          @"INSERT INTO bookingSeats (booking, seat, ticketType)
                 VALUES (@bookingId, @seatId, @ticketType)",
-                new { bookingId, seatId, ticketType }
-            );
-
-            System.Console.WriteLine($"Successfully booked seat {seatId} with ticket type {ticketType}");
-        }
+          new { bookingId, seatId, ticketType }
+      );
 
     }
 
-    // for canceling booking
+  }
 
-    public static void CancelBooking(string bookingReference)
-    {
-        // Change booking status to 'Cancelled'
-        SQLQuery(
-            @"UPDATE bookings 
+  // for canceling booking
+
+  public static void CancelBooking(string bookingReference)
+  {
+    // Change booking status to 'Cancelled'
+    SQLQuery(
+        @"UPDATE bookings 
               SET status = 'Cancelled' 
               WHERE BookingReference = @bookingReference",
-            new { bookingReference }
-        );
-        System.Console.WriteLine($"Bokning {bookingReference} har blivit avbokad.");
-    }
+        new { bookingReference }
+    );
+  }
 }

@@ -27,16 +27,15 @@ body.bistro-theme {
   }
 
 
-/* Övre meny: två rutor (barn/senior) sida vid sida. */
+/* Upper menu: child/senior side by side */
 .menu-top-row {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 2rem;
-    /* margin-bottom: 2rem; */
 }
 
-/* Nedre meny: tre kolumner (dryck/mat/snacks) sida vid sida. */
+/* lower menu - tre columns (dryck/mat/snacks) side by side */
 .menu-bottom-row {
     display: flex;
     flex-direction: row;
@@ -49,7 +48,7 @@ body.bistro-theme {
 }
 
 
-/* Menytavla: grid för Dryck/Mat/Snacks. */
+/* Menuboard: grid for Dryck/Mat/Snacks. */
 .menu-board {
   background: rgba(10, 25, 10, 0.7);
   border: 2px solid #B8860B;
@@ -69,7 +68,7 @@ body.bistro-theme {
   margin-bottom: 1;
 }
 
-/* Menygrupp-rubrik: sectionrubrik i menytavlan. */
+/* Menygrupp-header: sectionheader on menuboard. */
 .menu-group h3 {
     color: #B8860B;
     margin-bottom: 1rem;
@@ -78,7 +77,7 @@ body.bistro-theme {
     font-size: 1.2rem;
 }
 
-/* Menylista: staplad lista utan punkter. */
+/* Menulist: stacked list without points */
 .menu-list {
     list-style: none;
     padding: 0;
@@ -88,7 +87,7 @@ body.bistro-theme {
     gap: 0.9rem;
 }
 
-/* Menyitem: rad med produkt och pris. */
+/* Menu-item: row with product and price */
 .menu-item {
     display: flex;
     justify-content: space-between;
@@ -97,20 +96,20 @@ body.bistro-theme {
     border-bottom: 1px dashed rgba(184, 134, 11, 0.35);
 }
 
-/* Produktnamn i menyrad. */
+/* Productname on menu-row  */
 .menu-item strong {
     color: #f1f1f1;
     display: block;
     font-size: 1rem;
 }
 
-/* Beskrivning i menyrad. */
+/* description on menu-row */
 .menu-item span {
     color: #c3cac3;
     font-size: 0.85rem;
 }
 
-/* Pris i menyrad. */
+/* price on menu-row */
 .menu-price {
     color: #90ee90;
     font-weight: bold;
@@ -118,7 +117,7 @@ body.bistro-theme {
     font-size: 0.95rem;
 }
 
-/* Senior-meny: egen box med bakgrund och ram. */
+/* Senior-menu: own box with background and frame */
 .menu-senior {
     width: min(360px, 100%);
     background: rgba(10, 25, 10, 0.7);
@@ -128,7 +127,7 @@ body.bistro-theme {
     order: 2;
 }
 
-/* Senior-rubrik. */
+/* Senior-header. */
 .menu-senior h3 {
     color: #B8860B;
     margin-bottom: 1rem;
@@ -137,7 +136,7 @@ body.bistro-theme {
     font-size: 1.2rem;
 }
 
-/* Barn-meny: egen box med bakgrund och ram. */
+/* child-menu: own box with background and frame */
 .menu-child {
     width: min(360px, 100%);
     background: rgba(10, 25, 10, 0.7);
@@ -156,17 +155,3 @@ body.bistro-theme {
     font-size: 1.2rem;
 }
 
-/* Mobil: staplar menyer och minskar marginaler. */
-/* @media (max-width: 768px) {
-    .menu-senior {
-        width: 100%;
-    }
-
-    .menu-child {
-        width: 100%;
-    }
-
-    .menu {
-        margin: 1rem;
-    }
-} */
