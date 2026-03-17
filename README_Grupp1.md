@@ -94,7 +94,7 @@ Begränsad felhantering i vissa delar av systemet
 
 
 Planerat men ej genomfört arbete:
-Vi valde att fokusesra på grund kraven och uppnåde alla krav fullständigt innan vi går in på fler punkter i projektet. 
+Vi valde att fokusera på grund kraven och uppnå alla krav fullständigt innan vi går in på fler punkter i projektet. 
 Detta gjorde att vi fick ett mer komplett projekt istället för att ha fler funktioner som inte är hela.
 
 Framtida förbättringar: 
