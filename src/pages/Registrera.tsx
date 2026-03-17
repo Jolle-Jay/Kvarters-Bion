@@ -7,7 +7,6 @@ import '../css/login.css';
 function RegistreraPage() {
     const navigate = useNavigate();
 
-    // Registerformdata är typen/mallen som säger "måste ha email, password, name och lastname"
     const [formData, setFormData] = useState<RegisterFormData>({
         email: '',
         password: '',
@@ -15,36 +14,24 @@ function RegistreraPage() {
         lastName: ''
     });
 
-
-    //låter error och successmessage vara tomma från början
+    // State for error and success messages
     const [errorMessage, setErrorMessage] = useState('');
-    const [succesMessage, setSuccessMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
-    //e har typen React.changevent e = parametern (eventet-objektet) e inehåller vad som skrevs
-    // "detta är ett change event från ett input fält"
+    // Handle input changes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //e = inehåller info om vad som hände
-        // e.target det HTML element som användaren skrev i
-        //e. target.name = vilket fält
-        // e.target.value vad användaren skrev
         const { name, value } = e.target;
-        //prev tar emot gamla värdet
-        // ... sprider ut prev // kopiera allt från gamla objektet
-        // [name]: value lägg till / uppdatera ändrafältet
-        // })); returnera
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // async väntar på API anrop
-    // event har typen FormEvent som triggas när formulär skickas in (submit) /enter
     const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
-        // utan preventdefault formulär skickas, sidan laddar om, all data försvinner
         event.preventDefault();
 
-        // rensa gamla meddelanden innan inloggning
+        // Clear previous messages
         setErrorMessage('');
         setSuccessMessage('');
-        // error om något fält är tomt
+
+        // Validate inputs
         if (!formData.email || !formData.password || !formData.firstName || !formData.lastName) {
             setErrorMessage('Vänligen fyll i alla fält!');
             return;
@@ -54,31 +41,21 @@ function RegistreraPage() {
             setErrorMessage('Lösenordet måste vara minst 6 tecken');
             return;
         }
-        // try = frsök göra detta om mysslickas hoppa till catch
+
         try {
-            // vänta på svar från backend skicka till /api/
+            // Send registration request
             const response = await fetch('/api/users', {
                 method: 'POST',
-                //jag skickar JSON format som ett brev
                 headers: { 'Content-Type': 'application/json' },
-                //konverterar hela formData-objektet till JSON så att servern kan läsa det
-                body: JSON.stringify({
-                    email: formData.email,
-                    password: formData.password,
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
-                }),
+                body: JSON.stringify(formData),
             });
 
-            //om response inte är ok hoppa direkt till catch
             if (!response.ok) throw new Error();
-            //Väntar och läser in JSON som backend skickar och sparar det i data
+
             const data = await response.json();
-            //eftersom response var ok, då sätter vi inloggad till true
-            //local storage inbyggt objeklt i alla moderna webbläsare lagara data till cache rensad
-            //setItem inbyggs metod på local storage, sparar data som nyckel värde par
+
+            // Save user session
             localStorage.setItem('isLoggedIn', 'true');
-            // använd data.email från backend om det saknas använd formData (det som user skrev)
             localStorage.setItem('userEmail', data.email || formData.email);
             localStorage.setItem('userName', `${formData.firstName} ${formData.lastName}`);
 
@@ -94,17 +71,42 @@ function RegistreraPage() {
             <h2>Registrering</h2>
 
             {errorMessage && <div className="error-message">{errorMessage}</div>}
-            {succesMessage && <div className="success-message">{succesMessage}</div>}
+            {successMessage && <div className="success-message">{successMessage}</div>}
 
             <form onSubmit={handleRegister}>
                 <p>E-post:</p>
-                <input name="email" value={formData.email} onChange={handleInputChange} placeholder='Epost@hotmail.com' className="login-input" />
+                <input
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder='Epost@hotmail.com'
+                    className="login-input"
+                />
                 <p>Lösenord:</p>
-                <input name="password" type="password" value={formData.password} onChange={handleInputChange} placeholder='Lösenord' className="login-input" />
+                <input
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder='Lösenord'
+                    className="login-input"
+                />
                 <p>Namn:</p>
-                <input name="firstName" value={formData.firstName} onChange={handleInputChange} placeholder='Karl' className="login-input" />
+                <input
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    placeholder='Karl'
+                    className="login-input"
+                />
                 <p>Efternamn:</p>
-                <input name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder='Karlsson' className="login-input" />
+                <input
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    placeholder='Karlsson'
+                    className="login-input"
+                />
                 <button type="submit" className="btn-primary">Registrera</button>
                 <Link to="/" className="btn-primary">Avbryt</Link>
             </form>

@@ -4,7 +4,7 @@ import '../css/profile.css';
 import type { JSX } from 'react';
 
 
-// Typ för bokningsobjektet
+// Type for booking objekt
 interface Booking {
   bookingReference?: string;
   bookingId?: string;
@@ -14,16 +14,16 @@ interface Booking {
   start_time?: string;
   seats?: string[] | string;
   status?: string;
-  [key: string]: any; // tillåter extra fält
+  [key: string]: any; // allows extra fields 
 }
 
 function ProfilePage() {
   const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // är någon inloggad?
-  const [isLoading, setIsLoading] = useState(true); //laddar vi data?
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // is someone logged in
+  const [isLoading, setIsLoading] = useState(true); //is we loading data
   const [userData, setUserData] = useState({
-    // Startvärden = Standardvärden som visas innan vi laddat riktiga värden från localStorage
+    // StartValue = standardValue that shows before loading real value from localStorage
 
     name: 'Användare',
     email: 'user@example.com',
@@ -32,21 +32,21 @@ function ProfilePage() {
   const [isBookingsLoading, setIsBookingsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // activeDropdowns = Håller koll på vilka dropdowns som är öppna/stängda
-  // setActiveDropdowns = Funktion för att öppna/stänga dropdowns
+  // activeDropdowns = Keeps track on what deopdown is opened and closed
+  // setActiveDropdowns = Function for open and closing dropdowns
   const [showBookings, setShowBookings] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const userName = localStorage.getItem('userName') || 'användare';
     const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
-    // localStorage sparar ALLT som text
+    // localStorage saves EVERYTHING as text 
 
 
-    // Uppdatera state: Sätt inloggningsstatus till det vi hittade i localStorage
+    // Uppdate state: Set logged in status to what we found in localStorage
     setIsLoggedIn(loggedIn);
-    // Uppdatera state: Sätt användardata till det vi hittade i localStorage
-    // Skapar ett nytt objekt med name och email
+    // Uppdate state: Set userData to what we found in localStorage
+    // Create a new objekt with name and emial
     setUserData({ name: userName, email: userEmail });
 
 
@@ -103,10 +103,10 @@ function ProfilePage() {
       const res = await fetch(`/api/bookings/${bookingReference}`, { method: 'DELETE' });
       const result = await res.json();
       if (result.success) {
-        setBookings(prev => prev.map(b => // loopar igenom alla boknigar i listan
-          b.BookingReference === bookingReference //kollar om denna bokning är den vi avbokade
-            ? { ...b, status: 'Cancelled' }//om ja, kopiera allt från bokningen och byt status till cancelled
-            : b // om nej returnera bokning oförändrad
+        setBookings(prev => prev.map(b => // looping all bookings in the list
+          b.BookingReference === bookingReference //Cheking if this booking is what we canceld 
+            ? { ...b, status: 'Cancelled' }// if yes, copy all from the booking change the staus to cancelled
+            : b // if no return booking unchanged
         ));
       } else {
         alert(result.error || 'Kunde inte avboka bokning');
@@ -204,7 +204,7 @@ function ProfilePage() {
                         </span>
                       </div>
 
-                      {/* Visa platser som Rad: X Sittplats: Y */}
+                      {/* Show rows as: X seats as: Y */}
                       {(() => {
                         const seatsByRow: Record<string, string[]> = {};
                         (booking.seats as string)?.split(',').forEach((seat: string) => {

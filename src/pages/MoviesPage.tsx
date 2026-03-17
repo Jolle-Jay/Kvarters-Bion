@@ -7,7 +7,7 @@ import "../css/MoviePage.css";
 import { mapToSwedishAge, mapToSwedishGenre } from "../utils/mapToSwedish";
 
 export default function MoviePage() {
-  const { id } = useParams(); // hämtar id från URL
+  const { id } = useParams(); // get id from url
   const location = useLocation(); 
   const queryParams = new URLSearchParams(location.search);
   const initialDate = queryParams.get("date");
@@ -27,7 +27,7 @@ export default function MoviePage() {
       setMovie(foundMovie || null);
 
 
-      // nytt hämta visningstider för denna film
+      // new get viewings for this movie
       if (id) {
         const viewingsRespone = await fetch(`/api/viewings?movieId=${id}`);
         const viewingsData = await viewingsRespone.json();
@@ -56,7 +56,7 @@ export default function MoviePage() {
   console.log(movie?.Trailer);
 
 
-  //Ny funktion för att formatera datum /tid
+  // new function for formating date and time 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     const time = date.toLocaleTimeString('sv-SE', {
@@ -141,7 +141,7 @@ export default function MoviePage() {
         </div>
       </div>
 
-      {/* Veckovy för visningstider */}
+      {/* Week view for viewings  */}
       <div className="movie-times">
         <h3>Visningstider</h3>
         {viewings.length === 0 ? (
@@ -149,16 +149,16 @@ export default function MoviePage() {
         ) : (
          <div className="week-view">
   {[...Array(7)].map((_, i) => {
-    // Skapa datum för varje dag utifrån startDate
+    // Create date for every day based on startDate
     const dayDate = new Date(startDate);
     dayDate.setDate(startDate.getDate() + i);
     const dayKey = dayDate.toDateString();
 
-    // Veckodag och dag/månad för visning
+    // Weekday and day/mounth for viewings 
     const dayLabel = dayDate.toLocaleDateString('sv-SE', { weekday: 'long' });
     const dayNumber = dayDate.toLocaleDateString('sv-SE', { day: '2-digit', month: '2-digit' });
 
-    // Filtrera visningstider för denna dag
+    // Filter viewings for this day 
     const dayViewings = viewings.filter(v => {
       const vDate = new Date(v.start_time);
       return vDate.toDateString() === dayKey;
@@ -172,7 +172,7 @@ export default function MoviePage() {
           <div className="showtime-box info">Inga tider</div>
         ) : (
           dayViewings.map(viewing => {
-            // Kolla om visningen matchar initialDate från query-param
+            // Chek if viewings matches initialDate from query-param
             const isSelected = initialDate && viewing.start_time.startsWith(initialDate);
 
             return (

@@ -61,7 +61,7 @@ export default function StartPage() {
         mapToSwedishAge(movie.Rated) === selectedAge;
 
       const matchDate =
-        !selectedDate || // om inget datum är valt -> visa alla
+        !selectedDate || //if no date is chosen -> view all
         viewings?.some(v => {
           if (!v.start_time) return false;
           const viewingDate = v.start_time.substring(0, 10);
@@ -143,7 +143,7 @@ export default function StartPage() {
           />
         </div>
 
-        {/* Åldersgräns */}
+        {/* Age limit */}
         <div className="filter-item">
           <h3>Åldersgräns</h3>
           <select
