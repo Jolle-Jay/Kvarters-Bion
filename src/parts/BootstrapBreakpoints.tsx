@@ -15,6 +15,5 @@ export default function ShowBootstrapBreakPoints() {
   </aside>;
 }
 
-// visar textremsa md, lg längst upp på sidan av skärmen
-//När man ändrar på webbläsarfönstret uppdateras texten auto för nuvarande Bootstrap
-
+// Displays a text banner for md and lg at the top of the screen
+// When the browser window is resized, the text updates automatically based on the current Bootstrap breakpoint

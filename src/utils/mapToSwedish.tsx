@@ -1,4 +1,4 @@
-  // översätter imdb åldersgräns till svensk standard
+  // Translate imdb age limit to swedish standard
 export const mapToSwedishAge = (rating: string) => {
     switch (rating) {
       case "G":
@@ -23,6 +23,7 @@ export const mapToSwedishAge = (rating: string) => {
     }
 };
   
+  // Translate genre to swedish
 export const mapToSwedishGenre = (GenreString: string) => {
   const genres = GenreString.split(",").map(g => g.trim());
 

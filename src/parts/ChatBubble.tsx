@@ -1,4 +1,4 @@
-// ChatBubble: Visar en chattbubbla längst till höger på skärmen
+// ChatBubble: Show a chatbubble in botom right corner 
 import { useState } from "react";
 import AiChatPage from "../pages/AiChatPage";
 import '../css/AIChat.css';

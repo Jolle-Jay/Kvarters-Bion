@@ -61,7 +61,7 @@ export default function LillaSalongen(): JSX.Element {
   );
 }
 
-// Lägg till path property för routes.ts
+// Routing for lillasalongen
 LillaSalongen.route = {
   path: '/lilla-salongen',
   menuLabel: 'Lilla Salongen'

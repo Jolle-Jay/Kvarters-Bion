@@ -20,7 +20,7 @@ export default function CookieBanner() {
     setCookieConsent("declined");
   };
 
-  if (cookieConsent) return null; // visa inget om redan valt
+  if (cookieConsent) return null; // show nothing if allready chosen 
 
   return (
     <div className="cookie-banner">

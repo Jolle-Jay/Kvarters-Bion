@@ -1,4 +1,4 @@
-/* Hero section: Innehåller biljettväljare och sammanfattning */
+/* Hero section: Contains chosen tickets and summary */
 
 .booking-hero {
   position: relative;
@@ -11,7 +11,7 @@
   box-sizing: border-box;
 }
 
-/* Rubrik */
+/* header */
 .booking-hero h2 {
   text-align: center;
   color: #B8860B;
@@ -19,33 +19,33 @@
   margin-bottom: 0.5rem;
 }
 
-/* Undertext */
+/* Subtext */
 .booking-hero .p-tagg {
   text-align: center;
   color: #ccc;
   margin-bottom: 2rem;
 }
 
-/* Wrapper som styr bredden för biljettväljare */
+/* Wrapper that controls the width for ticket selector */
 .ticket-wrapper {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0rem 1rem 0.5rem 1rem;
-    box-sizing: border-box;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0rem 1rem 0.5rem 1rem;
+  box-sizing: border-box;
 }
 
-/* Layout för biljettväljare och sammanfattning */
+/* Layout for ticket selector and summary */
 .ticket-layout {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  justify-content: center; 
+  justify-content: center;
   justify-items: center;
   margin-top: 0;
   gap: clamp(1rem, 2vw, 2rem);
   width: 100%;
 }
 
-/* Panel för biljettval */
+/* Panel for ticket selection */
 .ticket-panel {
   background: #061906;
   padding: 0.2rem;
@@ -56,8 +56,8 @@
 }
 
 .form-select-viewing {
-  width: 100%; 
-  padding: 8px; 
+  width: 100%;
+  padding: 8px;
   margin-Bottom: 15px;
   border-Radius: 4px;
   background: #0a3d0a;
@@ -66,7 +66,6 @@
   cursor: pointer;
 }
 
-
 .ticket-panel h3 {
   color: #B8860B;
   font-size: 1rem;
@@ -74,7 +73,7 @@
   text-align: center;
 }
 
-/* En rad med biljetttyp */
+/* One row for a ticket type */
 .ticket-row {
   display: flex;
   justify-content: space-between;
@@ -90,133 +89,133 @@
 }
 
 .ticket-label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
 .ticket-label strong {
-    color: #B8860B;
-    font-size: 1.1rem;
+  color: #B8860B;
+  font-size: 1.1rem;
 }
 
 .ticket-note {
-    color: #999;
-    font-size: 0.85rem;
+  color: #999;
+  font-size: 0.85rem;
 }
 
-/* Kontroller för plus/minus */
+/* Controls for plus/minus */
 .ticket-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .ticket-btn {
-    width: 40px;
-    height: 40px;
-    background: #0a3d0a;
-    color: #B8860B;
-    border: 2px solid #B8860B;
-    border-radius: 6px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #0a3d0a;
+  color: #B8860B;
+  border: 2px solid #B8860B;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ticket-btn:hover:not(:disabled) {
-    background: #086808;
-    transform: scale(1.05);
+  background: #086808;
+  transform: scale(1.05);
 }
 
 .ticket-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .ticket-count {
-    color: #B8860B;
-    font-size: 1.3rem;
-    font-weight: bold;
-    min-width: 30px;
-    text-align: center;
+  color: #B8860B;
+  font-size: 1.3rem;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: center;
 }
 
-/* Sammanfattningspanel */
+/* Summary panel */
 .ticket-summary {
-    background: #061906;
-    padding: 1.2rem;
-    border: 2px solid #5e460f;
-    border-radius: 10px;
-    height: fit-content;
-    position: sticky;
-    top: 2rem;
-    max-width: 320px;
-    width: 100%;
+  background: #061906;
+  padding: 1.2rem;
+  border: 2px solid #5e460f;
+  border-radius: 10px;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+  max-width: 320px;
+  width: 100%;
 }
 
 .ticket-summary h4 {
-    color: #B8860B;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #B8860B;
-    padding-bottom: 0.5rem;
-    text-align: center;
+  color: #B8860B;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #B8860B;
+  padding-bottom: 0.5rem;
+  text-align: center;
 }
 
 .summary-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    color: #ccc;
-    font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  color: #ccc;
+  font-size: 1rem;
 }
 
 .summary-total {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 0;
-    margin-top: 1rem;
-    border-top: 2px solid #B8860B;
-    color: #B8860B;
-    font-size: 1.2rem;
-    font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  border-top: 2px solid #B8860B;
+  color: #B8860B;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
-/* Biosalong: layout och behållare för säteskarta. */
+/* Cinema hall: layout and container for seat map */
 .cinema {
-    margin: 2rem auto;
-      padding: 1rem;
-      background: #061906;
-      border: 2px solid #5e460f;
-      border-radius: 10px;
-      max-width: 100%;
-      width: 100%;
-      box-sizing: border-box;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #061906;
+  border: 2px solid #5e460f;
+  border-radius: 10px;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cinema h3 {
-    text-align: center;
-    color: #B8860B;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+  text-align: center;
+  color: #B8860B;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
 }
 
-/* Header för salongen (rubrik + legend). */
+/* Header for the cinema (title + legend) */
 .cinema-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .cinema-header h3 {
-    margin: 0;
-    text-align: center;
+  margin: 0;
+  text-align: center;
 }
 
 .seat-legend {
@@ -260,14 +259,14 @@
 }
 
 .legend-color.available {
-    background: #0a3d0a;
+  background: #0a3d0a;
 }
 
 .legend-color.unavailable {
-    background: #b11f1f;
+  background: #b11f1f;
 }
 
-/* Skärm: visuell markör för scen/skärm. */
+/* Screen: visual marker for stage/screen */
 
 .screen-wrapper {
   perspective: 600px;
@@ -294,7 +293,7 @@
   font-size: 1.2rem;
 }
 
-/* SEAT MAP CONTAINER */
+/* seat map container */
 #seats {
   width: 100%;
   display: flex;
@@ -304,7 +303,7 @@
   overflow: hidden;
 }
 
-/* EN RAD */
+/* one row */
 .seat-row {
   display: grid;
   grid-template-columns: 50px auto 50px;
@@ -312,7 +311,7 @@
   width: 100%;
 }
 
-/* Radnummer */
+/* Row number */
 .row-label {
   display: flex;
   justify-content: center;
@@ -322,14 +321,14 @@
   font-size: clamp(0.75rem, 1.2vw, 1rem);
 }
 
-/* Sätescontainer */
+/* Seat container */
 .seat-row-inner {
   display: flex;
   justify-content: center;
   gap: 0;
 }
 
-/* SEATS */
+/* seats */
 .seat {
   width: clamp(18px, 2.2vw, 32px);
   aspect-ratio: 1 / 1;
@@ -350,32 +349,20 @@
   transform: scale(1.05);
 }
 
-/* Vald */
+/* Selected */
 .seat.selected {
   background: #58ca58;
   border-color: #FFD700;
 }
 
-/* Bokad */
+/* Booked */
 .seat.booked {
   background: #8b1e1e;
   border-color: #8b1e1e;
   cursor: not-allowed;
 }
 
-/* VIP */
-.seat.vip {
-  background: #b49e1f;
-  border-color: #FFD700;
-}
-
-/* Elder */
-.seat.elder {
-  background: #85546c;
-  border-color: #B8860B;
-}
-
-/* CONFIRM BUTTON */
+/* Confirm button */
 .confirm-button {
   margin: 2rem auto 0 auto;
   display: block;
@@ -395,18 +382,18 @@
 }
 
 .seat:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow:
-        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
-        2px 5px 10px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+  box-shadow:
+    inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+    2px 5px 10px rgba(0, 0, 0, 0.4);
 }
 
 .seat.vip:hover:not(:disabled) {
-    background: #FFC700;
+  background: #FFC700;
 }
 
 .seat.elder:hover:not(:disabled) {
-    background: #ff99cc;
+  background: #ff99cc;
 }
 
 /* DESKTOP: 1024px+ */
@@ -438,7 +425,7 @@
   /* Screen */
   .screen {
     width: min(80%, 450px);
-    /* lite bredare än seat-grid */
+    /* slightly wider than seat grid */
   }
 
   /* Ticket hero */
@@ -455,7 +442,7 @@
     font-size: clamp(0.85rem, 3vw, 1rem);
   }
 
-  /* Ticket layout: två kolumner */
+  /* Ticket layout: two columns */
   .ticket-layout {
     grid-template-columns: repeat(2, minmax(250px, 1fr));
     gap: clamp(0.5rem, 2vw, 1rem);
@@ -467,7 +454,6 @@
     width: 100%;
   }
 }
-
 
 /* SMALL TABLET / LARGE MOBILE: 721px–900px */
 @media (min-width: 721px) and (max-width: 900px) {
@@ -490,7 +476,7 @@
   .screen {
     width: 95%;
     max-width: 300px;
-    /* matchar ticket-panel */
+    /* matches ticket-panel */
     font-size: 1rem;
   }
 
@@ -520,5 +506,3 @@
     font-size: clamp(0.85rem, 3vw, 1rem);
   }
 }
-
-
