@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/confirmStyles.css';
 
-// bestämma hur bookingData ska se ut så att TS kan kolla om rätt upgifter skickas med 
+// making a interface to have something to devide how bookingData should look so TS can check if right data is being sent 
 interface BookingData {
   film: string;
   viewing: string;
@@ -17,33 +17,33 @@ interface BookingData {
 }
 
 function ConfirmationPage() {
-  // navigate för att komma till andra sidor i react appen
+  //  navigate to arrive in different pages in the react app 
   const navigate = useNavigate();
-  // gör att booking id är en generic sträng och har tomt värde att börja med
+  // makes bookingId is a generic string and have a empty value to start with 
   const [bookingId, setBookingId] = useState<string>('');
-  // gör att bookingdata är generic bookingdata eller null, börjas med att vara null
+  // does that bookingData is generic or null, starts with being null
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [guestEmail, setGuestEmail] = useState('');
   const [showGuestForm, setShowGuestForm] = useState(false);
 
-  // Ref för att förhindra dubbla anrop i React.StrictMode
+  // ref to hinder double calls in React.StrictMode 
   const effectRan = useRef(false);
 
 
   const hasBooked = useRef(false);
-  // hämtar värdet från localstorage och kollar om strängen är TRUE FALSE/TRUE sparas i loggedIN och sen uppdateras setIsLoggedin
+  // fetch the value from localstorage and checks if the string is True/false save is loggedIn and then change in usestate 
   useEffect(() => {
-    // I utvecklingsläge med StrictMode körs denna useEffect två gånger.
-    // Denna ref-kontroll säkerställer att bokningen bara skapas en gång.
+    // in strictmode this is run twice
+    // this ref-control insures that the booking is only created once 
     if (effectRan.current === true) return;
 
-    //bookingData och session storage är dem sparade valen av användaren i bookingPage
-    //det sparas sen i storedData
+    // bookingData and  session storage are the saved choices of the user in bookingPage 
+    //its later saved it storedData
     const storedData = sessionStorage.getItem('bookingData');
     if (!storedData) {
-      //ingen booking data, omdirigera tillbaka
+      //no booking data? Be returned to /booking
       navigate('/booking');
       return;
     }
@@ -51,16 +51,16 @@ function ConfirmationPage() {
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
 
-    //konverterar JSON text till JS objekt och sparar resultet i variabeln data
+    //converts JSON text to JS object and saves the result in the variabel data
     const data: BookingData = JSON.parse(storedData);
-    // uppdaterar useState med objektet data
+    // update useState with objektet data
     setBookingData(data);
 
-    //om inte inloggad visa gäst formulär där user måste skriva in email
+    // if not signed in show guest formular where the user has to enter email 
     if (!loggedIn) {
       setShowGuestForm(true);
     } else {
-      // om inloggad skapa bokning direkt med data från sessionstorage, vet redan email från inloggad användare
+      // if logged in already create booking directly with data from sessionstorage , email is knows from login 
       const email = localStorage.getItem('userEmail');
       if (!email) {
         alert('Email saknas, logga in igen');
@@ -72,18 +72,18 @@ function ConfirmationPage() {
       }
     }
 
-    // Cleanup-funktion som körs när komponenten "unmounts".
-    // I StrictMode betyder det att ref:en sätts till true efter första körningen.
+    // Cleanup-function runs when the component "unmounts".
+    // I StrictMode it means ref:en is put to true after first run 
     return () => { effectRan.current = true; };
 
   }, []);
 
-  //generera unikt booking ID
+  //genererate unique booking ID
   const generateBookingId = (): string => {
     return `KB${Date.now()}${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
   };
 
-  //skicka bokining till backend
+  //booking is being ready to post to backend 
   const createBooking = async (data: BookingData, email: string) => {
     const id = generateBookingId();
     setBookingId(id);
@@ -100,14 +100,11 @@ function ConfirmationPage() {
       lounges: data.lounges
     };
 
-    console.log('=== SENDING TO BACKEND ===');
-    console.log(payload);
-    console.log('=========================');
 
-    // skicka en POST request till api/custopmbooking
-    // await väntar på svar från backend om det är 200 eller tex 500 error
-    // 500 kan tex bero på att film inte hittades i databas eller annat
-    //gör om body till JSON format med all data 
+
+    // send a post request to  api/custombooking 
+    // await waits for answer from backend ex 200 or 500 etc 
+    // remake body to JSON format with all data 
     const response = await fetch('/api/customBooking', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -123,7 +120,7 @@ function ConfirmationPage() {
       })
     });
 
-    //användes för debugging
+    //used for debugging
     console.log('Bokning skapad:', {
       bookingId: id,
       email,
@@ -131,9 +128,9 @@ function ConfirmationPage() {
     });
   };
 
-  // hantera inlämning av gäst bokningar
-  // e inehåller information om formuläret
-  //e.preventdefault gör att när vi klickar boka så försvinner inte all data i refresh
+  // handle guest bookings 
+  // e contains information of the formular 
+  // e.preventdefault makes so when we klick book then everything doesnt dissapear in refresh 
   const handleGuestSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -142,16 +139,16 @@ function ConfirmationPage() {
       return;
     }
 
-    // in bookingdata är null så stoppa functionen direkt
+    // if bookingdata is null then stop everything
     if (!bookingData) return;
 
-    //lägger in bookingData och gästemail i createBooking som skickas till backend/databas
+    // populate createbooking with bookingdata and guest email and is sent to backend 
     createBooking(bookingData, guestEmail);
-    // göm formuläret igen och visar konfirmations formuläret istället
+    // hide formular and show the confirmation formular instead 
     setShowGuestForm(false);
   };
 
-  // om gäst formuläret visas
+  // if the guest formula is shown
   if (showGuestForm && bookingData) {
     return (
       <main className='confirm-container'>
@@ -191,7 +188,7 @@ function ConfirmationPage() {
     );
   }
 
-  //om ingen bokningsData
+  // if no bookingdata return
   if (!bookingData || !bookingId) {
     return (
       <main className='confirm-container'>
@@ -200,7 +197,7 @@ function ConfirmationPage() {
     );
   }
 
-  //Visa biljetter
+  //show tickets
   return (
     <main className="confirm-container">
       <div className="bookingMsg">

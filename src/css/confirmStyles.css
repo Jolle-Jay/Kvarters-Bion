@@ -47,11 +47,9 @@
   font-size: clamp(0.6rem, 3vw, 0.9rem);
   letter-spacing: 1px;
   color: #B8860B;
-  /* din färg */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-  /* subtil shadow */
+  /* subtile shadow */
   white-space: nowrap;
-  /* ingen radbrytning */
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 0.4rem;

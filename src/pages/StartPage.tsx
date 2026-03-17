@@ -2,7 +2,7 @@ import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import "../css/MovieCards.css";
+import "../css/StartPage.css";
 import "../css/Carousel.css";
 import { mapToSwedishAge, mapToSwedishGenre } from '../utils/mapToSwedish';
 
@@ -61,7 +61,7 @@ export default function StartPage() {
         mapToSwedishAge(movie.Rated) === selectedAge;
 
       const matchDate =
-        !selectedDate || // om inget datum är valt -> visa alla
+        !selectedDate || //if no date is chosen -> view all
         viewings?.some(v => {
           if (!v.start_time) return false;
           const viewingDate = v.start_time.substring(0, 10);
@@ -143,7 +143,7 @@ export default function StartPage() {
           />
         </div>
 
-        {/* Åldersgräns */}
+        {/* Age limit */}
         <div className="filter-item">
           <h3>Åldersgräns</h3>
           <select
@@ -166,7 +166,7 @@ export default function StartPage() {
         {filteredMovies.map(movie => (
           <Link
             key={movie.id}
-            to={`/movie/${movie.id}`}
+            to={`/movie/${movie.id}?date=${selectedDate}`}
             className="movie-card"
           >
             <div className="poster">

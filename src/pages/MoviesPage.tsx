@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 // ...existing code...
 import type { Movie } from "../interfaces/Movie";
@@ -7,7 +7,11 @@ import "../css/MoviePage.css";
 import { mapToSwedishAge, mapToSwedishGenre } from "../utils/mapToSwedish";
 
 export default function MoviePage() {
-  const { id } = useParams(); // hämtar id från URL
+  const { id } = useParams(); // get id from url
+  const location = useLocation(); 
+  const queryParams = new URLSearchParams(location.search);
+  const initialDate = queryParams.get("date");
+
   const [movie, setMovie] = useState<Movie | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [openDates, setOpenDates] = useState<Set<string>>(new Set());
@@ -23,15 +27,17 @@ export default function MoviePage() {
       setMovie(foundMovie || null);
 
 
-      // nytt hämta visningstider för denna film
+      // new get viewings for this movie
       if (id) {
         const viewingsRespone = await fetch(`/api/viewings?movieId=${id}`);
         const viewingsData = await viewingsRespone.json();
         setViewings(viewingsData);
-        console.log('VisningTider:', viewingsData);
       }
     })();
   }, [id]);
+
+   const startDate = initialDate ? new Date(initialDate) : new Date();
+  startDate.setHours(0, 0, 0, 0);
 
   if (!movie) return <p>Laddar film...</p>;
 
@@ -50,7 +56,7 @@ export default function MoviePage() {
   console.log(movie?.Trailer);
 
 
-  //Ny funktion för att formatera datum /tid
+  // new function for formating date and time 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     const time = date.toLocaleTimeString('sv-SE', {
@@ -135,50 +141,58 @@ export default function MoviePage() {
         </div>
       </div>
 
-      {/* Veckovy för visningstider */}
+      {/* Week view for viewings  */}
       <div className="movie-times">
         <h3>Visningstider</h3>
         {viewings.length === 0 ? (
           <p>Inga visningstider tillgängliga</p>
         ) : (
-          <div className="week-view">
-            {[...Array(7)].map((_, i) => {
-              // Skapa datum för varje veckodag 7 dagar från dagens dag)
-              const today = new Date();
-              // undvika buggar runt tidszoner nollställer vi tiden
-              today.setHours(0, 0, 0, 0);
-              const dayDate = new Date(today);
-              dayDate.setDate(today.getDate() + i); 
-              const dayKey = dayDate.toDateString();
-              const dayLabel = dayDate.toLocaleDateString('sv-SE', { weekday: 'long' });
-              // Filtrera visningstider för denna dag
-              const dayViewings = viewings.filter(v => {
-                const vDate = new Date(v.start_time);
-                return vDate.toDateString() === dayKey;
-              });
-              return (
-                <div key={dayKey} className="week-day">
-                  <div className="week-day-label">{dayLabel}</div>
-                  {dayViewings.length === 0 ? (
-                    <div className="showtime-box info">Inga tider</div>
-                  ) : (
-                    dayViewings.map(viewing => (
-                      <div
-                        key={viewing.id}
-                        className="showtime-box"
-                        onClick={() => window.location.href = `/booking/${movie.id}?showtime=${viewing.id}`}
-                        title={`Boka ${formatDateTime(viewing.start_time)} (${viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'})`}
-                      >
-                        <div className="salong">{viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}</div>
-                        <div className="tid">{formatDateTime(viewing.start_time)}</div>
-                        <div className="info">{movie.Title} ({movie.Runtime})</div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              );
-            })}
-          </div>
+         <div className="week-view">
+  {[...Array(7)].map((_, i) => {
+    // Create date for every day based on startDate
+    const dayDate = new Date(startDate);
+    dayDate.setDate(startDate.getDate() + i);
+    const dayKey = dayDate.toDateString();
+
+    // Weekday and day/mounth for viewings 
+    const dayLabel = dayDate.toLocaleDateString('sv-SE', { weekday: 'long' });
+    const dayNumber = dayDate.toLocaleDateString('sv-SE', { day: '2-digit', month: '2-digit' });
+
+    // Filter viewings for this day 
+    const dayViewings = viewings.filter(v => {
+      const vDate = new Date(v.start_time);
+      return vDate.toDateString() === dayKey;
+    });
+
+    return (
+      <div key={dayKey} className="week-day">
+        <div className="week-day-label">{dayLabel} ({dayNumber})</div>
+
+        {dayViewings.length === 0 ? (
+          <div className="showtime-box info">Inga tider</div>
+        ) : (
+          dayViewings.map(viewing => {
+            // Chek if viewings matches initialDate from query-param
+            const isSelected = initialDate && viewing.start_time.startsWith(initialDate);
+
+            return (
+              <div
+                key={viewing.id}
+                className={`showtime-box ${isSelected ? 'highlighted' : ''}`}
+                onClick={() => window.location.href = `/booking/${movie.id}?showtime=${viewing.id}`}
+                title={`Boka ${formatDateTime(viewing.start_time)} (${viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'})`}
+              >
+                <div className="salong">{viewing.lounge === 1 ? 'Stora Salongen' : 'Lilla Salongen'}</div>
+                <div className="tid">{formatDateTime(viewing.start_time)}</div>
+                <div className="info">{movie.Title} ({movie.Runtime})</div>
+              </div>
+            );
+          })
+        )}
+      </div>
+    );
+  })}
+</div>
         )}
       </div>
     </section>

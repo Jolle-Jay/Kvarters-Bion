@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import '../css/AIChat.css';
 import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
 import Markdown from "marked-react";
-
+import '../css/AIChat.css';
 
 AiChatPage.route = {
   path: '/ai-chat',
@@ -44,6 +43,7 @@ export default function AiChatPage() {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
+        // Fetch all necessary data for the chat context
         const [moviesRes, viewingsRes, loungesRes] = await Promise.all([
           fetch('/api/movies'),
           fetch('/api/viewings'),
@@ -51,13 +51,14 @@ export default function AiChatPage() {
         ]);
 
         if (!moviesRes.ok || !viewingsRes.ok || !loungesRes.ok) {
-          throw new Error('Kunde inte hämta all data för chatten.');
+          throw new Error('Could not fetch data for chat.');
         }
 
         const moviesData = await moviesRes.json();
         const viewingsData: Viewing[] = await viewingsRes.json();
         const loungesData: Lounge[] = await loungesRes.json();
 
+        // Create a map for quick lounge name lookup
         const loungeMap = loungesData.reduce((acc: Record<number, string>, lounge) => {
           acc[lounge.id] = lounge.name;
           return acc;
@@ -67,16 +68,17 @@ export default function AiChatPage() {
         setLounges(loungesData);
         setViewings(viewingsData.map((v: Viewing) => ({
           ...v,
-          loungeName: loungeMap[v.lounge] || 'Okänd salong'
+          loungeName: loungeMap[v.lounge] || 'Unknown lounge'
         })));
 
       } catch (error) {
-        console.error("Fel vid hämtning av data för AI Chat:", error);
+        console.error("Error fetching data for AI Chat:", error);
       }
     };
 
     fetchInitialData();
 
+    // Check login status
     const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
     if (loggedIn) {
@@ -84,7 +86,7 @@ export default function AiChatPage() {
     }
   }, []);
 
-  // Skrolla till botten när nya meddelanden kommer
+  // Auto-scroll to bottom when messages update
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
@@ -92,6 +94,7 @@ export default function AiChatPage() {
   const getBotReply = async (text: string): Promise<string> => {
     const lower = text.toLowerCase();
 
+    // Handle booking history requests locally
     if (lower.includes("historik") || lower.includes("mina bokningar") || (lower.includes("bokningar") && !lower.includes("avbokning"))) {
       if (!isLoggedIn || !userEmail) {
         return "Du måste vara inloggad för att se din bokningshistorik. Vänligen logga in och försök igen.";
@@ -113,6 +116,7 @@ export default function AiChatPage() {
           const movieInfo = movies.find(m => m.id === viewingInfo.movie);
           if (!movieInfo) continue;
 
+          // Format seats and time
           const seats = Array.isArray(booking.seats) ? booking.seats.join(', ') : (typeof booking.seats === 'string' ? booking.seats.replace(/[\[\]"]+/g, '') : 'Okänt');
           const viewingTime = new Date(viewingInfo.start_time).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' });
 
@@ -121,23 +125,22 @@ export default function AiChatPage() {
         reply += "";
         return reply;
       } catch (error) {
-        console.error("Kunde inte hämta bokningshistorik:", error);
+        console.error("Could not fetch booking history:", error);
         return "Jag kunde tyvärr inte hämta din bokningshistorik just nu. Försök igen senare.";
       }
     }
 
-    // Om det inte är en fråga om historik, skicka till AI-backend
+    // If not a history question, send to AI backend
     try {
-      // Förbered meddelandelistan för API:et
-      // Vi mappar om 'bot' till 'assistant' som är standard för AI-API:er
+      // Map 'bot' to 'assistant' for API format
       const apiMessages = messages.map(msg => ({
         role: msg.role === 'bot' ? 'assistant' : 'user',
         content: msg.content
       }));
 
-      // Lägg till det nya meddelandet
       apiMessages.push({ role: 'user', content: text });
 
+      // Send full conversation to backend
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -148,7 +151,6 @@ export default function AiChatPage() {
 
       const data = await response.json();
 
-      // Antar att svaret följer OpenAI-formatet som backend verkar använda
       return data.choices?.[0]?.message?.content || "Jag fick tyvärr inget svar från AI:n.";
     } catch (error) {
       console.error("AI Chat Error:", error);
@@ -162,17 +164,17 @@ export default function AiChatPage() {
     setMessages(prev => [...prev, { role: "user", content: text }]);
     setInput("");
     const reply = await getBotReply(text);
-    setMessages(prev => [...prev, { role: "bot", content: reply}]);
+    setMessages(prev => [...prev, { role: "bot", content: reply }]);
   };
 
   return (
     <>
-      {/* Chattbubbla för att öppna/stänga */}
+      {/* Chat bubble toggle */}
       <div className="chat-bubble" onClick={() => setIsOpen(!isOpen)}>
         <span className="chat-bubble-icon">💬</span>
       </div>
 
-      {/* Chattfönstret (visas bara om isOpen är true) */}
+      {/* Chat window (visible if open) */}
       {isOpen && (
         <div className="chat-popup">
           <div className="aichat-container">
@@ -182,7 +184,7 @@ export default function AiChatPage() {
                 <div key={i} className={`aichat-message ${msg.role}`}>
                   <b>{msg.role === 'bot' ? 'BioBot' : 'Du'}:</b>{' '}
                   {msg.role === 'bot'
-                    ? <Markdown value={msg.content}/>
+                    ? <Markdown value={msg.content} />
                     : msg.content}
                 </div>
               ))}

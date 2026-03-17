@@ -15,17 +15,17 @@ public static class Bookings
     {
       var user = Session.Get(context, "user");
 
-      // hämtar värdena individuellt som strängar och sen för in dem i variablerna
+      // fetches the values individually as strings and then insert them in the variables
       string bookingReference = bodyJson.GetProperty("bookingId").GetString();
       string emailFromBody = bodyJson.GetProperty("email").GetString();
       string filmTitle = bodyJson.GetProperty("film").GetString();
       string viewingTime = bodyJson.GetProperty("viewing").GetString();
       string loungeName = bodyJson.GetProperty("lounges").GetString();
 
-      // hämtar seats från bodyJson
-      // gör en lista av strängar till seatslist
-      //loopar igenom alla seatarray
-      // lägger till seat som en sträng i seatslist
+      // fetches seats from bodyJson
+      // makes a list of strings to seatlist
+      //loops trough all seatarrays
+      // adds seat as a string into seatslist
       var seatsArray = bodyJson.GetProperty("seats");
       var seatsList = new List<string>();
       foreach (var seat in seatsArray.EnumerateArray())
@@ -33,8 +33,8 @@ public static class Bookings
         seatsList.Add(seat.GetString());
       }
 
-      // hämtar counts från BodyJson och gör det till countsobj
-      // så varje countobj som är adult, senior eller child säts in i variablen counts
+      // fetches counts from BodyJson and converts it to countsobj
+      // every countobj such as adult senior or child gets saved in the variable counts
       var countsObj = bodyJson.GetProperty("counts");
       var counts = new
       {
@@ -46,15 +46,14 @@ public static class Bookings
 
       string email;
       int? userID = null;
-      // om användaren inte är null så ska man hämta email från user som är sträng
-      //och Id från user som är id?=
+      // if the user is not null, fetch email as string and ID as int
       if (user != null)
       {
         email = (string)user["email"];
         userID = (int)user["id"];
       }
       else
-      // kollar om string emailfrom body är null om den inte är null hämtar den email från body
+      // checks if string email from body is null, if it's not null fetch that email from body 
       {
         if (string.IsNullOrEmpty(emailFromBody))
         {
@@ -63,7 +62,7 @@ public static class Bookings
         email = emailFromBody;
       }
 
-      // letar efter en film i databasen som titeln matchar filmTitle och hämtar tillbaka id
+      // searches for a movie in db where the title matches filmTitle and fetches the id for that movie
       var movie = SQLQueryOne(
           "SELECT id FROM movies WHERE JSON_EXTRACT(movies_raw, '$.Title') = @filmTitle",
           new { filmTitle }
@@ -72,10 +71,9 @@ public static class Bookings
       {
         return RestResult.Parse(context, new { error = "Movie not found" });
       }
-      // vi hämtar id från movie och gör om värde till en int
+
       int movieId = (int)movie["id"];
 
-      // letar efter en lounge i databasen och om det matchar så har vi ett loungeId
       var lounge = SQLQueryOne(
           "SELECT id FROM lounges WHERE name = @loungeName",
           new { loungeName }
@@ -86,7 +84,7 @@ public static class Bookings
       }
       int loungeId = (int)lounge["id"];
 
-      // vi har en viewing, och om detta stämmer så hänmtar vi en ny visning längre ner
+      // if we have a viewing
       var viewing = SQLQueryOne(
           @"SELECT * FROM viewings 
             WHERE movie = @movieId 
@@ -95,16 +93,16 @@ public static class Bookings
           new { movieId, loungeId, startTime = viewingTime }
       );
 
+      // if we don't have a viewing we make a new one
       int viewingId;
       if (viewing == null)
       {
-        System.Console.WriteLine("=== Creating new viewing ===");
         SQLQueryOne(
             @"INSERT INTO viewings (movie, lounge, start_time) 
               VALUES (@movieId, @loungeId, @startTime)",
             new { movieId, loungeId, startTime = viewingTime }
         );
-        // eftersom det redan finns i databasen så hämtar vi tiderna, lounge och movie id från viewings
+        // fetch the new one we just created
         viewing = SQLQueryOne(
             @"SELECT * FROM viewings 
               WHERE movie = @movieId 
@@ -115,10 +113,9 @@ public static class Bookings
       }
 
       viewingId = (int)viewing["id"];
-      System.Console.WriteLine("=== Using viewing ID: " + viewingId + " ===");
 
-      // när vi har kollat att allting stämmer med databasen då kan vi göra en bokning
-      // då gör vi en bokning med bookingqueries och createbooking från bookingqueries filen
+      // when we've made sure everything with db is correct we can make an booking
+      // then we make a booking with bookingqueries and createbooking from the bookingqueries-file
       var booking = BookingQueries.CreateBooking(
           bookingReference,
           userID,
@@ -128,63 +125,57 @@ public static class Bookings
 
       int bookingId = (int)booking["id"];
 
-      // STEP 9: Create booking seats
-      // skapar en bookning med sätena i logiken från createbookingseats
+      // creates an booking with the seats logic from creatbookingseats
       BookingQueries.CreateBookingSeats(bookingId, seatsList, loungeName, counts);
 
       var ticketPrices = SQLQuery("SELECT name, price FROM ticketTypes");
 
-      //gör om till dictionary för enkel lookup
-      // den kommer kunna innehålla priser och namnen
+      //convert to dictionary for a more simple lookup
+      // it can contain both the prices and names
       var priceMap = new Dictionary<string, int>();
-      //hämtar ticketrpices från databasen
+
       foreach (var ticket in ticketPrices)
-      {// kastar om värdet till sträng och int
+      {
         priceMap[(string)ticket["name"]] = (int)ticket["price"];
       }
 
-      //räkna ut totalpris
+      //counts totalprice
       int totalPrice =
       (counts.adult * priceMap["Standard"]) +
       (counts.senior * priceMap["Senior"]) +
       (counts.child * priceMap["Child"]);
 
 
-      //skapar en Dictionary där nyckeln är en sträng (radnummer)
-      // row = nyckeln
-      // llista med säten = värdet (intehåller i lådan)
+      //creates a dictionary where the key is the row and the second value is the number on that row
       var seatsByRow = new Dictionary<string, List<string>>();
       foreach (var seat in seatsList)
       {
-        // splittrar strängen seat vid - så det går att skilja mellan row & seat
+        // splits the string at - so we can differ between row and seatnumber
         var parts = seat.Split('-');
         string row = parts[0];
         string number = parts[1];
 
         if (!seatsByRow.ContainsKey(row))
         {
-          //skapar en tom lista för den raden
-          // första gången vi ser "rad 1" måste vi skapa en lista för den raden
-          //sen kan vi börja lägga till i den nya raden
+          //creates an empty list for that row
+          // first time we encounter "Rad 1 " we need to create a list for that row 
+          //then we can start adding in the new row
           seatsByRow[row] = new List<string>();
         }
         seatsByRow[row].Add(number);
       }
 
-      //bygg en ny sträng
+      //build a new string
       // kvp = key, value pair
       var seatInfo = "";
       foreach (var kvp in seatsByRow)
       {
-        // slår samman alla element i listan till EN sträng med , mellan varje element
-        // += === lägg till på slutet 
+        // add all list elements to one string with , inbetween them
+        // += === add to the end
         seatInfo += $"<li>Rad {kvp.Key}: Säte {string.Join(", ", kvp.Value)}</li>";
       }
 
-
-      // det är detta vi får i meddelandet till användaren efter vi har slutfört bokningen skickas till frontend
-
-
+      // this contains the info that is sent to the user when the booking is confirmed
       var response = new
       {
         success = true,
@@ -192,24 +183,23 @@ public static class Bookings
         email
       };
 
-      //returnera till frontend INNAN email skickas
+      //returns to frontend before email is sent
       var result = RestResult.Parse(context, response);
 
-      //skicka EMAIL EFTER response (async i bakgrunden)
+      //sends email after respnse (async in background)
       Task.Run(() =>
       {
-        // Kontrollera att e-postadressen finns innan vi försöker skicka
+        // makes sure the email exists before trying to send email
         if (string.IsNullOrEmpty(email))
         {
         }
         else
         {
-          try
-          {
-            EmailService.SendEmail(
-              email,
-              "Bokningsbekräftelse - Kvartersbion",
-              $@"<h1>Tack för din bokning!</h1>
+
+          EmailService.SendEmail(
+            email,
+            "Bokningsbekräftelse - Kvartersbion",
+            $@"<h1>Tack för din bokning!</h1>
                    <p>Hej!</p>
                    <p>Din bokning till {filmTitle} är bekräftad.</p>
     
@@ -236,12 +226,6 @@ public static class Bookings
            <p>Vi ses på biografen!</p>"
 
           );
-          }
-          catch (Exception ex)
-
-          {
-
-          }
         }
 
       });
@@ -255,12 +239,7 @@ public static class Bookings
     }
   }
 
-
-
-
-
-
-  // registrar API route custombooking och skickar vidare anropet till handlecustombooking när någon postar till API/custombooking
+  // register API route custombooking and forwards the call to handlecustombooking when someone posts to API/custombooking
   public static void Start()
   {
     App.MapPost("/api/customBooking", (HttpContext context, JsonElement bodyJson) =>
@@ -306,11 +285,10 @@ public static class Bookings
 
     App.MapGet("/api/bookingSeats/{viewingId}", (HttpContext context, string viewingId) =>
     {
-      // --- API för att hämta bokade platser för en visning ---
-      // Loggar vilken visning som efterfrågas
+      // API to fetch booked seats for a viewing
       int vId = int.Parse(viewingId);
 
-      // Hämtar alla platser (rad och nummer) som är bokade för denna visning och har status 'Confirmed'
+      // fetches all booked seats(row and number) for the specifiv viewing with status confirmed
       var bookedSeats = SQLQuery(
         @"SELECT s.seatRow, s.number
         FROM bookingSeats bs
@@ -321,43 +299,40 @@ public static class Bookings
         new { viewingId = vId }
       );
 
-      // Skapar en lista för att formatera platserna till frontend-format (t.ex. "1-1")
+      // creates a list to format the seats to frontend-format (ex 1-1)
       var formattedSeats = new List<string>();
 
-      // Loopar igenom alla bokade platser och formaterar dem till "rad-nummer"
+      // Loops through all booked seats and format into row-number
       foreach (var seat in bookedSeats)
       {
         string seatString = $"{seat["seatRow"]}-{seat["number"]}";
         formattedSeats.Add(seatString);
       }
 
-      // Loggar antal bokade platser
-
-      // Returnerar platserna som JSON till frontend: { seats: ["1-1", "1-2", ...] }
+      // Return seats as Json to frontend: { seats: ["1-1", "1-2", ...] }
       return RestResult.Parse(context, new { seats = formattedSeats });
     });
 
     // API endpoint for cancelling a booking
     App.MapDelete("/api/bookings/{reference}", (HttpContext context, string reference) =>
     {
-      // --- API för att avboka en bokning ---
       try
       {
-        // Kollar om bokningen med angivet referensnummer finns
+        // checks if the booking with given referencenumber exists finns
         var booking = SQLQueryOne("SELECT * FROM bookings WHERE BookingReference = @reference", new { reference });
         if (booking == null)
         {
-          // Om bokningen inte hittas, returnera felmeddelande
+          // if not found return error message
           return RestResult.Parse(context, new { error = "Bokningen hittades inte." });
         }
-        // Avboka bokningen genom att uppdatera status till 'Cancelled'
+        // uppdate status to cancelled
         BookingQueries.CancelBooking(reference);
-        // Returnerar lyckat svar till frontend
+        // return success message to frontend
         return RestResult.Parse(context, new { success = true, message = "Bokningen är nu avbokad" });
       }
       catch (Exception ex)
       {
-        // Om något går fel, returnera felmeddelande
+        // if something goes wrong return error message
         return RestResult.Parse(context, new { error = ex.Message });
       }
     });
@@ -371,7 +346,7 @@ public static class Bookings
         return RestResult.Parse(context, new { error = "Email krävs." });
       }
 
-      //Hämtar bokningar med film titel och visningstid via Join
+      //fetch bookings with movie title and viewing time trough join
       var bookings = SQLQuery(@"SELECT b.BookingReference,
           b.status,
           b.email,

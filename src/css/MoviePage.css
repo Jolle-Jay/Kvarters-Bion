@@ -1,21 +1,71 @@
-/* Container for the weekly showtimes grid */
-.movie-times {
-  margin-top: 1rem;
-  flex: 1;
+/* Main wrapper for the whole movie page */
+.movie-detail {
+  margin: auto;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  background: rgba(10, 25, 10, 0.7);
+  border: 2px solid #B8860B;
+  border-radius: 12px;
+  max-width: 1700px;
 }
 
-/* Heading for the showtimes section */
-.movie-times h3 {
-  color: #B8860B;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+/* Top section: poster and trailer side by side */
+.movie-hero {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(250px, 2fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: stretch;
+  margin-bottom: 3rem;
+}
+
+/* Movie poster container */
+.movie-poster {
+  width: auto;
+  max-width: 70vh;
+}
+
+/* Movie poster image */
+.movie-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 3px solid #B8860B;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Movie trailer container */
+.movie-trailer {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16/9;
+}
+
+/* Embedded trailer video */
+.movie-trailer iframe {
+  width: 100%;
+  height: 100%;
+  border: 3px solid #B8860B;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Content under hero: info and showtimes */
+.movie-content {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+/* Info section */
+.movie-info {
+  flex: 2;
 }
 
 /* Movie title styling */
 .movie-info h1 {
-  font-size: 3rem;
+  font-size: clamp(2rem, 5vw, 3rem);
   color: #B8860B;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -173,43 +223,138 @@
   line-height: 1.6;
 }
 
-/* (Legacy) Flex container for time slots */
-.time-slots {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+
+/* Container for the weekly showtimes grid */
+.movie-times {
+  margin-top: 1rem;
+  flex: 1;
 }
 
-/* (Legacy) Individual time slot styling */
-.time-slot {
+/* Heading for the showtimes section */
+.movie-times h3 {
+  color: #B8860B;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Weekly grid for showtimes (desktop) 
+  Weekly grid container for showtimes (Veckovy).
+  Uses CSS grid to create 7 equal columns for each weekday.
+*/
+.week-view {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); 
+  gap: 2rem; 
+  margin-top: 2rem; 
+  align-items: stretch;
+  grid-auto-rows: minmax(120px, 1fr);
+  max-width: 100%;
+}
+
+.week-day-label::first-letter {
+  text-transform: uppercase;
+}
+
+/*
+  One day column in the week grid. */
+.week-day {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start;
+  position: relative;  /* position: relative for vertical divider. */
+  padding-left: 0.5rem;  /* Adds horizontal padding for space between divider and boxes. */
+  padding-right: 0.5rem;
+}
+
+/*
+  Vertical divider line between each day column (except last).
+  Thin, subtle white line for visual separation.
+  Absolutely positioned to the right edge of each .week-day.
+*/
+.week-day:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  right: 0;
+  width: 1px;
+  height: calc(100% - 1rem);
+  background: rgba(255,255,255,0.08);
+  z-index: 1;
+}
+
+.week-day {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+}
+
+
+/* Day label at the top of each column (e.g. 'måndag'). */
+.week-day-label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #B8860B;  
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+/* Green showtime box for each time or 'Inga tider'.
+  Contains salong, tid, och info.. */
+.showtime-box {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding: 1.2rem;
-  background: #0a0a0a;
-  border: 2px solid #FFD700;
-  border-radius: 8px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  min-width: 120px;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+  height: 100%;
+  min-height: 120px;
+  background: #144122;  
+  color: #fefefd; 
+  border-radius: 12px; 
+  padding: 0.5rem;
+  margin-bottom: 1rem; 
+  box-shadow: 0 2px 8px rgba(44, 204, 64, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s; 
+  font-size: 1rem;
+  font-weight: 500;
   text-align: center;
 }
 
-/* (Legacy) Time slot text */
-.time-slot p {
-  color: #c3cac3;
-  font-weight: normal;
-  margin-bottom: 0.3rem;
-  font-size: 0.85rem;
+/* Hover effect for showtime box */
+.showtime-box:hover {
+  transform: translateY(-2px) scale(1.04);  
+  box-shadow: 0 6px 16px rgba(44, 204, 64, 0.25); 
+  background: #477a5c;  
 }
 
-/* (Legacy) Time slot time */
-.time-slot span {
-  color: #FFD700;
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  line-height: 1;
+
+/* Salong name (e.g. 'Stora Salongen') inside showtime box. */
+.showtime-box .salong {
+  font-weight: bold; 
+  font-size: clamp(0.9rem, 2vw, 1.1rem );
+  margin-bottom: 0.2rem; 
+}
+
+/* Showtime time (e.g. '19:00') inside showtime box. */
+.showtime-box .tid {
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
+  font-weight: bold; 
+  margin-bottom: 0.2rem; 
+}
+
+/* Extra info (e.g. movie title, runtime) inside showtime box. */
+.showtime-box .info {
+  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+  opacity: 0.9; 
+}
+
+.showtime-box.highlighted {
+  border: 2px solid #FFD700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
 }
 
 /* Book ticket button */
@@ -233,261 +378,47 @@
   box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4);
 }
 
-/* Weekly grid for showtimes (desktop) */
-.week-view {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);  /*
-  Weekly grid container for showtimes (Veckovy).
-  Uses CSS grid to create 7 equal columns for each weekday.
-*/
-  gap: 2rem;  /* gap: space between columns. */
-  margin-top: 2rem;  /* margin-top: spacing above the grid. */
+
+@media (max-width: 900px) and (min-width: 421px) {
+  .week-view {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    grid-auto-rows: minmax(100px, 1fr);
+  }
 }
 
-
-/*
-  One day column in the week grid. */
-.week-day {
-  display: flex;
-  flex-direction: column;  /* Stack day label and showtime boxes vertically */
-  align-items: flex-start;
-  position: relative;  /* position: relative for vertical divider. */
-  padding-left: 0.5rem;  /* Adds horizontal padding for space between divider and boxes. */
-  padding-right: 0.5rem;
-}
-
-
-/*
-  Vertical divider line between each day column (except last).
-  Thin, subtle white line for visual separation.
-  Absolutely positioned to the right edge of each .week-day.
-*/
-.week-day:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 0.5rem;
-  right: 0;
-  width: 1px;
-  height: calc(100% - 1rem);
-  background: rgba(255,255,255,0.08);
-  z-index: 1;
-}
-
-
-/*
-  (Duplicate for mobile override, see media queries below).
-  Ensures .week-day stays flex on mobile.
-*/
-.week-day {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-
-/* Day label at the top of each column (e.g. 'måndag'). */
-.week-day-label {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #B8860B;  
-  margin-bottom: 1rem;
-  text-align: left;
-}
-
-/* Green showtime box for each time or 'Inga tider'.
-  Contains salong, tid, och info.. */
-.showtime-box {
-  background: #144122;  /* box color */
-  color: #fefefd;  /* text color  */
-  border-radius: 12px;  /* Rounded corners, shadow, clickable. */
-  padding: 1rem 1.2rem;
-  margin-bottom: 1rem;  /* margin-bottom: space between boxes if multiple per day. */
-  box-shadow: 0 2px 8px rgba(44, 204, 64, 0.15);
-  cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;  /* transition: smooth hover effect. */
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-/* Hover effect for showtime box */
-.showtime-box:hover {
-  transform: translateY(-2px) scale(1.04);  /* Moves box up slightly */
-  box-shadow: 0 6px 16px rgba(44, 204, 64, 0.25);  /* Increases shadow */
-  background: #477a5c;  /* box color after hovering */
-}
-
-
-/* Salong name (e.g. 'Stora Salongen') inside showtime box. */
-.showtime-box .salong {
-  font-weight: bold;  /* Bold and slightly larger for emphasis */
-  font-size: 1.1rem;
-  margin-bottom: 0.2rem;  /* margin-bottom: space below name */
-}
-
-/* Showtime time (e.g. '19:00') inside showtime box. */
-.showtime-box .tid {
-  font-size: 1.4rem;
-  font-weight: bold;  /*Large and bold for visibility */
-  margin-bottom: 0.2rem;  /*margin-bottom: space below time */
-}
-
-/* Extra info (e.g. movie title, runtime) inside showtime box. */
-.showtime-box .info {
-  font-size: 0.95rem;
-  opacity: 0.9;  /* Slightly smaller, muted with opacity */
-}
-
-
-
-/* Main wrapper for the whole movie page */
-.movie-detail {
-  margin: auto;
-  margin-top: 0rem;
-  margin-bottom: 1rem;
-  padding: 2rem;
-  background: rgba(10, 25, 10, 0.7);
-  border: 2px solid #B8860B;
-  border-radius: 12px;
-  max-width: 1700px;
-}
-
-/* Top section: poster and trailer side by side */
-.movie-hero {
-  display:flex;
-  gap: 2.5rem;
-  align-items: center;
-  margin-bottom: 3rem;
-}
-
-/* Movie poster container */
-.movie-poster {
-  flex: 0 0 550px;
-}
-
-/* Movie poster image */
-.movie-poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 3px solid #B8860B;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-}
-
-/* Movie trailer container */
-.movie-trailer {
-  flex: 1;
-  flex-shrink: 0;
-  position: relative;
-}
-
-/* Embedded trailer video */
-.movie-trailer iframe {
-  width: 100%;
-  height: 100%;
-  border: 3px solid #B8860B;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-  aspect-ratio: 16/9;
-}
-
-/* Content under hero: info and showtimes */
-.movie-content {
-  display: flex;
-  gap: 3rem;
-  align-items: flex-start;
-}
-
-/* Info section (left on desktop) */
-.movie-info {
-  flex: 2;
-}
-
-@media (max-width: 1675px) {
+/* breakpoint for smaller view */
+@media (max-width: 536px) {
 
   .movie-hero {
-    flex-direction: column;
-  align-items: stretch;
-
+    display: grid;
+    grid-template-columns: 1fr;
+      /* poster ovanför trailer */
+      gap: 2rem;
   }
 
   .movie-poster {
-    flex: none;
-    width: 30%;
-    margin: 0 auto;
+    width: 100%;
+    height: auto;
   }
 
   .movie-trailer {
-    display: flex;
-    flex-wrap: wrap;
-    flex-basis: 80%;
-  }
-}
-
-/* Tablet layout adjustments */
-@media (max-width: 1024px) {
-
-  .movie-trailer {
-  display: block;
+    width: 100%;
+    height: auto;
   }
 
-  .movie-hero {
-    flex-direction: column;
-  }
-
-  .movie-poster {
-    flex: none;
-    width: 60%;
-    margin: 0 auto;
+  .movie-trailer iframe {
+    width: 100%;
+    height: 100%;
   }
 
   .movie-content {
-    flex-direction: column;
+    width: 100%;
   }
 
-  .movie-times {
-    margin-top: 2rem;
-  }
-  .week-day {
-    max-width: 15rem;
-    border-right: 1px solid rgba(255,255,255,0.08);
-    position: relative;
-    margin-bottom: 1rem;
-    border-style: hidden;
-    border-bottom-style: solid;
-    border-color: #B8860B;
-    border-width: 1px;
-    border-radius: 1rem;
-  }
-  .week-view {
-  display: block;
-  gap: 4rem;  
-  margin: 2rem;  
-}
-.week-day:not(:last-child)::after {
-  display: none;
-}
-
-}
-
-/* Mobile layout adjustments */
-@media (max-width: 768px) {
-  .week-day {
-    max-width: 15rem;
-    border-right: 1px solid rgba(255,255,255,0.08);
-    position: relative;
-    margin-bottom: 1rem;
-    border-style: hidden;
-    border-bottom-style: solid;
-    border-color: #B8860B;
-    border-width: 1px;
-    border-radius: 1rem;
-  }
-  .week-day:last-child {
-    border-right: none;
-  }
-  .week-day:not(:last-child)::after {
-    display: none;
+  .movie-info {
+    width: 100%;
+    max-width: 100%;
   }
 
   .movie-detail {
@@ -496,7 +427,7 @@
   }
 
   .movie-info h1 {
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 6vw, 2.2rem);
     text-align: center;
   }
 
@@ -504,47 +435,21 @@
     grid-template-columns: 1fr;
   }
 
-  .movie-poster {
-    width: 100%;
-  }
-
-  .movie-hero {
-    gap: 1,5rem;
-  }
-
-  /* Veckovy mobilanpassning */
-  .week-view {
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-  }
-
-  .week-day-label {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    text-align: left;
-  }
-
-  .showtime-box {
-    font-size: 0.95rem;
-    padding: 0.7rem 0.8rem;
-    margin-bottom: 0.7rem;
-    border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(44, 204, 64, 0.12);
-  }
-
-  .showtime-box .salong {
-    font-size: 1rem;
-    margin-bottom: 0.1rem;
-  }
-  .showtime-box .tid {
-    font-size: 1.2rem;
-    margin-bottom: 0.1rem;
-  }
-  .showtime-box .info {
-    font-size: 0.9rem;
-  }
-
 }
 
 
+/* ===== SMALL MOBILE ===== */
+@media (max-width: 420px) {
 
+  .week-view {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    grid-auto-rows: minmax(100px, 1fr);
+  }
+
+  .movie-poster {
+    width: 100%;
+    max-width: 100%;
+  }
+
+}

@@ -29,11 +29,11 @@ public static class DbQuery
         var db = new MySqlConnection(connectionString);
         db.Open();
 
-        //Reset database if requested
-        // if (config.resetDb == false)
-        // {
-        //     DropTables(db);
-        // }
+        //Reset database if requested -- cange this to true if you want to reset the database
+        if (config.resetDb == false)
+        {
+            DropTables(db);
+        }
 
         // Create tables if they don't exist
         if (config.createTablesIfNotExist == true)
@@ -50,6 +50,7 @@ public static class DbQuery
         db.Close();
     }
 
+    // Drop all tables if exist
     private static void DropTables(MySqlConnection db)
     {
         var dropTablesSql = @"
@@ -65,6 +66,7 @@ public static class DbQuery
             DROP TABLE IF EXISTS sessions;
         ";
 
+        // Execute each statement separately
         foreach (var sql in dropTablesSql.Split(';'))
         {
             var trimmed = sql.Trim();
@@ -254,22 +256,27 @@ public static class DbQuery
         command.CommandText = "SELECT COUNT(*) FROM movies";
         if (Convert.ToInt32(command.ExecuteScalar()) == 0)
         {
+            //directory for movies
             var movieDir = Path.Combine(
                 AppContext.BaseDirectory, "..", "..", "..", "..", "public", "movies"
             );
 
+            // Check if directory exists
             if (!Directory.Exists(movieDir))
                 throw new Exception("Movie directory not found: " + movieDir);
 
+            // Get all JSON files in the directory
             var files = Directory.GetFiles(movieDir, "*.json");
             if (files.Length == 0)
             {
                 throw new Exception("No movie JSON files found in: " + movieDir);
             }
 
+            // Open database connection
             using var db2 = new MySqlConnection(connectionString);
             db2.Open();
 
+            // for each file (movie) in files(movies)
             foreach (var file in files)
             {
                 var json = File.ReadAllText(file);
@@ -281,17 +288,21 @@ public static class DbQuery
                 }
                 catch (Exception ex)
                 {
+                    //skip if file is corrupted JSON format
                     Console.WriteLine($"JSON validation failed for file {file}: {ex.Message}");
-                    continue; // hoppa Ã¶ver ogiltiga JSON-filer
+                    continue; 
                 }
 
+                // Insert movie into database
                 using var cmd = db2.CreateCommand();
                 cmd.CommandText = "INSERT INTO movies (movies_raw) VALUES (@json)";
                 cmd.Parameters.AddWithValue("@json", json);
                 cmd.ExecuteNonQuery();
 
+                // Log success
                 Console.WriteLine($"Inserted movie from file: {Path.GetFileName(file)}");
             }
+            // Close connection
             db2.Close();
         }
 
@@ -900,10 +911,12 @@ public static class DbQuery
         var paras = parameters == null ? Obj() : Obj(parameters);
         try
         {
+            // Open the db connection
             using var db = new MySqlConnection(connectionString);
             db.Open();
             var command = db.CreateCommand();
 
+            // Set the command text
             command.CommandText = @sql;
             var entries = (Arr)paras.GetEntries();
             entries.ForEach(x => command.Parameters.AddWithValue("@" + x[0], x[1]));
@@ -918,6 +931,7 @@ public static class DbQuery
             var rows = Arr();
             try
             {
+                // Run the query
                 if (sql.StartsWith("SELECT ", true, null))
                 {
                     var reader = command.ExecuteReader();

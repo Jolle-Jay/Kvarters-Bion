@@ -6,7 +6,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
-    // Klick utanför menyn stänger den
+    // Press outside the mobile menu closes it
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {

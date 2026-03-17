@@ -1,12 +1,12 @@
 import { Row, Col } from 'react-bootstrap';
 
 interface SelectProps {
-  label: string;  // Rubriken
-  value: string;  // Nuvarande valda priset
-  changeHandler: Function;  // funktion körs när användaren byter val
-  options: string[];  // lista av alternativ som finns i menyn
+  label: string;  // Title
+  value: string;  // Current price
+  changeHandler: Function;  // Function runns when user changes option
+  options: string[];  // list of options thats in the menu
 }
-// Definierar vad komponenten behöver för att fungera
+// Define what component need to work
 
 export default function Select(
   { label, value, changeHandler, options }: SelectProps
@@ -30,12 +30,12 @@ export default function Select(
   </label>;
 }
 
-// Återanvändbar väljare (dropdown-meny) med hjälp av react och bootstrap.
-// Ser annorlundare ut beroende på vilken skräm man har
+// Reusable selector (dropdown menu) built with React and Bootstrap
+// The layout changes depending on screen size
 
-// xs={3} och {9} för mobilen och dropdown ligger sida vid sida på samma rad. 
-// md={12} gör att på större skärmar så ligger dropdown under rubriken istället.
+// xs={3} and {9} make the label and dropdown appear side by side on mobile
+// md={12} makes the dropdown appear below the heading on larger screens
 
-// Options map är en rad som loopar igenom alla alternativ som skickas in och skapar en option för varje sträg i listan.
-// onChange när någon väljer ett nytt alt så anropas changeHandler med det nya värdet e.target.value. 
-// Info skickas tillbaka till föräldern som kan uppdatera state och därmed ändra det valda priset.
+// The options map loops through all provided options and creates one <option> element for each string in the list
+// onChange: when a user selects a new option, changeHandler is called with the new value (e.target.value)
+// The selected value is sent back to the parent, which can update state and thus change the selected price

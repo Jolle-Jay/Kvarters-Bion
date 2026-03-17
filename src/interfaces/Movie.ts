@@ -32,19 +32,3 @@ export interface Movie extends MovieJson {
 export function mapMovieArray(rawArray: MovieDB[]) {
   return rawArray.map(({ id, movies_raw }) => ({ id, ...movies_raw }));
 }
-
-/*export function mapMovie(dbMovie: MovieDB): Movie {
-  return {
-    id: dbMovie.id,
-    Title: dbMovie.movies_raw.Title,
-    Year: Number(dbMovie.movies_raw.Year),
-    Rated: dbMovie.movies_raw.Rated,
-    Released: dbMovie.movies_raw.Released,
-    Runtime: dbMovie.movies_raw.Runtime,
-    Director: dbMovie.movies_raw.Director,
-    Actors: dbMovie.movies_raw.Actors,
-    Plot: dbMovie.movies_raw.Plot,
-    Poster: dbMovie.movies_raw.Poster,
-    Genre: dbMovie.movies_raw.Genre.split(", ")
-  };
-}*/
