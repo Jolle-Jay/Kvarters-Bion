@@ -80,7 +80,8 @@ Backend bearbetar förfrågan
 Backend hämtar eller sparar data i databasen 
 Ett svar skickas tillbaka till frontend 
 Frontend uppdaterar användargränssnittet 
-Arkitekturval 
+
+Arkitekturval: 
 Separation mellan frontend och backend förbättrar skalbarhet och underhållbarhet 
 TypeScript minskar risken för typrelaterade buggar 
 .NET valdes för stabilitet och prestanda 
