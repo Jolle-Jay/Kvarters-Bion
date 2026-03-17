@@ -73,7 +73,8 @@ Visningstider
 Bokningar 
 Användardata 
 Dataflöde 
-Användaren öppnar webbapplikationen i webbläsaren 
+
+Användaren öppnar webbapplikationen i webbläsaren: 
 Frontend skickar HTTP-förfrågningar till backend 
 Backend bearbetar förfrågan 
 Backend hämtar eller sparar data i databasen 
@@ -84,18 +85,23 @@ Separation mellan frontend och backend förbättrar skalbarhet och underhållbar
 TypeScript minskar risken för typrelaterade buggar 
 .NET valdes för stabilitet och prestanda 
 Molnbaserad databas möjliggör hög tillgänglighet 
-Begränsningar 
+
+Begränsningar: 
 Begränsad säkerhet (t.ex. ingen fullständig autentisering) 
 Ingen caching implementerad 
 Begränsad felhantering i vissa delar av systemet 
-Framtida förbättringar 
+
+
+
+Planerat men ej genomfört arbete:
+Vi valde att fokusesra på grund kraven och uppnåde alla krav fullständigt innan vi går in på fler punkter i projektet. 
+Detta gjorde att vi fick ett mer komplett projekt istället för att ha fler funktioner som inte är hela.
+
+Framtida förbättringar: 
 Implementera autentisering och auktorisering 
 Förbättra felhantering och loggning 
 Införa caching för bättre prestanda 
 Optimera databasfrågor 
-
-
-Planerat men ej genomfört arbete:
 
 
 
@@ -154,6 +160,7 @@ Now your ready to browse the website and make some bookings for the films listed
 talk to the AI agent to help you find what your looking for. 
 
 -=============================== is something wrong? =====================================-
+
 To get started you need to check for your dotnet version downloaded on your pc. 
 
 To check your version on dotnet open up your perfered terminal. 
@@ -178,4 +185,5 @@ If the database is corrupted or something else in the database is acting up, you
 the false to a true, or make it not commentetd in the file DbQuery.cs 
 
 after you have done this the database will be reseted and seeded with the default information.
+
 -============================================================================================-
