@@ -2,7 +2,7 @@ import type { Movie } from '../interfaces/Movie';
 import { mapMovieArray } from '../interfaces/Movie';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import "../css/MovieCards.css";
+import "../css/StartPage.css";
 import "../css/Carousel.css";
 import { mapToSwedishAge, mapToSwedishGenre } from '../utils/mapToSwedish';
 

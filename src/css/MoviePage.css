@@ -1,16 +1,66 @@
-/* Container for the weekly showtimes grid */
-.movie-times {
-  margin-top: 1rem;
-  flex: 1;
+/* Main wrapper for the whole movie page */
+.movie-detail {
+  margin: auto;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  background: rgba(10, 25, 10, 0.7);
+  border: 2px solid #B8860B;
+  border-radius: 12px;
+  max-width: 1700px;
 }
 
-/* Heading for the showtimes section */
-.movie-times h3 {
-  color: #B8860B;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+/* Top section: poster and trailer side by side */
+.movie-hero {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(250px, 2fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: stretch;
+  margin-bottom: 3rem;
+}
+
+/* Movie poster container */
+.movie-poster {
+  width: auto;
+  max-width: 70vh;
+}
+
+/* Movie poster image */
+.movie-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 3px solid #B8860B;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Movie trailer container */
+.movie-trailer {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16/9;
+}
+
+/* Embedded trailer video */
+.movie-trailer iframe {
+  width: 100%;
+  height: 100%;
+  border: 3px solid #B8860B;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Content under hero: info and showtimes */
+.movie-content {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+/* Info section */
+.movie-info {
+  flex: 2;
 }
 
 /* Movie title styling */
@@ -173,64 +223,20 @@
   line-height: 1.6;
 }
 
-/* (Legacy) Flex container for time slots */
-.time-slots {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+
+/* Container for the weekly showtimes grid */
+.movie-times {
+  margin-top: 1rem;
+  flex: 1;
 }
 
-/* (Legacy) Individual time slot styling */
-.time-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1.2rem;
-  background: #0a0a0a;
-  border: 2px solid #FFD700;
-  border-radius: 8px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  min-width: 120px;
-  text-align: center;
-}
-
-/* (Legacy) Time slot text */
-.time-slot p {
-  color: #c3cac3;
-  font-weight: normal;
-  margin-bottom: 0.3rem;
-  font-size: 0.85rem;
-}
-
-/* (Legacy) Time slot time */
-.time-slot span {
-  color: #FFD700;
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  line-height: 1;
-}
-
-/* Book ticket button */
-.book-btn {
-  display: inline-block;
-  padding: 0.75rem 2rem;
-  background: #B8860B;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  border: 2px solid #B8860B;
-}
-
-/* Hover effect for book button */
-.book-btn:hover {
-  background: #FFD700;
-  color: #333;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4);
+/* Heading for the showtimes section */
+.movie-times h3 {
+  color: #B8860B;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* Weekly grid for showtimes (desktop) 
@@ -251,18 +257,16 @@
   text-transform: uppercase;
 }
 
-
 /*
   One day column in the week grid. */
 .week-day {
   display: flex;
-  flex-direction: column;  /* Stack day label and showtime boxes vertically */
+  flex-direction: column; 
   align-items: flex-start;
   position: relative;  /* position: relative for vertical divider. */
   padding-left: 0.5rem;  /* Adds horizontal padding for space between divider and boxes. */
   padding-right: 0.5rem;
 }
-
 
 /*
   Vertical divider line between each day column (except last).
@@ -353,71 +357,25 @@
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
 }
 
-
-
-/* Main wrapper for the whole movie page */
-.movie-detail {
-  margin: auto;
-  margin-top: 0rem;
-  margin-bottom: 1rem;
-  padding: 2rem;
-  background: rgba(10, 25, 10, 0.7);
+/* Book ticket button */
+.book-btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: #B8860B;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: all 0.3s ease;
   border: 2px solid #B8860B;
-  border-radius: 12px;
-  max-width: 1700px;
 }
 
-/* Top section: poster and trailer side by side */
-.movie-hero {
-  display: grid;
-  grid-template-columns: minmax(150px, 1fr) minmax(250px, 2fr); 
-  gap: clamp(1.5rem, 3vw, 3rem);
-  align-items: stretch;
-  margin-bottom: 3rem;
-}
-
-/* Movie poster container */
-.movie-poster {
-  width: auto;
-  max-width: 70vh;
-}
-
-/* Movie poster image */
-.movie-poster img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 3px solid #B8860B;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-}
-
-/* Movie trailer container */
-.movie-trailer {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 16/9;
-}
-
-/* Embedded trailer video */
-.movie-trailer iframe {
-  width: 100%;
-  height: 100%;
-  border: 3px solid #B8860B;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-}
-
-/* Content under hero: info and showtimes */
-.movie-content {
-  display: flex;
-  gap: 3rem;
-  align-items: flex-start;
-}
-
-/* Info section (left on desktop) */
-.movie-info {
-  flex: 2;
+/* Hover effect for book button */
+.book-btn:hover {
+  background: #FFD700;
+  color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4);
 }
 
 

@@ -1,4 +1,4 @@
-/* Footer – grund */
+/* Footer – foundation */
 .site-footer {
   background: #000a00;
   border-top: 2px solid #B8860B;
@@ -34,25 +34,24 @@
   color: #cfd6cf;
 }
 
-/* Länkstil */
+/* Link-style */
 .footer-section a {
   display: block;
   margin-bottom: 0.4rem;
   color: #cfd6cf;
-  /* grundfärg */
   text-decoration: none;
   font-size: 0.9rem;
   transition: color 0.3s ease;
 }
 
-/* Hover endast på desktop */
+/* Hover only on desktop */
 @media (hover: hover) and (pointer: fine) {
   .footer-section a:hover {
     color: #B8860B;
   }
 }
 
-/* Klick/fokus – alltid samma färg */
+/* click/focus – always the same color */
 .footer-section a:active,
 .footer-section a:focus {
   color: #B8860B;
@@ -72,7 +71,7 @@ main {
   flex: 1;
 }
 
-/* ===== Mobil <1000px ===== */
+/* ===== Mobile <1000px ===== */
 @media (max-width: 1000px) {
 
   .site-footer {
@@ -108,7 +107,7 @@ main {
     margin-top: 1rem
   }
 
-  /* Gör varje sektion lite tydligare */
+  /* makes every section a bit clearer*/
   .footer-section {
     padding-bottom: 0.2rem;
     border-bottom: 1px solid rgba(184, 134, 11, 0.25);

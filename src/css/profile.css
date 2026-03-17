@@ -121,7 +121,7 @@
   padding: 8px 24px;
   font-weight: bold;
   margin: 20px auto 24px auto;
-  /* centrera knappen horisontellt */
+  /* center the button horizontalt */
   cursor: pointer;
   transition: background 0.2s;
   display: block;
@@ -139,7 +139,7 @@
   margin-top: 24px;
   margin-bottom: 15px;
   text-align: left;
-  /* vänsterställ på desktop */
+  /* center left on desktop */
 }
 
 .bookings-list {
@@ -171,9 +171,6 @@
   border: 2px solid #123312;
 }
 
-/* för den vita texten att kunna ligga på rad och få avstånd 
-men vet ej om det ser snyggt ut och speciellt på
-mobilvyn */
 .booking-row {
   display: grid;
   grid-template-columns: 150px 1fr;
@@ -262,17 +259,17 @@ mobilvyn */
   .profile-container h2 {
     font-size: 1.5rem;
     text-align: center;
-    /* centrera rubriken */
+    /* center the header */
   }
 
   .container-name {
     text-align: center;
-    /* centrera namn och e-post */
+    /* center name and email */
   }
 
   .section-title {
     text-align: center;
-    /* centrera på mobil */
+    /* center on mobile device */
     width: 100%;
   }
 
