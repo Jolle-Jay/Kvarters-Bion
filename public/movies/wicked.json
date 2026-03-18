@@ -1,0 +1,41 @@
+{
+  "Title": "Wicked",
+  "Year": "2024",
+  "Rated": "PG",
+  "Trailer": "https://www.youtube.com/watch?v=-BHvUaID690",
+  "Released": "22 Nov 2024",
+  "Runtime": "160 min",
+  "Genre": "Fantasy, Musical, Romance",
+  "Director": "Jon M. Chu",
+  "Writer": "Winnie Holzman, Dana Fox, Gregory Maguire",
+  "Actors": "Cynthia Erivo, Ariana Grande, Jeff Goldblum",
+  "Plot": "Elphaba, en ung kvinna som hånas för sin gröna hud, och Galinda, en populär tjej, blir vänner på Shiz University i landet Oz. Efter ett möte med den underbara trollkarlen från Oz når deras vänskap ett vägskäl.",
+  "Language": "Engelska",
+  "Country": "United Kingdom, United States, Canada",
+  "Awards": "Won 2 Oscars. 125 wins & 324 nominations total",
+  "Poster": "https://m.media-amazon.com/images/M/MV5BOWMwYjYzYmMtMWQ2Ni00NWUwLTg2MzAtYzkzMDBiZDIwOTMwXkEyXkFqcGc@._V1_SX300.jpg",
+  "Ratings": [
+    {
+      "Source": "Internet Movie Database",
+      "Value": "7.4/10"
+    },
+    {
+      "Source": "Rotten Tomatoes",
+      "Value": "88%"
+    },
+    {
+      "Source": "Metacritic",
+      "Value": "73/100"
+    }
+  ],
+  "Metascore": "73",
+  "imdbRating": "7.4",
+  "imdbVotes": "191,746",
+  "imdbID": "tt1262426",
+  "Type": "movie",
+  "DVD": "N/A",
+  "BoxOffice": "$474,560,015",
+  "Production": "N/A",
+  "Website": "N/A",
+  "Response": "True"
+}

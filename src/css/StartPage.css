@@ -1,0 +1,331 @@
+
+/* HERO */
+
+.startpage-hero {
+  background: linear-gradient(rgba(0, 51, 0, 0.7), rgba(4, 15, 4, 0.9)),
+    url("https://via.placeholder.com/1200x400") center/cover;
+  text-align: center;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.startpage-hero h2 {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  margin-bottom: 1rem;
+  color: #867e55;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow:
+    3px 3px 6px rgba(0, 0, 0, 0.8),
+    0 0 15px rgba(184, 134, 11, 0.4);
+  line-height: 1.1;
+  /* keeps it compact on mobile */
+}
+
+.startpage-hero p {
+  font-size: clamp(0.7rem, 1.5vw, 1rem);
+  color: #B8860B;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.6),
+    0 4px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.stars {
+  color: #B8860B;
+  letter-spacing: 4px;
+  font-size: clamp(0.9rem, 4vw, 1.1rem);
+}
+
+@media (max-width: 420px) {
+  .startpage-hero {
+    padding: 1rem 0.5rem;
+  }
+
+  .startpage-hero h2 {
+    font-size: clamp(1rem, 5vw, 1.5rem);
+    line-height: 1.2;
+    letter-spacing: 1px;
+  }
+
+  .startpage-hero p {
+    font-size: clamp(0.5rem, 2.5vw, 0.75rem);
+    letter-spacing: 1px;
+  }
+
+  .startpage-hero .hero-sub {
+    gap: 0.2rem;
+  }
+
+  .startpage-hero .stars {
+    font-size: clamp(0.8rem, 4vw, 1rem);
+    letter-spacing: 1.5px;
+  }
+}
+
+/* FILTER – foundation layout desktop */
+.filter {
+  text-align: left;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: #061906;
+  border: 2px solid #5e460f;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+.filter h3 {
+  margin: 0;
+  color: #B8860B;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-right: 0.8rem;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 220px;
+}
+
+/* Dropdown & date picker */
+.filter-dropdown,
+.filter-date {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.5rem 1rem;
+  background: #0a3d0a;
+  color: white;
+  border: 2px solid #B8860B;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23FFD700' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.8rem) center;
+  background-size: 12px 8px;
+}
+
+.filter-date {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Hover & focus */
+.filter-dropdown:hover,
+.filter-date:hover {
+  background-color: #045604;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+  color: #FFD700;
+  border-color: #FFD700;
+}
+
+
+.filter-dropdown:focus {
+  outline: none;
+  border-color: #FFD700;
+}
+
+.filter-date:hover::-webkit-datetime-edit-year-field,
+.filter-date:hover::-webkit-datetime-edit-month-field,
+.filter-date:hover::-webkit-datetime-edit-day-field,
+.filter-date:focus::-webkit-datetime-edit-year-field,
+.filter-date:focus::-webkit-datetime-edit-month-field,
+.filter-date:focus::-webkit-datetime-edit-day-field {
+  color: #FFD700;
+}
+
+/* Dropdown options */
+.filter-dropdown option {
+  background: #0d2c0d;
+  color: white;
+}
+
+.filter-dropdown option:hover {
+  background: #0b260b;
+  color: white;
+}
+
+.filter-dropdown option:checked {
+  background: #0a3d0a;
+  color: #FFD700;
+}
+
+/* Date picker icon */
+.filter-date::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.2);
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.filter-date::-webkit-datetime-edit-fields-wrapper {
+  color: white;
+}
+
+/* BREAKPOINT ≤ 960px – ALLA PÅ RADER */
+@media (max-width: 960px) {
+  .filter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .filter-item {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* All h3 have the same width so that the inputs starts at the same x */
+  .filter-item h3 {
+    margin-bottom: 0;
+    min-width: 120px;
+    text-align: left;
+  }
+
+  .filter-dropdown,
+  .filter-date {
+    flex: 1;
+    /* fills rest of the row */
+    width: auto;
+    /* flexible width */
+    max-width: 100%;
+  }
+}
+
+/* BREAKPOINT ≤ 480px – KOMPAKT */
+@media (max-width: 480px) {
+  .filter {
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .filter-item {
+    gap: 0.3rem;
+  }
+
+  .filter-item h3 {
+    font-size: 0.80rem;
+    min-width: 80px;
+  }
+
+  .filter-dropdown,
+  .filter-date {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.6rem;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* MOVIES */
+
+/* MOVIES GRID */
+.movies {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 240px));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* MOVIE CARD */
+.movie-card {
+  background: #011601;
+  border: 2px solid #B8860B;
+  border-radius: 20px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  padding: 1rem;
+}
+
+/* HOVER */
+.movie-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* POSTER CONTAINER */
+.poster {
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  border: 2px solid #B8860B;
+  background: transparent;
+  /* Takes away black background  */
+}
+
+/* POSTER IMAGE */
+.poster img {
+  width: 100%;
+  /* fuills the width of the card */
+  height: auto;
+  /* proportions is kept*/
+  display: block;
+  object-fit: contain;
+  /* the whole picture is visiable */
+  border-radius: 6px;
+}
+
+/* Text below poster */
+.movie-card h3,
+.movie-card p {
+  margin: 0.3rem 0;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .movies {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .movies {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .movies {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+
+  .movie-card {
+    padding: 0.75rem;
+
+  }
+
+  .poster img {
+    height: 200px;
+
+  }
+}

@@ -1,0 +1,107 @@
+.carousel {
+    margin: 1rem auto 2rem;
+    width: 100%;
+    max-width: none;
+    border: none;
+    display: flex;
+    overflow: hidden;
+    padding: 0.75rem 0;
+    position: relative;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel::before,
+.carousel::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.carousel::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(1, 36, 1, 1), rgba(1, 36, 1, 0));
+}
+
+.carousel::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(1, 36, 1, 1), rgba(1, 36, 1, 0));
+}
+
+.carousel-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 70s linear infinite;
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5em;
+    padding-right: 0.5em;
+    flex-shrink: 0;
+}
+
+.carousel img {
+    height: 380px;
+    width: auto;
+    border-radius: 4px;
+    display: block;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Pause animation */
+.carousel:hover .carousel-track {
+  animation-play-state: paused;
+}
+
+/* Darken others */
+.carousel:hover img {
+  filter: brightness(0.3);
+}
+
+/* Highlight hovered */
+.carousel img:hover {
+  transform: scale(1.15);
+  filter: brightness(1);
+  z-index: 3;
+}
+
+.card {
+    flex: 0 0 4em;
+    height: 4em;
+    padding: 0.5em;
+    background: rgb(90, 90, 131);
+    font-size: 2rem;
+    border-radius: .2em;
+    text-align: center;
+    align-content: center;
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+
+@media (max-width: 1000px){
+.carousel{
+    height: 30vh;
+}
+
+.carousel img{
+    height: 30vh;
+}
+}

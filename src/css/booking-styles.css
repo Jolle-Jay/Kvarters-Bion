@@ -1,0 +1,508 @@
+/* Hero section: Contains chosen tickets and summary */
+
+.booking-hero {
+  position: relative;
+  background: #061906;
+  border: 2px solid #B8860B;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1rem clamp(1rem, 4vw, 2rem) 2rem;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* header */
+.booking-hero h2 {
+  text-align: center;
+  color: #B8860B;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Subtext */
+.booking-hero .p-tagg {
+  text-align: center;
+  color: #ccc;
+  margin-bottom: 2rem;
+}
+
+/* Wrapper that controls the width for ticket selector */
+.ticket-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0rem 1rem 0.5rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Layout for ticket selector and summary */
+.ticket-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  justify-content: center;
+  justify-items: center;
+  margin-top: 0;
+  gap: clamp(1rem, 2vw, 2rem);
+  width: 100%;
+}
+
+/* Panel for ticket selection */
+.ticket-panel {
+  background: #061906;
+  padding: 0.2rem;
+  border: 2px solid #5e460f;
+  border-radius: 8px;
+  max-width: 300px;
+  width: 100%;
+}
+
+.form-select-viewing {
+  width: 100%;
+  padding: 8px;
+  margin-Bottom: 15px;
+  border-Radius: 4px;
+  background: #0a3d0a;
+  color: #B8860B;
+  border: 2px solid #B8860B;
+  cursor: pointer;
+}
+
+.ticket-panel h3 {
+  color: #B8860B;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+  text-align: center;
+}
+
+/* One row for a ticket type */
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0.5rem;
+  margin-bottom: 0.7rem;
+  background: rgba(10, 25, 10, 0.5);
+  border: 1px solid #3a3a0a;
+  border-radius: 6px;
+  font-size: 0.97rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ticket-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ticket-label strong {
+  color: #B8860B;
+  font-size: 1.1rem;
+}
+
+.ticket-note {
+  color: #999;
+  font-size: 0.85rem;
+}
+
+/* Controls for plus/minus */
+.ticket-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ticket-btn {
+  width: 40px;
+  height: 40px;
+  background: #0a3d0a;
+  color: #B8860B;
+  border: 2px solid #B8860B;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ticket-btn:hover:not(:disabled) {
+  background: #086808;
+  transform: scale(1.05);
+}
+
+.ticket-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ticket-count {
+  color: #B8860B;
+  font-size: 1.3rem;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Summary panel */
+.ticket-summary {
+  background: #061906;
+  padding: 1.2rem;
+  border: 2px solid #5e460f;
+  border-radius: 10px;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+  max-width: 320px;
+  width: 100%;
+}
+
+.ticket-summary h4 {
+  color: #B8860B;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #B8860B;
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  border-top: 2px solid #B8860B;
+  color: #B8860B;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Cinema hall: layout and container for seat map */
+.cinema {
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #061906;
+  border: 2px solid #5e460f;
+  border-radius: 10px;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cinema h3 {
+  text-align: center;
+  color: #B8860B;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+/* Header for the cinema (title + legend) */
+.cinema-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.cinema-header h3 {
+  margin: 0;
+  text-align: center;
+}
+
+.seat-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.3rem, 2vw, 1rem);
+  padding: clamp(0.2rem, 1vw, 0.6rem) clamp(0.5rem, 2vw, 1rem);
+  background: rgba(10, 25, 10, 0.6);
+  border: 2px solid #B8860B;
+  border-radius: 8px;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  font-size: clamp(0.6rem, 2vw, 0.85rem);
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+  max-width: min-content;
+}
+
+/* Legend items */
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.2rem, 1vw, 0.4rem);
+}
+
+.legend-color {
+  width: clamp(10px, 4vw, 16px);
+  height: clamp(10px, 4vw, 16px);
+  border-radius: 4px;
+  border: 2px solid #111;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+}
+
+.legend-text {
+  color: #B8860B;
+  font-weight: 600;
+  white-space: nowrap;
+  font-size: clamp(0.6rem, 2vw, 0.85rem);
+}
+
+.legend-color.available {
+  background: #0a3d0a;
+}
+
+.legend-color.unavailable {
+  background: #b11f1f;
+}
+
+/* Screen: visual marker for stage/screen */
+
+.screen-wrapper {
+  perspective: 600px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.screen {
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  color: #B8860B;
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem 0 2rem 0;
+  border: 3px solid #B8860B;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  transform: rotateX(-30deg);
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  width: min(70%, 400px);
+  max-width: 100%;
+  font-size: 1.2rem;
+}
+
+/* seat map container */
+#seats {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  overflow: hidden;
+}
+
+/* one row */
+.seat-row {
+  display: grid;
+  grid-template-columns: 50px auto 50px;
+  align-items: center;
+  width: 100%;
+}
+
+/* Row number */
+.row-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #B8860B;
+  font-weight: bold;
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
+}
+
+/* Seat container */
+.seat-row-inner {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+}
+
+/* seats */
+.seat {
+  width: clamp(18px, 2.2vw, 32px);
+  aspect-ratio: 1 / 1;
+  background: #0a3d0a;
+  border: 2px solid #B8860B;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.85);
+}
+
+/* Hover */
+.seat:hover:not(:disabled) {
+  background: #2d7a4f;
+  transform: scale(1.05);
+}
+
+/* Selected */
+.seat.selected {
+  background: #58ca58;
+  border-color: #FFD700;
+}
+
+/* Booked */
+.seat.booked {
+  background: #8b1e1e;
+  border-color: #8b1e1e;
+  cursor: not-allowed;
+}
+
+/* Confirm button */
+.confirm-button {
+  margin: 2rem auto 0 auto;
+  display: block;
+  background: #0a3d0a;
+  color: #B8860B;
+  border: 2px solid #B8860B;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.confirm-button:hover {
+  background: #086808;
+  transform: scale(1.05);
+}
+
+.seat:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+    2px 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+.seat.vip:hover:not(:disabled) {
+  background: #FFC700;
+}
+
+.seat.elder:hover:not(:disabled) {
+  background: #ff99cc;
+}
+
+/* DESKTOP: 1024px+ */
+@media (min-width: 1024px) {
+
+  /* Seats */
+  .seat {
+    width: clamp(36px, 2.4vw, 55px);
+  }
+
+  .seat-row-inner {
+    gap: 6px;
+  }
+
+  #seats {
+    gap: 1rem;
+  }
+
+  /* Screen */
+  .screen {
+    width: 70%;
+    max-width: 600px;
+  }
+}
+
+/* TABLET: 720px–1023px */
+@media (min-width: 720px) and (max-width: 1023px) {
+
+  /* Screen */
+  .screen {
+    width: min(80%, 450px);
+    /* slightly wider than seat grid */
+  }
+
+  /* Ticket hero */
+  .booking-hero {
+    padding: 1rem clamp(1rem, 4vw, 1.5rem);
+    margin: 1rem clamp(0.5rem, 3vw, 1rem) 2rem;
+  }
+
+  .booking-hero h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .booking-hero .p-tagg {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+  }
+
+  /* Ticket layout: two columns */
+  .ticket-layout {
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    gap: clamp(0.5rem, 2vw, 1rem);
+  }
+
+  .ticket-panel,
+  .ticket-summary {
+    max-width: 300px;
+    width: 100%;
+  }
+}
+
+/* SMALL TABLET / LARGE MOBILE: 721px–900px */
+@media (min-width: 721px) and (max-width: 900px) {
+  .ticket-layout {
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    gap: clamp(0.5rem, 2vw, 1rem);
+  }
+
+  .ticket-panel,
+  .ticket-summary {
+    max-width: 300px;
+    width: 100%;
+  }
+}
+
+/* MOBILE: under 720px */
+@media (max-width: 719px) {
+
+  /* Screen */
+  .screen {
+    width: 95%;
+    max-width: 300px;
+    /* matches ticket-panel */
+    font-size: 1rem;
+  }
+
+  /* Ticket layout: single column */
+  .ticket-layout {
+    grid-template-columns: 1fr;
+    gap: clamp(0.5rem, 3vw, 1rem);
+  }
+
+  .ticket-panel,
+  .ticket-summary {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Booking hero text */
+  .booking-hero {
+    padding: 1rem clamp(1rem, 4vw, 1.5rem);
+    margin: 1rem clamp(0.5rem, 3vw, 1rem) 2rem;
+  }
+
+  .booking-hero h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .booking-hero .p-tagg {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+  }
+}

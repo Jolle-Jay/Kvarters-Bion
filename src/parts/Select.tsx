@@ -1,15 +1,16 @@
 import { Row, Col } from 'react-bootstrap';
 
 interface SelectProps {
-  label: string;
-  value: string;
-  changeHandler: Function;
-  options: string[];
+  label: string;  // Title
+  value: string;  // Current price
+  changeHandler: Function;  // Function runns when user changes option
+  options: string[];  // list of options thats in the menu
 }
+// Define what component need to work
 
 export default function Select(
   { label, value, changeHandler, options }: SelectProps
-) {
+) { 
   return <label className="w-100">
     <Row>
       <Col xs={3} md={12}>
@@ -28,3 +29,13 @@ export default function Select(
     </Row>
   </label>;
 }
+
+// Reusable selector (dropdown menu) built with React and Bootstrap
+// The layout changes depending on screen size
+
+// xs={3} and {9} make the label and dropdown appear side by side on mobile
+// md={12} makes the dropdown appear below the heading on larger screens
+
+// The options map loops through all provided options and creates one <option> element for each string in the list
+// onChange: when a user selects a new option, changeHandler is called with the new value (e.target.value)
+// The selected value is sent back to the parent, which can update state and thus change the selected price

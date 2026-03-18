@@ -1,0 +1,34 @@
+{
+  "Title": "Alien",
+  "Year": "1979",
+  "Rated": "R",
+  "Trailer": "https://www.youtube.com/watch?v=V3cCVcpN-0w",
+  "Released": "22 Jun 1979",
+  "Runtime": "117 min",
+  "Genre": "Horror, Sci-Fi",
+  "Director": "Ridley Scott",
+  "Actors": "Sigourney Weaver, Tom Skerritt, John Hurt",
+  "Plot": "Efter att ha undersökt en mystisk sändning av okänt ursprung stöter besättningen på ett kommersiellt rymdskepp på en dödlig livsform.",
+  "Language": "Engelska",
+  "Awards": "Won 1 Oscar. 19 wins & 22 nominations total",
+  "Poster": "https://m.media-amazon.com/images/M/MV5BN2NhMDk2MmEtZDQzOC00MmY5LThhYzAtMDdjZGFjOGZjMjdjXkEyXkFqcGc@._V1_SX300.jpg",
+  "Ratings": [
+    {
+      "Source": "Internet Movie Database",
+      "Value": "8.5/10"
+    },
+    {
+      "Source": "Rotten Tomatoes",
+      "Value": "93%"
+    },
+    {
+      "Source": "Metacritic",
+      "Value": "89/100"
+    }
+  ],
+  "imdbRating": "8.5",
+  "imdbVotes": "1,049,933",
+  "imdbID": "tt0078748",
+  "BoxOffice": "$84,206,106",
+  "Response": "True"
+}

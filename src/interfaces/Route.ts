@@ -6,5 +6,13 @@ export default interface Route {
   loader?: Function;
   menuLabel?: string;
   index?: number;
-  parent?: string;
+  parent?: string; // Dont need it because we dont have a sub-menu
 }
+
+// for interface
+// for showing homepage 
+// Putting in compontentes that shows homepage 
+// URL adress for page
+// Functions that collects data before it loads
+// Text that is in navmenu
+// What order for the menu

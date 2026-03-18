@@ -2,116 +2,156 @@ namespace WebApp;
 
 public static class AiChatRoutes
 {
-    private static string aiAccessToken = "";
-    private static string systemPrompt = "";
-    private static readonly string proxyUrl = "https://ai-api.nodehill.com";
-    private static readonly HttpClient httpClient = new HttpClient();
+  private static string aiAccessToken = "";
+  private static string systemPrompt = "";
+  private static readonly string proxyUrl = "https://ai-api.nodehill.com"; //AI servern
+  private static readonly HttpClient httpClient = new HttpClient();
 
-    public static void Start()
+  public static void Start()
+  {
+    // Load AI access token from config
+    LoadConfig();
+
+    // Load system prompt from markdown file
+    LoadSystemPrompt();
+
+    // POST /api/chat - Proxy chat requests to AI API with system prompt
+    App.MapPost("/api/chat", async (HttpContext context, JsonElement bodyJson) =>
     {
-        // Load AI access token from config
-        LoadConfig();
+      try
+      {
+        var body = JSON.Parse(bodyJson.ToString());
+        var messages = (Arr)body.messages;
+        var today = DateTime.Now.ToString("yyyy-MM-dd");
 
-        // Load system prompt from markdown file
-        LoadSystemPrompt();
 
-        // POST /api/chat - Proxy chat requests to AI API with system prompt
-        App.MapPost("/api/chat", async (HttpContext context, JsonElement bodyJson) =>
+        if (messages == null)
         {
-            try
-            {
-                var body = JSON.Parse(bodyJson.ToString());
-                var messages = (Arr)body.messages;
+          return RestResult.Parse(context, new { error = "Messages array is required." });
+        }
 
-                if (messages == null)
-                {
-                    return RestResult.Parse(context, new { error = "Messages array is required." });
-                }
+        // Prepend system prompt if we have one
+        // combine systemPrompt and movies as two system messages
+        var movies = SQLQuery("SELECT * FROM movies");
 
-                // Prepend system prompt if we have one
-                var fullMessages = Arr();
-                if (!string.IsNullOrEmpty(systemPrompt))
-                {
-                    fullMessages.Push(Obj(new { role = "system", content = systemPrompt }));
-                }
-                messages.ForEach(msg => fullMessages.Push(msg));
+        // Querry for Date
+        var dateFilter = SQLQuery(@"SELECT 
+                JSON_UNQUOTE(JSON_EXTRACT(m.movies_raw, '$.Title')) AS Film,
+                v.start_time AS StartTid,
+                l.name AS Salong
+                FROM viewings v
+                JOIN movies m ON v.movie = m.id
+                JOIN lounges l ON v.lounge = l.id
+                ORDER BY v.start_time;");
 
-                // Create request payload
-                var requestBody = Obj(new { messages = fullMessages });
-
-                // Make request to AI API
-                var request = new HttpRequestMessage(HttpMethod.Post, $"{proxyUrl}/v1/chat/completions");
-                request.Headers.Add("Authorization", $"Bearer {aiAccessToken}");
-                request.Content = new StringContent(
-                    JSON.Stringify(requestBody),
-                    System.Text.Encoding.UTF8,
-                    "application/json"
-                );
-
-                var response = await httpClient.SendAsync(request);
-                var responseContent = await response.Content.ReadAsStringAsync();
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = JSON.Parse(responseContent);
-                    return RestResult.Parse(context, error);
-                }
-
-                var data = JSON.Parse(responseContent);
-                return RestResult.Parse(context, data);
-            }
-            catch (Exception ex)
-            {
-                return RestResult.Parse(context, new { error = ex.Message });
-            }
-        });
-    }
-
-    private static void LoadConfig()
-    {
-        try
+        var fullMessages = new Arr();
+        if (!string.IsNullOrWhiteSpace(systemPrompt))
         {
-            var configPath = Path.Combine(
-                AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
+          fullMessages.Push(Obj(new
+          {
+            role = "system",
+            content = systemPrompt
+          }));
+        }
+        //answer for movies
+        fullMessages.Push(Obj(new
+        {
+          role = "system",
+          content = "Här är aktuella filmer och visningstider: " + JSON.Stringify(movies)
+        }));
+
+        //answer for date
+        fullMessages.Push(Obj(new
+        {
+          role = "system",
+          content = "" + JSON.Stringify(dateFilter)
+        }));
+
+        //giving date
+        fullMessages.Push(Obj(new
+        {
+          role = "system",
+          content = "Dagens datum är: " + today
+        }));
+
+        messages.ForEach(msg => fullMessages.Push(msg));
+
+        // Create request payload
+        var requestBody = Obj(new { messages = fullMessages });
+
+        // Make request to AI API
+        var request = new HttpRequestMessage(HttpMethod.Post, $"{proxyUrl}/v1/chat/completions");
+        request.Headers.Add("Authorization", $"Bearer {aiAccessToken}");
+        request.Content = new StringContent(
+                JSON.Stringify(requestBody),
+                System.Text.Encoding.UTF8,
+                "application/json"
             );
-            var configJson = File.ReadAllText(configPath);
-            var config = JSON.Parse(configJson);
 
-            if (config.aiAccessToken != null)
-            {
-                aiAccessToken = (string)config.aiAccessToken;
-            }
-            else
-            {
-                Log("WARNING: aiAccessToken not found in db-config.json!");
-            }
-        }
-        catch (Exception ex)
+        var response = await httpClient.SendAsync(request);
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
         {
-            Log("Error loading AI access token from config:", ex.Message);
+          var error = JSON.Parse(responseContent);
+          return RestResult.Parse(context, error);
         }
-    }
 
-    private static void LoadSystemPrompt()
+        var data = JSON.Parse(responseContent);
+        return RestResult.Parse(context, data);
+      }
+      catch (Exception ex)
+      {
+        return RestResult.Parse(context, new { error = ex.Message });
+      }
+    });
+  }
+
+  private static void LoadConfig()
+  {
+    try
     {
-        try
-        {
-            var promptPath = Path.Combine(
-                AppContext.BaseDirectory, "..", "..", "..", "system-prompt.md"
-            );
-            if (File.Exists(promptPath))
-            {
-                systemPrompt = File.ReadAllText(promptPath);
-                Log("Loaded system prompt from system-prompt.md");
-            }
-            else
-            {
-                Log("No system-prompt.md found, running without system prompt");
-            }
-        }
-        catch (Exception ex)
-        {
-            Log("Error loading system prompt:", ex.Message);
-        }
+      var configPath = Path.Combine(
+          AppContext.BaseDirectory, "..", "..", "..", "db-config.json"
+      );
+      var configJson = File.ReadAllText(configPath);
+      var config = JSON.Parse(configJson);
+
+      if (config.aiAccessToken != null)
+      {
+        aiAccessToken = (string)config.aiAccessToken;
+      }
+      else
+      {
+        Log("WARNING: aiAccessToken not found in db-config.json!");
+      }
     }
+    catch (Exception ex)
+    {
+      Log("Error loading AI access token from config:", ex.Message);
+    }
+  }
+
+  private static void LoadSystemPrompt()
+  {
+    try
+    {
+      var promptPath = Path.Combine(
+          AppContext.BaseDirectory, "..", "..", "..", "system-prompt.md"
+      );
+      if (File.Exists(promptPath))
+      {
+        systemPrompt = File.ReadAllText(promptPath);
+        Log("Loaded system prompt from system-prompt.md");
+      }
+      else
+      {
+        Log("No system-prompt.md found, running without system prompt");
+      }
+    }
+    catch (Exception ex)
+    {
+      Log("Error loading system prompt:", ex.Message);
+    }
+  }
 }

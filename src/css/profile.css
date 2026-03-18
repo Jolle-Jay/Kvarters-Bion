@@ -1,0 +1,354 @@
+/* Snygg styling för login-input fält */
+.login-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.2rem;
+  border: 2px solid #B8860B;
+  border-radius: 8px;
+  background: #1a2a1a;
+  color: #FFD700;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(184, 134, 11, 0.08);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-input:focus {
+  border-color: #FFD700;
+  box-shadow: 0 0 8px #FFD700;
+  background: #223322;
+}
+
+/* Logga in/Registrera rad och boxar */
+.login-register-row {
+  display: flex;
+  /* Lägger elementen på rad */
+  justify-content: center;
+  /* Centrerar boxarna horisontellt */
+  gap: 2rem;
+  /* Avstånd mellan boxarna */
+  margin-top: 2rem;
+  /* Avstånd ovanför raden */
+}
+
+.login-register-box {
+  background: #112611;
+  /* Mörk bakgrund på boxen */
+  border: 2px solid #B8860B;
+  /* Gul ram */
+  border-radius: 8px;
+  /* Rundade hörn */
+  padding: 0;
+  /* Inre avstånd i boxen */
+  display: flex;
+  /* Centrerar innehållet i boxen */
+  align-items: center;
+  /* Vertikal centrering */
+  justify-content: center;
+  /* Horisontell centrering */
+  min-width: 120px;
+  /* Minsta bredd på boxen */
+  transition: box-shadow 0.2s;
+  /* Mjuk övergång för skugga vid hover */
+
+}
+
+.login-register-box:hover {
+  box-shadow: 0 0 10px #B8860B;
+  /* Ljusgul skugga vid hover */
+}
+
+.login-register-box a {
+  color: #B8860B;
+  /* Gul textfärg */
+  font-size: 1.2rem;
+  /* Lite större text */
+  font-weight: bold;
+  /* Fet text */
+  text-decoration: none;
+  /* Ingen understrykning */
+  letter-spacing: 1px;
+  /* Lite extra bokstavsavstånd */
+  transition: color 0.2s;
+  /* Mjuk färgövergång vid hover */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1.5rem 2.5rem;
+}
+
+.login-register-box a:hover {
+  color: #FFD700;
+  /* Ändrar textfärg till ljusgul vid hover */
+}
+
+.profile-container {
+  max-width: 600px;
+  margin: 2rem auto 3rem;
+  padding: 2rem;
+  background: #0a1c0a;
+  border: 2px solid #B8860B;
+  border-radius: 10px;
+  color: #fcfafa;
+  position: relative;
+}
+
+.profile-container h2 {
+  color: #B8860B;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* En linje mellan namn och e-post */
+.profile-divider {
+  border: none;
+  border-top: 2px solid #B8860B;
+  margin: 16px auto;
+  width: 60%;
+}
+
+.container-name {
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+}
+
+.logout-btn {
+  background: #B8860B;
+  color: rgb(250, 251, 251);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 24px;
+  font-weight: bold;
+  margin: 20px auto 24px auto;
+  /* center the button horizontalt */
+  cursor: pointer;
+  transition: background 0.2s;
+  display: block;
+  position: static;
+  z-index: 1;
+}
+
+.logout-btn:hover {
+  background: #675914;
+}
+
+.section-title {
+  color: #B8860B;
+  font-size: 1.5rem;
+  margin-top: 24px;
+  margin-bottom: 15px;
+  text-align: left;
+  /* center left on desktop */
+}
+
+.bookings-list {
+  padding-left: 5px;
+}
+
+.booking-item {
+  background: #0b2e02;
+  border: 1px solid #031406;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  padding: 5px 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  position: relative;
+  min-height: 220px;
+}
+
+.booking-item b {
+  color: #B8860B;
+}
+
+.booking-item.confirmed {
+  background: #092a09;
+  box-shadow: 0 4px 10px 0 rgba(80, 255, 80, 0.15), 0 1.5px 6px 0 rgba(0, 0, 0, 0.18);
+  border: 2px solid #123312;
+}
+
+.booking-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 6px 10px;
+}
+
+.booking-label {
+  color: #B8860B;
+  min-width: 110px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.booking-value {
+  color: #fff;
+  flex: 1 1 200px;
+}
+
+.cancel-btn {
+  background: #700808;
+  color: rgb(250, 251, 251);
+  border: none;
+  border-radius: 3px;
+  padding: 6px 16px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  align-self: center;
+  transition: background 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #5e0c0c;
+  color: #ffffff;
+}
+
+.booking-item.cancelled {
+  background: #343a34;
+  opacity: 0.6;
+  filter: grayscale(0.2);
+}
+
+.not-logged-in {
+  text-align: center;
+  padding: 2rem;
+}
+
+.not-logged-in p {
+  margin-bottom: 1.5rem;
+  color: #B8860B;
+}
+
+.bookings-toggle-row {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.bookings-toggle-row svg {
+  cursor: pointer;
+}
+
+.toggle-icon {
+  width: 18px;
+  height: 18px;
+  margin-left: 0.7rem;
+  stroke-width: 4;
+  color: #B8860B;
+  transition: transform 0.2s ease;
+}
+
+.toggle-icon.open {
+  transform: rotate(90deg);
+}
+
+/* Mobile responsive styles */
+@media (max-width: 481px) {
+  .profile-container {
+    max-width: 95vw;
+    margin: 2rem 1rem 3rem;
+    padding: 1rem;
+  }
+
+  .profile-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    /* center the header */
+  }
+
+  .container-name {
+    text-align: center;
+    /* center name and email */
+  }
+
+  .section-title {
+    text-align: center;
+    /* center on mobile device */
+    width: 100%;
+  }
+
+  .logout-btn {
+    padding: 6px 14px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    margin: 16px auto 20px auto;
+    display: block;
+  }
+
+  .profile-info {
+    margin: 1rem 0;
+    padding: 0.75rem;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .booking-row {
+    gap: 0rem;
+    line-height: 1.4rem;
+  }
+
+  .booking-value {
+    margin-left: 0;
+    margin-top: 0;
+    font-size: 1rem;
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+
+  .cancel-btn {
+    display: block;
+    margin: 15px auto 0 auto;
+    background: #700808;
+    color: rgb(250, 251, 251);
+    text-align: center;
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .login-register-row {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .login-register-box {
+    width: 100%;
+    min-width: 0;
+    padding: 1rem 0.5rem;
+  }
+
+  .not-logged-in {
+    padding: 1rem;
+  }
+
+  .not-logged-in h2 {
+    font-size: 1.25rem;
+  }
+
+  .not-logged-in p {
+    font-size: 0.95rem;
+  }
+
+  .bookings-toggle-row {
+    justify-content: center;
+  }
+
+  .booking-number {
+    margin-left: 0;
+    word-break: break-all;
+  }
+
+  .booking-label {
+    font-size: medium;
+    margin-bottom: 0;
+  }
+}

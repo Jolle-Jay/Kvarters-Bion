@@ -1,0 +1,41 @@
+{
+  "Title": "The Notebook",
+  "Year": "2004",
+  "Rated": "PG-13",
+  "Trailer": "https://www.youtube.com/watch?v=BjJcYdEOI0k",
+  "Released": "25 Jun 2004",
+  "Runtime": "123 min",
+  "Genre": "Drama, Romance",
+  "Director": "Nick Cassavetes",
+  "Writer": "Jeremy Leven, Jan Sardi, Nicholas Sparks",
+  "Actors": "Gena Rowlands, James Garner, Rachel McAdams",
+  "Plot": "En äldre man läser för en kvinna med demens berättelsen om två unga älskande vars romans hotas av skillnaderna i deras respektive samhällsklasser.",
+  "Language": "Engelska",
+  "Country": "United States",
+  "Awards": "12 wins & 10 nominations total",
+  "Poster": "https://m.media-amazon.com/images/M/MV5BZjE0ZjgzMzYtMTAxYi00NGMzLThmZDktNzFlMzA2MWRmYWQ0XkEyXkFqcGc@._V1_SX300.jpg",
+  "Ratings": [
+    {
+      "Source": "Internet Movie Database",
+      "Value": "7.8/10"
+    },
+    {
+      "Source": "Rotten Tomatoes",
+      "Value": "54%"
+    },
+    {
+      "Source": "Metacritic",
+      "Value": "53/100"
+    }
+  ],
+  "Metascore": "53",
+  "imdbRating": "7.8",
+  "imdbVotes": "675,051",
+  "imdbID": "tt0332280",
+  "Type": "movie",
+  "DVD": "N/A",
+  "BoxOffice": "$81,417,274",
+  "Production": "N/A",
+  "Website": "N/A",
+  "Response": "True"
+}

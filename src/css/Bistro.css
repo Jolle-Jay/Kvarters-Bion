@@ -1,0 +1,157 @@
+body.bistro-theme {
+    background-color: #3d3d0e;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg opacity='0.18' stroke='%23B8860B' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 70c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 110c40-30 100-30 140 0s100 30 140 0'/%3E%3Cpath d='M20 150c40-30 100-30 140 0s100 30 140 0'/%3E%3Crect x='28' y='80' width='26' height='16'/%3E%3Crect x='28' y='122' width='26' height='16'/%3E%3Crect x='28' y='164' width='26' height='16'/%3E%3Crect x='266' y='80' width='26' height='16'/%3E%3Crect x='266' y='122' width='26' height='16'/%3E%3Crect x='266' y='164' width='26' height='16'/%3E%3Cpath d='M40 220c30-24 80-24 110 0s80 24 110 0'/%3E%3Cpath d='M40 260c30-24 80-24 110 0s80 24 110 0'/%3E%3Crect x='50' y='228' width='22' height='14'/%3E%3Crect x='50' y='266' width='22' height='14'/%3E%3Crect x='248' y='228' width='22' height='14'/%3E%3Crect x='248' y='266' width='22' height='14'/%3E%3Crect x='130' y='190' width='60' height='36' rx='6'/%3E%3Ccircle cx='148' cy='182' r='7'/%3E%3Ccircle cx='172' cy='182' r='7'/%3E%3Ccircle cx='160' cy='208' r='10'/%3E%3Crect x='192' y='198' width='12' height='16' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 320px 320px;
+    color: #ffffff;
+}
+
+.bistro-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+      rgba(0, 26, 0, 0.45),
+      rgba(60, 30, 0, 0.35));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu {
+    max-width: 1000px;
+    margin: 0 auto 3rem auto;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+
+/* Upper menu: child/senior side by side */
+.menu-top-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+/* lower menu - tre columns (dryck/mat/snacks) side by side */
+.menu-bottom-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.menu-child, .menu-senior, .menu-group {
+    flex: 1 1 300px;
+}
+
+
+/* Menuboard: grid for Dryck/Mat/Snacks. */
+.menu-board {
+  background: rgba(10, 25, 10, 0.7);
+  border: 2px solid #B8860B;
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.menu-group {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  flex: 1 1 250px;
+  margin-bottom: 1;
+}
+
+/* Menygrupp-header: sectionheader on menuboard. */
+.menu-group h3 {
+    color: #B8860B;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}
+
+/* Menulist: stacked list without points */
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+/* Menu-item: row with product and price */
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px dashed rgba(184, 134, 11, 0.35);
+}
+
+/* Productname on menu-row  */
+.menu-item strong {
+    color: #f1f1f1;
+    display: block;
+    font-size: 1rem;
+}
+
+/* description on menu-row */
+.menu-item span {
+    color: #c3cac3;
+    font-size: 0.85rem;
+}
+
+/* price on menu-row */
+.menu-price {
+    color: #90ee90;
+    font-weight: bold;
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+/* Senior-menu: own box with background and frame */
+.menu-senior {
+    width: min(360px, 100%);
+    background: rgba(10, 25, 10, 0.7);
+    border: 2px solid #B8860B;
+    border-radius: 12px;
+    padding: 1.25rem;
+    order: 2;
+}
+
+/* Senior-header. */
+.menu-senior h3 {
+    color: #B8860B;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}
+
+/* child-menu: own box with background and frame */
+.menu-child {
+    width: min(360px, 100%);
+    background: rgba(10, 25, 10, 0.7);
+    border: 2px solid #B8860B;
+    border-radius: 12px;
+    padding: 1.25rem;
+    order: 1;
+}
+
+/* Barn-rubrik. */
+.menu-child h3 {
+    color: #B8860B;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+}
+

@@ -59,8 +59,11 @@ public static class LoginRoutes
         {
             var user = GetUser(context);
 
-            // Delete the user from the session
-            Session.Set(context, "user", null);
+            if (user != null)
+            {
+                // clear the entire session row and cookie
+                Session.Clear(context);
+            }
 
             return RestResult.Parse(context, user == null ?
                 new { error = "No user is logged in." } :
