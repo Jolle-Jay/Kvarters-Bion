@@ -107,8 +107,8 @@ Optimera databasfrågor
 
 Övrigt: 
 Vi fick  problem med våra mailutskick eftersom vi började med att ha en mail som inte matchade vårat namn på hemsidan så ville vi ha en ny.
-Microsoft stängde av SMTP auth som standard på alla nya Outlook/Hotmail-konton från 2023 av säkerhetsskäl.
 Då skapar vi ett nytt konto men det blev mer problem eftersom den nya mailen som skapades inte kunde göra utskick.  
+Microsoft stängde av SMTP auth som standard på alla nya Outlook/Hotmail-konton från 2023 av säkerhetsskäl.
 
 
 
