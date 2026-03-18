@@ -114,13 +114,6 @@ Förbättra felhantering och loggning
 Införa caching för bättre prestanda
 Optimera databasfrågor
 
-Övrigt:
-Vi fick problem med våra mailutskick eftersom vi började med att ha en mail som inte matchade vårat
-namn på hemsidan så vi ville ha en ny.
-Då skapde vi ett nytt konto via Outlook men det ledde till fler problem eftersom den nya mailen som
-skapades inte kunde göra utskick.  
-Microsoft stängde av SMTP auth som standard på alla nya Outlook/Hotmail-konton från 2023 av
-säkerhetsskäl. Slutligen fick vi använda oss av mailtrap.
 
 -================================ Cloning the repo ====================================-
 
