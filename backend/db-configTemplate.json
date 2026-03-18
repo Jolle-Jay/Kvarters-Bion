@@ -1,0 +1,15 @@
+{
+  "host": "",
+  "port": "",
+  "username": "",
+  "password": "",
+  "database": "",
+  "createTablesIfNotExist": true,
+  "seedDataIfEmpty": true,
+  "resetDb": false,
+  "aiAccessToken": "",
+  "smtpServer": "",
+  "smtpPort": "",
+  "emailUsername": "",
+  "emailPassword": ""
+}
